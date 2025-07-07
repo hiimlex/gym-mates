@@ -14,7 +14,8 @@
 			"@modules/*": ["./modules/*"],
 			"@utils/*": ["./utils/*"],
 			"@config/*": ["./config/*"],
-			"@test/*": ["./test/*"]
+			"@test/*": ["./test/*"],
+			"@middlewares/*": ["./middlewares/*"],
 		}
 	},
 	"include": ["./src/**/*"],

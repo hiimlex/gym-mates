@@ -1,5 +1,5 @@
 import { CrewsSchema } from "@modules/crews";
-import { InferSchemaType, Document, Model } from "mongoose";
+import { InferSchemaType, Document, Model, Types } from "mongoose";
 
 export enum CrewVisibility {
 	Public = "public",
@@ -14,7 +14,7 @@ export enum CrewStrikes {
 
 export type TCrew = InferSchemaType<typeof CrewsSchema>;
 
-export interface ICrewDocument extends Document, TCrew {
+export interface ICrewDocument extends Document<Types.ObjectId>, TCrew {
 	populate_members: () => Promise<void>;
 }
 

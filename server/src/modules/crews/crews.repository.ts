@@ -83,6 +83,8 @@ class CrewsRepository {
 				$addToSet: { members: user._id },
 			});
 
+			// [Notify] - Notify the crew of new member
+
 			return res.sendStatus(204);
 		} catch (error) {
 			return handle_error(res, error);
@@ -156,7 +158,7 @@ class CrewsRepository {
 
 			const updatedCrew = await CrewsModel.findById({
 				_id: crew._id,
-			})
+			});
 
 			return res.status(200).json(updatedCrew);
 		} catch (error) {
@@ -199,6 +201,8 @@ class CrewsRepository {
 			if (!user_in_white_list) {
 				throw new HttpException(400, "USER_NOT_IN_WHITELIST");
 			}
+
+			// [Notify] - Notify the user that they have been accepted into the crew
 
 			await crew.updateOne({
 				$pull: { white_list: user._id },
@@ -244,6 +248,8 @@ class CrewsRepository {
 			if (!user_in_crew) {
 				throw new HttpException(400, "USER_NOT_A_MEMBER");
 			}
+
+			// [Notify] - Notify the user that they have been removed from crew
 
 			await crew.updateOne({
 				$pull: { members: user_id },

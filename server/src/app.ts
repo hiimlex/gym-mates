@@ -8,6 +8,7 @@ import { create_apollo_server } from "gpql/gpql";
 import mongoose from "mongoose";
 import { JwtSecret } from "types/generics";
 import { routers } from "./routers/routers";
+import { set_apollo_context } from "@middlewares/set_apollo_context.middleware";
 
 export class Server {
 	app!: Application;
@@ -43,7 +44,10 @@ export class Server {
 
 		create_apollo_server().then((apollo_server) => {
 			if (apollo_server) {
-				this.app.use("/graphql", expressMiddleware(apollo_server));
+				this.app.use(
+					"/graphql",
+					expressMiddleware(apollo_server, { context: set_apollo_context })
+				);
 			}
 		});
 	}
@@ -51,7 +55,9 @@ export class Server {
 	start() {
 		if (process.env.NODE_ENV !== "test") {
 			const PORT = process.env.PORT || 8080;
-			this.app.listen(PORT);
+			this.app.listen(PORT, () => {
+				console.log(`Server is running on port ${PORT}`);
+			});
 		}
 	}
 

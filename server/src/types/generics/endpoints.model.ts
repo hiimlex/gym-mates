@@ -20,4 +20,8 @@ export const Endpoints = {
 	UsersGet: "/users/:id",
 	UsersUpdate: "/users/:id",
 	UsersDelete: "/users/:id",
+	UsersSendFriendRequest: "/users/friends/send-request",
+	UsersAcceptFriendRequest: "/users/friends/accept-request",
+	UsersRejectFriendRequest: "/users/friends/reject-request",
+	UsersRemoveFriend: "/users/friends/remove",
 };

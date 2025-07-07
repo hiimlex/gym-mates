@@ -35,11 +35,12 @@ CrewsTC.addRelation("white_list", {
 	projection: { white_list: true },
 });
 
-const CrewGPQLQueries = {
+const CrewQueries = {
 	crews: CrewsTC.getResolver("findMany"),
 	crewById: CrewsTC.getResolver("findById"),
 	crewOne: CrewsTC.getResolver("findOne"),
 };
-const CrewGPQLMutations = {};
 
-export { CrewGPQLQueries, CrewGPQLMutations, CrewsTC };
+const CrewMutations = {};
+
+export { CrewQueries, CrewMutations, CrewsTC };
