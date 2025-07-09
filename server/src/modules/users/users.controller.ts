@@ -25,6 +25,18 @@ export class UsersController extends BaseController {
 			Endpoints.UsersRemoveFriend,
 			AuthRepositoryImpl.is_authenticated,
 			UsersRepositoryImpl.remove_friend
+		);
+
+		this.router.post(
+			Endpoints.UsersRejectFriendRequest,
+			AuthRepositoryImpl.is_authenticated,
+			UsersRepositoryImpl.reject_friend_request
+		);
+
+		this.router.post(
+			Endpoints.UsersCreateHealthy,
+			AuthRepositoryImpl.is_authenticated,
+			UsersRepositoryImpl.create_healthy
 		)
 	}
 }

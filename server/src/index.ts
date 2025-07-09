@@ -7,3 +7,5 @@ const server = new Server();
 
 server.setup();
 server.start();
+
+export { server };

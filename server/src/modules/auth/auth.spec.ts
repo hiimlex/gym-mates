@@ -37,7 +37,7 @@ afterAll(async () => {
 describe("Auth module", () => {
 	const mock_user = create_user_mock();
 
-	describe(`POST ${Endpoints.AuthSignUp}`, () => {
+	describe(`POST /auth/sign-up`, () => {
 		it("should create an user", async () => {
 			const { body: c_user, statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.AuthSignUp)

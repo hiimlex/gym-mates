@@ -1,8 +1,15 @@
 import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
-import { IUserDocument } from "types/collections";
+import {
+	IUserDocument,
+	JourneyEventAction,
+	JourneyEventSchemaType,
+	TJourneyEvent,
+} from "types/collections";
 import { UsersModel } from "./users.schema";
 import { HttpException } from "@core/http_exception";
+import { HealthyModel } from "@modules/healthy";
+import { JourneyModel } from "@modules/journey";
 
 class UsersRepository {
 	async send_friend_request(req: Request, res: Response) {
@@ -24,7 +31,7 @@ class UsersRepository {
 			}
 
 			await friend.updateOne({
-				$addToSet: { requests: friend_id },
+				$addToSet: { requests: user._id },
 			});
 
 			// [Notify] - Notify the friend about the new friend request
@@ -48,8 +55,8 @@ class UsersRepository {
 			}
 
 			await user.updateOne({
-				$pull: { requests: user._id },
-				$addToSet: { friends: user._id },
+				$pull: { requests: friend._id },
+				$addToSet: { friends: friend._id },
 			});
 
 			await friend.updateOne({
@@ -58,6 +65,39 @@ class UsersRepository {
 			});
 
 			// [Notify] - Notify the friend about the accepted request
+
+			// [Journey] - Add a new event to the user's journey
+			const event: TJourneyEvent = {
+				action: JourneyEventAction.ADD,
+				schema: JourneyEventSchemaType.Friend,
+				data: {
+					friend,
+				},
+				created_at: new Date(),
+			};
+			await user.add_journey_event(event);
+
+			return res.sendStatus(204);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async reject_friend_request(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+
+			const { friend_id } = req.body;
+
+			const friend = await UsersModel.findById(friend_id);
+
+			if (!friend) {
+				throw new HttpException(404, "USER_NOT_FOUND");
+			}
+
+			await user.updateOne({
+				$pull: { requests: friend_id },
+			});
 
 			return res.sendStatus(204);
 		} catch (error) {
@@ -86,6 +126,40 @@ class UsersRepository {
 			});
 
 			return res.sendStatus(204);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async create_healthy(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+
+			const { weight, height, body_fat } = req.body;
+
+			const healthy_info = await HealthyModel.create({
+				weight,
+				height,
+				body_fat,
+				user: user._id,
+			});
+
+			await user.updateOne({
+				$set: { healthy: healthy_info._id },
+			});
+
+			// [Journey] - Add a new event to the user's journey
+			const event: TJourneyEvent = {
+				action: JourneyEventAction.ADD,
+				schema: JourneyEventSchemaType.Healthy,
+				data: {
+					healthy_info,
+				},
+				created_at: new Date(),
+			};
+			await user.add_journey_event(event);
+
+			return res.status(200).json(healthy_info);
 		} catch (error) {
 			return handle_error(res, error);
 		}

@@ -12,11 +12,11 @@ import { UsersTC } from "../users";
 
 const CrewRulesSchema = new Schema(
 	{
-		gym_focused: { type: Boolean, default: false },
-		paid_at_anytime: { type: Boolean, default: true },
-		paid_without_picture: { type: Boolean, default: true },
-		show_members_rank: { type: Boolean, default: true },
-		free_weekends: { type: Boolean, default: true },
+		gym_focused: { type: Boolean, default: false, required: false },
+		paid_at_anytime: { type: Boolean, default: true, required: false },
+		paid_without_picture: { type: Boolean, default: true, required: false },
+		show_members_rank: { type: Boolean, default: true, required: false },
+		free_weekends: { type: Boolean, default: true, required: false },
 	},
 	{ versionKey: false, _id: false }
 );

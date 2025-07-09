@@ -33,12 +33,6 @@ export class CrewsController extends BaseController {
 			CrewsRepositoryImpl.leave
 		);
 
-		this.router.put(
-			Endpoints.CrewsUpdateAdmin,
-			AuthRepositoryImpl.is_authenticated,
-			CrewsRepositoryImpl.update_admin
-		);
-
 		this.router.post(
 			Endpoints.CrewsAcceptMember,
 			AuthRepositoryImpl.is_authenticated,
@@ -49,6 +43,24 @@ export class CrewsController extends BaseController {
 			Endpoints.CrewsKickMember,
 			AuthRepositoryImpl.is_authenticated,
 			CrewsRepositoryImpl.kick_member
+		);
+
+		this.router.put(
+			Endpoints.CrewsUpdateConfig,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.update_config
+		);
+
+		this.router.delete(
+			Endpoints.CrewsDelete,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.delete
+		);
+
+		this.router.put(
+			Endpoints.CrewsUpdateAdmins,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.update_admin
 		);
 	}
 }

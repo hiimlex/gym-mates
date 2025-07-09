@@ -4,5 +4,4 @@ export const Collections = {
 	Workouts: "Workouts",
 	Journeys: "Journeys",
 	HealthyInfo: "HealthyInfo",
-	
 };

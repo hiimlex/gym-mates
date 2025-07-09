@@ -45,7 +45,6 @@ afterAll(async () => {
 });
 
 describe("Crews Module", () => {
-	describe(`GET /crews/`, () => {});
 	describe(`POST /crews/`, () => {
 		it("should create a crew", async () => {
 			const { statusCode, body } = await test_agent
@@ -152,11 +151,9 @@ describe("Crews Module", () => {
 		});
 	});
 
-	describe("PUT /crews/admins/", () => {
+	describe("PUT /crews/update-admins/", () => {
 		it("should update admin status of a crew member", async () => {
 			const temp = await test_get_user_and_cookie(test_agent);
-
-			console.log(temp.user);
 
 			expect(temp.user).toHaveProperty("_id");
 
@@ -168,9 +165,13 @@ describe("Crews Module", () => {
 			const temp_user_id = temp.user._id;
 
 			const { statusCode, body } = await test_agent
-				.put(ApiPrefix + Endpoints.CrewsUpdateAdmin)
+				.put(ApiPrefix + Endpoints.CrewsUpdateAdmins)
 				.set("Cookie", cookie)
-				.send({ user_id: temp_user_id, code: created_crew.code, set_admin: true });
+				.send({
+					user_id: temp_user_id,
+					code: created_crew.code,
+					set_admin: true,
+				});
 
 			expect(body).toHaveProperty("admins");
 			expect(body.admins).toContain(temp_user_id.toString());
@@ -215,6 +216,41 @@ describe("Crews Module", () => {
 				.post(ApiPrefix + Endpoints.CrewsLeave)
 				.set("Cookie", temp.cookie)
 				.send({ code: created_crew.code });
+
+			expect(statusCode).toBe(204);
+		});
+	});
+
+	describe("PUT /crews/update-config/", () => {
+		it("should update crew configuration", async () => {
+			const update_data: Partial<TCrew> = {
+				visibility: CrewVisibility.Public,
+				rules: {
+					free_weekends: false,
+				},
+			};
+
+			const { body } = await test_agent
+				.put(ApiPrefix + Endpoints.CrewsUpdateConfig)
+				.set("Cookie", cookie)
+				.send({ ...update_data, crew_id: created_crew._id.toString() });
+
+			expect(body).toHaveProperty("visibility", update_data.visibility);
+			expect(body.rules).toHaveProperty(
+				"free_weekends",
+				update_data.rules?.free_weekends
+			);
+		});
+	});
+
+	describe("DELETE /crews/:id", () => {
+		it("should delete a crew", async () => {
+			const { statusCode } = await test_agent
+				.delete(
+					ApiPrefix +
+						Endpoints.CrewsDelete.replace(":id", created_crew._id.toString())
+				)
+				.set("Cookie", cookie);
 
 			expect(statusCode).toBe(204);
 		});

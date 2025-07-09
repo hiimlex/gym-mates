@@ -11,6 +11,12 @@ import { NextFunction, Request, Response } from "express";
 import { decode, sign } from "jsonwebtoken";
 import { UsersModel } from "../users";
 import { handle_error } from "@utils/handle_error";
+import { JourneyModel } from "@modules/journey";
+import {
+	JourneyEventAction,
+	JourneyEventSchemaType,
+	TJourneyEvent,
+} from "types/collections";
 
 class AuthRepository {
 	async login(req: Request, res: Response) {
@@ -64,7 +70,32 @@ class AuthRepository {
 				name,
 			});
 
-			return res.status(201).json(user);
+			const start_event: TJourneyEvent = {
+				action: JourneyEventAction.START,
+				schema: JourneyEventSchemaType.User,
+				created_at: new Date(),
+				data: {
+					user: user.toJSON(),
+				}
+			};
+
+			const user_journey = await JourneyModel.create({
+				user: user._id,
+				events: [start_event],
+				inventory: [],
+				healthy: [],
+				workouts: [],
+			});
+
+			const updated_user = await UsersModel.findByIdAndUpdate(
+				user._id,
+				{
+					journey: user_journey._id,
+				},
+				{ new: true }
+			);
+
+			return res.status(201).json(updated_user);
 		} catch (error) {
 			return handle_error(res, error);
 		}

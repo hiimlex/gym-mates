@@ -1,6 +1,12 @@
 import { timestamps } from "@config/schema.config";
-import { Schema } from "mongoose";
-import { JourneyEventAction, JourneyEventSchemaType } from "types/collections";
+import { model, Schema } from "mongoose";
+import {
+	Collections,
+	IJourneyDocument,
+	IJourneyModel,
+	JourneyEventAction,
+	JourneyEventSchemaType,
+} from "types/collections";
 
 const EventSchema = new Schema(
 	{
@@ -14,16 +20,12 @@ const EventSchema = new Schema(
 			required: true,
 			enum: Object.values(JourneyEventSchemaType),
 		},
-		ref: {
-			type: Schema.Types.ObjectId,
-			required: true,
-		},
 		data: {
 			type: Schema.Types.Mixed,
 			required: false,
 		},
 	},
-	{ versionKey: false, timestamps }
+	{ versionKey: false, timestamps, _id: false }
 );
 
 const JourneySchema = new Schema(
@@ -51,13 +53,14 @@ const JourneySchema = new Schema(
 			default: [],
 			required: false,
 		},
-		healthy: {
-			type: [Schema.Types.ObjectId],
-			ref: "Healthy",
-			required: false,
-		},
 	},
-	{ versionKey: false, timestamps }
+	{ versionKey: false, timestamps, collection: Collections.Journeys }
 );
 
-export { JourneySchema };
+const JourneyModel: IJourneyModel = model<IJourneyDocument, IJourneyModel>(
+	Collections.Journeys,
+	JourneySchema,
+	Collections.Journeys
+);
+
+export { JourneySchema, EventSchema, JourneyModel };

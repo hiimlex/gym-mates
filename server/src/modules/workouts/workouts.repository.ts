@@ -1,6 +1,11 @@
 import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
-import { IUserDocument } from "types/collections";
+import {
+	IUserDocument,
+	JourneyEventAction,
+	JourneyEventSchemaType,
+	TJourneyEvent,
+} from "types/collections";
 
 class WorkoutsRepository {
 	async create(req: Request, res: Response) {
@@ -19,6 +24,17 @@ class WorkoutsRepository {
 			});
 
 			// [Notify] - Notify the crews about the member workout
+
+			// [Journey] - Add a journey event for the user
+			const event: TJourneyEvent = {
+				action: JourneyEventAction.PAID,
+				created_at: new Date(),
+				schema: JourneyEventSchemaType.Workout,
+				data: {
+					workout,
+				},
+			};
+			await user.add_journey_event(event);
 
 			return res.status(201).json(workout);
 		} catch (error) {

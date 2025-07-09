@@ -8,10 +8,11 @@ export const Endpoints = {
 	CrewsList: "/crews",
 	CrewsGetByCode: "/crews/:code",
 	CrewsUpdate: "/crews/:id",
+	CrewsUpdateConfig: "/crews/update-config/",
 	CrewsDelete: "/crews/:id",
 	CrewsJoin: "/crews/join",
 	CrewsLeave: "/crews/leave",
-	CrewsUpdateAdmin: "/crews/admins/",
+	CrewsUpdateAdmins: "/crews/update-admins/",
 	CrewsAcceptMember: "/crews/accept-member",
 	CrewsKickMember: "/crews/kick-member",
 	// Users
@@ -24,4 +25,5 @@ export const Endpoints = {
 	UsersAcceptFriendRequest: "/users/friends/accept-request",
 	UsersRejectFriendRequest: "/users/friends/reject-request",
 	UsersRemoveFriend: "/users/friends/remove",
+	UsersCreateHealthy: "/users/healthy",
 };

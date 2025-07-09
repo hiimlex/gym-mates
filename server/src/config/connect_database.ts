@@ -3,10 +3,14 @@ import { add_mongo_transport } from "./logger.config";
 
 export async function connect_database(): Promise<Mongoose | null> {
 	try {
-		const instance = await mongoose.connect(process.env.DB_URL || "");
+		if (mongoose.connection.readyState !== 0) {
+			throw new Error("Database is already connected");
+		}
 
-		console.log("Connected to database");
+		const instance = await mongoose.connect(process.env.DB_URL || "");
+		console.log("Database connected successfully");
 		add_mongo_transport();
+
 
 		return instance;
 	} catch (error) {

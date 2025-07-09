@@ -46,7 +46,10 @@ export class Server {
 			if (apollo_server) {
 				this.app.use(
 					"/graphql",
-					expressMiddleware(apollo_server, { context: set_apollo_context })
+					expressMiddleware(
+						apollo_server
+						// ,{ context: set_apollo_context }
+					)
 				);
 			}
 		});

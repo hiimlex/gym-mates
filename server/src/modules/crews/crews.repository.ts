@@ -2,7 +2,12 @@ import { HttpException } from "@core/http_exception";
 import { UsersModel } from "@modules/users";
 import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
-import { IUserDocument } from "types/collections";
+import {
+	IUserDocument,
+	JourneyEventAction,
+	JourneyEventSchemaType,
+	TJourneyEvent,
+} from "types/collections";
 import { CrewsModel } from "./crews.schema";
 
 class CrewsRepository {
@@ -23,6 +28,18 @@ class CrewsRepository {
 				white_list: [],
 			});
 
+			// [Journey] - Add a journey event for the crew creation
+			const event: TJourneyEvent = {
+				action: JourneyEventAction.JOIN,
+				schema: JourneyEventSchemaType.Crew,
+				created_at: new Date(),
+				data: {
+					crew,
+				},
+			};
+
+			await user.add_journey_event(event);
+
 			return res.status(201).json(crew);
 		} catch (error) {
 			return handle_error(res, error);
@@ -40,6 +57,75 @@ class CrewsRepository {
 			}
 
 			return res.status(200).json(crew);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async delete(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+
+			const crew_id = req.params.id;
+
+			const crew = await CrewsModel.findById(crew_id);
+
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const is_admin = crew.admins.some(
+				(adm) => adm._id.toString() === user._id.toString()
+			);
+
+			if (!is_admin) {
+				throw new HttpException(403, "FORBIDDEN");
+			}
+
+			await crew.deleteOne();
+
+			// [Notify] - Notify the crew members that the crew has been deleted
+
+			return res.sendStatus(204);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async update_config(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+
+			const { crew_id } = req.body;
+
+			const crew = await CrewsModel.findById(crew_id);
+
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const is_admin = crew.admins.some(
+				(adm) => adm._id.toString() === user._id.toString()
+			);
+
+			if (!is_admin) {
+				throw new HttpException(403, "FORBIDDEN");
+			}
+
+			const { name, visibility, rules } = req.body;
+
+			const updated_crew = await CrewsModel.findByIdAndUpdate(
+				crew_id,
+				{
+					$set: {
+						visibility,
+						rules,
+					},
+				},
+				{ new: true }
+			);
+
+			return res.status(200).json(updated_crew);
 		} catch (error) {
 			return handle_error(res, error);
 		}
@@ -85,6 +171,17 @@ class CrewsRepository {
 
 			// [Notify] - Notify the crew of new member
 
+			// [Journey] - Add a journey event for the crew join
+			const event: TJourneyEvent = {
+				action: JourneyEventAction.JOIN,
+				schema: JourneyEventSchemaType.Crew,
+				created_at: new Date(),
+				data: {
+					crew,
+				},
+			};
+			await user.add_journey_event(event);
+
 			return res.sendStatus(204);
 		} catch (error) {
 			return handle_error(res, error);
@@ -121,7 +218,7 @@ class CrewsRepository {
 	async update_admin(req: Request, res: Response) {
 		try {
 			const { user_id, code, set_admin } = req.body;
-			console.log(user_id);
+
 			const admin: IUserDocument = res.locals.user;
 
 			const user = await UsersModel.findById(user_id);
@@ -171,9 +268,9 @@ class CrewsRepository {
 			const admin: IUserDocument = res.locals.user;
 			const { user_id, code } = req.body;
 
-			const user = await UsersModel.findById(user_id);
+			const new_member_user = await UsersModel.findById(user_id);
 
-			if (!user) {
+			if (!new_member_user) {
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
 
@@ -185,7 +282,7 @@ class CrewsRepository {
 			if (
 				!crew?.admins.some((a) => a._id.toString() === admin._id.toString())
 			) {
-				throw new HttpException(403, "UNAUTHORIZED");
+				throw new HttpException(403, "FORBIDDEN");
 			}
 
 			if (!crew) {
@@ -195,19 +292,30 @@ class CrewsRepository {
 			const user_in_white_list =
 				crew.white_list &&
 				crew.white_list.some(
-					(member) => member._id.toString() === user._id.toString()
+					(member) => member._id.toString() === new_member_user._id.toString()
 				);
 
 			if (!user_in_white_list) {
 				throw new HttpException(400, "USER_NOT_IN_WHITELIST");
 			}
 
+			await crew.updateOne({
+				$pull: { white_list: new_member_user._id },
+				$addToSet: { members: new_member_user._id },
+			});
+
 			// [Notify] - Notify the user that they have been accepted into the crew
 
-			await crew.updateOne({
-				$pull: { white_list: user._id },
-				$addToSet: { members: user._id },
-			});
+			// [Journey] - Add a journey event for the crew join
+			const event: TJourneyEvent = {
+				action: JourneyEventAction.JOIN,
+				schema: JourneyEventSchemaType.Crew,
+				created_at: new Date(),
+				data: {
+					crew,
+				},
+			};
+			await new_member_user.add_journey_event(event);
 
 			return res.sendStatus(204);
 		} catch (error) {
@@ -238,7 +346,7 @@ class CrewsRepository {
 			if (
 				!crew?.admins.some((a) => a._id.toString() === admin._id.toString())
 			) {
-				throw new HttpException(403, "UNAUTHORIZED");
+				throw new HttpException(403, "FORBIDDEN");
 			}
 
 			const user_in_crew = crew.members.some(

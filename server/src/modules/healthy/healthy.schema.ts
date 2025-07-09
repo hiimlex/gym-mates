@@ -1,5 +1,10 @@
-import { Schema } from "mongoose";
-import { Collections } from "types/collections";
+import { composeWithMongoose } from "graphql-compose-mongoose";
+import { model, Schema } from "mongoose";
+import {
+	Collections,
+	IHealthyDocument,
+	IHealthyModel,
+} from "types/collections";
 
 const HealthySchema = new Schema(
 	{
@@ -15,8 +20,20 @@ const HealthySchema = new Schema(
 			type: Number,
 			required: true,
 		},
+		user: {
+			type: Schema.Types.ObjectId,
+			ref: Collections.Users,
+			required: true,
+			unique: true,
+		}
 	},
 	{ versionKey: false, timestamps: true, collection: Collections.HealthyInfo }
 );
 
-export { HealthySchema };
+const HealthyModel: IHealthyModel = model<IHealthyDocument, IHealthyModel>(
+	Collections.HealthyInfo,
+	HealthySchema,
+	Collections.HealthyInfo
+);
+
+export { HealthySchema, HealthyModel };
