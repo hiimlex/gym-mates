@@ -28,6 +28,7 @@ class CrewsRepository {
 				admins: [user._id],
 				members: [user._id],
 				white_list: [],
+				created_by: user._id,
 			});
 
 			// [Journey] - Add a journey event for the crew creation
@@ -40,7 +41,6 @@ class CrewsRepository {
 					crew,
 				},
 			};
-
 			await user.add_journey_event(event);
 
 			return res.status(201).json(crew);

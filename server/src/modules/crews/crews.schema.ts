@@ -40,7 +40,12 @@ const CrewsSchema = new Schema(
 			ref: Collections.Users,
 			required: true,
 		},
-
+		created_by: {
+			type: Types.ObjectId,
+			ref: Collections.Users,
+			required: true,
+			unique: true,
+		},
 		white_list: {
 			type: [Types.ObjectId],
 			ref: Collections.Users,

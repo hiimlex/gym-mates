@@ -1,7 +1,8 @@
 import { BaseController } from "@core/base_controller";
-import { Endpoints } from "types/generics";
+import { Endpoints, ValidateBody } from "types/generics";
 import { CrewsRepositoryImpl } from "./crews.repository";
 import { AuthRepositoryImpl } from "../auth";
+import { validate_schema } from "@middlewares/validate_schema.middleware";
 
 export class CrewsController extends BaseController {
 	constructor() {
@@ -36,6 +37,7 @@ export class CrewsController extends BaseController {
 		this.router.post(
 			Endpoints.CrewsCreate,
 			AuthRepositoryImpl.is_authenticated,
+			validate_schema(ValidateBody.CreateCrew),
 			CrewsRepositoryImpl.create
 		);
 
