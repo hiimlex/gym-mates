@@ -9,16 +9,34 @@ export class CrewsController extends BaseController {
 	}
 
 	define_routes(): void {
-		this.router.post(
-			Endpoints.CrewsCreate,
-			AuthRepositoryImpl.is_authenticated,
-			CrewsRepositoryImpl.create
-		);
-
 		this.router.get(
 			Endpoints.CrewsGetByCode,
 			AuthRepositoryImpl.is_authenticated,
 			CrewsRepositoryImpl.get_by_code
+		);
+
+		this.router.get(
+			Endpoints.CrewsGetActivities,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.get_activities
+		);
+
+		this.router.get(
+			Endpoints.CrewsGetActivitiesDays,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.get_activities_days
+		);
+
+		this.router.get(
+			Endpoints.CrewsGetRank,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.get_rank
+		);
+
+		this.router.post(
+			Endpoints.CrewsCreate,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.create
 		);
 
 		this.router.post(
@@ -45,6 +63,12 @@ export class CrewsController extends BaseController {
 			CrewsRepositoryImpl.kick_member
 		);
 
+		this.router.post(
+			Endpoints.CrewsRejectMember,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.reject_member
+		);
+
 		this.router.put(
 			Endpoints.CrewsUpdateConfig,
 			AuthRepositoryImpl.is_authenticated,
@@ -61,6 +85,12 @@ export class CrewsController extends BaseController {
 			Endpoints.CrewsUpdateAdmins,
 			AuthRepositoryImpl.is_authenticated,
 			CrewsRepositoryImpl.update_admin
+		);
+
+		this.router.put(
+			Endpoints.CrewsFavorite,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.favorite
 		);
 	}
 }

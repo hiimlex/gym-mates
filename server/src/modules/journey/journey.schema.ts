@@ -24,15 +24,20 @@ const EventSchema = new Schema(
 			type: Schema.Types.Mixed,
 			required: false,
 		},
+		created_at: {
+			type: Date,
+			default: Date.now,
+			required: true,
+		},
 	},
-	{ versionKey: false, timestamps, _id: false }
+	{ versionKey: false, timestamps }
 );
 
 const JourneySchema = new Schema(
 	{
 		user: {
 			type: Schema.Types.ObjectId,
-			ref: "User",
+			ref: Collections.Users,
 			required: true,
 			unique: true,
 		},
@@ -43,13 +48,13 @@ const JourneySchema = new Schema(
 		},
 		workouts: {
 			type: [Schema.Types.ObjectId],
-			ref: "Workout",
+			ref: Collections.Workouts,
 			default: [],
 			required: false,
 		},
 		inventory: {
 			type: [Schema.Types.ObjectId],
-			ref: "Items",
+			ref: Collections.Items,
 			default: [],
 			required: false,
 		},

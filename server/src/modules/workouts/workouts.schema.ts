@@ -1,3 +1,5 @@
+import { timestamps } from "@config/schema.config";
+import Joi from "joi";
 import { model, Schema, Types } from "mongoose";
 import {
 	Collections,
@@ -39,8 +41,19 @@ const WorkoutSchema = new Schema(
 			ref: Collections.Crews,
 			required: true,
 		},
+		earned: {
+			type: Number,
+			default: 0,
+			required: false,
+		},
+		receipt: {
+			type: Map,
+			of: Number,
+			default: {},
+			required: false,
+		},
 	},
-	{ versionKey: false, collection: Collections.Workouts }
+	{ versionKey: false, timestamps, collection: Collections.Workouts }
 );
 
 const WorkoutsModel: IWorkoutsModel = model<IWorkoutDocument, IWorkoutsModel>(

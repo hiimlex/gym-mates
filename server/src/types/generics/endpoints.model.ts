@@ -6,7 +6,10 @@ export const Endpoints = {
 	// Crews
 	CrewsCreate: "/crews",
 	CrewsList: "/crews",
-	CrewsGetByCode: "/crews/:code",
+	CrewsGetByCode: "/crews/get-by-code/:code",
+	CrewsGetRank: "/crews/get-rank",
+	CrewsGetActivities: "/crews/get-activities",
+	CrewsGetActivitiesDays: "/crews/get-activities/days",
 	CrewsUpdate: "/crews/:id",
 	CrewsUpdateConfig: "/crews/update-config/",
 	CrewsDelete: "/crews/:id",
@@ -15,6 +18,8 @@ export const Endpoints = {
 	CrewsUpdateAdmins: "/crews/update-admins/",
 	CrewsAcceptMember: "/crews/accept-member",
 	CrewsKickMember: "/crews/kick-member",
+	CrewsRejectMember: "/crews/reject-member",
+	CrewsFavorite: "/crews/favorite",
 	// Users
 	UsersCreate: "/users",
 	UsersList: "/users",
@@ -26,4 +31,6 @@ export const Endpoints = {
 	UsersRejectFriendRequest: "/users/friends/reject-request",
 	UsersRemoveFriend: "/users/friends/remove",
 	UsersCreateHealthy: "/users/healthy",
+	// Workouts
+	WorkoutsCreate: "/workouts",
 };

@@ -1,4 +1,4 @@
-import { Document, InferSchemaType, Model } from "mongoose";
+import { Document, InferSchemaType, Model, Types } from "mongoose";
 import { EventSchema, JourneySchema } from "@modules/journey";
 
 export enum JourneyEventAction {
@@ -10,6 +10,7 @@ export enum JourneyEventAction {
 	JOIN = "join",
 	LEAVE = "leave",
 	PAID = "paid",
+	LOSE_STREAK = "lose_streak",
 	START = "start",
 }
 
@@ -24,10 +25,10 @@ export enum JourneyEventSchemaType {
 
 export type TJourney = InferSchemaType<typeof JourneySchema>;
 export type TJourneyEvent = InferSchemaType<typeof EventSchema> & {
+	_id: Types.ObjectId;
 	created_at: Date;
 };
 
 export interface IJourneyDocument extends TJourney, Document {}
-
 
 export interface IJourneyModel extends Model<IJourneyDocument> {}

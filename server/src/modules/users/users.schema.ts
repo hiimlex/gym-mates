@@ -38,6 +38,21 @@ const UsersSchema = new Schema(
 			ref: Collections.Users,
 			required: false,
 		},
+		favorites: {
+			type: [Types.ObjectId],
+			ref: Collections.Crews,
+			required: false,
+		},
+		day_streak: {
+			type: Number,
+			default: 0,
+			required: false,
+		},
+		created_at: {
+			type: Date,
+			default: Date.now,
+			required: true,
+		}
 	},
 	{ versionKey: false, timestamps, collection: Collections.Users }
 );
@@ -60,6 +75,44 @@ UsersSchema.methods.add_journey_event = async function (event: TJourneyEvent) {
 		$push: { events: event },
 	});
 };
+
+UsersSchema.methods.add_workout = async function (workout_id: Types.ObjectId) {
+	const user = this as IUserDocument;
+
+	// Ensure the user has a journey
+	if (!user.journey) {
+		throw new HttpException(404, "JOURNEY_NOT_FOUND");
+	}
+
+	const user_journey = await JourneyModel.findById(user.journey);
+
+	if (!user_journey) {
+		throw new HttpException(404, "JOURNEY_NOT_FOUND");
+	}
+
+	await user_journey.updateOne({
+		$push: { workouts: workout_id },
+	});
+}
+
+UsersSchema.methods.add_item_to_inventory = async function (item_id: Types.ObjectId){
+	const user = this as IUserDocument;
+
+	// Ensure the user has a journey
+	if (!user.journey) {
+		throw new HttpException(404, "JOURNEY_NOT_FOUND");
+	}
+
+	const user_journey = await JourneyModel.findById(user.journey);
+
+	if (!user_journey) {
+		throw new HttpException(404, "JOURNEY_NOT_FOUND");
+	}
+
+	await user_journey.updateOne({
+		$push: { inventory: item_id },
+	});
+}
 
 UsersSchema.methods.toJSON = function () {
 	const user = this;

@@ -1,7 +1,9 @@
 import { HttpException } from "@core/http_exception";
 import { UsersModel } from "@modules/users";
+import { WorkoutsModel } from "@modules/workouts";
 import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 import {
 	IUserDocument,
 	JourneyEventAction,
@@ -30,6 +32,7 @@ class CrewsRepository {
 
 			// [Journey] - Add a journey event for the crew creation
 			const event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.JOIN,
 				schema: JourneyEventSchemaType.Crew,
 				created_at: new Date(),
@@ -173,6 +176,7 @@ class CrewsRepository {
 
 			// [Journey] - Add a journey event for the crew join
 			const event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.JOIN,
 				schema: JourneyEventSchemaType.Crew,
 				created_at: new Date(),
@@ -206,7 +210,7 @@ class CrewsRepository {
 			}
 
 			await crew.updateOne({
-				$pull: { members: user._id },
+				$pull: { members: user._id, admins: user._id },
 			});
 
 			return res.sendStatus(204);
@@ -308,6 +312,7 @@ class CrewsRepository {
 
 			// [Journey] - Add a journey event for the crew join
 			const event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.JOIN,
 				schema: JourneyEventSchemaType.Crew,
 				created_at: new Date(),
@@ -316,6 +321,52 @@ class CrewsRepository {
 				},
 			};
 			await new_member_user.add_journey_event(event);
+
+			return res.sendStatus(204);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async reject_member(req: Request, res: Response) {
+		try {
+			const admin: IUserDocument = res.locals.user;
+			const { user_id, code } = req.body;
+
+			const new_member_user = await UsersModel.findById(user_id);
+
+			if (!new_member_user) {
+				throw new HttpException(404, "USER_NOT_FOUND");
+			}
+
+			const crew = await CrewsModel.findOne({
+				code,
+				admins: admin._id.toString(),
+			});
+
+			if (
+				!crew?.admins.some((a) => a._id.toString() === admin._id.toString())
+			) {
+				throw new HttpException(403, "FORBIDDEN");
+			}
+
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const user_in_white_list =
+				crew.white_list &&
+				crew.white_list.some(
+					(member) => member._id.toString() === new_member_user._id.toString()
+				);
+
+			if (!user_in_white_list) {
+				throw new HttpException(400, "USER_NOT_IN_WHITELIST");
+			}
+
+			await crew.updateOne({
+				$pull: { white_list: new_member_user._id },
+			});
 
 			return res.sendStatus(204);
 		} catch (error) {
@@ -361,6 +412,190 @@ class CrewsRepository {
 
 			await crew.updateOne({
 				$pull: { members: user_id },
+			});
+
+			return res.sendStatus(204);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async get_rank(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+			const { crew_id, show_all } = req.body;
+
+			const crew = await CrewsModel.findById(crew_id);
+
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const is_member = crew.members.some(
+				(member) => member._id.toString() === user._id.toString()
+			);
+
+			if (!is_member) {
+				throw new HttpException(403, "FORBIDDEN");
+			}
+
+			const crew_populated = await crew.populate<{ members: IUserDocument[] }>(
+				"members"
+			);
+
+			const rank = crew_populated.members
+				.map((member) => ({
+					_id: member._id,
+					name: member.name,
+					avatar: member.avatar,
+					character: member.character,
+					coins: member.coins || 0,
+				}))
+				.sort((a, b) => {
+					return a.coins < b.coins ? 1 : -1;
+				});
+
+			if (!show_all) {
+				const first_three = rank.slice(0, 3);
+
+				return res.status(200).json(first_three);
+			}
+
+			return res.status(200).json(rank);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async get_activities(req: Request, res: Response) {
+		try {
+			const { crew_id } = req.body;
+			const { start_date, end_date } = req.query;
+
+			const start_date_obj = start_date
+				? new Date(start_date as string)
+				: new Date();
+
+			const end_date_obj = end_date ? new Date(end_date as string) : new Date();
+
+			start_date_obj.setHours(0, 0, 0, 0);
+			end_date_obj.setHours(23, 59, 59, 999);
+
+			const crew = await CrewsModel.findById(crew_id);
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const workouts = await WorkoutsModel.find({
+				shared_to: crew._id,
+				user: { $in: crew.members },
+				date: {
+					$gte: start_date_obj,
+					$lt: end_date_obj,
+				},
+			});
+
+			return res.status(200).json(workouts);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async get_activities_days(req: Request, res: Response) {
+		try {
+			const { crew_id } = req.body;
+			const { start_date, end_date } = req.query;
+
+			const start_date_obj = start_date
+				? new Date(start_date as string)
+				: new Date();
+
+			const end_date_obj = end_date ? new Date(end_date as string) : new Date();
+
+			start_date_obj.setHours(0, 0, 0, 0);
+			end_date_obj.setHours(23, 59, 59, 999);
+
+			const crew = await CrewsModel.findById(crew_id);
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const workouts = await WorkoutsModel.aggregate([
+				{
+					$match: {
+						shared_to: crew._id,
+						user: { $in: crew.members },
+						date: {
+							$gte: start_date_obj,
+							$lt: end_date_obj,
+						},
+					},
+				},
+				{
+					$group: {
+						_id: {
+							year: { $year: "$date" },
+							month: { $month: "$date" },
+							day: { $dayOfMonth: "$date" },
+						},
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 },
+				},
+			]);
+
+			const activities_days = workouts.map((workout) => ({
+				date: new Date(
+					workout._id.year,
+					workout._id.month - 1,
+					workout._id.day
+				),
+				count: workout.count,
+			}));
+
+			return res.status(200).json(activities_days);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async favorite(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+			const { crew_id } = req.body;
+
+			const crew = await CrewsModel.findById(crew_id);
+
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const is_member = crew.members.some(
+				(member) => member._id.toString() === user._id.toString()
+			);
+
+			if (!is_member) {
+				throw new HttpException(403, "FORBIDDEN");
+			}
+
+			const is_favorite =
+				!!user.favorites &&
+				user.favorites.some(
+					(fav) => fav._id.toString() === crew._id.toString()
+				);
+
+			if (!is_favorite) {
+				await user.updateOne({
+					$addToSet: { favorites: crew._id },
+				});
+
+				return res.sendStatus(204);
+			}
+
+			await user.updateOne({
+				$pull: { favorites: crew._id },
 			});
 
 			return res.sendStatus(204);

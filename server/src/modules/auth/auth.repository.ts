@@ -17,6 +17,7 @@ import {
 	JourneyEventSchemaType,
 	TJourneyEvent,
 } from "types/collections";
+import { Types } from "mongoose";
 
 class AuthRepository {
 	async login(req: Request, res: Response) {
@@ -70,13 +71,15 @@ class AuthRepository {
 				name,
 			});
 
+			// [Journey] - Create a journey for the user
 			const start_event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.START,
 				schema: JourneyEventSchemaType.User,
 				created_at: new Date(),
 				data: {
 					user: user.toJSON(),
-				}
+				},
 			};
 
 			const user_journey = await JourneyModel.create({
@@ -108,6 +111,8 @@ class AuthRepository {
 			if (!user) {
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
+
+			// [StreakSystem] - Check user streak if the user has lost streak based on crews
 
 			return res.status(200).json(user);
 		} catch (error) {

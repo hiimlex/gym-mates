@@ -1,3 +1,4 @@
+import { test_get_user_and_cookie } from "@test/helpers";
 import { create_healthy_mock, create_user_mock } from "__mocks__";
 import { Server } from "app";
 import { create } from "domain";
@@ -29,29 +30,13 @@ beforeAll(async () => {
 	const uri = mongo_server.getUri();
 	await mongoose.connect(uri);
 
-	user = (
-		await test_agent.post(ApiPrefix + Endpoints.AuthSignUp).send(mock_user)
-	).body;
-	friend = (
-		await test_agent.post(ApiPrefix + Endpoints.AuthSignUp).send(mock_friend)
-	).body;
+	const user_r = await test_get_user_and_cookie(test_agent);
+	const friend_r = await test_get_user_and_cookie(test_agent);
 
-	expect(user).toHaveProperty("email");
-	expect(friend).toHaveProperty("email");
-
-	user_cookie = (
-		await test_agent.post(ApiPrefix + Endpoints.AuthLogin).send({
-			email: mock_user.email,
-			password: mock_user.password,
-		})
-	).headers["set-cookie"][0];
-
-	friend_cookie = (
-		await test_agent.post(ApiPrefix + Endpoints.AuthLogin).send({
-			email: mock_friend.email,
-			password: mock_friend.password,
-		})
-	).headers["set-cookie"][0];
+	user = user_r.user;
+	user_cookie = user_r.cookie;
+	friend = friend_r.user;
+	friend_cookie = friend_r.cookie;
 });
 
 afterAll(async () => {

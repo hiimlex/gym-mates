@@ -7,7 +7,7 @@ export function handle_error(res: Response, error: any): Response {
 
 	if (error instanceof HttpException) {
 		logger.error(`ERROR: [${error.status}] ${error.message}`);
-		return res.status(error.status).json({ message });
+		return res.status(error.status).json({ message, content: error.content });
 	}
 
 	logger.error(`ERROR: ${message}`);

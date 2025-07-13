@@ -1,32 +1,113 @@
+import { HttpException } from "@core/http_exception";
+import { CrewsModel } from "@modules/crews";
+import { calculate_coins } from "@utils/coin.helper";
 import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
 import {
+	CrewStreak,
 	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
 	TJourneyEvent,
+	WorkoutType,
 } from "types/collections";
+import { WorkoutsModel } from "./workouts.schema";
+import {
+	recalculate_user_streak,
+	validate_workout_rules,
+} from "@utils/workout.helper";
+import { Types } from "mongoose";
+import { UsersModel } from "@modules/users";
 
 class WorkoutsRepository {
 	async create(req: Request, res: Response) {
 		try {
 			const user: IUserDocument = res.locals.user;
-			const { title, picture, date, type, duration, shared_to } = req.body;
+			const { title, picture, date, type, duration } = req.body;
+			const shared_to = req.body.shared_to || [];
 
-			const workout = await res.locals.WorkoutsModel.create({
+			const crews = await CrewsModel.find({
+				_id: { $in: shared_to },
+				members: user._id,
+			});
+
+			if (!crews.length) {
+				throw new HttpException(400, "CREW_NOT_FOUND");
+			}
+
+			// [Rules] - Check crew rules, about
+			// Paid at any time
+			// Paid without picture
+			// Gym focused
+			// Future dates
+			const workout_date = new Date(date);
+			await validate_workout_rules(crews, workout_date, picture, type);
+
+			//  [TODO] - Check if the workout date is in the past, if so
+			// And the user had lost streak
+			// should recalculate the streak
+			// from the previous lost streak date and the workout date
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+
+			const is_past = workout_date < today;
+
+			if (is_past) {
+				await recalculate_user_streak(user, res);
+			}
+			// [StreakSystem] - Update user streak count
+			// check if has a registered workout on the same day
+			const gte = new Date(workout_date);
+			const lte = new Date(workout_date);
+			const workout_in_day = await WorkoutsModel.findOne({
+				user: user._id,
+				date: {
+					$gte: gte.setHours(0, 0, 0, 0),
+					$lt: lte.setHours(23, 59, 59, 999),
+				},
+			});
+			// Check crews streak system
+			const crew_streaks = new Set<CrewStreak>(
+				crews
+					.map((c) => c.streak as CrewStreak[])
+					.reduce((previous, current) => [...previous, ...(current || [])], [])
+			);
+			const day_streak = (user.day_streak || 0) + 1;
+
+			const { coins, receipt } = await calculate_coins(
+				crew_streaks,
+				day_streak,
+				workout_date
+			);
+
+			// Create workout
+			const workout = await WorkoutsModel.create({
 				user: user._id,
 				title,
 				picture,
 				date,
 				type,
 				duration,
-				shared_to,
+				shared_to: crews.map((crew) => crew._id),
+				earned: !workout_in_day ? coins : 0,
+				receipt: !workout_in_day ? receipt : undefined,
 			});
 
-			// [Notify] - Notify the crews about the member workout
+			// [CoinSystem] - Add coins to the user for creating a workout
+			// Update the user's streak and coins 
+			// if the user has no workout registered on the same day
+			if (!workout_in_day) {
+				await user.updateOne({
+					day_streak,
+					coins: (user.coins || 0) + coins,
+				});
+			}
 
-			// [Journey] - Add a journey event for the user
+			// // [Notify] - Notify the crews about the PAID
+
+			// // [Journey] - Add a journey event for the user
 			const event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.PAID,
 				created_at: new Date(),
 				schema: JourneyEventSchemaType.Workout,
@@ -34,10 +115,19 @@ class WorkoutsRepository {
 					workout,
 				},
 			};
+
 			await user.add_journey_event(event);
+			await user.add_workout(workout._id);
 
 			return res.status(201).json(workout);
 		} catch (error) {
+			const user: IUserDocument = res.locals.user;
+			const old_streak_count = res.locals.old_streak_count;
+
+			await user.updateOne({
+				day_streak: old_streak_count || 0,
+			});
+
 			return handle_error(res, error);
 		}
 	}

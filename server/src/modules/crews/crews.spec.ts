@@ -58,7 +58,7 @@ describe("Crews Module", () => {
 		});
 	});
 
-	describe(`GET /crews/:code`, () => {
+	describe(`GET /crews/get-by-code`, () => {
 		it("should get a crew by code", async () => {
 			const { statusCode, body } = await test_agent
 				.get(
@@ -71,6 +71,18 @@ describe("Crews Module", () => {
 			expect(body).toHaveProperty("name", mock_crew.name);
 			expect(body).toHaveProperty("code", mock_crew.code);
 			expect(body).toHaveProperty("members", [created_user._id.toString()]);
+		});
+	});
+
+	describe("GET /crews/get-rank", () => {
+		it("Should get crew rank", async () => {
+			const { statusCode, body } = await test_agent
+				.get(ApiPrefix + Endpoints.CrewsGetRank)
+				.set("Cookie", cookie)
+				.send({ crew_id: created_crew._id.toString() });
+
+			expect(statusCode).toBe(200);
+			expect(body).toBeDefined();
 		});
 	});
 
@@ -144,6 +156,41 @@ describe("Crews Module", () => {
 
 			const { statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsAcceptMember)
+				.set("Cookie", cookie)
+				.send({ user_id, code: temp_crew.code });
+
+			expect(statusCode).toBe(204);
+		});
+	});
+
+	describe("POST /crews/reject-member", () => {
+		it("should reject member from crew whitelist", async () => {
+			const mock_new_crew = create_crew_mock({
+				visibility: CrewVisibility.Private,
+			});
+
+			const temp_crew = (
+				await test_agent
+					.post(ApiPrefix + Endpoints.CrewsCreate)
+					.set("Cookie", cookie)
+					.send(mock_new_crew)
+			).body;
+
+			expect(temp_crew).toBeDefined();
+
+			const temp = await test_get_user_and_cookie(test_agent);
+
+			expect(temp.user).toHaveProperty("_id");
+
+			await test_agent
+				.post(ApiPrefix + Endpoints.CrewsJoin)
+				.set("Cookie", temp.cookie)
+				.send({ code: temp_crew.code });
+
+			const user_id = temp.user._id.toString();
+
+			const { statusCode } = await test_agent
+				.post(ApiPrefix + Endpoints.CrewsRejectMember)
 				.set("Cookie", cookie)
 				.send({ user_id, code: temp_crew.code });
 
@@ -240,6 +287,23 @@ describe("Crews Module", () => {
 				"free_weekends",
 				update_data.rules?.free_weekends
 			);
+		});
+	});
+
+	describe("PUT /crews/favorite", () => {
+		it("should add a crew to user's favorites", async () => {
+			const { statusCode } = await test_agent
+				.put(ApiPrefix + Endpoints.CrewsFavorite)
+				.set("Cookie", cookie)
+				.send({ crew_id: created_crew._id.toString() });
+
+			const { body: updated_user } = await test_agent
+				.get(ApiPrefix + Endpoints.AuthMe)
+				.set("Cookie", cookie);
+
+			expect(statusCode).toBe(204);
+			expect(updated_user).toHaveProperty("favorites");
+			expect(updated_user.favorites).toContain(created_crew._id.toString());
 		});
 	});
 

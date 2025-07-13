@@ -1,20 +1,18 @@
 import { timestamps } from "@config/schema.config";
-import { composeWithMongoose } from "graphql-compose-mongoose";
-import { model, RootFilterQuery, Schema, Types } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 import {
 	Collections,
-	CrewStrikes,
+	CrewStreak,
 	CrewVisibility,
 	ICrewDocument,
 	ICrewsModel,
 } from "types/collections";
-import { UsersTC } from "../users";
 
 const CrewRulesSchema = new Schema(
 	{
 		gym_focused: { type: Boolean, default: false, required: false },
-		paid_at_anytime: { type: Boolean, default: true, required: false },
-		paid_without_picture: { type: Boolean, default: true, required: false },
+		pay_on_past: { type: Boolean, default: true, required: false },
+		pay_without_picture: { type: Boolean, default: true, required: false },
 		show_members_rank: { type: Boolean, default: true, required: false },
 		free_weekends: { type: Boolean, default: true, required: false },
 	},
@@ -68,12 +66,12 @@ const CrewsSchema = new Schema(
 				free_weekends: true,
 			},
 		},
-		strikes: {
+		streak: {
 			type: [String],
-			enum: Object.values(CrewStrikes),
-			default: [CrewStrikes.Daily, CrewStrikes.Weekly],
+			enum: Object.values(CrewStreak),
+			default: [CrewStreak.Weekly, CrewStreak.Monthly],
 		},
-		lose_strike_in_days: {
+		lose_streak_in_days: {
 			type: Number,
 			default: 2,
 			required: false,

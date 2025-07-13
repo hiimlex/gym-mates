@@ -10,6 +10,7 @@ import { UsersModel } from "./users.schema";
 import { HttpException } from "@core/http_exception";
 import { HealthyModel } from "@modules/healthy";
 import { JourneyModel } from "@modules/journey";
+import { Types } from "mongoose";
 
 class UsersRepository {
 	async send_friend_request(req: Request, res: Response) {
@@ -68,6 +69,7 @@ class UsersRepository {
 
 			// [Journey] - Add a new event to the user's journey
 			const event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.ADD,
 				schema: JourneyEventSchemaType.Friend,
 				data: {
@@ -150,6 +152,7 @@ class UsersRepository {
 
 			// [Journey] - Add a new event to the user's journey
 			const event: TJourneyEvent = {
+				_id: new Types.ObjectId(),
 				action: JourneyEventAction.ADD,
 				schema: JourneyEventSchemaType.Healthy,
 				data: {

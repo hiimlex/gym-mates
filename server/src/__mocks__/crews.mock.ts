@@ -13,7 +13,7 @@ export const create_crew_mock = (crew?: Partial<TCrew>): Partial<TCrew> => ({
 		show_members_rank: true,
 		free_weekends: true,
 	},
-	strikes: [CrewStrikes.Daily],
+	streak: [CrewStrikes.Daily],
 	...crew,
 });
 
