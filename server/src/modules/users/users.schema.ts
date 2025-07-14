@@ -17,7 +17,7 @@ const UsersSchema = new Schema(
 		access_token: { type: String, required: false },
 		avatar: { type: String, required: false },
 		character: { type: String, required: false },
-		coins: { type: Number, default: 0, required: false },
+		coins: { type: Number, default: 0, required: true },
 		journey: {
 			type: Types.ObjectId,
 			ref: Collections.Journeys,

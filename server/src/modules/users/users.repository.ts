@@ -1,5 +1,8 @@
+import { HttpException } from "@core/http_exception";
+import { HealthyModel } from "@modules/healthy";
 import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 import {
 	IUserDocument,
 	JourneyEventAction,
@@ -7,10 +10,6 @@ import {
 	TJourneyEvent,
 } from "types/collections";
 import { UsersModel } from "./users.schema";
-import { HttpException } from "@core/http_exception";
-import { HealthyModel } from "@modules/healthy";
-import { JourneyModel } from "@modules/journey";
-import { Types } from "mongoose";
 
 class UsersRepository {
 	async send_friend_request(req: Request, res: Response) {

@@ -2,6 +2,8 @@ import { composeWithMongoose } from "graphql-compose-mongoose";
 import { JourneyModel } from "./journey.schema";
 import { WorkoutsTC } from "@modules/workouts";
 import { IJourneyDocument } from "types/collections";
+import { schemaComposer } from "graphql-compose";
+import { ItemsTC } from "@modules/items";
 
 const JourneyTC = composeWithMongoose(JourneyModel);
 
@@ -11,6 +13,33 @@ JourneyTC.addRelation("workouts", {
 		filter: (source: IJourneyDocument) => ({ _id: { $in: source.workouts } }),
 	},
 	projection: { workouts: true }, // Provide the field to be projected
+});
+
+JourneyTC.addFields({
+	inventory: {
+		type: "[InventoryItem!]!",
+		resolve: async (source) => {
+			const populated = await JourneyModel.populate(source, {
+				path: "inventory.item",
+			});
+
+			return populated;
+		},
+	},
+});
+
+const InventoryItemTC = schemaComposer.createObjectTC({
+	name: "InventoryItem",
+	fields: {
+		item: ItemsTC.getType(),
+		owned_at: "Date!",
+	},
+});
+
+JourneyTC.addFields({
+	inventory: {
+		type: [InventoryItemTC],
+	},
 });
 
 const JourneyQueries = {

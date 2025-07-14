@@ -5,4 +5,7 @@ export const Collections = {
 	Journeys: "Journeys",
 	Items: "Items",
 	HealthyInfo: "HealthyInfo",
+	Titles: "Titles",
+	Achievements: "Achievements",
+	Figures: "Figures",
 };

@@ -33,6 +33,22 @@ const EventSchema = new Schema(
 	{ versionKey: false, timestamps }
 );
 
+const InventoryItem = new Schema(
+	{
+		item: {
+			type: Schema.Types.ObjectId,
+			ref: Collections.Items,
+			required: true,
+		},
+		owned_at: {
+			type: Date,
+			default: Date.now,
+			required: true,
+		},
+	},
+	{ _id: false, versionKey: false, timestamps: false }
+);
+
 const JourneySchema = new Schema(
 	{
 		user: {
@@ -43,20 +59,25 @@ const JourneySchema = new Schema(
 		},
 		events: {
 			type: [EventSchema],
-			required: false,
+			required: true,
 			default: [],
 		},
 		workouts: {
 			type: [Schema.Types.ObjectId],
 			ref: Collections.Workouts,
 			default: [],
-			required: false,
+			required: true,
 		},
 		inventory: {
+			type: [InventoryItem],
+			required: true,
+			default: [],
+		},
+		achievements: {
 			type: [Schema.Types.ObjectId],
 			ref: Collections.Items,
 			default: [],
-			required: false,
+			required: true,
 		},
 	},
 	{ versionKey: false, timestamps, collection: Collections.Journeys }

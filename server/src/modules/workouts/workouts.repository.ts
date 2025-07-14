@@ -43,8 +43,8 @@ class WorkoutsRepository {
 			const workout_date = new Date(date);
 			await validate_workout_rules(crews, workout_date, picture, type);
 
-			//  [TODO] - Check if the workout date is in the past, if so
-			// And the user had lost streak
+			// [Validations] - Check if the workout date is in the past
+			// and the user had lost streak
 			// should recalculate the streak
 			// from the previous lost streak date and the workout date
 			const today = new Date();
@@ -94,16 +94,16 @@ class WorkoutsRepository {
 			});
 
 			// [CoinSystem] - Add coins to the user for creating a workout
-			// Update the user's streak and coins 
+			// Update the user's streak and coins
 			// if the user has no workout registered on the same day
 			if (!workout_in_day) {
 				await user.updateOne({
 					day_streak,
-					coins: (user.coins || 0) + coins,
+					coins: user.coins + coins,
 				});
 			}
 
-			// // [Notify] - Notify the crews about the PAID
+			// // [TODO] [Notify] - Notify the crews about the PAID
 
 			// // [Journey] - Add a journey event for the user
 			const event: TJourneyEvent = {

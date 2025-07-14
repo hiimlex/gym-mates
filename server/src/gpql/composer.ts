@@ -1,5 +1,6 @@
 import { CrewMutations, CrewQueries } from "@modules/crews";
 import { HealthyMutations, HealthyQueries } from "@modules/healthy";
+import { ItemsMutations, ItemsQueries } from "@modules/items";
 import { JourneyMutations, JourneyQueries } from "@modules/journey";
 import { UserMutations, UserQueries } from "@modules/users";
 import { WorkoutMutations, WorkoutQueries } from "@modules/workouts";
@@ -15,6 +16,7 @@ schemaComposer.Query.addFields({
 	...WorkoutQueries,
 	...JourneyQueries,
 	...HealthyQueries,
+	...ItemsQueries,
 });
 schemaComposer.Mutation.addFields({
 	...UserMutations,
@@ -22,6 +24,7 @@ schemaComposer.Mutation.addFields({
 	...WorkoutMutations,
 	...JourneyMutations,
 	...HealthyMutations,
+	...ItemsMutations,
 });
 
 export { schemaComposer };

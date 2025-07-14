@@ -33,4 +33,6 @@ export const Endpoints = {
 	UsersCreateHealthy: "/users/healthy",
 	// Workouts
 	WorkoutsCreate: "/workouts",
+	// Shop
+	ShopBuy: "/shop/buy",
 };
