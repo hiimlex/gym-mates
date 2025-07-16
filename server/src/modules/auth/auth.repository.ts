@@ -13,11 +13,15 @@ import { UsersModel } from "../users";
 import { handle_error } from "@utils/handle_error";
 import { JourneyModel } from "@modules/journey";
 import {
+	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
+	TFile,
 	TJourneyEvent,
+	TUploadedFile,
 } from "types/collections";
 import { Types } from "mongoose";
+import { cloudinaryDestroy } from "@config/cloudinary.config";
 
 class AuthRepository {
 	async login(req: Request, res: Response) {
@@ -61,7 +65,16 @@ class AuthRepository {
 
 	async sign_up(req: Request, res: Response) {
 		try {
+			const file = req.file as TUploadedFile;
 			const { email, password, name } = req.body;
+			let avatar: TFile | undefined = undefined;
+
+			if (file) {
+				avatar = {
+					public_id: file.filename,
+					url: file.originalname,
+				};
+			}
 
 			const hash_password = hashSync(password, HashSalt);
 
@@ -69,6 +82,7 @@ class AuthRepository {
 				email,
 				password: hash_password,
 				name,
+				avatar,
 			});
 
 			// [Journey] - Create a journey for the user
@@ -100,6 +114,10 @@ class AuthRepository {
 
 			return res.status(201).json(updated_user);
 		} catch (error) {
+			if (req.file) {
+				await cloudinaryDestroy(req.file.path);
+			}
+
 			return handle_error(res, error);
 		}
 	}
@@ -144,7 +162,13 @@ class AuthRepository {
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
 
+			const journey = await JourneyModel.findById(user.journey);
+			if (!journey) {
+				throw new HttpException(404, "JOURNEY_NOT_FOUND");
+			}
+
 			res.locals.user = user;
+			res.locals.journey = journey;
 			next();
 		} catch (error) {
 			return handle_error(res, error);

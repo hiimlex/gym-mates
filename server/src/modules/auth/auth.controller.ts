@@ -1,6 +1,8 @@
 import { BaseController } from "@core/base_controller";
-import { Endpoints } from "types/generics";
+import { Endpoints, ValidateBody } from "types/generics";
 import { AuthRepositoryImpl } from "./auth.repository";
+import { upload, upload_key } from "@middlewares/upload.middleware";
+import { validate_schema } from "@middlewares/validate_schema.middleware";
 
 export class AuthController extends BaseController {
 	constructor() {
@@ -8,7 +10,12 @@ export class AuthController extends BaseController {
 	}
 
 	define_routes(): void {
-		this.router.post(Endpoints.AuthSignUp, AuthRepositoryImpl.sign_up);
+		this.router.post(
+			Endpoints.AuthSignUp,
+			validate_schema(ValidateBody.SignUp),
+			upload.single(upload_key),
+			AuthRepositoryImpl.sign_up
+		);
 
 		this.router.post(Endpoints.AuthLogin, AuthRepositoryImpl.login);
 

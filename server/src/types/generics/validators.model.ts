@@ -3,7 +3,6 @@ import { CrewVisibility, WorkoutType } from "types/collections";
 
 const CreateWorkout = Joi.object({
 	title: Joi.string().required(),
-	picture: Joi.string().optional(),
 	date: Joi.date().required(),
 	type: Joi.string()
 		.valid(...Object.values(WorkoutType))
@@ -18,7 +17,6 @@ const CreateCrew = Joi.object({
 		.valid(...Object.values(CrewVisibility))
 		.required(),
 	code: Joi.string().trim().required(),
-	banner: Joi.string().optional(),
 	rules: Joi.object({
 		gym_focused: Joi.boolean().optional(),
 		pay_on_past: Joi.boolean().optional(),
@@ -28,7 +26,15 @@ const CreateCrew = Joi.object({
 	}).optional(),
 });
 
+const SignUp = Joi.object({
+	name: Joi.string().required(),
+	email: Joi.string().email().required(),
+	password: Joi.string().min(6).required(),
+});
+
 export const ValidateBody = {
 	CreateWorkout,
 	CreateCrew,
+	SignUp,
+	File,
 };

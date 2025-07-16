@@ -4,12 +4,16 @@ import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import {
+	IJourneyDocument,
 	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
 	TJourneyEvent,
+	TUploadedFile,
 } from "types/collections";
 import { UsersModel } from "./users.schema";
+import { TitlesModel } from "@modules/items";
+import { JourneyModel } from "@modules/journey";
 
 class UsersRepository {
 	async send_friend_request(req: Request, res: Response) {
@@ -162,6 +166,61 @@ class UsersRepository {
 			await user.add_journey_event(event);
 
 			return res.status(200).json(healthy_info);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async select_title(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+			const journey: IJourneyDocument = res.locals.journey;
+
+			const { title_id } = req.body;
+
+			const title = await TitlesModel.findById(title_id);
+
+			if (!title || !title_id) {
+				throw new HttpException(404, "TITLE_NOT_FOUND");
+			}
+
+			if (
+				!journey.inventory.some((item) => item.item.toString() === title_id)
+			) {
+				throw new HttpException(400, "USER_DOES_NOT_OWN_ITEM");
+			}
+
+			await user.updateOne({
+				$set: { title: title._id },
+			});
+
+			return res.sendStatus(204);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async update_avatar(req: Request, res: Response) {
+		try {
+			const file = req.file as TUploadedFile;
+			const user: IUserDocument = res.locals.user;
+
+			if (!user) {
+				throw new HttpException(404, "USER_NOT_FOUND");
+			}
+
+			const updated_user = await UsersModel.findByIdAndUpdate(
+				user._id,
+				{
+					avatar: {
+						public_id: file.filename,
+						url: file.path,
+					},
+				},
+				{ new: true }
+			);
+
+			return res.status(200).json(updated_user);
 		} catch (error) {
 			return handle_error(res, error);
 		}

@@ -41,7 +41,11 @@ describe("Auth module", () => {
 		it("should create an user", async () => {
 			const { body: c_user, statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.AuthSignUp)
-				.send(mock_user);
+				.send({
+					name: mock_user.name,
+					email: mock_user.email,
+					password: mock_user.password,
+				});
 
 			expect(statusCode).toBe(201);
 			expect(c_user).toHaveProperty("email");

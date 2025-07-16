@@ -11,7 +11,7 @@ WorkoutsTC.addRelation("user", {
 		_id: (source: IWorkoutDocument) => source.user,
 	},
 	projection: { user: true }, // Provide the field to be projected
-})
+});
 
 const WorkoutQueries = {
 	workoutById: WorkoutsTC.getResolver("findById"),
@@ -19,8 +19,6 @@ const WorkoutQueries = {
 	workouts: WorkoutsTC.getResolver("findMany"),
 };
 
-const WorkoutMutations = {
-	removeWorkoutById: WorkoutsTC.getResolver("removeById"),
-};
+const WorkoutMutations = {};
 
 export { WorkoutQueries, WorkoutMutations, WorkoutsTC };

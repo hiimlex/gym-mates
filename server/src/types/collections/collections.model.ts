@@ -8,4 +8,5 @@ export const Collections = {
 	Titles: "Titles",
 	Achievements: "Achievements",
 	Figures: "Figures",
+	Files: "Files",
 };

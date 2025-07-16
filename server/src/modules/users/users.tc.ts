@@ -1,8 +1,9 @@
-import { composeWithMongoose } from "graphql-compose-mongoose";
-import { UsersModel } from "./users.schema";
-import { IUserDocument } from "types/collections";
-import { JourneyTC } from "@modules/journey";
 import { HealthyTC } from "@modules/healthy";
+import { TitlesTC } from "@modules/items";
+import { JourneyTC } from "@modules/journey";
+import { composeWithMongoose } from "graphql-compose-mongoose";
+import { IUserDocument } from "types/collections";
+import { UsersModel } from "./users.schema";
 
 const UsersTC = composeWithMongoose(UsersModel, {
 	fields: { remove: ["password", "access_token"] },
@@ -42,7 +43,16 @@ UsersTC.addRelation("healthy", {
 		_id: (source: IUserDocument) => source.healthy?.toString(),
 	},
 	projection: { healthy: true },
-})
+});
+
+UsersTC.addRelation("title", {
+	resolver: () => TitlesTC.getResolver("findById"),
+	prepareArgs: {
+		_id: (source: IUserDocument) => source.title?.toString(),
+	},
+	projection: { title: true },
+	
+});
 
 const UserQueries = {
 	userById: UsersTC.getResolver("findById"),

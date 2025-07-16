@@ -3,6 +3,7 @@ import { AuthRepositoryImpl } from "@modules/auth";
 import { Endpoints, ValidateBody } from "types/generics";
 import { WorkoutsRepositoryImpl } from "./workouts.repository";
 import { validate_schema } from "@middlewares/validate_schema.middleware";
+import { upload, upload_key } from "@middlewares/upload.middleware";
 
 export class WorkoutsController extends BaseController {
 	constructor() {
@@ -14,6 +15,7 @@ export class WorkoutsController extends BaseController {
 			Endpoints.WorkoutsCreate,
 			AuthRepositoryImpl.is_authenticated,
 			validate_schema(ValidateBody.CreateWorkout),
+			upload.single(upload_key),
 			WorkoutsRepositoryImpl.create
 		);
 	}

@@ -1,4 +1,5 @@
 import { timestamps } from "@config/schema.config";
+import { FileSchema } from "@modules/files";
 import Joi from "joi";
 import { model, Schema, Types } from "mongoose";
 import {
@@ -20,7 +21,7 @@ const WorkoutSchema = new Schema(
 			required: true,
 		},
 		picture: {
-			type: String,
+			type: FileSchema,
 			required: false,
 		},
 		date: {

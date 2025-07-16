@@ -2,29 +2,40 @@ import { HttpException } from "@core/http_exception";
 import { CrewsModel } from "@modules/crews";
 import { calculate_coins } from "@utils/coin.helper";
 import { handle_error } from "@utils/handle_error";
+import {
+	recalculate_user_streak,
+	validate_workout_rules,
+} from "@utils/workout.helper";
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 import {
 	CrewStreak,
 	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
+	TFile,
 	TJourneyEvent,
-	WorkoutType,
+	TUploadedFile,
 } from "types/collections";
 import { WorkoutsModel } from "./workouts.schema";
-import {
-	recalculate_user_streak,
-	validate_workout_rules,
-} from "@utils/workout.helper";
-import { Types } from "mongoose";
-import { UsersModel } from "@modules/users";
+import { cloudinaryDestroy } from "@config/cloudinary.config";
 
 class WorkoutsRepository {
 	async create(req: Request, res: Response) {
 		try {
 			const user: IUserDocument = res.locals.user;
-			const { title, picture, date, type, duration } = req.body;
+			const { title, date, type, duration } = req.body;
+			const file = req.file as TUploadedFile;
 			const shared_to = req.body.shared_to || [];
+
+			let picture: TFile | undefined = undefined;
+
+			if (file) {
+				picture = {
+					public_id: file.filename,
+					url: file.path,
+				};
+			}
 
 			const crews = await CrewsModel.find({
 				_id: { $in: shared_to },
@@ -41,7 +52,12 @@ class WorkoutsRepository {
 			// Gym focused
 			// Future dates
 			const workout_date = new Date(date);
-			await validate_workout_rules(crews, workout_date, picture, type);
+			await validate_workout_rules(
+				crews,
+				workout_date,
+				picture?.url ?? undefined,
+				type
+			);
 
 			// [Validations] - Check if the workout date is in the past
 			// and the user had lost streak
@@ -124,9 +140,15 @@ class WorkoutsRepository {
 			const user: IUserDocument = res.locals.user;
 			const old_streak_count = res.locals.old_streak_count;
 
-			await user.updateOne({
-				day_streak: old_streak_count || 0,
-			});
+			if (!!old_streak_count) {
+				await user.updateOne({
+					day_streak: old_streak_count,
+				});
+			}
+
+			if (req.file) {
+				await cloudinaryDestroy(req.file.path);
+			}
 
 			return handle_error(res, error);
 		}

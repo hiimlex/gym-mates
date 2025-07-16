@@ -3,6 +3,7 @@ import { Endpoints, ValidateBody } from "types/generics";
 import { CrewsRepositoryImpl } from "./crews.repository";
 import { AuthRepositoryImpl } from "../auth";
 import { validate_schema } from "@middlewares/validate_schema.middleware";
+import { upload, upload_key } from "@middlewares/upload.middleware";
 
 export class CrewsController extends BaseController {
 	constructor() {
@@ -38,6 +39,7 @@ export class CrewsController extends BaseController {
 			Endpoints.CrewsCreate,
 			AuthRepositoryImpl.is_authenticated,
 			validate_schema(ValidateBody.CreateCrew),
+			upload.single(upload_key),
 			CrewsRepositoryImpl.create
 		);
 

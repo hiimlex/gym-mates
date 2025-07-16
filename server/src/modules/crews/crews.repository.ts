@@ -8,16 +8,29 @@ import {
 	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
+	TFile,
 	TJourneyEvent,
+	TUploadedFile,
 } from "types/collections";
 import { CrewsModel } from "./crews.schema";
+import { cloudinaryDestroy } from "@config/cloudinary.config";
 
 class CrewsRepository {
 	async create(req: Request, res: Response) {
 		try {
+			const file = req.file as TUploadedFile;
 			const { user } = res.locals;
 
-			const { name, visibility, code, banner, rules } = req.body;
+			let banner: TFile | undefined = undefined;
+
+			if (file) {
+				banner = {
+					public_id: file.filename,
+					url: file.path,
+				};
+			}
+
+			const { name, visibility, code, rules } = req.body;
 
 			const crew = await CrewsModel.create({
 				name,
@@ -45,6 +58,10 @@ class CrewsRepository {
 
 			return res.status(201).json(crew);
 		} catch (error) {
+			if (req.file) {
+				await cloudinaryDestroy(req.file.path);
+			}
+
 			return handle_error(res, error);
 		}
 	}

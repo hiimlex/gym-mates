@@ -18,6 +18,7 @@ export const test_get_user_and_cookie = async (
 	const { headers } = await test_agent
 		.post(ApiPrefix + Endpoints.AuthLogin)
 		.send({
+			name: mock_user.name,
 			email: mock_user.email,
 			password: mock_user.password,
 		});

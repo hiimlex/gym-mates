@@ -1,14 +1,6 @@
 // Coin system helper functions
 import { CrewStreak } from "../types/collections";
 
-/**
- * Calculate coins based on the user's streak and crew streak.
- * @param user - The user document.
- * @param crewStreak - The crew's streak type.
- * @param userStreak - The user's current streak count.
- * @param date - Optional date to check for weekend streaks.
- * @returns The number of coins earned.
- */
 export const calculate_coin_by_streak: Record<
 	CrewStreak,
 	(user_streak: number, date?: Date) => number

@@ -1,4 +1,5 @@
 import { timestamps } from "@config/schema.config";
+import { FileSchema } from "@modules/files";
 import { model, Schema, Types } from "mongoose";
 import {
 	Collections,
@@ -57,7 +58,7 @@ const CrewsSchema = new Schema(
 			default: CrewVisibility.Public,
 		},
 		banner: {
-			type: String,
+			type: FileSchema,
 			required: false,
 		},
 		rules: {

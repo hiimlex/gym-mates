@@ -6,7 +6,6 @@ import {
 	ICrewDocument,
 	IUserDocument,
 	JourneyEventAction,
-	TCrew,
 	TJourneyEvent,
 	WorkoutType,
 } from "types/collections";

@@ -31,6 +31,8 @@ export const Endpoints = {
 	UsersRejectFriendRequest: "/users/friends/reject-request",
 	UsersRemoveFriend: "/users/friends/remove",
 	UsersCreateHealthy: "/users/healthy",
+	UsersSelectTitle: "/users/select-title",
+	UsersUpdateAvatar: "/users/update-avatar",
 	// Workouts
 	WorkoutsCreate: "/workouts",
 	// Shop

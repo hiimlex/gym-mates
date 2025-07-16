@@ -8,6 +8,7 @@ import {
 	TJourneyEvent,
 } from "types/collections";
 import { JourneyModel } from "../journey";
+import { FileSchema } from "@modules/files";
 
 const UsersSchema = new Schema(
 	{
@@ -15,9 +16,14 @@ const UsersSchema = new Schema(
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
 		access_token: { type: String, required: false },
-		avatar: { type: String, required: false },
+		avatar: { type: FileSchema, required: false },
 		character: { type: String, required: false },
 		coins: { type: Number, default: 0, required: true },
+		title: {
+			type: Types.ObjectId,
+			ref: Collections.Items,
+			required: false,
+		},
 		journey: {
 			type: Types.ObjectId,
 			ref: Collections.Journeys,

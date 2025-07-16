@@ -5,6 +5,7 @@ import { handle_error } from "@utils/handle_error";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import {
+	IJourneyDocument,
 	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
@@ -15,6 +16,8 @@ class ShopRepository {
 	async buy(req: Request, res: Response) {
 		try {
 			const user: IUserDocument = res.locals.user;
+			const journey: IJourneyDocument = res.locals.journey;
+
 			const cart = req.body.cart || [];
 
 			if (!cart || !Array.isArray(cart) || cart.length === 0) {
@@ -24,12 +27,6 @@ class ShopRepository {
 			const items = await ItemsModel.find({
 				_id: { $in: cart },
 			});
-
-			const journey = await JourneyModel.findById(user.journey);
-
-			if (!journey) {
-				throw new HttpException(404, "JOURNEY_NOT_FOUND");
-			}
 
 			// Check if user has none of the items in the cart
 			const has_items = items.some((bi) =>

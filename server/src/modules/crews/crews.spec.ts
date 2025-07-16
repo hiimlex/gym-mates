@@ -6,7 +6,7 @@ import { create_crew_mock, create_user_mock } from "../../__mocks__";
 import { ApiPrefix, Endpoints } from "types/generics";
 import { IUserDocument, TUser } from "types/collections/users.model";
 import { CrewVisibility, ICrewDocument, TCrew } from "types/collections";
-import { test_get_user_and_cookie } from "@test/helpers";
+import { test_get_user_and_cookie } from "@test/test.helpers";
 
 const test_server = new Server();
 test_server.setup();
@@ -85,6 +85,9 @@ describe("Crews Module", () => {
 			expect(body).toBeDefined();
 		});
 	});
+
+	// [ToTest] - GET /crews/activities
+	// [ToTest] - Get /crews/activities-days 
 
 	describe(`POST /crews/join`, () => {
 		it("should join a member to a crew", async () => {

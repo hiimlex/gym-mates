@@ -1,4 +1,4 @@
-import { test_get_user_and_cookie } from "@test/helpers";
+import { test_get_user_and_cookie } from "@test/test.helpers";
 import { create_healthy_mock, create_user_mock } from "__mocks__";
 import { Server } from "app";
 import { create } from "domain";
@@ -160,4 +160,7 @@ describe("Users module", () => {
 			expect(updated_user).toHaveProperty("healthy");
 		});
 	});
+
+	// [ToTest] - PUT /users/update-avatar
+	// [ToTest] - PUT /users/select-title
 });

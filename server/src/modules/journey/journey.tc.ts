@@ -3,7 +3,7 @@ import { JourneyModel } from "./journey.schema";
 import { WorkoutsTC } from "@modules/workouts";
 import { IJourneyDocument } from "types/collections";
 import { schemaComposer } from "graphql-compose";
-import { ItemsTC } from "@modules/items";
+import { ItemsDTC } from "@modules/items";
 
 const JourneyTC = composeWithMongoose(JourneyModel);
 
@@ -31,7 +31,7 @@ JourneyTC.addFields({
 const InventoryItemTC = schemaComposer.createObjectTC({
 	name: "InventoryItem",
 	fields: {
-		item: ItemsTC.getType(),
+		item: ItemsDTC.getType(),
 		owned_at: "Date!",
 	},
 });
