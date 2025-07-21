@@ -20,6 +20,7 @@ export const Endpoints = {
 	CrewsKickMember: "/crews/kick-member",
 	CrewsRejectMember: "/crews/reject-member",
 	CrewsFavorite: "/crews/favorite",
+	CrewsUpdateBanner: "/crews/update-banner",
 	// Users
 	UsersCreate: "/users",
 	UsersList: "/users",

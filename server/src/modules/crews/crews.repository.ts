@@ -66,6 +66,46 @@ class CrewsRepository {
 		}
 	}
 
+	async update_banner(req: Request, res: Response) {
+		try {
+			const file = req.file as TUploadedFile;
+			const { crew_id } = req.body;
+
+			if (!file) {
+				throw new HttpException(400, "FILE_NOT_PROVIDED");
+			}
+
+			const crew = await CrewsModel.findById(crew_id);
+
+			const is_admin = crew?.admins.some(
+				(adm) => adm._id.toString() === res.locals.user._id.toString()
+			);
+
+			if (!crew || !is_admin) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			if (crew.banner && crew.banner.public_id) {
+				await cloudinaryDestroy(crew.banner.public_id);
+			}
+
+			const banner: TFile = {
+				public_id: file.filename,
+				url: file.path,
+			};
+
+			const updated_crew = await CrewsModel.findByIdAndUpdate(
+				crew_id,
+				{ banner },
+				{ new: true }
+			);
+
+			return res.status(200).json(updated_crew);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
 	async get_by_code(req: Request, res: Response) {
 		try {
 			const { code } = req.params;

@@ -79,12 +79,6 @@ export class CrewsController extends BaseController {
 			CrewsRepositoryImpl.update_config
 		);
 
-		this.router.delete(
-			Endpoints.CrewsDelete,
-			AuthRepositoryImpl.is_authenticated,
-			CrewsRepositoryImpl.delete
-		);
-
 		this.router.put(
 			Endpoints.CrewsUpdateAdmins,
 			AuthRepositoryImpl.is_authenticated,
@@ -95,6 +89,19 @@ export class CrewsController extends BaseController {
 			Endpoints.CrewsFavorite,
 			AuthRepositoryImpl.is_authenticated,
 			CrewsRepositoryImpl.favorite
+		);
+
+		this.router.put(
+			Endpoints.CrewsUpdateBanner,
+			AuthRepositoryImpl.is_authenticated,
+			upload.single(upload_key),
+			CrewsRepositoryImpl.update_banner
+		);
+
+		this.router.delete(
+			Endpoints.CrewsDelete,
+			AuthRepositoryImpl.is_authenticated,
+			CrewsRepositoryImpl.delete
 		);
 	}
 }
