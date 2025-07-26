@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { CrewVisibility, WorkoutType } from "types/collections";
+import { CrewStreak, CrewVisibility, WorkoutType } from "types/collections";
 
 const CreateWorkout = Joi.object({
 	title: Joi.string().required(),
@@ -24,6 +24,9 @@ const CreateCrew = Joi.object({
 		show_members_rank: Joi.boolean().optional(),
 		free_weekends: Joi.boolean().optional(),
 	}).optional(),
+	streak: Joi.array()
+		.items(Joi.string().valid(...Object.values(CrewStreak)))
+		.optional(),
 });
 
 const SignUp = Joi.object({

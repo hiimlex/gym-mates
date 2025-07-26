@@ -48,16 +48,9 @@ class AuthRepository {
 				access_token: access_token.toString(),
 			});
 
-			return res
-				.cookie(AccessTokenCookie, access_token, {
-					httpOnly: true,
-					signed: true,
-					maxAge: COOKIE_MAX_AGE,
-					secure: true,
-					sameSite: "none",
-					// domain: process.env.FRONTEND_URL || "http://localhost:3001",
-				})
-				.sendStatus(204);
+			return res.status(200).send({
+				access_token,
+			});
 		} catch (error) {
 			return handle_error(res, error);
 		}
@@ -140,8 +133,7 @@ class AuthRepository {
 
 	async is_authenticated(req: Request, res: Response, next: NextFunction) {
 		try {
-			const access_token =
-				req.signedCookies[AccessTokenCookie] || req.cookies[AccessTokenCookie];
+			const access_token = req.headers.authorization?.split(" ")[1];
 
 			if (!access_token) {
 				throw new HttpException(401, "UNAUTHORIZED");

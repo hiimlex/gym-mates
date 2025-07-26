@@ -1,18 +1,18 @@
-import mongoose, { set } from "mongoose";
-import { Server } from "../../app";
-import request from "supertest";
-import { MongoMemoryServer } from "mongodb-memory-server";
-import { create_crew_mock, create_user_mock } from "../../__mocks__";
-import { ApiPrefix, Endpoints } from "types/generics";
-import { IUserDocument, TUser } from "types/collections/users.model";
-import { CrewVisibility, ICrewDocument, TCrew } from "types/collections";
 import { test_get_user_and_cookie } from "@test/test.helpers";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
+import request from "supertest";
+import { CrewVisibility, ICrewDocument, TCrew } from "types/collections";
+import { IUserDocument } from "types/collections/users.model";
+import { ApiPrefix, Endpoints } from "types/generics";
+import { create_crew_mock } from "../../__mocks__";
+import { Server } from "../../app";
 
 const test_server = new Server();
 test_server.setup();
 const test_agent = request(test_server.app);
 let mongo_server: MongoMemoryServer;
-let cookie: string;
+let mock_user: Partial<IUserDocument>;
 let created_user: IUserDocument;
 let mock_crew: Partial<TCrew>;
 let created_crew: ICrewDocument;
@@ -27,7 +27,7 @@ beforeAll(async () => {
 	await mongoose.connect(uri);
 
 	const r = await test_get_user_and_cookie(test_agent);
-	cookie = r.cookie;
+	mock_user = r.mock_user;
 	created_user = r.user;
 
 	mock_crew = create_crew_mock();
@@ -47,10 +47,13 @@ afterAll(async () => {
 describe("Crews Module", () => {
 	describe(`POST /crews/`, () => {
 		it("should create a crew", async () => {
-			const { statusCode, body } = await test_agent
+			const { statusCode, body, error } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsCreate)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${mock_user.access_token}`)
 				.send(mock_crew);
+
+			console.log("Error:", error);
+
 			created_crew = body;
 			expect(statusCode).toBe(201);
 			expect(body).toHaveProperty("name", mock_crew.name);
@@ -65,7 +68,7 @@ describe("Crews Module", () => {
 					ApiPrefix +
 						Endpoints.CrewsGetByCode.replace(":code", created_crew.code)
 				)
-				.set("Cookie", cookie);
+				.set("Authorization", `Bearer ${mock_user.access_token}`);
 
 			expect(statusCode).toBe(200);
 			expect(body).toHaveProperty("name", mock_crew.name);
@@ -78,7 +81,7 @@ describe("Crews Module", () => {
 		it("Should get crew rank", async () => {
 			const { statusCode, body } = await test_agent
 				.get(ApiPrefix + Endpoints.CrewsGetRank)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${mock_user.access_token}`)
 				.send({ crew_id: created_crew._id.toString() });
 
 			expect(statusCode).toBe(200);
@@ -87,7 +90,7 @@ describe("Crews Module", () => {
 	});
 
 	// [ToTest] - GET /crews/activities
-	// [ToTest] - Get /crews/activities-days 
+	// [ToTest] - Get /crews/activities-days
 
 	describe(`POST /crews/join`, () => {
 		it("should join a member to a crew", async () => {
@@ -97,13 +100,14 @@ describe("Crews Module", () => {
 
 			const { statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: created_crew.code });
 
 			expect(statusCode).toBe(204);
 		});
 
 		it("should join whitelist if crew is private", async () => {
+			const crew_user = await test_get_user_and_cookie(test_agent);
 			const mock_new_crew = create_crew_mock({
 				visibility: CrewVisibility.Private,
 			});
@@ -111,7 +115,7 @@ describe("Crews Module", () => {
 			const new_crew = (
 				await test_agent
 					.post(ApiPrefix + Endpoints.CrewsCreate)
-					.set("Cookie", cookie)
+					.set("Authorization", `Bearer ${crew_user.access_token}`)
 					.send(mock_new_crew)
 			).body;
 
@@ -123,7 +127,7 @@ describe("Crews Module", () => {
 
 			const { statusCode, body } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: new_crew.code });
 
 			expect(statusCode).toBe(200);
@@ -133,6 +137,7 @@ describe("Crews Module", () => {
 
 	describe("POST /crews/accept-member", () => {
 		it("should accept a member to a crew", async () => {
+			const crew_user = await test_get_user_and_cookie(test_agent);
 			const mock_new_crew = create_crew_mock({
 				visibility: CrewVisibility.Private,
 			});
@@ -140,7 +145,7 @@ describe("Crews Module", () => {
 			const temp_crew = (
 				await test_agent
 					.post(ApiPrefix + Endpoints.CrewsCreate)
-					.set("Cookie", cookie)
+					.set("Authorization", `Bearer ${crew_user.access_token}`)
 					.send(mock_new_crew)
 			).body;
 
@@ -152,14 +157,14 @@ describe("Crews Module", () => {
 
 			await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: temp_crew.code });
 
 			const user_id = temp.user._id.toString();
 
 			const { statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsAcceptMember)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${crew_user.access_token}`)
 				.send({ user_id, code: temp_crew.code });
 
 			expect(statusCode).toBe(204);
@@ -168,6 +173,8 @@ describe("Crews Module", () => {
 
 	describe("POST /crews/reject-member", () => {
 		it("should reject member from crew whitelist", async () => {
+			// Create a new crew with private visibility
+			const crew_user = await test_get_user_and_cookie(test_agent);
 			const mock_new_crew = create_crew_mock({
 				visibility: CrewVisibility.Private,
 			});
@@ -175,26 +182,28 @@ describe("Crews Module", () => {
 			const temp_crew = (
 				await test_agent
 					.post(ApiPrefix + Endpoints.CrewsCreate)
-					.set("Cookie", cookie)
+					.set("Authorization", `Bearer ${crew_user.access_token}`)
 					.send(mock_new_crew)
 			).body;
 
 			expect(temp_crew).toBeDefined();
 
+			// Create a new user and join the crew
 			const temp = await test_get_user_and_cookie(test_agent);
 
 			expect(temp.user).toHaveProperty("_id");
 
 			await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: temp_crew.code });
 
 			const user_id = temp.user._id.toString();
 
+			// Reject the member from the crew
 			const { statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsRejectMember)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${crew_user.access_token}`)
 				.send({ user_id, code: temp_crew.code });
 
 			expect(statusCode).toBe(204);
@@ -209,14 +218,14 @@ describe("Crews Module", () => {
 
 			await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: created_crew.code });
 
 			const temp_user_id = temp.user._id;
 
 			const { statusCode, body } = await test_agent
 				.put(ApiPrefix + Endpoints.CrewsUpdateAdmins)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${mock_user.access_token}`)
 				.send({
 					user_id: temp_user_id,
 					code: created_crew.code,
@@ -237,14 +246,14 @@ describe("Crews Module", () => {
 
 			await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: created_crew.code });
 
 			const temp_user_id = temp.user._id;
 
 			const { statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsKickMember)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${mock_user.access_token}`)
 				.send({ user_id: temp_user_id, code: created_crew.code });
 
 			expect(statusCode).toBe(204);
@@ -259,12 +268,12 @@ describe("Crews Module", () => {
 
 			await test_agent
 				.post(ApiPrefix + Endpoints.CrewsJoin)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: created_crew.code });
 
 			const { statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.CrewsLeave)
-				.set("Cookie", temp.cookie)
+				.set("Authorization", `Bearer ${temp.access_token}`)
 				.send({ code: created_crew.code });
 
 			expect(statusCode).toBe(204);
@@ -282,7 +291,7 @@ describe("Crews Module", () => {
 
 			const { body } = await test_agent
 				.put(ApiPrefix + Endpoints.CrewsUpdateConfig)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${mock_user.access_token}`)
 				.send({ ...update_data, crew_id: created_crew._id.toString() });
 
 			expect(body).toHaveProperty("visibility", update_data.visibility);
@@ -297,12 +306,12 @@ describe("Crews Module", () => {
 		it("should add a crew to user's favorites", async () => {
 			const { statusCode } = await test_agent
 				.put(ApiPrefix + Endpoints.CrewsFavorite)
-				.set("Cookie", cookie)
+				.set("Authorization", `Bearer ${mock_user.access_token}`)
 				.send({ crew_id: created_crew._id.toString() });
 
 			const { body: updated_user } = await test_agent
 				.get(ApiPrefix + Endpoints.AuthMe)
-				.set("Cookie", cookie);
+				.set("Authorization", `Bearer ${mock_user.access_token}`);
 
 			expect(statusCode).toBe(204);
 			expect(updated_user).toHaveProperty("favorites");
@@ -317,7 +326,7 @@ describe("Crews Module", () => {
 					ApiPrefix +
 						Endpoints.CrewsDelete.replace(":id", created_crew._id.toString())
 				)
-				.set("Cookie", cookie);
+				.set("Authorization", `Bearer ${mock_user.access_token}`);
 
 			expect(statusCode).toBe(204);
 		});

@@ -6,28 +6,31 @@ import { ApiPrefix, Endpoints } from "types/generics";
 export const test_get_user_and_cookie = async (
 	test_agent: TestAgent
 ): Promise<{
-	cookie: string;
+	access_token: string;
 	user: IUserDocument;
+	mock_user: Partial<IUserDocument>;
 }> => {
 	const mock_user = create_user_mock();
 
 	const created_user = (
-		await test_agent.post(ApiPrefix + Endpoints.AuthSignUp).send(mock_user)
-	).body;
-
-	const { headers } = await test_agent
-		.post(ApiPrefix + Endpoints.AuthLogin)
-		.send({
+		await test_agent.post(ApiPrefix + Endpoints.AuthSignUp).send({
 			name: mock_user.name,
 			email: mock_user.email,
 			password: mock_user.password,
-		});
+		})
+	).body;
 
-	const cookies = headers["set-cookie"];
-	const cookie = cookies[0];
+	const { body } = await test_agent.post(ApiPrefix + Endpoints.AuthLogin).send({
+		email: mock_user.email,
+		password: mock_user.password,
+	});
+
+	const access_token = body.access_token;
+	mock_user.access_token = access_token;
 
 	return {
-		cookie,
+		access_token,
 		user: created_user,
+		mock_user,
 	};
 };

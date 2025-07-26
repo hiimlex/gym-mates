@@ -10,7 +10,6 @@ test_server.setup();
 const test_agent = supertest(test_server.app);
 
 let mongo_server: MongoMemoryServer;
-let cookie: string;
 
 beforeAll(async () => {
 	if (mongoose.connection.readyState !== 0) {
@@ -57,29 +56,26 @@ describe("Auth module", () => {
 
 	describe(`POST ${Endpoints.AuthLogin}`, () => {
 		it("should login an user", async () => {
-			const { statusCode, headers } = await test_agent
+			const { statusCode, body } = await test_agent
 				.post(ApiPrefix + Endpoints.AuthLogin)
 				.send({
 					email: mock_user.email,
 					password: mock_user.password,
 				});
 
-			expect(statusCode).toBe(204);
+			expect(statusCode).toBe(200);
 
-			const cookies = headers["set-cookie"];
-			cookie = cookies[0];
-			expect(cookies).toBeDefined();
-
-			const authCookie = cookies.includes("access_token");
-			expect(authCookie).toBeDefined();
+			const access_token = body.access_token;
+			mock_user.access_token = access_token;
+			expect(access_token).toBeDefined();
 		});
 	});
-
+	
 	describe(`GET ${Endpoints.AuthMe}`, () => {
 		it("should get an user by access cookie", async () => {
 			const response = await test_agent
 				.get(ApiPrefix + Endpoints.AuthMe)
-				.set("Cookie", cookie);
+				.set("Authorization", `Bearer ${mock_user.access_token}`);
 
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toHaveProperty("email");

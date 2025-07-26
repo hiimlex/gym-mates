@@ -11,10 +11,8 @@ const sensitiveFields = ["password", "access_token"];
 
 export const logger = winston.createLogger({
 	level: "info",
-	format: winston.format.combine(
-		winston.format.json(),
-		winston.format.colorize({ all: true })
-	),
+	format: winston.format.json(),
+
 	transports: [new winston.transports.Console()],
 	exitOnError: false,
 });
