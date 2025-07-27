@@ -9,24 +9,31 @@ interface InputProps {
   onChange?: (text: string) => void;
   label?: string;
   placeholder?: string;
+  inputProps?: React.ComponentPropsWithoutRef<typeof S.Input>;
 }
 
-const Input: React.FC<InputProps> = ({ label, onChange, placeholder }) => {
+const Input: React.FC<InputProps> = ({
+  label,
+  onChange,
+  placeholder,
+  inputProps,
+}) => {
   const { t } = useTranslation();
   const textStyle: TextStyle = TypographyStyles.caption;
 
   return (
     <S.Container>
       {label && (
-        <Typography.BodySmall textColor="text">{t(label)}</Typography.BodySmall>
+        <Typography.Caption textColor="text">{t(label)}</Typography.Caption>
       )}
       <S.Input
         placeholder={placeholder && t(placeholder)}
-        style={[textStyle]}
+        style={[textStyle, { fontSize: 14 }]}
         autoComplete="off"
         autoCorrect={false}
         autoCapitalize="none"
         onChangeText={onChange}
+        {...inputProps}
       />
     </S.Container>
   );

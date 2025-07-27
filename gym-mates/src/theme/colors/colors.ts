@@ -13,9 +13,11 @@ const colors = {
   textDark: "#131131",
   borderDark: "#8181A1",
   border: "#C0C9DA",
+  disabled: "#CDCDCD",
 };
 
 export type TColors = keyof typeof colors;
+export type TColorsType = typeof colors;
 
 const hexPercentage: Record<number, string> = {
   100: "FF",

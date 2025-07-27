@@ -5,8 +5,13 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@screens/*": ["./src/screens/*"],
+      "@screens": ["./src/screens"],
       "@theme/*": ["./src/theme/*"],
+      "@models/*": ["./src/models/*"],
+      "@api/*": ["./src/api/*"],
+      "@store/*": ["./src/store/*"],
+      "@navigation/*": ["./src/navigation/*"],
+      "@hooks": ["./src/hooks"],
     }
   }
 }

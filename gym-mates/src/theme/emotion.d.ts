@@ -1,8 +1,8 @@
 import "@emotion/react";
-import { TColors } from "./colors";
+import { TColorsType } from "./colors/colors";
 
 declare module "@emotion/react" {
   export interface Theme {
-    colors: TColors;
+    colors: TColorsType;
   }
 }

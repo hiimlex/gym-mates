@@ -1,0 +1,30 @@
+import styled from "@emotion/native";
+import { setAlpha } from "@theme/index";
+
+const Container = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+`;
+
+const CoinsContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+`;
+
+const CoinWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => setAlpha(theme.colors.secondary, 30)};
+`;
+
+export default {
+  Container,
+  CoinsContainer,
+  CoinWrapper,
+};

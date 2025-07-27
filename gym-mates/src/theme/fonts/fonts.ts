@@ -8,7 +8,7 @@ const types = {
   bold: "SF Pro Rounded",
 };
 
-const weights: Record<string, TextStyle['fontWeight']> = {
+const weights: Record<string, TextStyle["fontWeight"]> = {
   light: "300",
   regular: "400",
   medium: "500",
@@ -23,8 +23,7 @@ const sizes = {
   headingSubtitle: 18,
   body: 16,
   button: 14,
-  bodySmall: 14,
-  caption: 12,
+  caption: 14,
   tip: 10,
 };
 

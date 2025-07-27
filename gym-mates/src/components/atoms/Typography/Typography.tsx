@@ -10,7 +10,6 @@ type TTypographyVariants =
   | "heading"
   | "headingSubtitle"
   | "body"
-  | "bodySmall"
   | "caption"
   | "tip";
 
@@ -130,21 +129,6 @@ const Body: React.FC<TypographyProps> = (props) => {
   );
 };
 
-const BodySmall: React.FC<TypographyProps> = (props) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.bodySmall, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
 const Caption: React.FC<TypographyProps> = (props) => {
   const { t } = useTranslation();
 
@@ -216,20 +200,15 @@ export const TypographyStyles = StyleSheet.create({
     fontFamily: Fonts.types.medium,
     fontSize: Fonts.sizes.body,
   },
-  bodySmall: {
+  caption: {
     fontWeight: Fonts.weights.medium,
     fontFamily: Fonts.types.medium,
-    fontSize: Fonts.sizes.bodySmall,
+    fontSize: Fonts.sizes.caption,
   },
   button: {
     fontWeight: Fonts.weights.bold,
     fontFamily: Fonts.types.bold,
     fontSize: Fonts.sizes.button,
-  },
-  caption: {
-    fontWeight: Fonts.weights.medium,
-    fontFamily: Fonts.types.medium,
-    fontSize: Fonts.sizes.caption,
   },
   tip: {
     fontWeight: Fonts.weights.medium,
@@ -245,7 +224,6 @@ export default {
   Heading,
   HeadingSubtitle,
   Body,
-  BodySmall,
   Caption,
   Tip,
   Button,

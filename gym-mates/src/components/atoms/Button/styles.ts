@@ -10,6 +10,12 @@ const Button = styled.TouchableOpacity<{
   align-items: center;
   background-color: ${({ colorScheme, theme }) =>
     colorScheme ? theme.colors[colorScheme] : theme.colors.primary};
+
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
+    background-color: ${theme.colors.disabled};
+  `}
 `;
 
 export default {
