@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Typography from "../Typography/Typography";
 import { ViewStyle } from "react-native";
 import Loader from "../Loader/Loader";
-import { Colors, TColors } from "@theme/index";
+import { Colors, TColors } from "@theme";
 
 export interface ButtonProps {
   title: string;

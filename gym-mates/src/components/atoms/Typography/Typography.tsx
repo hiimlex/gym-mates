@@ -13,11 +13,13 @@ type TTypographyVariants =
   | "caption"
   | "tip";
 
+type TFontsWeight = keyof typeof Fonts.weights;
+
 interface TypographyProps {
   children?: React.ReactNode;
   textColor?: TColors;
-  fontWeight?: keyof typeof Fonts.weights;
-  translate?: boolean;
+  fontWeight?: TFontsWeight;
+  _t?: boolean;
 }
 
 const Typography: React.FC<
@@ -52,7 +54,7 @@ const Typography: React.FC<
   );
 };
 
-const Title: React.FC<TypographyProps> = (props) => {
+const Title: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -62,12 +64,12 @@ const Title: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.title, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const Subtitle: React.FC<TypographyProps> = (props) => {
+const Subtitle: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -77,12 +79,12 @@ const Subtitle: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.subtitle, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const Heading: React.FC<TypographyProps> = (props) => {
+const Heading: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -92,12 +94,12 @@ const Heading: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.heading, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const HeadingSubtitle: React.FC<TypographyProps> = (props) => {
+const HeadingSubtitle: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -109,12 +111,12 @@ const HeadingSubtitle: React.FC<TypographyProps> = (props) => {
     <Text
       style={[TypographyStyles.headingSubtitle, { color: resolvedTextColor }]}
     >
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const Body: React.FC<TypographyProps> = (props) => {
+const Body: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -124,12 +126,12 @@ const Body: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.body, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const Caption: React.FC<TypographyProps> = (props) => {
+const Caption: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -139,12 +141,12 @@ const Caption: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.caption, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const Tip: React.FC<TypographyProps> = (props) => {
+const Tip: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -154,12 +156,12 @@ const Tip: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.tip, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };
 
-const Button: React.FC<TypographyProps> = (props) => {
+const Button: React.FC<TypographyProps> = (props = { _t: true }) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -169,7 +171,7 @@ const Button: React.FC<TypographyProps> = (props) => {
 
   return (
     <Text style={[TypographyStyles.button, { color: resolvedTextColor }]}>
-      {props.translate ? t((props.children || "").toString()) : props.children}
+      {props._t ? t((props.children || "").toString()) : props.children}
     </Text>
   );
 };

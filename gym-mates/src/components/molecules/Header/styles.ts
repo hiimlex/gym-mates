@@ -1,5 +1,5 @@
 import styled from "@emotion/native";
-import { setAlpha } from "@theme/index";
+import { setAlpha } from "@theme";
 
 const Container = styled.View`
   flex-direction: row;

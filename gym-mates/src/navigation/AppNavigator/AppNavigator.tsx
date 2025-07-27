@@ -4,11 +4,12 @@ import { StoreState } from "@store/store";
 import { useMemo } from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
-import { Loader, ScreenWrapper } from "../../components";
+import { BottomNav, Loader, ScreenWrapper } from "../../components";
 import { HomeScreen, LoginScreen } from "@screens";
-import { AppRoutes } from "../appRoutes";
+import { AppRoutes, TRootStackParamList } from "../appRoutes";
+import { navigationRef } from "@hooks";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<TRootStackParamList>();
 
 const AppNavigator = () => {
   const { user, loadingCurrentUser, isAuthenticated } = useSelector(
@@ -32,20 +33,20 @@ const AppNavigator = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer<TRootStackParamList> ref={navigationRef}>
       <Stack.Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name={AppRoutes.Login}>
-          {() => <ScreenWrapper children={<LoginScreen />} />}
-        </Stack.Screen>
-        <Stack.Screen name={AppRoutes.Home}>
-          {() => <ScreenWrapper children={<HomeScreen />} />}
-        </Stack.Screen>
+        <Stack.Screen name={AppRoutes.Login} component={LoginScreen} />
+        {isAuthenticated && user && (
+          <Stack.Screen name={AppRoutes.Home} component={HomeScreen} />
+        )}
       </Stack.Navigator>
+
+      {isAuthenticated && <BottomNav />}
     </NavigationContainer>
   );
 };

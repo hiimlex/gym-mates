@@ -11,10 +11,10 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({ children }) => {
     <LinearGradient
       colors={[
         setAlpha("#222128", 5),
+        setAlpha("#222128", 5),
         setAlpha("#222128", 10),
-        setAlpha("#222128", 20),
       ]}
-      start={{ x: 0.2, y: 0.2 }}
+      start={{ x: 1, y: 0.1 }}
       style={{ flex: 1, backgroundColor: Colors.colors.background }}
     >
       {children}

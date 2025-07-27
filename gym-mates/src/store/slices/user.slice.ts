@@ -25,8 +25,6 @@ const UserSlice = createSlice({
       state.user = action.payload;
       state.loadingCurrentUser = false;
       state.isAuthenticated = true;
-
-      console.log("Current user fetched successfully:", action.payload);
     });
     builder.addCase(fetchCurrentUser.pending, (state) => {
       state.loadingCurrentUser = true;

@@ -1,9 +1,11 @@
 export enum AppRoutes {
   Login = "Login",
   Home = "Home",
-}
+  Crews = "Crews",
+};
 
 export type TRootStackParamList = {
-  [AppRoutes.Login]: undefined;
-  [AppRoutes.Home]: undefined;
-}
+  [AppRoutes.Home]?: {};
+  [AppRoutes.Login]?: {};
+  [AppRoutes.Crews]?: {};
+};

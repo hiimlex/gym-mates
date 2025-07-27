@@ -1,9 +1,9 @@
-import { AccessTokenKey } from "@models/generic";
+import { AccessTokenKey, BackendIp } from "@models/generic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://192.168.0.7:8080/api/v1",
+  baseURL: `${BackendIp}/api/v1`,
   withCredentials: true,
 });
 

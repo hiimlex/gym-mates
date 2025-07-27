@@ -7,7 +7,7 @@ import { CachedImage } from "@georstat/react-native-image-cache";
 import { PropsWithChildren, useMemo } from "react";
 import { Typography } from "@components/atoms";
 import Feather from "@react-native-vector-icons/feather";
-import { Colors } from "@theme/index";
+import { Colors } from "@theme";
 
 const User = () => {
   const { user } = useSelector((state: StoreState) => state.user);

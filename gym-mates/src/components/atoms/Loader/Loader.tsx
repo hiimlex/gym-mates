@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {Circle, G, Svg} from 'react-native-svg';
 import {loaderStyles} from './styles';
-import { Colors, TColors } from '@theme/index';
+import { Colors, TColors } from '@theme';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 

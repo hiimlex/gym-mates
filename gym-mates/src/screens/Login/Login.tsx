@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = () => {
     onSuccess: async (data) => {
       await AsyncStorage.setItem(AccessTokenKey, data.data.access_token);
       await dispatch(UserActions.fetchCurrentUser());
-      navigate.navigate(AppRoutes.Home);
+      navigate.navigate(AppRoutes.Login);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -55,10 +55,10 @@ const Login: React.FC<LoginProps> = () => {
       style={{ paddingTop: insets.top + 60, paddingHorizontal: 24, gap: 24 }}
     >
       <View style={{ gap: 12 }}>
-        <Typography.Subtitle translate textColor="textDark">
+        <Typography.Subtitle _t textColor="textDark">
           {"login.title"}
         </Typography.Subtitle>
-        <Typography.Body translate textColor="text">
+        <Typography.Body _t textColor="text">
           {"login.subtitle"}
         </Typography.Body>
       </View>
@@ -109,11 +109,11 @@ const Login: React.FC<LoginProps> = () => {
           width: width,
         }}
       >
-        <Typography.Caption translate textColor="textLight">
+        <Typography.Caption _t textColor="textLight">
           {"login.link"}
         </Typography.Caption>
         <TouchableOpacity>
-          <Typography.Button translate textColor="primary">
+          <Typography.Button _t textColor="primary">
             {"login.signUp"}
           </Typography.Button>
         </TouchableOpacity>

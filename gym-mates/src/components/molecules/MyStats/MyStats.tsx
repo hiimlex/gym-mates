@@ -1,0 +1,95 @@
+import { WorkoutService } from "@api/services";
+import { useQuery } from "@apollo/client";
+import { Card, Row, Typography } from "@components/atoms";
+import { IWorkout, IWorkoutsByUser } from "@models/collections";
+import Feather from "@react-native-vector-icons/feather";
+import { StoreState } from "@store/store";
+import { Colors } from "@theme";
+import { format } from "date-fns";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { useSelector } from "react-redux";
+
+interface MyStatsProps {
+  children?: React.ReactNode;
+}
+
+const MyStats: React.FC<MyStatsProps> = ({ children }) => {
+  const { t } = useTranslation();
+
+  const { user } = useSelector((state: StoreState) => state.user);
+
+  const [lastWorkout, setLastWorkout] = useState<IWorkout | null>(null);
+
+  useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
+    variables: { user: user?._id },
+    onCompleted: (data) => {
+      if (data.workouts.length > 0) {
+        setLastWorkout(data.workouts[0]);
+      }
+    },
+    onError: (error) => {
+      console.error("Error fetching workouts:", { ...error });
+    },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <View style={{ gap: 12 }}>
+      <Typography.Body textColor="textDark" _t>
+        {"home.stats.title"}
+      </Typography.Body>
+
+      <Row gap={18}>
+        <Card style={{ flex: 1 }}>
+          <Row gap={6}>
+            <Feather
+              name="trending-up"
+              size={16}
+              color={Colors.colors.textLight}
+            />
+            <Typography.Caption textColor="textLight" _t>
+              {"home.stats.myStreak"}
+            </Typography.Caption>
+          </Row>
+          <Typography.Body fontWeight="semibold">
+            {user.day_streak} {t("home.stats.days")}
+          </Typography.Body>
+        </Card>
+        <Card style={{ flex: 1 }}>
+          <Row gap={6}>
+            <Feather name="clock" size={16} color={Colors.colors.textLight} />
+            <Typography.Caption textColor="textLight" _t>
+              {"home.stats.lastSession"}
+            </Typography.Caption>
+          </Row>
+          <Row justify="space-between">
+            {!lastWorkout && (
+              <Typography.Body fontWeight="semibold" _t>
+                {"home.stats.noSession"}
+              </Typography.Body>
+            )}
+            {lastWorkout && (
+              <>
+                <Typography.Body fontWeight="semibold">
+                  {lastWorkout?.date
+                    ? format(new Date(lastWorkout.date), "dd/MM")
+                    : t("home.stats.noSession")}
+                </Typography.Body>
+                <Typography.Body fontWeight="semibold">
+                  {lastWorkout.duration} {t("home.stats.mins")}
+                </Typography.Body>
+              </>
+            )}
+          </Row>
+        </Card>
+      </Row>
+    </View>
+  );
+};
+
+export default MyStats;
