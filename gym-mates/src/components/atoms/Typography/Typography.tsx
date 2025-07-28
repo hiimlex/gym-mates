@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, TextStyle } from "react-native";
 import { Colors, Fonts, TColors } from "../../../theme";
 import Animated from "react-native-reanimated";
 
@@ -11,6 +11,7 @@ type TTypographyVariants =
   | "headingSubtitle"
   | "body"
   | "caption"
+  | "button"
   | "tip";
 
 type TFontsWeight = keyof typeof Fonts.weights;
@@ -19,14 +20,26 @@ interface TypographyProps {
   children?: React.ReactNode;
   textColor?: TColors;
   fontWeight?: TFontsWeight;
+  fontStyle?: TextStyle["fontStyle"];
+  fontFamily?: TextStyle["fontFamily"];
   _t?: boolean;
+  _params?: Record<string, any>;
 }
 
 const Typography: React.FC<
   TypographyProps & {
     variant?: TTypographyVariants;
   }
-> = ({ children, variant = "body", textColor, fontWeight }) => {
+> = ({
+  children,
+  variant = "body",
+  textColor,
+  fontWeight,
+  fontStyle,
+  fontFamily,
+  _t,
+  _params
+}) => {
   const { t } = useTranslation();
 
   const resolvedTextColor = useMemo(
@@ -39,139 +52,18 @@ const Typography: React.FC<
     [variant]
   );
 
-  return (
-    <Text
-      style={[
-        stylesByVariant,
-        {
-          color: resolvedTextColor,
-          ...(fontWeight ? { fontWeight: Fonts.weights[fontWeight] } : {}),
-        },
-      ]}
-    >
-      {children && t(children.toString())}
-    </Text>
-  );
-};
-
-const Title: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
+  const customStyles: TextStyle = useMemo(() => {
+    return {
+      ...(fontWeight ? { fontWeight: Fonts.weights[fontWeight] } : {}),
+      ...(resolvedTextColor ? { color: resolvedTextColor } : {}),
+      ...(fontFamily ? { fontFamily } : {}),
+      ...(fontStyle ? { fontStyle } : {}),
+    };
+  }, [fontWeight, resolvedTextColor, fontFamily, fontStyle]);
 
   return (
-    <Text style={[TypographyStyles.title, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const Subtitle: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.subtitle, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const Heading: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.heading, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const HeadingSubtitle: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text
-      style={[TypographyStyles.headingSubtitle, { color: resolvedTextColor }]}
-    >
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const Body: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.body, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const Caption: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.caption, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const Tip: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.tip, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
-    </Text>
-  );
-};
-
-const Button: React.FC<TypographyProps> = (props = { _t: true }) => {
-  const { t } = useTranslation();
-
-  const resolvedTextColor = useMemo(
-    () => props.textColor && Colors.colors[props.textColor],
-    [props.textColor]
-  );
-
-  return (
-    <Text style={[TypographyStyles.button, { color: resolvedTextColor }]}>
-      {props._t ? t((props.children || "").toString()) : props.children}
+    <Text style={[stylesByVariant, customStyles]}>
+      {_t ? t(children?.toString() || "", _params) : children}
     </Text>
   );
 };
@@ -183,8 +75,8 @@ export const TypographyStyles = StyleSheet.create({
     fontSize: Fonts.sizes.title,
   },
   subtitle: {
-    fontWeight: Fonts.weights.semiBold,
-    fontFamily: Fonts.types.semiBold,
+    fontWeight: Fonts.weights.semibold,
+    fontFamily: Fonts.types.semibold,
     fontSize: Fonts.sizes.subtitle,
   },
   heading: {
@@ -193,8 +85,8 @@ export const TypographyStyles = StyleSheet.create({
     fontSize: Fonts.sizes.heading,
   },
   headingSubtitle: {
-    fontWeight: Fonts.weights.semiBold,
-    fontFamily: Fonts.types.semiBold,
+    fontWeight: Fonts.weights.semibold,
+    fontFamily: Fonts.types.semibold,
     fontSize: Fonts.sizes.headingSubtitle,
   },
   body: {
@@ -218,6 +110,29 @@ export const TypographyStyles = StyleSheet.create({
     fontSize: Fonts.sizes.tip,
   },
 });
+
+const Title = (props: TypographyProps) => (
+  <Typography variant="title" {...props} />
+);
+const Subtitle = (props: TypographyProps) => (
+  <Typography variant="subtitle" {...props} />
+);
+const Heading = (props: TypographyProps) => (
+  <Typography variant="heading" {...props} />
+);
+const HeadingSubtitle = (props: TypographyProps) => (
+  <Typography variant="headingSubtitle" {...props} />
+);
+const Body = (props: TypographyProps) => (
+  <Typography variant="body" {...props} />
+);
+const Caption = (props: TypographyProps) => (
+  <Typography variant="caption" {...props} />
+);
+const Tip = (props: TypographyProps) => <Typography variant="tip" {...props} />;
+const Button = (props: TypographyProps) => (
+  <Typography variant="button" {...props} />
+);
 
 export default {
   Typography,

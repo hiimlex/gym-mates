@@ -1,3 +1,8 @@
+import { IFile } from "./file.model";
+import { IHealthData } from "./health.model";
+import { ITitle } from "./items.model";
+import { IUserJourney } from "./journey.model";
+
 export interface IUser {
   _id: string;
   name: string;
@@ -7,30 +12,16 @@ export interface IUser {
   created_at: string;
   updated_at: string;
   avatar?: string | IFile;
+  healthy?: IHealthData;
 
   journey: IUserJourney;
   friends?: string[] | IUser[];
   requests?: string[] | IUser[];
-  title?: string;
-}
-
-export interface IUserJourney {}
-
-export interface IHealthData {
-  weight: number;
-  height: number;
-  body_fat: number;
+  title?: ITitle;
 }
 
 export interface IUserState {
   user: IUser | null;
   loadingCurrentUser?: boolean;
   isAuthenticated?: boolean;
-}
-
-export interface IFile {
-  url: string;
-  public_id: string;
-  created_at: string;
-  updated_at: string;
 }

@@ -4,7 +4,7 @@ const types = {
   light: "SF Pro Rounded",
   regular: "SF Pro Rounded",
   medium: "SF Pro Rounded",
-  semiBold: "SF Pro Rounded",
+  semibold: "SF Pro Rounded",
   bold: "SF Pro Rounded",
 };
 
@@ -12,7 +12,7 @@ const weights: Record<string, TextStyle["fontWeight"]> = {
   light: "300",
   regular: "400",
   medium: "500",
-  semiBold: "600",
+  semibold: "600",
   bold: "700",
 };
 

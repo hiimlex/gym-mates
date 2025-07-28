@@ -13,6 +13,7 @@
       "@navigation/*": ["./src/navigation/*"],
       "@hooks": ["./src/hooks"],
       "@utils/*": ["./src/utils/*"],
+      "@providers": ["./src/providers"],
     }
   }
 }

@@ -2,6 +2,7 @@ import styled from "@emotion/native";
 
 const Container = styled.View`
   gap: 6px;
+  position: relative;
 `;
 
 const Input = styled.TextInput`
@@ -12,7 +13,14 @@ const Input = styled.TextInput`
   background: ${({ theme }) => theme.colors.background};
 `;
 
+const FloatSuffix = styled.View`
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+`;
+
 export default {
   Container,
-  Input
+  Input,
+  FloatSuffix,
 };

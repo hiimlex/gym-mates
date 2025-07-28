@@ -10,15 +10,17 @@ import {
 import { ICrew, ICrewsByMember } from "@models/collections";
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/store";
 import { Colors } from "@theme";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Heart, PlusCircle, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import S from "./styles";
+import { NotJoinedCrews } from "@components/organisms";
+import { ConfigActions } from "@store/slices";
 
 const Home: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Home>
@@ -27,16 +29,24 @@ const Home: React.FC<
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
   const [crews, setCrews] = useState<ICrew[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
 
-  useQuery<ICrewsByMember>(CrewsService.CrewsByMember, {
-    variables: { member: user?._id },
-    onCompleted: (data) => {
-      setCrews(data.crews);
-    },
-    onError: (error) => {
-      // console.error("Error fetching crews:", { ...error });
-    },
-  });
+  const { loading: loadingUserCrews } = useQuery<ICrewsByMember>(
+    CrewsService.CrewsByMember,
+    {
+      variables: { members: user?._id },
+      onCompleted: (data) => {
+        setCrews(data.crews);
+
+        const hasJoinedCrews = data.crews.length > 0;
+
+        dispatch(ConfigActions.setHideBottomNav(!hasJoinedCrews));
+      },
+      onError: (error) => {
+        // console.error("Error fetching crews:", { ...error });
+      },
+    }
+  );
 
   const hasJoinedCrews = useMemo(() => crews.length > 0, [crews]);
 
@@ -51,6 +61,7 @@ const Home: React.FC<
           padding: 24,
           gap: 24,
           paddingTop: insets.top + 24,
+          flex: 1,
         }}
       >
         <Header.Root justifyContent="space-between">
@@ -58,16 +69,18 @@ const Home: React.FC<
           <Header.Coins />
         </Header.Root>
 
-        <View style={{ gap: 6 }}>
-          <Typography.Subtitle textColor="textDark">
-            {t("home.title", { name: user.name })}
-          </Typography.Subtitle>
-          <Typography.Body textColor="textLight" _t>
-            {"home.subtitle"}
-          </Typography.Body>
-        </View>
-
         {hasJoinedCrews && (
+          <View style={{ gap: 6 }}>
+            <Typography.Subtitle textColor="textDark">
+              {t("home.title", { name: user.name })}
+            </Typography.Subtitle>
+            <Typography.Body textColor="textLight" _t>
+              {"home.subtitle"}
+            </Typography.Body>
+          </View>
+        )}
+
+        {hasJoinedCrews && !loadingUserCrews && (
           <>
             <WeekWorkouts />
             <MyStats />
@@ -124,6 +137,8 @@ const Home: React.FC<
             </View>
           </>
         )}
+
+        {!hasJoinedCrews && !loadingUserCrews && <NotJoinedCrews />}
       </S.Container>
     </ScreenWrapper>
   );

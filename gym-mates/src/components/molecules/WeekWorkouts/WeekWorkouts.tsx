@@ -30,6 +30,8 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
     []
   );
 
+  const opacityPace = 0.08;
+
   useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
     variables: {
       userId: user?._id,
@@ -62,10 +64,15 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
     <S.Container>
       {currentWeek.map((day, index) => {
         const isCurrentDay = day.getDate() === current.getDate();
+        const isPast = day < current;
+        const isFuture = day > current;
         const textColor = isCurrentDay ? "primary" : "textLight";
+        const opacity = isPast
+          ? 1 - (current.getDay() - day.getDay()) * opacityPace
+          : 1;
 
         return (
-          <S.DayItem key={day.getDay()}>
+          <S.DayItem key={day.getDay()} opacity={opacity}>
             <Typography.Caption textColor={textColor}>
               {t(`weekDays.short.${numberToWeekDay[day.getDay()]}`)}
             </Typography.Caption>
@@ -85,7 +92,7 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
               </>
             )}
 
-            {day < current && !workoutsByDay[index] && (
+            {isPast && !workoutsByDay[index] && (
               <>
                 <XCircle
                   width={20}
@@ -100,8 +107,14 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
               </>
             )}
 
-            {day > current && (
+            {isFuture && (
               <Typography.Body textColor="textDark">
+                {day.getDate().toString().padStart(2, "0")}
+              </Typography.Body>
+            )}
+
+            {isCurrentDay && (
+              <Typography.Body textColor="primary">
                 {day.getDate().toString().padStart(2, "0")}
               </Typography.Body>
             )}

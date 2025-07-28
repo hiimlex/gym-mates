@@ -47,9 +47,9 @@ const Button: React.FC<ButtonProps> = ({
     <S.Button
       style={[styles]}
       disabled={disabled}
-      variant={variant}
+      buttonVariant={variant}
       colorScheme={colorScheme}
-      activeOpacity={0.8}
+      activeOpacity={0.6}
       onPress={onPress}
     >
       {!loading && (

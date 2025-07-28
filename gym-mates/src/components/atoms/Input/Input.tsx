@@ -10,6 +10,7 @@ interface InputProps {
   label?: string;
   placeholder?: string;
   inputProps?: React.ComponentPropsWithoutRef<typeof S.Input>;
+  suffix?: React.ReactNode;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -17,6 +18,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   placeholder,
   inputProps,
+  suffix,
 }) => {
   const { t } = useTranslation();
   const textStyle: TextStyle = TypographyStyles.caption;
@@ -35,6 +37,7 @@ const Input: React.FC<InputProps> = ({
         onChangeText={onChange}
         {...inputProps}
       />
+      {suffix && <S.FloatSuffix>{suffix}</S.FloatSuffix>}
     </S.Container>
   );
 };

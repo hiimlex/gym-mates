@@ -1,6 +1,6 @@
 import { Endpoints } from "@models/generic";
 import api from "../api";
-import { ILoginForm, ILoginResponse } from "@models/collections";
+import { ILoginForm, ILoginResponse, ISignUpForm } from "@models/collections";
 import { AxiosResponse } from "axios";
 
 const login = async (
@@ -10,7 +10,14 @@ const login = async (
 
   return response;
 };
-const signUp = async (email: string, password: string) => {};
+const signUp = async (
+  data: ISignUpForm
+): Promise<AxiosResponse<ILoginResponse>> => {
+  const { confirmPassword, ...signUpData } = data;
+  const response = await api.post(Endpoints.AuthSignUp, signUpData);
+
+  return response;
+};
 const recover = async (email: string) => {};
 
 const me = async () => {

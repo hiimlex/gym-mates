@@ -1,4 +1,4 @@
-import { IFile, IUser } from "./user.model";
+import { IFile, IUser } from "./users.model";
 
 export interface IWorkoutsByUser {
   workouts: IWorkout[];

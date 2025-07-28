@@ -8,6 +8,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import S from "./styles";
 import { useAppNavigation, useNavigationContainerRef } from "@hooks";
 import { AppRoutes } from "@navigation/appRoutes";
+import { useSelector } from "react-redux";
+import { StoreState } from "@store/store";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
@@ -19,9 +21,13 @@ const BottomNav: React.FC = () => {
   const { currentRoute, startUpdateData, stopUpdateData } =
     useNavigationContainerRef();
 
+  const { hideBottomNav: configHide } = useSelector(
+    (state: StoreState) => state.config
+  );
+
   const hideBottomNav = useMemo(
-    () => (currentRoute?.params as any)?.hideBottomNav,
-    [currentRoute]
+    () => (currentRoute?.params as any)?.hideBottomNav || configHide,
+    [currentRoute, configHide]
   );
 
   const isActive = (checkRoute: string) => {

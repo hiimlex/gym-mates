@@ -7,10 +7,11 @@ const Container = styled.View`
   justify-content: space-between;
 `;
 
-const DayItem = styled.View`
+const DayItem = styled.View<{ opacity?: number }>`
   gap: 6px;
   padding: 0 6px;
   align-items: center;
+  opacity: ${({ opacity }) => (opacity !== undefined ? opacity : 1)};
 `
 
 export default {

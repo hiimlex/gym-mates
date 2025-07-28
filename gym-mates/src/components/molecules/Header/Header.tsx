@@ -1,4 +1,4 @@
-import { View, ViewStyle } from "react-native";
+import { TouchableOpacity, View, ViewStyle } from "react-native";
 
 import S from "./styles";
 import { useSelector } from "react-redux";
@@ -8,24 +8,38 @@ import { PropsWithChildren, useMemo } from "react";
 import { Typography } from "@components/atoms";
 import Feather from "@react-native-vector-icons/feather";
 import { Colors } from "@theme";
+import { useAppNavigation } from "@hooks";
+import { AppRoutes } from "@navigation/appRoutes";
 
 const User = () => {
   const { user } = useSelector((state: StoreState) => state.user);
+  const { navigate } = useAppNavigation();
 
   return (
-    <>
+    <TouchableOpacity
+      activeOpacity={0.6}
+      onPress={() => navigate(AppRoutes.Profile)}
+    >
       {user && user?.avatar && typeof user?.avatar !== "string" && (
         <CachedImage
           style={{ width: 48, height: 48 }}
-          imageStyle={{ borderRadius: 30 }}
+          imageStyle={{
+            borderRadius: 30,
+            borderWidth: 1,
+            borderColor: Colors.colors.border,
+          }}
           source={user.avatar.url}
         />
       )}
-    </>
+    </TouchableOpacity>
   );
 };
 
-const Coins = () => {
+interface CoinsProps {
+  size?: number;
+}
+
+const Coins = ({ size = 10 }: CoinsProps) => {
   const { user } = useSelector((state: StoreState) => state.user);
 
   return (
@@ -34,7 +48,11 @@ const Coins = () => {
         {user?.coins || 0}
       </Typography.HeadingSubtitle>
       <S.CoinWrapper>
-        <Feather name="dollar-sign" size={14} color={Colors.colors.secondary} />
+        <Feather
+          name="dollar-sign"
+          size={size}
+          color={Colors.colors.secondary}
+        />
       </S.CoinWrapper>
     </S.CoinsContainer>
   );
