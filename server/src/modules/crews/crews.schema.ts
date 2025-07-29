@@ -20,6 +20,27 @@ const CrewRulesSchema = new Schema(
 	{ versionKey: false, _id: false }
 );
 
+const MemberSchema = new Schema(
+	{
+		user: {
+			type: Types.ObjectId,
+			ref: Collections.Users,
+			required: true,
+		},
+		is_admin: {
+			type: Boolean,
+			default: false,
+			required: false,
+		},
+		joined_at: {
+			type: Date,
+			default: Date.now,
+			required: false,
+		},
+	},
+	{ versionKey: false }
+);
+
 const CrewsSchema = new Schema(
 	{
 		name: {
@@ -31,26 +52,21 @@ const CrewsSchema = new Schema(
 			required: true,
 			unique: true,
 		},
-		admins: {
-			type: [Types.ObjectId],
-			ref: Collections.Users,
-			required: true,
-		},
 		members: {
+			type: [MemberSchema],
+			required: true,
+			default: [],
+		},
+		white_list: {
 			type: [Types.ObjectId],
 			ref: Collections.Users,
-			required: true,
+			default: [],
 		},
 		created_by: {
 			type: Types.ObjectId,
 			ref: Collections.Users,
 			required: true,
 			unique: true,
-		},
-		white_list: {
-			type: [Types.ObjectId],
-			ref: Collections.Users,
-			required: false,
 		},
 		visibility: {
 			type: String,
@@ -99,4 +115,4 @@ const CrewsModel: ICrewsModel = model<ICrewDocument, ICrewsModel>(
 	Collections.Crews
 );
 
-export { CrewRulesSchema, CrewsModel, CrewsSchema };
+export { CrewRulesSchema, CrewsModel, CrewsSchema, MemberSchema };

@@ -1,4 +1,4 @@
-import { CrewsSchema } from "@modules/crews";
+import { CrewsSchema, MemberSchema } from "@modules/crews";
 import { InferSchemaType, Document, Model, Types } from "mongoose";
 
 export enum CrewVisibility {
@@ -14,6 +14,9 @@ export enum CrewStreak {
 }
 
 export type TCrew = InferSchemaType<typeof CrewsSchema>;
+export type TCrewMember = InferSchemaType<typeof MemberSchema> & {
+	user: Types.ObjectId | string;
+};
 
 export interface ICrewDocument extends Document<Types.ObjectId>, TCrew {
 	created_at: Date;

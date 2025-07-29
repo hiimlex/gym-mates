@@ -7,7 +7,6 @@ export function validate_schema(validator: Joi.ObjectSchema) {
 	return (req: Request, res: Response, next: NextFunction) => {
 		const { error } = validator.validate(req.body);
 		if (error) {
-			console.log(error);
 			return handle_error(res, error);
 		}
 		next();

@@ -25,34 +25,43 @@ export class Server {
 
 	private set_middlewares() {
 		this.app.use(json());
-		this.app.use(cors());
+		this.app.use(
+			cors({
+				origin: "*",
+			})
+		);
 		this.app.use(cookieParser(JwtSecret.toString()));
 	}
 
-	setup() {
+	async setup() {
 		this.app = express();
 
-		connect_database().then((db_instance) => {
-			if (db_instance) {
-				this.db = db_instance;
-			}
-		});
+		const db = await connect_database();
+
+		if (db) {
+			this.db = db;
+			console.log("Database connected successfully");
+		}
 
 		this.set_middlewares();
 
 		this.init_routes();
 
-		create_apollo_server().then((apollo_server) => {
-			if (apollo_server) {
-				this.app.use(
-					"/graphql",
-					expressMiddleware(
-						apollo_server
-						// ,{ context: set_apollo_context }
-					)
-				);
-			}
-		});
+		const apollo_server = await create_apollo_server();
+
+		if (apollo_server) {
+			this.app.use(
+				"/graphql",
+				cors({
+					origin: "*",
+				}),
+				json(),
+				expressMiddleware(
+					apollo_server
+					// ,{ context: set_apollo_context }
+				)
+			);
+		}
 	}
 
 	start() {

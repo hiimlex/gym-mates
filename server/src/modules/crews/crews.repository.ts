@@ -8,9 +8,11 @@ import {
 	IUserDocument,
 	JourneyEventAction,
 	JourneyEventSchemaType,
+	TCrewMember,
 	TFile,
 	TJourneyEvent,
 	TUploadedFile,
+	TUser,
 } from "types/collections";
 import { CrewsModel } from "./crews.schema";
 import { cloudinaryDestroy } from "@config/cloudinary.config";
@@ -19,7 +21,7 @@ class CrewsRepository {
 	async create(req: Request, res: Response) {
 		try {
 			const file = req.file as TUploadedFile;
-			const { user } = res.locals;
+			const user = res.locals.user as IUserDocument;
 
 			let banner: TFile | undefined = undefined;
 
@@ -32,15 +34,19 @@ class CrewsRepository {
 
 			const { name, visibility, code, rules } = req.body;
 
+			const member: TCrewMember = {
+				user: user._id,
+				is_admin: true,
+				joined_at: new Date(),
+			};
+
 			const crew = await CrewsModel.create({
 				name,
 				visibility,
 				code,
 				banner,
 				rules,
-				admins: [user._id],
-				members: [user._id],
-				white_list: [],
+				members: [member],
 				created_by: user._id,
 			});
 
@@ -68,6 +74,7 @@ class CrewsRepository {
 
 	async update_banner(req: Request, res: Response) {
 		try {
+			const user: IUserDocument = res.locals.user;
 			const file = req.file as TUploadedFile;
 			const { crew_id } = req.body;
 
@@ -77,12 +84,17 @@ class CrewsRepository {
 
 			const crew = await CrewsModel.findById(crew_id);
 
-			const is_admin = crew?.admins.some(
-				(adm) => adm._id.toString() === res.locals.user._id.toString()
+			if (!crew) {
+				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const is_admin = crew.members.some(
+				(member) =>
+					member.user.toString() === user._id.toString() && member.is_admin
 			);
 
-			if (!crew || !is_admin) {
-				throw new HttpException(404, "CREW_NOT_FOUND");
+			if (!is_admin) {
+				throw new HttpException(403, "FORBIDDEN");
 			}
 
 			if (crew.banner && crew.banner.public_id) {
@@ -102,6 +114,10 @@ class CrewsRepository {
 
 			return res.status(200).json(updated_crew);
 		} catch (error) {
+			if (req.file) {
+				await cloudinaryDestroy(req.file.filename);
+			}
+
 			return handle_error(res, error);
 		}
 	}
@@ -134,11 +150,9 @@ class CrewsRepository {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			const is_admin = crew.admins.some(
-				(adm) => adm._id.toString() === user._id.toString()
-			);
+			const is_owner = crew.created_by.toString() === user._id.toString();
 
-			if (!is_admin) {
+			if (!is_owner) {
 				throw new HttpException(403, "FORBIDDEN");
 			}
 
@@ -164,8 +178,9 @@ class CrewsRepository {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			const is_admin = crew.admins.some(
-				(adm) => adm._id.toString() === user._id.toString()
+			const is_admin = crew.members.some(
+				(member) =>
+					member.user.toString() === user._id.toString() && member.is_admin
 			);
 
 			if (!is_admin) {
@@ -194,7 +209,7 @@ class CrewsRepository {
 	async join(req: Request, res: Response) {
 		try {
 			const { code } = req.body;
-			const { user } = res.locals;
+			const user = res.locals.user as IUserDocument;
 
 			const crew = await CrewsModel.findOne({ code });
 
@@ -202,48 +217,56 @@ class CrewsRepository {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			const is_member = crew.members.includes(user._id);
+			const is_member = crew.members.some(
+				(m) => m.user.toString() === user._id.toString()
+			);
 
 			if (is_member) {
 				throw new HttpException(400, "ALREADY_MEMBER");
 			}
 
-			if (crew.visibility === "private") {
-				const is_whitelisted =
-					crew.white_list && crew.white_list.includes(user._id);
+			const is_private = crew.visibility === "private";
 
-				if (is_whitelisted) {
-					throw new HttpException(403, "ALREADY_IN_WHITELIST");
-				}
+			let joined = false;
+			let in_whitelist = false;
 
+			if (is_private) {
 				await crew.updateOne({
 					$addToSet: { white_list: user._id },
 				});
 
-				return res.status(200).json({
-					requested_whitelist: true,
-				});
+				in_whitelist = true;
 			}
 
-			await crew.updateOne({
-				$addToSet: { members: user._id },
-			});
+			if (!is_private) {
+				const new_member: TCrewMember = {
+					user: user._id.toString(),
+					is_admin: false,
+					joined_at: new Date(),
+				};
 
-			// [Notify] - Notify the crew of new member
+				await crew.updateOne({
+					$addToSet: { members: new_member },
+				});
 
-			// [Journey] - Add a journey event for the crew join
-			const event: TJourneyEvent = {
-				_id: new Types.ObjectId(),
-				action: JourneyEventAction.JOIN,
-				schema: JourneyEventSchemaType.Crew,
-				created_at: new Date(),
-				data: {
-					crew,
-				},
-			};
-			await user.add_journey_event(event);
+				// [Notify] - Notify the crew of new member
 
-			return res.sendStatus(204);
+				// [Journey] - Add a journey event for the crew join
+				const event: TJourneyEvent = {
+					_id: new Types.ObjectId(),
+					action: JourneyEventAction.JOIN,
+					schema: JourneyEventSchemaType.Crew,
+					created_at: new Date(),
+					data: {
+						crew,
+					},
+				};
+				await user.add_journey_event(event);
+
+				joined = true;
+			}
+
+			return res.status(200).json({ joined, in_whitelist });
 		} catch (error) {
 			return handle_error(res, error);
 		}
@@ -260,7 +283,9 @@ class CrewsRepository {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			const is_member = crew.members.includes(user._id);
+			const is_member = crew.members.some(
+				(member) => member.user.toString() === user._id.toString()
+			);
 
 			if (!is_member) {
 				throw new HttpException(400, "USER_NOT_A_MEMBER");
@@ -289,36 +314,40 @@ class CrewsRepository {
 
 			const crew = await CrewsModel.findOne({
 				code,
-				admins: admin._id.toString(),
 			});
 
 			if (!crew) {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			const user_in_crew = crew.members.some(
-				(member) => member._id.toString() === user._id.toString()
+			const admin_in_crew = crew.members.some(
+				(adm) => adm.user.toString() === admin._id.toString() && adm.is_admin
+			);
+
+			if (!admin_in_crew) {
+				throw new HttpException(403, "FORBIDDEN");
+			}
+
+			const user_in_crew = crew.members.find(
+				(member) => member.user.toString() === user._id.toString()
 			);
 
 			if (!user_in_crew) {
 				throw new HttpException(400, "USER_NOT_A_MEMBER");
 			}
 
-			if (set_admin) {
-				await crew.updateOne({
-					$addToSet: { admins: user._id },
-				});
-			} else {
-				await crew.updateOne({
-					$pull: { admins: user._id },
-				});
-			}
+			await CrewsModel.updateOne(
+				{
+					"members._id": user_in_crew._id,
+				},
+				{
+					$set: {
+						"members.$.is_admin": set_admin,
+					},
+				}
+			);
 
-			const updatedCrew = await CrewsModel.findById({
-				_id: crew._id,
-			});
-
-			return res.status(200).json(updatedCrew);
+			return res.sendStatus(204);
 		} catch (error) {
 			return handle_error(res, error);
 		}
@@ -337,17 +366,18 @@ class CrewsRepository {
 
 			const crew = await CrewsModel.findOne({
 				code,
-				admins: admin._id.toString(),
 			});
-
-			if (
-				!crew?.admins.some((a) => a._id.toString() === admin._id.toString())
-			) {
-				throw new HttpException(403, "FORBIDDEN");
-			}
 
 			if (!crew) {
 				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const admin_in_crew = crew.members.some(
+				(adm) => adm.user.toString() === admin._id.toString() && adm.is_admin
+			);
+
+			if (!admin_in_crew) {
+				throw new HttpException(403, "FORBIDDEN");
 			}
 
 			const user_in_white_list =
@@ -360,9 +390,15 @@ class CrewsRepository {
 				throw new HttpException(400, "USER_NOT_IN_WHITELIST");
 			}
 
+			const new_member: TCrewMember = {
+				user: new_member_user._id as any,
+				is_admin: false,
+				joined_at: new Date(),
+			};
+
 			await crew.updateOne({
 				$pull: { white_list: new_member_user._id },
-				$addToSet: { members: new_member_user._id },
+				$addToSet: { members: new_member },
 			});
 
 			// [Notify] - Notify the user that they have been accepted into the crew
@@ -377,6 +413,7 @@ class CrewsRepository {
 					crew,
 				},
 			};
+
 			await new_member_user.add_journey_event(event);
 
 			return res.sendStatus(204);
@@ -398,17 +435,18 @@ class CrewsRepository {
 
 			const crew = await CrewsModel.findOne({
 				code,
-				admins: admin._id.toString(),
 			});
-
-			if (
-				!crew?.admins.some((a) => a._id.toString() === admin._id.toString())
-			) {
-				throw new HttpException(403, "FORBIDDEN");
-			}
 
 			if (!crew) {
 				throw new HttpException(404, "CREW_NOT_FOUND");
+			}
+
+			const admin_in_crew = crew.members.some(
+				(adm) => adm.user.toString() === admin._id.toString() && adm.is_admin
+			);
+
+			if (!admin_in_crew) {
+				throw new HttpException(403, "FORBIDDEN");
 			}
 
 			const user_in_white_list =
@@ -444,32 +482,32 @@ class CrewsRepository {
 
 			const crew = await CrewsModel.findOne({
 				code,
-				admins: admin._id.toString(),
 			});
 
 			if (!crew) {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			if (
-				!crew?.admins.some((a) => a._id.toString() === admin._id.toString())
-			) {
+			const admin_in_crew = crew.members.some(
+				(adm) => adm.user.toString() === admin._id.toString() && adm.is_admin
+			);
+
+			if (!admin_in_crew) {
 				throw new HttpException(403, "FORBIDDEN");
 			}
 
-			const user_in_crew = crew.members.some(
-				(member) => member._id.toString() === user._id.toString()
+			const member = crew.members.find(
+				(member) => member.user.toString() === user._id.toString()
 			);
 
-			if (!user_in_crew) {
+			if (!member) {
 				throw new HttpException(400, "USER_NOT_A_MEMBER");
 			}
 
-			// [Notify] - Notify the user that they have been removed from crew
+			crew.members.pull(member._id);
+			await crew.save();
 
-			await crew.updateOne({
-				$pull: { members: user_id },
-			});
+			// [Notify] - Notify the user that they have been removed from crew
 
 			return res.sendStatus(204);
 		} catch (error) {
@@ -489,24 +527,24 @@ class CrewsRepository {
 			}
 
 			const is_member = crew.members.some(
-				(member) => member._id.toString() === user._id.toString()
+				(member) => member.user.toString() === user._id.toString()
 			);
 
 			if (!is_member) {
 				throw new HttpException(403, "FORBIDDEN");
 			}
 
-			const crew_populated = await crew.populate<{ members: IUserDocument[] }>(
-				"members"
-			);
+			const crew_populated = await crew.populate<{
+				members: (TCrewMember & { user: TUser })[];
+			}>("members");
 
 			const rank = crew_populated.members
 				.map((member) => ({
-					_id: member._id,
-					name: member.name,
-					avatar: member.avatar,
-					character: member.character,
-					coins: member.coins || 0,
+					_id: member.user._id,
+					name: member.user.name,
+					avatar: member.user.avatar,
+					character: member.user.character,
+					coins: member.user.coins || 0,
 				}))
 				.sort((a, b) => {
 					return a.coins < b.coins ? 1 : -1;
@@ -545,7 +583,7 @@ class CrewsRepository {
 
 			const workouts = await WorkoutsModel.find({
 				shared_to: crew._id,
-				user: { $in: crew.members },
+				user: { $in: crew.members.map((m) => m.user) },
 				date: {
 					$gte: start_date_obj,
 					$lt: end_date_obj,
@@ -581,7 +619,7 @@ class CrewsRepository {
 				{
 					$match: {
 						shared_to: crew._id,
-						user: { $in: crew.members },
+						user: { $in: crew.members.map((m) => m.user) },
 						date: {
 							$gte: start_date_obj,
 							$lt: end_date_obj,
@@ -630,7 +668,7 @@ class CrewsRepository {
 			}
 
 			const is_member = crew.members.some(
-				(member) => member._id.toString() === user._id.toString()
+				(member) => member.user.toString() === user._id.toString()
 			);
 
 			if (!is_member) {

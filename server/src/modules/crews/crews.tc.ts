@@ -1,28 +1,45 @@
 import { composeWithMongoose } from "graphql-compose-mongoose";
-import { CrewsModel } from "./crews.schema";
-import { UsersTC } from "../users";
 import { ICrewDocument } from "types/collections";
+import { UsersModel, UsersTC } from "../users";
+import { CrewsModel } from "./crews.schema";
+import { schemaComposer } from "graphql-compose";
 
 const CrewsTC = composeWithMongoose(CrewsModel);
 
-CrewsTC.addRelation("admins", {
-	resolver: () => UsersTC.getResolver("findMany"),
-	prepareArgs: {
-		filter: (source: ICrewDocument) => ({
-			_id: { $in: source.admins.map((id) => id.toString()) },
-		}),
+schemaComposer.createObjectTC({
+	name: "MembersWithUser",
+	fields: {
+		_id: "MongoID!",
+		joined_at: "Date",
+		is_admin: "Boolean",
+		user: UsersTC.getType(), // embedded User
 	},
-	projection: { admins: true },
 });
 
-CrewsTC.addRelation("members", {
-	resolver: () => UsersTC.getResolver("findMany"),
-	prepareArgs: {
-		filter: (source: ICrewDocument) => ({
-			_id: { $in: source.members.map((id) => id.toString()) },
-		}),
+CrewsTC.addFields({
+	members_w_user: {
+		type: "[MembersWithUser]",
+		async resolve(source, args, context) {
+			const crew = await CrewsModel.findById(source._id);
+
+			const members = crew?.members || [];
+
+			const users = await UsersModel.find({
+				_id: { $in: members.map((member) => member.user.toString()) },
+			});
+
+			const userMap = Object.fromEntries(
+				users.map((u) => [u._id.toString(), u])
+			);
+
+			return members.map((m) => ({
+				_id: m._id,
+				joined_at: m.joined_at,
+				is_admin: m.is_admin,
+				user: userMap[m.user.toString()] || null,
+			}));
+		},
 	},
-	projection: { members: true },
 });
 
 CrewsTC.addRelation("white_list", {
@@ -43,4 +60,4 @@ const CrewQueries = {
 
 const CrewMutations = {};
 
-export { CrewQueries, CrewMutations, CrewsTC };
+export { CrewMutations, CrewQueries, CrewsTC };

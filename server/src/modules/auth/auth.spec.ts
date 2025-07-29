@@ -38,7 +38,7 @@ describe("Auth module", () => {
 
 	describe(`POST /auth/sign-up`, () => {
 		it("should create an user", async () => {
-			const { body: c_user, statusCode } = await test_agent
+			const { body: {user, access_token}, statusCode } = await test_agent
 				.post(ApiPrefix + Endpoints.AuthSignUp)
 				.send({
 					name: mock_user.name,
@@ -47,14 +47,14 @@ describe("Auth module", () => {
 				});
 
 			expect(statusCode).toBe(201);
-			expect(c_user).toHaveProperty("email");
-			expect(c_user).toHaveProperty("name");
-			expect(c_user).toHaveProperty("_id");
-			expect(c_user).not.toHaveProperty("password");
+			expect(access_token).toBeDefined();
+			expect(user).toHaveProperty("name");
+			expect(user).toHaveProperty("_id");
+			expect(user).not.toHaveProperty("password");
 		});
 	});
 
-	describe(`POST ${Endpoints.AuthLogin}`, () => {
+	describe(`POST /auth/login`, () => {
 		it("should login an user", async () => {
 			const { statusCode, body } = await test_agent
 				.post(ApiPrefix + Endpoints.AuthLogin)

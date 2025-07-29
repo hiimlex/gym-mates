@@ -97,15 +97,16 @@ class AuthRepository {
 				workouts: [],
 			});
 
-			const updated_user = await UsersModel.findByIdAndUpdate(
-				user._id,
-				{
-					journey: user_journey._id,
-				},
-				{ new: true }
-			);
+			const access_token = sign({ id: user._id.toString() }, JwtSecret, {
+				expiresIn: JwtExpiresIn,
+			});
 
-			return res.status(201).json(updated_user);
+			await user.updateOne({
+				access_token: access_token.toString(),
+				journey: user_journey._id,
+			});
+
+			return res.status(201).json({ access_token, user });
 		} catch (error) {
 			if (req.file) {
 				await cloudinaryDestroy(req.file.path);
@@ -117,13 +118,15 @@ class AuthRepository {
 
 	async me(req: Request, res: Response) {
 		try {
-			const { user } = res.locals;
+			const user: IUserDocument = res.locals.user;
 
 			if (!user) {
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
 
 			// [StreakSystem] - Check user streak if the user has lost streak based on crews
+
+			await user.populate({ path: "title" });
 
 			return res.status(200).json(user);
 		} catch (error) {
@@ -150,7 +153,6 @@ class AuthRepository {
 			const user = await UsersModel.findById(id);
 
 			if (!user) {
-				console.log("User not found for ID:", id);
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
 
