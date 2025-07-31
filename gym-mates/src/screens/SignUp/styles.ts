@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
 `;
 

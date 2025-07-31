@@ -42,7 +42,7 @@ const SetupAvatar: React.FC<
       navigate(AppRoutes.SetupHealth);
     },
     onError: (error) => {
-      console.log("Error signing up:", error);
+      console.error("Error signing up:", error);
     },
   });
 

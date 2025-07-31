@@ -39,12 +39,13 @@ const OffsetContainer = styled.View<{
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  overflow: hidden;
   
 
   ${({ showBorder, theme }) =>
     showBorder &&
     `
-     border-width: 2px;
+     border-width: 1px;
      border-style: solid;
      border-color: ${theme.colors.border};
   `}

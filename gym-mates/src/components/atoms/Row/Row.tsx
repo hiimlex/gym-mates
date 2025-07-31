@@ -8,6 +8,7 @@ interface RowProps {
   align?: ViewStyle["alignItems"];
   gap?: number;
   width?: ViewStyle["width"];
+  wrap?: ViewStyle["flexWrap"];
 }
 
 const Row: React.FC<RowProps> = ({
@@ -17,6 +18,7 @@ const Row: React.FC<RowProps> = ({
   align,
   gap,
   width = "100%",
+  wrap,
 }) => {
   return (
     <Animated.View
@@ -27,6 +29,7 @@ const Row: React.FC<RowProps> = ({
         alignItems: align,
         gap,
         width,
+        flexWrap: wrap,
       }}
     >
       {children}

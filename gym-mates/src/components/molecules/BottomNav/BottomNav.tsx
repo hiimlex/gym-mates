@@ -1,15 +1,15 @@
-import { Typography } from "@components/atoms";
+import { useAppNavigation, useNavigationContainerRef } from "@hooks";
+import { AppRoutes } from "@navigation/appRoutes";
+import { StoreState } from "@store/store";
 import { Colors } from "@theme";
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions } from "react-native";
 import { Home, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import S from "./styles";
-import { useAppNavigation, useNavigationContainerRef } from "@hooks";
-import { AppRoutes } from "@navigation/appRoutes";
 import { useSelector } from "react-redux";
-import { StoreState } from "@store/store";
+import { Typography } from "../../atoms";
+import S from "./styles";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const BottomNav: React.FC = () => {
   );
 
   const hideBottomNav = useMemo(
-    () => (currentRoute?.params as any)?.hideBottomNav || configHide,
+    () => !(currentRoute?.params as any)?.showBottomNav || configHide,
     [currentRoute, configHide]
   );
 

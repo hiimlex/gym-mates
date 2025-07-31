@@ -1,26 +1,28 @@
 import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
-import { Menu, Typography } from "@components/atoms";
+import { Loader, Menu, Typography } from "@components/atoms";
 import {
   Header,
   MyStats,
   ScreenWrapper,
   WeekWorkouts,
 } from "@components/molecules";
-import { ICrew, ICrewsByMember } from "@models/collections";
+import { NotJoinedCrews } from "@components/organisms";
+import { ICrewsByMember } from "@models/collections";
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { ConfigActions, CrewsActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
 import { Colors } from "@theme";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Heart, PlusCircle, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./styles";
-import { NotJoinedCrews } from "@components/organisms";
-import { ConfigActions } from "@store/slices";
+import { useIsFocused } from "@react-navigation/native";
+import { useDialogService } from "@hooks";
 
 const Home: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Home>
@@ -28,23 +30,27 @@ const Home: React.FC<
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
-  const [crews, setCrews] = useState<ICrew[]>([]);
+  const { crews } = useSelector((state: StoreState) => state.crews);
+  const isScreenFocused = useIsFocused();
+  const { openAddWorkout, openCreateCrew, openJoinCrew } = useDialogService();
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { loading: loadingUserCrews } = useQuery<ICrewsByMember>(
     CrewsService.CrewsByMember,
     {
-      variables: { members: user?._id },
+      variables: { userId: user?._id },
       onCompleted: (data) => {
-        setCrews(data.crews);
-
         const hasJoinedCrews = data.crews.length > 0;
+        dispatch(CrewsActions.setCrews(data.crews));
 
         dispatch(ConfigActions.setHideBottomNav(!hasJoinedCrews));
       },
       onError: (error) => {
-        // console.error("Error fetching crews:", { ...error });
+        console.error("Error fetching crews:", { ...error });
+        dispatch(ConfigActions.setHideBottomNav(true));
       },
+      fetchPolicy: "network-only",
     }
   );
 
@@ -80,6 +86,12 @@ const Home: React.FC<
           </View>
         )}
 
+        {loadingUserCrews && (
+          <View style={{ flex: 1 }}>
+            <Loader color="primary" />
+          </View>
+        )}
+
         {hasJoinedCrews && !loadingUserCrews && (
           <>
             <WeekWorkouts />
@@ -92,7 +104,7 @@ const Home: React.FC<
               <Menu.Root>
                 <Menu.Item
                   label="home.menu.addWorkout"
-                  onPress={() => {}}
+                  onPress={openAddWorkout}
                   _t
                   icon={
                     <Heart
@@ -106,7 +118,7 @@ const Home: React.FC<
                 />
                 <Menu.Item
                   label="home.menu.createCrew"
-                  onPress={() => {}}
+                  onPress={openCreateCrew}
                   _t
                   icon={
                     <PlusCircle
@@ -120,7 +132,7 @@ const Home: React.FC<
                 />
                 <Menu.Item
                   label="home.menu.joinCrew"
-                  onPress={() => {}}
+                  onPress={openJoinCrew}
                   _t
                   isLast
                   icon={

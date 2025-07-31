@@ -1,3 +1,4 @@
+import { ICrew } from "./crews.model";
 import { IFile } from "./file.model";
 import { IHealthData } from "./health.model";
 import { ITitle } from "./items.model";
@@ -11,12 +12,13 @@ export interface IUser {
   day_streak: number;
   created_at: string;
   updated_at: string;
-  avatar?: string | IFile;
+  avatar?: IFile;
   healthy?: IHealthData;
 
   journey: IUserJourney;
   friends?: string[] | IUser[];
   requests?: string[] | IUser[];
+  favorites?: string[];
   title?: ITitle;
 }
 

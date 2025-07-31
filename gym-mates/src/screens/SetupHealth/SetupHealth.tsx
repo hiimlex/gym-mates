@@ -7,14 +7,14 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppDispatch } from "@store/store";
 import { useMutation } from "@tanstack/react-query";
 import Masks from "@utils/masks.utils";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SkipSetupHealthKey } from "@models/generic";
+import { InputRefRecorder, SkipSetupHealthKey } from "@models/generic";
 import { UserActions } from "@store/slices";
 
 const SetupHealth: React.FC<
@@ -22,9 +22,14 @@ const SetupHealth: React.FC<
 > = ({ navigation: { navigate, goBack } }) => {
   const insets = useSafeAreaInsets();
 
-  const { control, formState, getValues } = useForm<IUpdateHealthForm>({
+  const { control, formState, getValues, reset } = useForm<IUpdateHealthForm>({
     mode: "all",
   });
+  const fieldsRef: InputRefRecorder<IUpdateHealthForm> = {
+    weight: useRef(null),
+    height: useRef(null),
+    body_fat: useRef(null),
+  };
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -43,7 +48,7 @@ const SetupHealth: React.FC<
       navigate(AppRoutes.Home);
     },
     onError: (error) => {
-      console.log("Error signing up:", error);
+      console.error("Error signing up:", error);
     },
   });
 
@@ -77,7 +82,11 @@ const SetupHealth: React.FC<
             </Typography.Body>
           </View>
 
-          <TouchableOpacity activeOpacity={0.6} onPress={handleButtonPress} disabled={isPending}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={handleButtonPress}
+            disabled={isPending}
+          >
             <Typography.Button textColor="primary" _t>
               {formState.isValid ? "setupAvatar.save" : "setupAvatar.skip"}
             </Typography.Button>
@@ -92,9 +101,14 @@ const SetupHealth: React.FC<
             <Input
               placeholder="setupHealth.fields.weight"
               label="setupHealth.fields.weight"
+              inputRef={fieldsRef.weight}
               inputProps={{
                 keyboardType: "number-pad",
                 value: value,
+                returnKeyType: "next",
+                onSubmitEditing: () => {
+                  fieldsRef.height.current?.focus();
+                },
               }}
               suffix={
                 <Typography.Caption textColor="textLight">
@@ -114,9 +128,14 @@ const SetupHealth: React.FC<
             <Input
               placeholder="setupHealth.fields.height"
               label="setupHealth.fields.height"
+              inputRef={fieldsRef.height}
               inputProps={{
                 keyboardType: "number-pad",
                 value: value,
+                returnKeyType: "next",
+                onSubmitEditing: () => {
+                  fieldsRef.body_fat.current?.focus();
+                },
               }}
               suffix={
                 <Typography.Caption textColor="textLight">
@@ -136,9 +155,14 @@ const SetupHealth: React.FC<
             <Input
               placeholder="setupHealth.fields.body_fat"
               label="setupHealth.fields.body_fat"
+              inputRef={fieldsRef.body_fat}
               inputProps={{
                 keyboardType: "number-pad",
                 value: value,
+                returnKeyType: "done",
+                onSubmitEditing: () => {
+                  fieldsRef.body_fat.current?.blur();
+                },
               }}
               suffix={
                 <Typography.Caption textColor="textLight">%</Typography.Caption>

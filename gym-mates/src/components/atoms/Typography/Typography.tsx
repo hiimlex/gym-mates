@@ -22,8 +22,10 @@ interface TypographyProps {
   fontWeight?: TFontsWeight;
   fontStyle?: TextStyle["fontStyle"];
   fontFamily?: TextStyle["fontFamily"];
+  textAlign?: TextStyle["textAlign"];
   _t?: boolean;
   _params?: Record<string, any>;
+  width?: TextStyle["width"];
 }
 
 const Typography: React.FC<
@@ -33,12 +35,14 @@ const Typography: React.FC<
 > = ({
   children,
   variant = "body",
-  textColor,
+  textColor = "textDark",
   fontWeight,
   fontStyle,
   fontFamily,
+  textAlign,
+  width,
   _t,
-  _params
+  _params,
 }) => {
   const { t } = useTranslation();
 
@@ -58,8 +62,10 @@ const Typography: React.FC<
       ...(resolvedTextColor ? { color: resolvedTextColor } : {}),
       ...(fontFamily ? { fontFamily } : {}),
       ...(fontStyle ? { fontStyle } : {}),
+      ...(width ? { width } : {}),
+      ...(textAlign ? { textAlign } : {}),
     };
-  }, [fontWeight, resolvedTextColor, fontFamily, fontStyle]);
+  }, [fontWeight, resolvedTextColor, fontFamily, fontStyle, textAlign, width]);
 
   return (
     <Text style={[stylesByVariant, customStyles]}>

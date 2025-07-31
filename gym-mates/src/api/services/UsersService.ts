@@ -21,7 +21,7 @@ const updateAvatar = async (file: Asset) => {
   });
 
   return response;
-}
+};
 
 export default {
   createHealthy,

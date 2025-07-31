@@ -9,6 +9,9 @@ interface CardProps {
   gap?: number;
   width?: ViewStyle["width"];
   style?: ViewStyle;
+  touchable?: boolean;
+  onPress?: () => void;
+  active?: boolean;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -18,9 +21,19 @@ const Card: React.FC<CardProps> = ({
   gap = 12,
   width,
   style,
+  touchable = false,
+  onPress = () => {},
+  active,
 }) => {
   return (
-    <S.Card style={{ ...style, flexDirection: direction, padding, gap, width }}>
+    <S.Card
+      disabled={!touchable}
+      activeOpacity={0.6}
+      onPress={onPress}
+      touchable={touchable}
+      style={[{ flexDirection: direction, padding, gap, width }, style]}
+      active={active}
+    >
       {children}
     </S.Card>
   );

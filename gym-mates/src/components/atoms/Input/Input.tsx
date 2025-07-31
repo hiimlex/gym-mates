@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TextStyle } from "react-native";
+import { TextInput, TextStyle, ViewStyle } from "react-native";
 import Typography, { TypographyStyles } from "../Typography/Typography";
 import S from "./styles";
 
@@ -11,6 +11,8 @@ interface InputProps {
   placeholder?: string;
   inputProps?: React.ComponentPropsWithoutRef<typeof S.Input>;
   suffix?: React.ReactNode;
+  inputRef?: React.RefObject<TextInput | null>;
+  style?: TextStyle;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,6 +21,8 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   inputProps,
   suffix,
+  inputRef,
+  style,
 }) => {
   const { t } = useTranslation();
   const textStyle: TextStyle = TypographyStyles.caption;
@@ -30,12 +34,13 @@ const Input: React.FC<InputProps> = ({
       )}
       <S.Input
         placeholder={placeholder && t(placeholder)}
-        style={[textStyle, { fontSize: 14 }]}
+        style={[textStyle, { fontSize: 14 }, style]}
         autoComplete="off"
         autoCorrect={false}
         autoCapitalize="none"
         onChangeText={onChange}
         {...inputProps}
+        ref={inputRef}
       />
       {suffix && <S.FloatSuffix>{suffix}</S.FloatSuffix>}
     </S.Container>

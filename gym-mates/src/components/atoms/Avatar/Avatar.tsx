@@ -49,7 +49,7 @@ const Avatar: React.FC<IAvatarProps> = ({
   return (
     <S.OffsetContainer
       showBorder={showBorder}
-      active={!!preview}
+      active={!!preview && !disabled}
       size={size + borderOffset}
     >
       <S.AvatarContent

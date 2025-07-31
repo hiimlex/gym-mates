@@ -4,3 +4,5 @@ export { default as ProfileScreen } from "./Profile/Profile";
 export { default as SignUpScreen } from "./SignUp/SignUp";
 export { default as SetupHealthScreen } from "./SetupHealth/SetupHealth";
 export { default as SetupAvatarScreen } from "./SetupAvatar/SetupAvatar";
+export { default as CrewsScreen } from "./Crews/Crews";
+export { default as CrewViewScreen } from "./CrewView/CrewView";

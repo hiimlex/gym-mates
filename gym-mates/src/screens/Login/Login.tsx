@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import { AuthService } from "@api/services";
 import { Button, Input, Typography } from "@components/atoms";
@@ -11,7 +11,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ScreenWrapper } from "@components/molecules";
 import { useAppNavigation } from "@hooks";
-import { AccessTokenKey } from "@models/generic";
+import {
+  AccessTokenKey,
+  InputRefRecorder,
+  SkipSetupAvatarKey,
+  SkipSetupHealthKey,
+} from "@models/generic";
 import { AppRoutes } from "@navigation/appRoutes";
 import { UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
@@ -24,25 +29,37 @@ const Login: React.FC<LoginProps> = () => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
-  const { control, watch, formState } = useForm<ILoginForm>({ mode: "all" });
-  const values = watch();
+  const { control, watch, formState, reset } = useForm<ILoginForm>({
+    mode: "all",
+  });
   const { user } = useSelector((state: StoreState) => state.user);
+  const values = watch();
   const dispatch = useDispatch<AppDispatch>();
   const { navigate } = useAppNavigation();
+  const fieldsRef: InputRefRecorder<ILoginForm> = {
+    email: useRef(null),
+    password: useRef(null),
+  };
 
   const { mutate: loginUser, isPending } = useMutation({
     mutationFn: AuthService.login,
     onSuccess: async (data) => {
       await AsyncStorage.setItem(AccessTokenKey, data.data.access_token);
       await dispatch(UserActions.fetchCurrentUser());
+      navigate(AppRoutes.Home);
+
+      fieldsRef.email.current?.focus();
+      reset();
     },
     onError: (error) => {
-      console.log("Error logging in:", error);
+      console.error("Error logging in:", error);
     },
   });
 
   const handleLoginSubmit = () => {
-    loginUser({ ...values });
+    if (formState.isValid) {
+      loginUser({ ...values });
+    }
   };
 
   return (
@@ -66,10 +83,15 @@ const Login: React.FC<LoginProps> = () => {
             <Input
               placeholder="login.email"
               label="login.email"
+              inputRef={fieldsRef.email}
               inputProps={{
                 textContentType: "emailAddress",
                 keyboardType: "email-address",
                 value: value,
+                returnKeyType: "next",
+                onSubmitEditing: () => {
+                  fieldsRef.password.current?.focus();
+                },
               }}
               onChange={onChange}
             />
@@ -83,10 +105,12 @@ const Login: React.FC<LoginProps> = () => {
             <Input
               placeholder="login.password"
               label="login.password"
+              inputRef={fieldsRef.password}
               inputProps={{
                 secureTextEntry: true,
                 textContentType: "password",
                 value: value,
+                onSubmitEditing: handleLoginSubmit,
               }}
               onChange={onChange}
             />

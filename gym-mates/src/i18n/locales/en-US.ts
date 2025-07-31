@@ -1,3 +1,5 @@
+import { CrewVisibility } from "@models/collections";
+
 export default {
   login: {
     title: "Login",
@@ -41,8 +43,7 @@ export default {
   home: {
     title: "Hello {{name}}",
     subtitle: "Let's do some workout?",
-    noCrewsSubtitle:
-      "It seems you've not joined any crew yet.",
+    noCrewsSubtitle: "It seems you've not joined any crew yet.",
     highlight: {
       new: "new",
       coins: "coins",
@@ -83,6 +84,68 @@ export default {
       logout: "Logout",
     },
   },
+  crews: {
+    title: "Follow your crews activities!",
+    filters: {
+      joined: "Joined",
+      favorites: "Favorites",
+    },
+  },
+  crewView: {
+    todayWorkouts: "Paid today",
+    noTodayWorkouts: "No one shared their workout today. Be the first!",
+    lastActivities: "Last Activities",
+    hasPaid: "{{name}} has paid.",
+    noActivities: "No activities yet.",
+  },
+  crewSettings: {
+    members: "Members",
+    visibility: "Visibility",
+    publicDescription: "Anyone with the code can join.",
+    privateDescription: "Select who can join.",
+    rules: "Rules",
+    streaks: "Streaks",
+    admin: "Admin",
+    loseStreakAt: "Lose streak at fail for",
+    rulesType: {
+      gym_focused: "Gym Focused",
+      pay_on_past: "Pay on Past",
+      pay_without_picture: "Pay without Picture",
+      show_members_rank: "Show Members Rank",
+      free_weekends: "Free Weekends",
+    },
+    streakType: {
+      weekends: "Weekends streak",
+      weekly: "Weekly streak",
+      monthly: "Monthly streak",
+    },
+    save: "Save",
+    quit: "Quit Crew",
+    edit: "Edit Crew",
+    editCrew: {
+      title: "Edit Crew",
+    },
+    member: {
+      joined_at: "Joined at {{-date}}",
+      you: "You",
+      all: "All Members",
+    },
+  },
+  addWorkout: {
+    fields: {
+      title: "Title",
+      picture: "Picture",
+      date: "Day and time",
+      duration: "Duration",
+      type: "Workout type",
+    },
+    paidText: "Ow! Good job you earned {{coins}} coins.",
+    buttons: {
+      next: "Next",
+      paid: "Paid",
+      close: "Close",
+    },
+  },
   weekDays: {
     long: {
       sun: "Sunday",
@@ -109,11 +172,49 @@ export default {
   },
   links: {
     profile: "Profile",
+    crews: "Crews",
+    crew: "Crew",
+    crewSettings: "Crew Settings",
+    addWorkout: "Add Workout",
+    joinCrew: "Join Crew",
+    createCrew: "Create Crew",
+    shareInCrew: "Share in Crews",
   },
   units: {
     days: "days",
     hours: "hours",
     minutes: "minutes",
     seconds: "seconds",
+  },
+  mediaSelect: {
+    text: "Tap to select media.",
+    hasPreview: "Tap to select another media.",
+    mediaPreview: "Media Preview",
+  },
+  crewStreaks: {
+    weekends: "Weekends",
+    weekly: "Weekly",
+    monthly: "Monthly",
+  },
+  crewVisibility: {
+    public: "Public",
+    private: "Private",
+  },
+  items: {
+    titles: {
+      noTitle: "No Title",
+      "The cool guy": "The cool guy",
+    },
+  },
+  workoutTypes: {
+    gym: "Gym",
+    aerobics: "Aerobics",
+    running: "Running",
+    cycling: "Cycling",
+    cross_fit: "Cross Fit",
+    cardio: "Cardio",
+    yoga: "Yoga",
+    other: "Other",
+    swimming: "Swimming",
   }
 };

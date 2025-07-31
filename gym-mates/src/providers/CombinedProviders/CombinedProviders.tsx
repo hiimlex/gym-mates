@@ -5,7 +5,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as StoreProvider } from "react-redux";
 import AppNavigator from "../../navigation";
 import { Colors } from "../../theme";
-import PersistedData from "../../components/molecules/PersistedData/PersistedData";
 
 import { client } from "@api/apollo";
 import { ApolloProvider } from "@apollo/client";

@@ -1,8 +1,11 @@
 import styled from "@emotion/native";
 
 const Container = styled.View`
-  gap: 6px;
   position: relative;
+  width: auto;
+  height: auto;
+  padding: 0;
+  gap: 6px;
 `;
 
 const Input = styled.TextInput`
@@ -15,8 +18,8 @@ const Input = styled.TextInput`
 
 const FloatSuffix = styled.View`
   position: absolute;
-  right: 16px;
   bottom: 16px;
+  right: 12px;
 `;
 
 export default {

@@ -2,16 +2,16 @@ import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { IWorkout, IWorkoutsByUser } from "@models/collections";
 import { StoreState } from "@store/store";
+import { Colors } from "@theme";
 import { getCurrentWeek, numberToWeekDay } from "@utils/date.utils";
-import React, { useState } from "react";
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CheckCircle, XCircle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import Typography from "../../atoms/Typography/Typography";
 import S from "./styles";
-import { format } from "date-fns";
-import Feather from "@react-native-vector-icons/feather";
-import { Colors } from "@theme";
-import { CheckCircle, XCircle } from "react-native-feather";
+import { client } from "@api/apollo";
 
 interface WeekWorkoutsProps {
   children?: React.ReactNode;
@@ -32,7 +32,7 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
 
   const opacityPace = 0.08;
 
-  useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
+  const { data } = useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
     variables: {
       userId: user?._id,
       range: [
@@ -40,25 +40,30 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
         format(lastDayOfWeek, "MM-dd-yy"),
       ],
     },
-    onCompleted: (data) => {
-      const { workouts } = data;
-      const workoutsMap = currentWeek.map((day) => {
-        return workouts.find((workout) => {
-          const workoutDate = new Date(workout.date);
-
-          return (
-            workoutDate.getDate() === day.getDate() &&
-            workoutDate.getMonth() === day.getMonth() &&
-            workoutDate.getFullYear() === day.getFullYear()
-          );
-        });
-      });
-      setWorkoutsByDay(workoutsMap);
-    },
-    onError: (error) => {
-      console.error("Error fetching workouts:", { ...error });
-    },
+    fetchPolicy: "cache-and-network",
   });
+
+  const handleDataUpdate = (newData: IWorkoutsByUser) => {
+    const { workouts } = newData;
+    const workoutsMap = currentWeek.map((day) => {
+      return workouts.find((workout) => {
+        const workoutDate = new Date(workout.date);
+
+        return (
+          workoutDate.getDate() === day.getDate() &&
+          workoutDate.getMonth() === day.getMonth() &&
+          workoutDate.getFullYear() === day.getFullYear()
+        );
+      });
+    });
+    setWorkoutsByDay(workoutsMap);
+  };
+
+  useEffect(() => {
+    if (data) {
+      handleDataUpdate(data);
+    }
+  }, [data]);
 
   return (
     <S.Container>
@@ -113,7 +118,7 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
               </Typography.Body>
             )}
 
-            {isCurrentDay && (
+            {isCurrentDay && !workoutsByDay[index] && (
               <Typography.Body textColor="primary">
                 {day.getDate().toString().padStart(2, "0")}
               </Typography.Body>

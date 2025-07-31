@@ -6,7 +6,7 @@ import Feather from "@react-native-vector-icons/feather";
 import { StoreState } from "@store/store";
 import { Colors } from "@theme";
 import { format } from "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
@@ -22,17 +22,21 @@ const MyStats: React.FC<MyStatsProps> = ({ children }) => {
 
   const [lastWorkout, setLastWorkout] = useState<IWorkout | null>(null);
 
-  useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
-    variables: { user: user?._id },
-    onCompleted: (data) => {
-      if (data.workouts.length > 0) {
-        setLastWorkout(data.workouts[0]);
-      }
-    },
-    onError: (error) => {
-      console.error("Error fetching workouts:", { ...error });
-    },
+  const { data } = useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
+    variables: { userId: user?._id },
+    fetchPolicy: "cache-and-network",
   });
+
+  useEffect(() => {
+    if (data) {
+      const workouts = data.workouts;
+      if (workouts.length > 0) {
+        setLastWorkout(workouts[0]);
+      } else {
+        setLastWorkout(null);
+      }
+    }
+  }, [data]);
 
   if (!user) {
     return null;

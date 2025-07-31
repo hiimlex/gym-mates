@@ -1,15 +1,14 @@
-import { CrewsService } from "@api/services";
-import { useQuery } from "@apollo/client";
-import { Menu, Row, Typography } from "@components/atoms";
+import { UsersService } from "@api/services";
+import { Avatar, Menu, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
-import { CachedImage } from "@georstat/react-native-image-cache";
-import { ICrewsByMember } from "@models/collections";
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
+import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import {
@@ -20,9 +19,9 @@ import {
   Settings,
   Smile,
 } from "react-native-feather";
+import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./styles";
-import { UserActions } from "@store/slices";
 
 const Profile: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Profile>
@@ -30,19 +29,30 @@ const Profile: React.FC<
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
   const headerHeight = useHeaderHeight();
-  const [crewsCount, setCrewsCount] = useState(0);
+  const { crews } = useSelector((state: StoreState) => state.crews);
+  const [preview, setPreview] = useState<string | undefined>(user?.avatar?.url);
+
+  const crewsCount = useMemo(() => crews.length, [crews]);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  useQuery<ICrewsByMember>(CrewsService.CrewsByMember, {
-    variables: { member: user?._id },
-    onCompleted: (data) => {
-      setCrewsCount(data.crews.length);
+  const { mutate: updateAvatar, isPending } = useMutation({
+    mutationFn: UsersService.updateAvatar,
+    onSuccess: async (data) => {
+      await dispatch(UserActions.fetchCurrentUser());
     },
     onError: (error) => {
-      // console.error("Error fetching crews:", { ...error });
+      console.error("Error signing up:", error);
     },
   });
+
+  const onAvatarChange = (file: Asset) => {
+    if (file.base64) {
+      setPreview(`data:image/jpeg;base64,${file.base64}`);
+    }
+
+    updateAvatar(file);
+  };
 
   const logout = async () => {
     await dispatch(UserActions.logout());
@@ -60,36 +70,31 @@ const Profile: React.FC<
         contentContainerStyle={{ gap: 24 }}
       >
         <Row align="flex-start" gap={18}>
-          <View style={{ width: 80, height: 80 }}>
-            {user && user?.avatar && typeof user?.avatar !== "string" && (
-              <CachedImage
-                style={{ width: 80, height: 80 }}
-                imageStyle={{
-                  borderRadius: 40,
-                  borderWidth: 1,
-                  borderColor: Colors.colors.border,
-                }}
-                source={user.avatar.url}
-              />
-            )}
-          </View>
+          <Avatar
+            size={80}
+            preview={preview}
+            onAvatarChange={onAvatarChange}
+            loading={isPending}
+          />
           <View style={{ gap: 12 }}>
             <View style={{ gap: 6 }}>
               <Typography.Heading fontWeight="medium">
                 {user.name}
               </Typography.Heading>
 
-              {user.title && (
-                <Text
-                  style={{
-                    fontWeight: "500",
-                    fontStyle: "italic",
-                    color: Colors.colors.primary,
-                  }}
-                >
-                  {user.title.title}
-                </Text>
-              )}
+              <Text
+                style={{
+                  fontWeight: "500",
+                  fontStyle: "italic",
+                  color: Colors.colors.primary,
+                }}
+              >
+                {t(
+                  user?.title
+                    ? `items.titles.${user?.title?.title}`
+                    : "items.titles.noTitle"
+                )}
+              </Text>
             </View>
 
             <Row gap={12}>

@@ -36,8 +36,12 @@ const Button: React.FC<ButtonProps> = ({
       return colorScheme;
     }
 
-    if (variant === "filled") {
+    if (variant === "filled" && colorScheme === "primary") {
       return "white";
+    }
+
+    if (colorScheme === "secondary" || colorScheme === "tertiary") {
+      return "textDark";
     }
 
     return "white";
@@ -55,7 +59,9 @@ const Button: React.FC<ButtonProps> = ({
       {!loading && (
         <Typography.Button textColor={textColor}>{t(title)}</Typography.Button>
       )}
-      {loading && !disabled && <Loader size="42" strokeWidth={2} color={textColor} />}
+      {loading && !disabled && (
+        <Loader size="42" strokeWidth={2} color={textColor} />
+      )}
     </S.Button>
   );
 };

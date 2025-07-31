@@ -1,31 +1,46 @@
+import { ICrew } from "@models/collections";
+
 export enum AppRoutes {
+  // General
   Login = "Login",
   SignUp = "SignUp",
-  Home = "Home",
-  Crews = "Crews",
-  Profile = "Profile",
+  // Authenticated
   SetupAvatar = "SetupAvatar",
   SetupHealth = "SetupHealth",
+  Home = "Home",
+  Crews = "Crews",
+  CrewView = "CrewView",
+  Journey = "Journey",
+  Inventory = "Inventory",
+  Shop = "Shop",
+  ShopCart = "ShopCart",
+  Profile = "Profile",
+  Friends = "Friends",
+  Settings = "Settings",
+  EditProfile = "EditProfile",
 }
 
 export type TRootStackParamList = {
+  [AppRoutes.Login]?: {};
+  [AppRoutes.SignUp]?: {};
   [AppRoutes.Home]?: {
-    hideBottomNav?: boolean;
+    showBottomNav?: boolean;
   };
-  [AppRoutes.Login]?: {
-    hideBottomNav?: boolean;
+  [AppRoutes.Crews]?: {
+    showBottomNav?: boolean;
   };
-  [AppRoutes.Crews]?: {};
-  [AppRoutes.Profile]?: {
-    hideBottomNav?: boolean;
+
+  [AppRoutes.Profile]?: {};
+  [AppRoutes.SetupAvatar]?: {};
+  [AppRoutes.SetupHealth]?: {};
+  [AppRoutes.CrewView]?: {
+    crew: ICrew;
   };
-  [AppRoutes.SignUp]?: {
-    hideBottomNav?: boolean;
-  };
-  [AppRoutes.SetupAvatar]?: {
-    hideBottomNav?: boolean;
-  };
-  [AppRoutes.SetupHealth]?: {
-    hideBottomNav?: boolean;
-  };
+  [AppRoutes.Journey]?: {};
+  [AppRoutes.Inventory]?: {};
+  [AppRoutes.Shop]?: {};
+  [AppRoutes.ShopCart]?: {};
+  [AppRoutes.Friends]?: {};
+  [AppRoutes.Settings]?: {};
+  [AppRoutes.EditProfile]?: {};
 };
