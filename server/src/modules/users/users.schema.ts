@@ -34,12 +34,12 @@ const UsersSchema = new Schema(
 			red: Collections.HealthyInfo,
 			required: false,
 		},
-		friends: {
+		following: {
 			type: [Types.ObjectId],
 			ref: Collections.Users,
 			required: false,
 		},
-		requests: {
+		followers: {
 			type: [Types.ObjectId],
 			ref: Collections.Users,
 			required: false,

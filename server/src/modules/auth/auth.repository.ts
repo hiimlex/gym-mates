@@ -126,7 +126,11 @@ class AuthRepository {
 
 			// [StreakSystem] - Check user streak if the user has lost streak based on crews
 
-			await user.populate({ path: "title" });
+			await user.populate({ path: "title journey" });
+			await user.populate({
+				path: "followers following",
+				select: "-access_token -password -created_at -updated_at",
+			});
 
 			return res.status(200).json(user);
 		} catch (error) {

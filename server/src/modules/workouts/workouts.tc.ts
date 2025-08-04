@@ -1,23 +1,34 @@
+import { schemaComposer } from "graphql-compose";
 import { composeWithMongoose } from "graphql-compose-mongoose";
-import { WorkoutsModel } from "./workouts.schema";
-import { UsersTC } from "@modules/users";
 import { IWorkoutDocument } from "types/collections";
-import composeWithConnection from "graphql-compose-connection";
+import { WorkoutsModel } from "./workouts.schema";
 
-const WorkoutsTC = composeWithMongoose(WorkoutsModel);
-
-WorkoutsTC.addRelation("user", {
-	resolver: () => UsersTC.getResolver("findById"),
-	prepareArgs: {
-		_id: (source: IWorkoutDocument) => source.user,
-	},
-	projection: { user: true }, // Provide the field to be projected
-});
+const WorkoutsTC = composeWithMongoose<IWorkoutDocument>(WorkoutsModel);
 
 const WorkoutQueries = {
 	workoutById: WorkoutsTC.getResolver("findById"),
 	workoutOne: WorkoutsTC.getResolver("findOne"),
 	workouts: WorkoutsTC.getResolver("findMany")
+		.addFilterArg({
+			name: "earned_op",
+			type: "OperatorsFilterInput",
+			description: "Filter workouts by earned points using operators",
+			query: (rawQuery, value) => {
+				if (value) {
+					const operators = Object.keys(value).reduce((acc, key) => {
+						if (value[key] !== undefined) {
+							(acc as any)[`$${key}`] = value[key];
+						}
+						return acc;
+					}, {});
+
+					rawQuery.earned = {
+						...operators,
+					};
+				}
+				return rawQuery;
+			},
+		})
 		.addFilterArg({
 			name: "range",
 			type: "[Date]",
@@ -36,6 +47,17 @@ const WorkoutQueries = {
 				return rawQuery;
 			},
 		})
+		.addFilterArg({
+			name: "from",
+			type: "[MongoID]",
+			description: "Filter workouts by user IDs",
+			query: (rawQuery, value) => {
+				if (value && value.length > 0) {
+					rawQuery.user = { $in: value };
+				}
+				return rawQuery;
+			},
+		})
 		.addSortArg({
 			name: "DATE_ASC",
 			value: { date: 1 },
@@ -50,4 +72,4 @@ const WorkoutQueries = {
 
 const WorkoutMutations = {};
 
-export { WorkoutQueries, WorkoutMutations, WorkoutsTC };
+export { WorkoutMutations, WorkoutQueries, WorkoutsTC };

@@ -1,4 +1,5 @@
 import { timestamps } from "@config/schema.config";
+import { FileSchema } from "@modules/files";
 import { model, Schema, Types } from "mongoose";
 import {
 	Collections,
@@ -44,10 +45,7 @@ const FiguresModel = ItemsModel.discriminator<IFigureDocument>(
 	ItemCategory.Figure,
 	new Schema(
 		{
-			src: {
-				type: String,
-				required: true,
-			},
+			file: FileSchema,
 		},
 		{
 			versionKey: false,

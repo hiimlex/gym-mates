@@ -10,28 +10,22 @@ export class UsersController extends BaseController {
 	}
 
 	define_routes(): void {
-		this.router.post(
-			Endpoints.UsersAcceptFriendRequest,
+		this.router.get(
+			Endpoints.UsersGetJourney,
 			AuthRepositoryImpl.is_authenticated,
-			UsersRepositoryImpl.accept_friend_request
+			UsersRepositoryImpl.get_journey
 		);
 
 		this.router.post(
-			Endpoints.UsersSendFriendRequest,
+			Endpoints.UsersFollow,
 			AuthRepositoryImpl.is_authenticated,
-			UsersRepositoryImpl.send_friend_request
+			UsersRepositoryImpl.follow
 		);
 
 		this.router.post(
-			Endpoints.UsersRemoveFriend,
+			Endpoints.UsersUnfollow,
 			AuthRepositoryImpl.is_authenticated,
-			UsersRepositoryImpl.remove_friend
-		);
-
-		this.router.post(
-			Endpoints.UsersRejectFriendRequest,
-			AuthRepositoryImpl.is_authenticated,
-			UsersRepositoryImpl.reject_friend_request
+			UsersRepositoryImpl.unfollow
 		);
 
 		this.router.post(
@@ -51,6 +45,6 @@ export class UsersController extends BaseController {
 			AuthRepositoryImpl.is_authenticated,
 			upload.single(upload_key),
 			UsersRepositoryImpl.update_avatar
-		)
+		);
 	}
 }

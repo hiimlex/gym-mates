@@ -85,12 +85,19 @@ export async function recalculate_user_streak(
 ) {
 	return new Promise<void>(async (resolve, reject) => {
 		const user_has_streak = (user.day_streak || 0) > 0;
+		const user_workouts = await WorkoutsModel.find({
+			user: user._id,
+		});
 
-		if (user_has_streak) {
+		if (user_has_streak || user_workouts.length === 0) {
 			resolve();
+
+			return;
 		}
 
-		const journey = await JourneyModel.findById(user.journey);
+		const journey = await JourneyModel.findOne({
+			user: user._id,
+		});
 
 		if (!journey) {
 			reject(new HttpException(404, "JOURNEY_NOT_FOUND"));
@@ -102,12 +109,10 @@ export async function recalculate_user_streak(
 			}
 		});
 
-		if (!lost_streak_at) {
+		if (!lost_streak_at || lost_streak_at?.length === 0) {
 			resolve();
-		}
 
-		if (lost_streak_at?.length === 0) {
-			resolve();
+			return;
 		}
 
 		let streak_count_start_date: Date | undefined = undefined;

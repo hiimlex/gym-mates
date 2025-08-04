@@ -1,3 +1,4 @@
+import { cloudinaryDestroy } from "@config/cloudinary.config";
 import { HttpException } from "@core/http_exception";
 import { UsersModel } from "@modules/users";
 import { WorkoutsModel } from "@modules/workouts";
@@ -15,7 +16,6 @@ import {
 	TUser,
 } from "types/collections";
 import { CrewsModel } from "./crews.schema";
-import { cloudinaryDestroy } from "@config/cloudinary.config";
 
 class CrewsRepository {
 	async create(req: Request, res: Response) {
@@ -187,15 +187,15 @@ class CrewsRepository {
 				throw new HttpException(403, "FORBIDDEN");
 			}
 
-			const { name, visibility, rules } = req.body;
+			const { name, visibility, rules, lose_streak_in_days, streak } = req.body;
 
 			const updated_crew = await CrewsModel.findByIdAndUpdate(
 				crew_id,
 				{
-					$set: {
-						visibility,
-						rules,
-					},
+					visibility,
+					rules,
+					lose_streak_in_days,
+					streak,
 				},
 				{ new: true }
 			);
@@ -283,16 +283,20 @@ class CrewsRepository {
 				throw new HttpException(404, "CREW_NOT_FOUND");
 			}
 
-			const is_member = crew.members.some(
+			const member = crew.members.find(
 				(member) => member.user.toString() === user._id.toString()
 			);
 
-			if (!is_member) {
+			if (!member) {
 				throw new HttpException(400, "USER_NOT_A_MEMBER");
 			}
 
+			if (crew.created_by.toString() === user._id.toString()) {
+				throw new HttpException(400, "CANNOT_LEAVE_CREW_OWNER");
+			}
+
 			await crew.updateOne({
-				$pull: { members: user._id, admins: user._id },
+				$pull: { members: member._id },
 			});
 
 			return res.sendStatus(204);

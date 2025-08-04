@@ -4,35 +4,36 @@ import { JourneyTC } from "@modules/journey";
 import { composeWithMongoose } from "graphql-compose-mongoose";
 import { IUserDocument } from "types/collections";
 import { UsersModel } from "./users.schema";
+import { CrewsModel } from "@modules/crews";
 
-const UsersTC = composeWithMongoose(UsersModel, {
+const UsersTC = composeWithMongoose<IUserDocument>(UsersModel, {
 	fields: { remove: ["password", "access_token"] },
 });
 
-UsersTC.addRelation("friends", {
+UsersTC.addRelation("followers", {
 	resolver: () => UsersTC.getResolver("findMany"),
 	prepareArgs: {
 		filter: (source: IUserDocument) => ({
-			_id: { $in: (source.friends || []).map((id) => id.toString()) },
+			_id: { $in: (source.followers || []).map((id) => id.toString()) },
 		}),
 	},
-	projection: { friends: true },
+	projection: { followers: true },
 });
 
-UsersTC.addRelation("requests", {
+UsersTC.addRelation("following", {
 	resolver: () => UsersTC.getResolver("findMany"),
 	prepareArgs: {
-		filter: (source: IUserDocument) => ({
-			_id: { $in: (source.requests || []).map((id) => id.toString()) },
+		filter: (source) => ({
+			_id: { $in: (source.following || []).map((id) => id.toString()) },
 		}),
 	},
-	projection: { requests: true },
+	projection: { following: true },
 });
 
 UsersTC.addRelation("journey", {
 	resolver: () => JourneyTC.getResolver("findById"),
 	prepareArgs: {
-		_id: (source: IUserDocument) => source.journey?.toString(),
+		_id: (source) => source.journey?.toString(),
 	},
 	projection: { journey: true },
 });
@@ -40,7 +41,7 @@ UsersTC.addRelation("journey", {
 UsersTC.addRelation("healthy", {
 	resolver: () => HealthyTC.getResolver("findById"),
 	prepareArgs: {
-		_id: (source: IUserDocument) => source.healthy?.toString(),
+		_id: (source) => source.healthy?.toString(),
 	},
 	projection: { healthy: true },
 });
@@ -48,10 +49,22 @@ UsersTC.addRelation("healthy", {
 UsersTC.addRelation("title", {
 	resolver: () => TitlesTC.getResolver("findById"),
 	prepareArgs: {
-		_id: (source: IUserDocument) => source.title?.toString(),
+		_id: (source) => source.title?.toString(),
 	},
 	projection: { title: true },
-	
+});
+
+UsersTC.addFields({
+	crews_count: {
+		type: "Int",
+		resolve: async (source) => {
+			const userId = source._id;
+			return CrewsModel.countDocuments({
+				"members.user": userId,
+			});
+		},
+		description: "Number of groups this user is a member of",
+	},
 });
 
 const UserQueries = {

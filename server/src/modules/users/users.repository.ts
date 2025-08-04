@@ -16,29 +16,33 @@ import { TitlesModel } from "@modules/items";
 import { JourneyModel } from "@modules/journey";
 
 class UsersRepository {
-	async send_friend_request(req: Request, res: Response) {
+	async follow(req: Request, res: Response) {
 		try {
 			const user: IUserDocument = res.locals.user;
 
-			const { friend_id } = req.body;
+			const { follower_id } = req.body;
 
-			const friend = await UsersModel.findById(friend_id);
+			const friend = await UsersModel.findById(follower_id);
 
 			if (!friend) {
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
 
-			const already_friends = user.friends?.includes(friend_id);
+			const already_following = user.followers?.includes(follower_id);
 
-			if (already_friends) {
-				throw new HttpException(400, "ALREADY_FRIENDS");
+			if (already_following) {
+				throw new HttpException(400, "ALREADY_FOLLOWING");
 			}
 
 			await friend.updateOne({
-				$addToSet: { requests: user._id },
+				$addToSet: { followers: user._id },
 			});
 
-			// [Notify] - Notify the friend about the new friend request
+			await user.updateOne({
+				$addToSet: { following: follower_id },
+			});
+
+			// [Notify] - Notify the friend about the new follower
 
 			return res.sendStatus(204);
 		} catch (error) {
@@ -46,88 +50,24 @@ class UsersRepository {
 		}
 	}
 
-	async accept_friend_request(req: Request, res: Response) {
+	async unfollow(req: Request, res: Response) {
 		try {
 			const user: IUserDocument = res.locals.user;
 
-			const { friend_id } = req.body;
+			const { follower_id } = req.body;
 
-			const friend = await UsersModel.findById(friend_id);
+			const follower = await UsersModel.findById(follower_id);
 
-			if (!friend) {
+			if (!follower) {
 				throw new HttpException(404, "USER_NOT_FOUND");
 			}
 
-			await user.updateOne({
-				$pull: { requests: friend._id },
-				$addToSet: { friends: friend._id },
-			});
-
-			await friend.updateOne({
-				$pull: { requests: user._id },
-				$addToSet: { friends: user._id },
-			});
-
-			// [Notify] - Notify the friend about the accepted request
-
-			// [Journey] - Add a new event to the user's journey
-			const event: TJourneyEvent = {
-				_id: new Types.ObjectId(),
-				action: JourneyEventAction.ADD,
-				schema: JourneyEventSchemaType.Friend,
-				data: {
-					friend,
-				},
-				created_at: new Date(),
-			};
-			await user.add_journey_event(event);
-
-			return res.sendStatus(204);
-		} catch (error) {
-			return handle_error(res, error);
-		}
-	}
-
-	async reject_friend_request(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
-
-			const { friend_id } = req.body;
-
-			const friend = await UsersModel.findById(friend_id);
-
-			if (!friend) {
-				throw new HttpException(404, "USER_NOT_FOUND");
-			}
-
-			await user.updateOne({
-				$pull: { requests: friend_id },
-			});
-
-			return res.sendStatus(204);
-		} catch (error) {
-			return handle_error(res, error);
-		}
-	}
-
-	async remove_friend(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
-
-			const { friend_id } = req.body;
-
-			const friend = await UsersModel.findById(friend_id);
-
-			if (!friend) {
-				throw new HttpException(404, "USER_NOT_FOUND");
-			}
-
-			await friend.updateOne({
-				$pull: { friends: user._id, requests: user._id },
+			await follower.updateOne({
+				$pull: { followers: user._id },
 			});
 
 			await user.updateOne({
-				$pull: { friends: friend._id, requests: friend._id },
+				$pull: { following: follower_id },
 			});
 
 			return res.sendStatus(204);
@@ -221,6 +161,46 @@ class UsersRepository {
 			);
 
 			return res.status(200).json(updated_user);
+		} catch (error) {
+			return handle_error(res, error);
+		}
+	}
+
+	async get_journey(req: Request, res: Response) {
+		try {
+			const user: IUserDocument = res.locals.user;
+
+			const journey = await JourneyModel.findById(user.journey);
+
+			if (!journey) {
+				throw new HttpException(404, "JOURNEY_NOT_FOUND");
+			}
+
+			const populated_journey = await journey.populate({
+				path: "inventory.item",
+			});
+
+			if (req.query.sort) {
+				const sort = req.query.sort as string;
+				populated_journey.events.sort((a, b) => {
+					if (sort === "recent") {
+						return (
+							new Date(b.created_at).getTime() -
+							new Date(a.created_at).getTime()
+						);
+					}
+					return 0;
+				});
+			}
+
+			if (req.query.action) {
+				const action = req.query.action as JourneyEventAction;
+				populated_journey.events = populated_journey.events.filter(
+					(event) => event.action === action
+				) as any;
+			}
+
+			return res.status(200).json(populated_journey);
 		} catch (error) {
 			return handle_error(res, error);
 		}

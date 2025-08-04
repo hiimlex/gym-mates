@@ -27,5 +27,4 @@ schemaComposer.Mutation.addFields({
 	...ItemsMutations,
 });
 
-
 export { schemaComposer };

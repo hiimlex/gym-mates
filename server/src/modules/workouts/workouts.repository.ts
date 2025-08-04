@@ -26,7 +26,7 @@ class WorkoutsRepository {
 			const user: IUserDocument = res.locals.user;
 			const { title, date, type, duration } = req.body;
 			const file = req.file as TUploadedFile;
-			const shared_to = req.body.shared_to || [];
+			let shared_to = req.body.shared_to || [];
 
 			let picture: TFile | undefined = undefined;
 
@@ -39,7 +39,7 @@ class WorkoutsRepository {
 
 			const crews = await CrewsModel.find({
 				_id: { $in: shared_to },
-				members: user._id,
+				"members.user": { $in: [user._id] },
 			});
 
 			if (!crews.length) {
@@ -71,6 +71,7 @@ class WorkoutsRepository {
 			if (is_past) {
 				await recalculate_user_streak(user, res);
 			}
+
 			// [StreakSystem] - Update user streak count
 			// check if has a registered workout on the same day
 			const gte = new Date(workout_date);

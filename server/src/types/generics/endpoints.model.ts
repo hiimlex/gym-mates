@@ -27,13 +27,12 @@ export const Endpoints = {
 	UsersGet: "/users/:id",
 	UsersUpdate: "/users/:id",
 	UsersDelete: "/users/:id",
-	UsersSendFriendRequest: "/users/friends/send-request",
-	UsersAcceptFriendRequest: "/users/friends/accept-request",
-	UsersRejectFriendRequest: "/users/friends/reject-request",
-	UsersRemoveFriend: "/users/friends/remove",
+	UsersFollow: "/users/follow",
+	UsersUnfollow: "/users/unfollow",
 	UsersCreateHealthy: "/users/healthy",
 	UsersSelectTitle: "/users/select-title",
 	UsersUpdateAvatar: "/users/update-avatar",
+	UsersGetJourney: "/users/journey",
 	// Workouts
 	WorkoutsCreate: "/workouts",
 	// Shop
