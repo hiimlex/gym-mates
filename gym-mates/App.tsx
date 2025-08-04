@@ -1,12 +1,10 @@
-import { CombinedProviders } from "./src/providers";
 import "./src/i18n/i18n";
+import { CombinedProviders } from "./src/providers";
 
-import { enableScreens } from "react-native-screens";
 import { CacheManager } from "@georstat/react-native-image-cache";
-import { Dirs } from "react-native-file-access";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
-import { SkipSetupAvatarKey, SkipSetupHealthKey } from "@models/generic";
+import { Dirs } from "react-native-file-access";
+import { enableScreens } from "react-native-screens";
 
 enableScreens();
 
@@ -29,11 +27,6 @@ CacheManager.config = {
 };
 
 export default function App() {
-  const clearSkip = async () => {
-    await AsyncStorage.removeItem(SkipSetupAvatarKey);
-    await AsyncStorage.removeItem(SkipSetupHealthKey);
-  };
-
   useEffect(() => {
     // clearSkip();
   }, []);

@@ -1,5 +1,5 @@
 import styled from "@emotion/native";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 import { BlurView } from "expo-blur";
 import Animated from "react-native-reanimated";
 
@@ -20,7 +20,7 @@ const Container = styled(Animated.View)`
 const Blur = styled(BlurView)`
   flex: 1;
   gap: 24px;
-  background-color: ${({ theme }) => setAlpha(theme.colors.background, 80)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.background, 80)};
   padding: 24px;
 `;
 

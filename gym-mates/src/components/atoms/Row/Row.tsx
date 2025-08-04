@@ -22,15 +22,17 @@ const Row: React.FC<RowProps> = ({
 }) => {
   return (
     <Animated.View
-      style={{
-        flexDirection: "row",
-        ...style,
-        justifyContent: justify,
-        alignItems: align,
-        gap,
-        width,
-        flexWrap: wrap,
-      }}
+      style={[
+        {
+          flexDirection: "row",
+          justifyContent: justify,
+          alignItems: align,
+          gap,
+          width,
+          flexWrap: wrap,
+        },
+        style,
+      ]}
     >
       {children}
     </Animated.View>

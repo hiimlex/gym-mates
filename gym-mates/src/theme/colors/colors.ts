@@ -123,7 +123,7 @@ const hexPercentage: Record<number, string> = {
   0: "00",
 };
 
-export function setAlpha(hex: string, percentage: number): string {
+export function setAlphaToColor(hex: string, percentage: number): string {
   const hexValue = hexPercentage[percentage];
   if (!hexValue) {
     throw new Error(`Invalid percentage value: ${percentage}`);

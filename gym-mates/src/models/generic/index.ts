@@ -1,3 +1,3 @@
-export * from "./endpoints.model";
-export * from "./constants.model";
-export * from "./field.model";
+export * from "./EndpointsModel";
+export * from "./ConstantsModel";
+export * from "./FieldModel";

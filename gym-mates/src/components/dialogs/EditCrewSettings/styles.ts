@@ -1,10 +1,7 @@
 import { Card } from "../../atoms/";
 import styled from "@emotion/native";
 
-const Container = styled.View`
-  flex: 1;
-  gap: 24px;
-`;
+const Container = styled.ScrollView``;
 
 const VisibilityCard = styled(Card)<{ isActive?: boolean }>`
   flex-direction: column;

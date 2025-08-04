@@ -1,9 +1,9 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import UserReducer from "./slices/users.slice";
-import ConfigReducer from "./slices/config.slice";
-import CrewsReducer from "./slices/crews.slice";
-import DialogReducer from "./slices/dialog.slice";
-import AddWorkoutReducer from "./slices/addWorkout.slice";
+import UserReducer from "./slices/UsersSlice";
+import ConfigReducer from "./slices/ConfigSlice";
+import CrewsReducer from "./slices/CrewsSlice";
+import DialogReducer from "./slices/DialogSlice";
+import AddWorkoutReducer from "./slices/AddWorkoutSlice";
 
 const rootReducer = combineReducers({
   user: UserReducer,

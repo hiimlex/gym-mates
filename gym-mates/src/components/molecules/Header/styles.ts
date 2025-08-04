@@ -1,5 +1,5 @@
 import styled from "@emotion/native";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Container = styled.View`
   flex-direction: row;
@@ -20,7 +20,7 @@ const CoinWrapper = styled.View`
   padding: 4px;
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => setAlpha(theme.colors.secondary, 30)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.secondary, 30)};
 `;
 
 export default {

@@ -38,13 +38,7 @@ const DialogSlice = createSlice({
       state,
       action: PayloadAction<Partial<DialogState["data"]>>
     ) => {
-      if (state.data) {
-        state.data = { ...state.data, ...action.payload };
-      }
-
-      if (!state.data) {
-        state.data = { ...action.payload };
-      }
+      state.data = { ...state.data, ...action.payload };
     },
   },
 });

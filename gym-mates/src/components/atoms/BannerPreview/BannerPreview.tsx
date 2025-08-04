@@ -1,27 +1,32 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 import S from "./styles";
 import { CameraOff } from "react-native-feather";
-import { Colors } from "@theme";
+import { Colors, TColors } from "@theme";
 
 interface BannerPreviewProps {
   preview?: string;
   size?: number;
   noPreviewIcon?: React.ReactNode;
+  iconSize?: number;
+  styles?: ViewStyle;
+  emptyBgColor?: TColors;
 }
 
 const BannerPreview: React.FC<BannerPreviewProps> = ({
   preview,
   size = 60,
+  iconSize = 24,
   noPreviewIcon,
+  emptyBgColor,
 }) => {
   if (!preview) {
     return (
-      <S.EmptyPreview size={size}>
+      <S.EmptyPreview size={size} bgColor={emptyBgColor}>
         {noPreviewIcon || (
           <CameraOff
-            width={24}
-            height={24}
+            width={iconSize}
+            height={iconSize}
             stroke={Colors.colors.borderDark}
             fill={Colors.colors.borderDark}
             fillOpacity={0.2}
@@ -32,7 +37,12 @@ const BannerPreview: React.FC<BannerPreviewProps> = ({
   }
 
   return (
-    <S.BannerImage resizeMode="cover" source={preview} size={size} onError={() => {}} />
+    <S.BannerImage
+      resizeMode="cover"
+      source={preview}
+      size={size}
+      onError={() => {}}
+    />
   );
 };
 

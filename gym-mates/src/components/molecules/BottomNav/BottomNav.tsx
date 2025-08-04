@@ -1,25 +1,30 @@
 import { useAppNavigation, useNavigationContainerRef } from "@hooks";
 import { AppRoutes } from "@navigation/appRoutes";
-import { StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/store";
 import { Colors } from "@theme";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useWindowDimensions } from "react-native";
+import { LayoutChangeEvent, useWindowDimensions, View } from "react-native";
 import { Home, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "../../atoms";
 import S from "./styles";
+import { BlurView } from "expo-blur";
+import { ConfigActions } from "@store/slices";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
 
   const insets = useSafeAreaInsets();
+  const ref = useRef<BlurView>(null);
 
   const navigation = useAppNavigation();
   const { currentRoute, startUpdateData, stopUpdateData } =
     useNavigationContainerRef();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const { hideBottomNav: configHide } = useSelector(
     (state: StoreState) => state.config
@@ -38,6 +43,12 @@ const BottomNav: React.FC = () => {
     return currentRoute.name === checkRoute;
   };
 
+  const onBottomNavLayoutChange = (event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    console.log("BottomNav height:", height);
+    dispatch(ConfigActions.setBottomNavHeight(height));
+  };
+
   useEffect(() => {
     startUpdateData();
     return () => {
@@ -51,6 +62,8 @@ const BottomNav: React.FC = () => {
 
   return (
     <S.Float
+      ref={ref}
+      onLayout={onBottomNavLayoutChange}
       intensity={10}
       style={{ width, bottom: 0, padding: 12, paddingBottom: insets.bottom }}
     >

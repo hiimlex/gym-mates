@@ -14,9 +14,10 @@ const CrewLastActivities: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
 
   const { data, loading } = useQuery<IWorkoutsByCrew>(
-    WorkoutService.WorkoutsByCrew,
+    WorkoutService.gql.WORKOUTS_BY_CREW,
     {
       variables: { crewId: crew?._id },
+      fetchPolicy: "cache-and-network",
     }
   );
 

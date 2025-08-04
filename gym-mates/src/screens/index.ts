@@ -6,3 +6,5 @@ export { default as SetupHealthScreen } from "./SetupHealth/SetupHealth";
 export { default as SetupAvatarScreen } from "./SetupAvatar/SetupAvatar";
 export { default as CrewsScreen } from "./Crews/Crews";
 export { default as CrewViewScreen } from "./CrewView/CrewView";
+export { default as UserJourneyScreen } from "./UserJourney/UserJourney";
+export { default as UserViewScreen } from "./UserView/UserView";

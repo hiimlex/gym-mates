@@ -1,6 +1,6 @@
 import { Asset } from "react-native-image-picker";
-import { IFile } from "./file.model";
-import { IUser } from "./users.model";
+import { IFile } from "./FileModel";
+import { IUser } from "./UsersModel";
 
 export enum CrewVisibility {
   Public = "public",
@@ -13,7 +13,7 @@ export enum CrewStreak {
   Monthly = "monthly",
 }
 
-export interface ICrewsByMember {
+export interface ICrewsResponse {
   crews: ICrew[];
 }
 
@@ -53,13 +53,15 @@ export interface ICrewsState {
   crewView?: ICrew;
 }
 
-export interface ICrewsFilters {
-  favorites?: boolean;
-  mine?: boolean;
+export interface ICrewsByMemberFilters {
+  userId?: string;
+  favorites?: string[];
+  created_by?: string;
+  search?: string;
 }
 
 export interface IEditCrewRulesForm {
-  lose_streak_in_days: number;
+  lose_streak_in_days: string;
   gym_focused: boolean;
   pay_on_past: boolean;
   pay_without_picture: boolean;
@@ -69,15 +71,13 @@ export interface IEditCrewRulesForm {
 
 export interface IUpdateCrewPayload {
   visibility?: CrewVisibility;
+  rules?: Partial<ICrewRules>;
   lose_streak_in_days?: number;
-  gym_focused?: boolean;
-  pay_on_past?: boolean;
-  pay_without_picture?: boolean;
-  show_members_rank?: boolean;
-  free_weekends?: boolean;
   streak?: CrewStreak[];
+  crew_id: string;
 }
 
 export interface IUpdateCrewBannerPayload {
   file: Asset;
+  crew_id: string;
 }

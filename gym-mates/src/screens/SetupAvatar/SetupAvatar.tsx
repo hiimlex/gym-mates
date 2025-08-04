@@ -47,7 +47,6 @@ const SetupAvatar: React.FC<
   });
 
   const skip = async () => {
-    await AsyncStorage.setItem(SkipSetupAvatarKey, "true");
     navigate(AppRoutes.SetupHealth);
   };
 
@@ -81,7 +80,11 @@ const SetupAvatar: React.FC<
             </Typography.Body>
           </View>
 
-          <TouchableOpacity activeOpacity={0.6} onPress={handleButtonPress} disabled={isPending}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={handleButtonPress}
+            disabled={isPending}
+          >
             <Typography.Button textColor="primary" _t>
               {!!avatar ? "setupAvatar.save" : "setupAvatar.skip"}
             </Typography.Button>

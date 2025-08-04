@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 import { ButtonProps } from "./Button";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Button = styled.TouchableOpacity<{
   colorScheme?: ButtonProps["colorScheme"];
@@ -15,7 +15,7 @@ const Button = styled.TouchableOpacity<{
   ${({ buttonVariant, colorScheme, theme }) =>
     buttonVariant === "outlined" &&
     `
-      background-color: ${setAlpha(
+      background-color: ${setAlphaToColor(
         colorScheme ? theme.colors[colorScheme] : theme.colors.primary,
         10
       )};

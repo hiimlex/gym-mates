@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
@@ -16,7 +16,7 @@ const EmptyPreview = styled.View`
   width: 60px;
   height: 60px;
   border-radius: 4px;
-  background-color: ${({ theme }) => setAlpha(theme.colors.border, 20)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.border, 20)};
   border: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: center;
   align-items: center;

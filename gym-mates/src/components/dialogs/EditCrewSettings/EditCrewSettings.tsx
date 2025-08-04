@@ -1,10 +1,11 @@
 import {
   CrewStreak,
   CrewVisibility,
+  ICrewsResponse,
   IEditCrewRulesForm,
 } from "@models/collections";
 import { AppDispatch, StoreState } from "@store/store";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,20 +18,24 @@ import {
   Typography,
 } from "../../atoms";
 import S from "./styles";
-import { DialogActions } from "@store/slices";
+import { CrewsActions, DialogActions } from "@store/slices";
 import Masks from "@utils/masks.utils";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ScrollView, TextInput } from "react-native";
+import { useMutation } from "@tanstack/react-query";
+import { CrewsService } from "@api/services";
+import { client } from "@api/apollo";
 
 const EditCrewSettings: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
+  const { data: dialogData } = useSelector((state: StoreState) => state.dialog);
+  const insets = useSafeAreaInsets();
   const [preview, setPreview] = useState<string | undefined>(crew?.banner?.url);
   const [newBanner, setNewBanner] = useState<Asset | undefined>(undefined);
   const [visibility, setVisibility] = useState<CrewVisibility>(
     crew?.visibility || CrewVisibility.Public
   );
   const [streaks, setStreaks] = useState<CrewStreak[]>(crew?.streak || []);
-  const [loseStreakAt, setLoseStreakAt] = useState<number | undefined>(
-    crew?.lose_streak_in_days || 2
-  );
   const dispatch = useDispatch<AppDispatch>();
   const rules = useMemo(() => {
     const { __typename, ...r } = crew?.rules as any;
@@ -40,9 +45,14 @@ const EditCrewSettings: React.FC = () => {
 
   const { control, watch } = useForm<IEditCrewRulesForm>({
     mode: "all",
-    defaultValues: { ...rules },
+    defaultValues: {
+      ...rules,
+      lose_streak_in_days: crew?.lose_streak_in_days,
+    },
   });
   const values = watch();
+  const loseStreakRef = useRef<TextInput | null>(null);
+  const scrollRef = useRef<ScrollView>(null);
 
   const onBannerChange = (file: Asset) => {
     if (file.base64) {
@@ -67,11 +77,16 @@ const EditCrewSettings: React.FC = () => {
   }, [visibility]);
 
   const hasChangedRules = useMemo(() => {
-    type RuleKey = keyof typeof values;
+    const { lose_streak_in_days, ...rest } = values;
+    type RuleKey = keyof typeof rest;
 
-    return Object.keys(values).some((key) => {
-      return values[key as RuleKey] !== rules[key as RuleKey];
+    return Object.keys(rest).some((key) => {
+      return rest[key as RuleKey] !== rules[key as RuleKey];
     });
+  }, [values]);
+
+  const hasChangedLoseStreak = useMemo(() => {
+    return crew?.lose_streak_in_days !== +values.lose_streak_in_days;
   }, [values]);
 
   const hasChangedStreaks = useMemo(() => {
@@ -82,22 +97,89 @@ const EditCrewSettings: React.FC = () => {
     );
   }, [streaks]);
 
+  const { mutate: updateSettings } = useMutation({
+    mutationFn: async () => {
+      if (
+        hasChangedLoseStreak ||
+        hasChangedRules ||
+        hasChangedVisibility ||
+        hasChangedStreaks
+      ) {
+        const { lose_streak_in_days, ...rest } = values;
+        console.log("Updating crew settings...", rest);
+        await CrewsService.updateSettings({
+          crew_id: crew?._id || "",
+          rules: rest,
+          lose_streak_in_days: +lose_streak_in_days,
+          visibility,
+          streak: streaks,
+        });
+      }
+
+      if (!!newBanner) {
+        console.log("Updating crew banner...");
+        await CrewsService.updateBanner({
+          crew_id: crew?._id || "",
+          file: newBanner,
+        });
+      }
+    },
+    onSuccess: async () => {
+      const { data } = await client.query<ICrewsResponse>({
+        query: CrewsService.gql.CREWS_BY_MEMBER,
+        variables: { _id: crew?._id, limit: 1 },
+        fetchPolicy: "network-only",
+      });
+      console.log("Crew settings updated successfully", data.crews[0].rules);
+      dispatch(CrewsActions.setCrewView(data.crews[0]));
+
+      if (dialogData?.onBackPress) {
+        dialogData.onBackPress();
+      }
+    },
+  });
+
   useEffect(() => {
     dispatch(
       DialogActions.updateData({
         actionLabel: "crewSettings.save",
-        action: () => {},
+        action: updateSettings,
         showAction: () =>
           hasChangedVisibility ||
           hasChangedRules ||
           !!newBanner ||
-          hasChangedStreaks,
+          hasChangedStreaks ||
+          hasChangedLoseStreak,
       })
     );
-  }, [hasChangedVisibility, hasChangedRules, hasChangedStreaks, !!newBanner]);
+  }, [
+    hasChangedVisibility,
+    hasChangedRules,
+    hasChangedStreaks,
+    !!newBanner,
+    hasChangedLoseStreak,
+  ]);
+
+  // scroll to field when it is focused
+  const scrollToFieldRef = (ref: RefObject<TextInput | null>) => {
+    if (ref.current) {
+      ref.current.measureInWindow((x, y, width, height) => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({
+            y: y - height,
+            animated: true,
+          });
+        }
+      });
+    }
+  };
 
   return (
-    <S.Container>
+    <S.Container
+      contentContainerStyle={{ gap: 24, paddingBottom: insets.bottom }}
+      showsVerticalScrollIndicator={false}
+      ref={scrollRef}
+    >
       <MediaSelect
         preview={preview}
         label={crew?.name}
@@ -197,24 +279,33 @@ const EditCrewSettings: React.FC = () => {
           {"crewSettings.loseStreakAt"}
         </Typography.Body>
 
-        <Input
-          placeholder={"2"}
-          inputProps={{
-            style: { width: 100, paddingLeft: 24 },
-            value: loseStreakAt?.toString(),
-            autoCorrect: false,
-            keyboardType: "numeric",
-            autoComplete: "off",
-          }}
-          onChange={(value) => {
-            const numValue = Masks.number(value);
-            setLoseStreakAt(+numValue);
-          }}
-          suffix={
-            <Typography.Caption textColor="textLight" _t>
-              {"units.days"}
-            </Typography.Caption>
-          }
+        <Controller
+          name="lose_streak_in_days"
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              inputProps={{
+                style: { width: 100, paddingLeft: 24 },
+                autoCorrect: false,
+                keyboardType: "numeric",
+                autoComplete: "off",
+                onFocus: () => scrollToFieldRef(loseStreakRef),
+                value: value.toString(),
+              }}
+              inputRef={loseStreakRef}
+              onChange={(value) => {
+                const masked = Masks.number(value);
+
+                onChange(masked);
+              }}
+              suffix={
+                <Typography.Caption textColor="textLight" _t>
+                  {"units.days"}
+                </Typography.Caption>
+              }
+            />
+          )}
         />
       </Row>
     </S.Container>

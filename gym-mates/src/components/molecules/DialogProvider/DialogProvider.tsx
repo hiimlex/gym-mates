@@ -16,7 +16,7 @@ const DialogProvider: React.FC = () => {
   }
 
   const handleBackPress = () => {
-    if (data?.onBackPress) {
+    if (!!data?.onBackPress) {
       data.onBackPress();
 
       return;

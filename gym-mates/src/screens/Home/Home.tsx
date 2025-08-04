@@ -2,27 +2,28 @@ import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Loader, Menu, Typography } from "@components/atoms";
 import {
+  FollowingActivities,
   Header,
   MyStats,
   ScreenWrapper,
   WeekWorkouts,
 } from "@components/molecules";
 import { NotJoinedCrews } from "@components/organisms";
-import { ICrewsByMember } from "@models/collections";
+import { useDialogService } from "@hooks";
+import { ICrewsResponse } from "@models/collections";
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ConfigActions, CrewsActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
 import { Colors } from "@theme";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Heart, PlusCircle, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./styles";
-import { useIsFocused } from "@react-navigation/native";
-import { useDialogService } from "@hooks";
 
 const Home: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Home>
@@ -31,28 +32,39 @@ const Home: React.FC<
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
   const { crews } = useSelector((state: StoreState) => state.crews);
+  const { bottomNavHeight } = useSelector((state: StoreState) => state.config);
   const isScreenFocused = useIsFocused();
   const { openAddWorkout, openCreateCrew, openJoinCrew } = useDialogService();
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { loading: loadingUserCrews } = useQuery<ICrewsByMember>(
-    CrewsService.CrewsByMember,
-    {
-      variables: { userId: user?._id },
-      onCompleted: (data) => {
-        const hasJoinedCrews = data.crews.length > 0;
-        dispatch(CrewsActions.setCrews(data.crews));
+  const {
+    loading: loadingUserCrews,
+    data,
+    error,
+  } = useQuery<ICrewsResponse>(CrewsService.gql.CREWS_BY_MEMBER, {
+    variables: { userId: user?._id },
+    fetchPolicy: "cache-and-network",
+  });
 
-        dispatch(ConfigActions.setHideBottomNav(!hasJoinedCrews));
-      },
-      onError: (error) => {
-        console.error("Error fetching crews:", { ...error });
-        dispatch(ConfigActions.setHideBottomNav(true));
-      },
-      fetchPolicy: "network-only",
+  useEffect(() => {
+    if (!data || data.crews.length === 0) {
+      dispatch(CrewsActions.setCrews([]));
+      dispatch(ConfigActions.setHideBottomNav(true));
     }
-  );
+
+    if (data) {
+      dispatch(CrewsActions.setCrews(data.crews));
+      dispatch(ConfigActions.setHideBottomNav(false));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      console.error("Error fetching crews:", { ...error });
+      dispatch(ConfigActions.setHideBottomNav(true));
+    }
+  }, [error]);
 
   const hasJoinedCrews = useMemo(() => crews.length > 0, [crews]);
 
@@ -67,8 +79,9 @@ const Home: React.FC<
           padding: 24,
           gap: 24,
           paddingTop: insets.top + 24,
-          flex: 1,
+          paddingBottom: bottomNavHeight + 24,
         }}
+        showsVerticalScrollIndicator={false}
       >
         <Header.Root justifyContent="space-between">
           <Header.User />
@@ -147,6 +160,7 @@ const Home: React.FC<
                 />
               </Menu.Root>
             </View>
+            <FollowingActivities />
           </>
         )}
 

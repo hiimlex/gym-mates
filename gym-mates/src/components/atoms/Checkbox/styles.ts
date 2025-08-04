@@ -1,5 +1,5 @@
 import styled from "@emotion/native";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
@@ -9,7 +9,7 @@ const Wrapper = styled.TouchableOpacity`
 
 const Checkbox = styled.View<{ checked?: boolean }>`
   border: 1px solid ${({ theme }) => theme.colors.border};
-  background-color: ${({ theme }) => setAlpha(theme.colors.border, 20)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.border, 20)};
 
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@ const Checkbox = styled.View<{ checked?: boolean }>`
   ${({ checked, theme }) =>
     checked &&
     `
-    background-color: ${setAlpha(theme.colors.primary, 20)};
+    background-color: ${setAlphaToColor(theme.colors.primary, 20)};
     border-color: ${theme.colors.primary};
   `}
 `;

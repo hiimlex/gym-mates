@@ -1,17 +1,16 @@
-import React, { useMemo } from "react";
-import Animated, {
+import { Colors } from "@theme";
+import React from "react";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
+import { ArrowLeft } from "react-native-feather";
+import {
   FadeIn,
   FadeOut,
   SlideInDown,
-  SlideInUp,
   SlideOutDown,
 } from "react-native-reanimated";
-import S from "./styles";
-import { ArrowLeft } from "react-native-feather";
-import Typography from "../Typography/Typography";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TouchableOpacity, useWindowDimensions } from "react-native";
-import { Colors } from "@theme";
+import Typography from "../Typography/Typography";
+import S from "./styles";
 
 export interface DialogProps {
   children?: React.ReactNode;

@@ -53,7 +53,6 @@ const SetupHealth: React.FC<
   });
 
   const skip = async () => {
-    await AsyncStorage.setItem(SkipSetupHealthKey, "true");
     navigate(AppRoutes.Home);
   };
 

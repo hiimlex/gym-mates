@@ -1,11 +1,10 @@
-import {
-  AddWorkout,
-  CrewSettings,
-  EditCrewSettings,
-  ShareWorkout,
-} from "@components/dialogs/";
 import { DialogActions } from "@store/slices";
 import { store } from "@store/store";
+import AddWorkout from "./AddWorkout/AddWorkout";
+import CrewSettings from "./CrewSettings/CrewSettings";
+import EditCrewSettings from "./EditCrewSettings/EditCrewSettings";
+import ShareWorkout from "./ShareWorkout/ShareWorkout";
+import JoinCrew from "./JoinCrew/JoinCrew";
 
 const openAddWorkout = () => {
   store.dispatch(
@@ -34,7 +33,7 @@ const openShareToCrews = () => {
 const openJoinCrew = () => {
   store.dispatch(
     DialogActions.openDialog({
-      content: <></>,
+      content: <JoinCrew />,
       data: {
         title: "links.joinCrew",
         _t: true,
@@ -58,7 +57,7 @@ const openCreateCrew = () => {
 const openCrewSettings = () => {
   store.dispatch(
     DialogActions.openDialog({
-      content: <CrewSettings />,
+      content: <CrewSettings openEditCrewSettings={openEditCrewSettings} />,
       data: {
         title: "links.crewSettings",
         _t: true,

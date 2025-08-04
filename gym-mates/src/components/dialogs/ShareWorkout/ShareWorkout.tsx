@@ -14,7 +14,7 @@ import { useQuery } from "@apollo/client";
 import { CrewsService, WorkoutService } from "@api/services";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/store";
-import { ICrewsByMember } from "@models/collections";
+import { ICrewsResponse } from "@models/collections";
 import { AddWorkoutActions, DialogActions, UserActions } from "@store/slices";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -30,8 +30,8 @@ const ShareWorkout: React.FC = () => {
     (state: StoreState) => state.addWorkout
   );
 
-  const { data: crewsData } = useQuery<ICrewsByMember>(
-    CrewsService.CrewsByMember,
+  const { data: crewsData } = useQuery<ICrewsResponse>(
+    CrewsService.gql.CREWS_BY_MEMBER,
     {
       variables: { userId: user?._id },
     }
@@ -59,7 +59,7 @@ const ShareWorkout: React.FC = () => {
       await dispatch(UserActions.fetchCurrentUser());
 
       await client.refetchQueries({
-        include: [WorkoutService.WorkoutsByUser],
+        include: [WorkoutService.gql.WORKOUTS_BY_USER],
       });
 
       if (data.data) {

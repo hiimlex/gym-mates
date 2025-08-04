@@ -67,7 +67,7 @@ const ButtonCard = styled(Card)`
 
 const ButtonCardRow = styled.View`
   flex-direction: row;
-  gap: 6px;
+  gap: 12px;
   align-items: center;
 `;
 

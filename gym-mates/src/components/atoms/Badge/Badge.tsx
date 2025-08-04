@@ -21,7 +21,7 @@ const Badge: React.FC<BadgeProps> = ({
   label,
   _t,
   active,
-  style
+  style,
 }) => {
   const textColor: TColors = useMemo(() => {
     return active ? "white" : "text";

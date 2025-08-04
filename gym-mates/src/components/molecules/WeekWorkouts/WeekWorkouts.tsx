@@ -11,7 +11,6 @@ import { CheckCircle, XCircle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import Typography from "../../atoms/Typography/Typography";
 import S from "./styles";
-import { client } from "@api/apollo";
 
 interface WeekWorkoutsProps {
   children?: React.ReactNode;
@@ -32,16 +31,19 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
 
   const opacityPace = 0.08;
 
-  const { data } = useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
-    variables: {
-      userId: user?._id,
-      range: [
-        format(firstDayOfWeek, "MM-dd-yy"),
-        format(lastDayOfWeek, "MM-dd-yy"),
-      ],
-    },
-    fetchPolicy: "cache-and-network",
-  });
+  const { data } = useQuery<IWorkoutsByUser>(
+    WorkoutService.gql.WORKOUTS_BY_USER,
+    {
+      variables: {
+        userId: user?._id,
+        range: [
+          format(firstDayOfWeek, "MM-dd-yy"),
+          format(lastDayOfWeek, "MM-dd-yy"),
+        ],
+      },
+      fetchPolicy: "cache-and-network",
+    }
+  );
 
   const handleDataUpdate = (newData: IWorkoutsByUser) => {
     const { workouts } = newData;

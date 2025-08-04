@@ -22,10 +22,13 @@ const MyStats: React.FC<MyStatsProps> = ({ children }) => {
 
   const [lastWorkout, setLastWorkout] = useState<IWorkout | null>(null);
 
-  const { data } = useQuery<IWorkoutsByUser>(WorkoutService.WorkoutsByUser, {
-    variables: { userId: user?._id },
-    fetchPolicy: "cache-and-network",
-  });
+  const { data } = useQuery<IWorkoutsByUser>(
+    WorkoutService.gql.WORKOUTS_BY_USER,
+    {
+      variables: { userId: user?._id },
+      fetchPolicy: "cache-and-network",
+    }
+  );
 
   useEffect(() => {
     if (data) {

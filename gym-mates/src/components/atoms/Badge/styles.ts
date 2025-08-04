@@ -4,7 +4,6 @@ const Container = styled.TouchableOpacity<{ active?: boolean }>`
   padding: 8px 16px;
   background-color: ${({ active, theme }) =>
     active ? theme.colors.primary : theme.colors.border};
-    
 
   border-radius: 6px;
   gap: 6px;

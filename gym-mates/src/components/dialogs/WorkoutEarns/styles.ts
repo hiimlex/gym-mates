@@ -1,5 +1,5 @@
 import styled from "@emotion/native";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Container = styled.View`
   flex: 1;
@@ -12,8 +12,8 @@ const Coin = styled.View`
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  background-color: ${({ theme }) => setAlpha(theme.colors.secondary, 20)};
-  border: 2px solid ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.secondary, 20)};
+  border: 3px solid ${({ theme }) => theme.colors.secondary};
   justify-content: center;
   align-items: center;
 `;

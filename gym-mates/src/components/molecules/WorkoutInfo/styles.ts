@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Container = styled.View`
   flex: 1;
@@ -34,7 +34,7 @@ const WorkoutEmptyPicture = styled.View`
   width: 48px;
   height: 48px;
   border-radius: 4px;
-  background-color: ${({ theme }) => setAlpha(theme.colors.background, 40)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.background, 40)};
   border: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: center;
   align-items: center;
@@ -47,7 +47,7 @@ const CoinWrapper = styled.View`
   padding: 4px;
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => setAlpha(theme.colors.secondary, 20)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.secondary, 20)};
 `;
 
 export default {

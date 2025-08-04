@@ -1,4 +1,6 @@
+import JoinCrew from "@components/dialogs/JoinCrew/JoinCrew";
 import { CrewVisibility } from "@models/collections";
+import UserJourney from "src/screens/UserJourney/UserJourney";
 
 export default {
   login: {
@@ -44,6 +46,7 @@ export default {
     title: "Hello {{name}}",
     subtitle: "Let's do some workout?",
     noCrewsSubtitle: "It seems you've not joined any crew yet.",
+    followingActivities: "Following activities",
     highlight: {
       new: "new",
       coins: "coins",
@@ -68,14 +71,16 @@ export default {
     },
   },
   profile: {
-    friends: "Friends",
+    followers: "Followers",
+    following: "Following",
     crews: "Crews",
     streak: "Streak",
     personal: {
       title: "Personal",
       journey: "Journey",
       inventory: "Inventory",
-      friends: "Friends",
+      followers: "Followers",
+      following: "Following",
     },
     settings: {
       edit: "Edit Profile",
@@ -87,9 +92,10 @@ export default {
   crews: {
     title: "Follow your crews activities!",
     filters: {
-      joined: "Joined",
+      mine: "Mine",
       favorites: "Favorites",
     },
+    empty: "No crews found.",
   },
   crewView: {
     todayWorkouts: "Paid today",
@@ -97,6 +103,7 @@ export default {
     lastActivities: "Last Activities",
     hasPaid: "{{name}} has paid.",
     noActivities: "No activities yet.",
+    todayWorkout: "Today {{-time}}",
   },
   crewSettings: {
     members: "Members",
@@ -130,6 +137,7 @@ export default {
       you: "You",
       all: "All Members",
     },
+    delete: "Delete Crew",
   },
   addWorkout: {
     fields: {
@@ -139,11 +147,39 @@ export default {
       duration: "Duration",
       type: "Workout type",
     },
-    paidText: "Ow! Good job you earned {{coins}} coins.",
+    paidText: "Ow! Good job you earned +{{coins}} coins.",
     buttons: {
       next: "Next",
       paid: "Paid",
       close: "Close",
+    },
+  },
+  joinCrew: {
+    search: "Insert crew name or code to search.",
+    join: "Join",
+    request: "Request to join",
+    alreadyJoined: "You are already a member of this crew.",
+  },
+  journey: {
+    title: "See your activities",
+    events: {
+      start: "Joined the app.",
+      paid: "Paid",
+      buy: `Got "{{-itemName}}"`,
+      add: {
+        healthy: "Added a healthy info.",
+      },
+      bodyFat: "BF {{bf}}%",
+    },
+    filters: {
+      recent: "Recent",
+      old: "Old",
+    },
+  },
+  userView: {
+    buttons: {
+      accept: "Accept",
+      reject: "Reject",
     },
   },
   weekDays: {
@@ -174,11 +210,14 @@ export default {
     profile: "Profile",
     crews: "Crews",
     crew: "Crew",
+    user: "User",
     crewSettings: "Crew Settings",
     addWorkout: "Add Workout",
     joinCrew: "Join Crew",
     createCrew: "Create Crew",
     shareInCrew: "Share in Crews",
+    editCrew: "Edit Crew",
+    userJourney: "Journey",
   },
   units: {
     days: "days",
@@ -195,15 +234,17 @@ export default {
     weekends: "Weekends",
     weekly: "Weekly",
     monthly: "Monthly",
+    daily: "Daily",
   },
   crewVisibility: {
     public: "Public",
     private: "Private",
   },
   items: {
-    titles: {
+    title: {
       noTitle: "No Title",
-      "The cool guy": "The cool guy",
+      "Cool guy": "The cool guy",
+      "Hot guy": "The hot guy",
     },
   },
   workoutTypes: {
@@ -216,5 +257,13 @@ export default {
     yoga: "Yoga",
     other: "Other",
     swimming: "Swimming",
-  }
+  },
+  itemCategoryTypes: {
+    title: "Title",
+    achievement: "Achievement",
+    figure: "Figure",
+    badge: "Badge",
+    skin: "Skin",
+    avatar: "Avatar",
+  },
 };

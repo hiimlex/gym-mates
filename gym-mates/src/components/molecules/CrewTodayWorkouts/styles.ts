@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 
 const Container = styled.View`
   gap: 12px;
@@ -18,7 +18,7 @@ const EmptyAvatar = styled.View`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: ${({ theme }) => setAlpha(theme.colors.background, 40)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.background, 40)};
   align-items: center;
   justify-content: center;
   border: 1px solid ${({ theme }) => theme.colors.border};

@@ -1,4 +1,9 @@
-import { DialogProvider, PersistedData } from "@components/molecules";
+import {
+  CrewViewActions,
+  DialogProvider,
+  PersistedData,
+  UserViewActions,
+} from "@components/molecules";
 import { navigationRef } from "@hooks";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +16,8 @@ import {
   SetupAvatarScreen,
   SetupHealthScreen,
   SignUpScreen,
+  UserJourneyScreen,
+  UserViewScreen,
 } from "@screens";
 import { StoreState } from "@store/store";
 import { Colors } from "@theme";
@@ -108,6 +115,7 @@ const AppNavigator = () => {
                     {"links.crew"}
                   </Typography.HeadingSubtitle>
                 ),
+                headerRight: () => <CrewViewActions />,
               }}
             />
 
@@ -128,6 +136,45 @@ const AppNavigator = () => {
                 headerLeft: BackLeft,
                 headerRight: () => <Header.Coins size={10} />,
                 headerTransparent: true,
+              }}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.UserJourney}
+              component={UserJourneyScreen}
+              options={{
+                headerShown: true,
+                headerTitle: () => (
+                  <Typography.HeadingSubtitle
+                    textColor="text"
+                    fontWeight="semibold"
+                    _t
+                  >
+                    {"links.userJourney"}
+                  </Typography.HeadingSubtitle>
+                ),
+                headerLeft: BackLeft,
+                headerTransparent: true,
+              }}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.UserView}
+              component={UserViewScreen}
+              options={{
+                headerShown: true,
+                headerTitle: () => (
+                  <Typography.HeadingSubtitle
+                    textColor="text"
+                    fontWeight="semibold"
+                    _t
+                  >
+                    {"links.user"}
+                  </Typography.HeadingSubtitle>
+                ),
+                headerLeft: BackLeft,
+                headerTransparent: true,
+                headerRight: () => <UserViewActions />,
               }}
             />
           </>

@@ -1,4 +1,5 @@
 import { Row, Typography } from "@components/atoms";
+import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
 import {
   CrewLastActivities,
   CrewTodayWorkouts,
@@ -8,16 +9,15 @@ import {
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Colors } from "@theme";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ScrollView, View } from "react-native";
-import { Code, User } from "react-native-feather";
-import S from "./styles";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@store/store";
 import { CrewsActions } from "@store/slices";
+import { AppDispatch } from "@store/store";
+import { Colors } from "@theme";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import { Code, User } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
+import { useDispatch } from "react-redux";
+import S from "./styles";
 
 const CrewView: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.CrewView>
@@ -53,9 +53,7 @@ const CrewView: React.FC<
         }}
       >
         <Row gap={12} align="center" width={"auto"}>
-          <CrewViewActions />
-
-          {crew.banner && <BannerPreview preview={crew.banner.url} size={80} />}
+          <BannerPreview preview={crew?.banner?.url} size={60} iconSize={24} />
 
           <View style={{ gap: 6 }}>
             <Typography.Heading fontWeight="medium" textColor="text" _t>

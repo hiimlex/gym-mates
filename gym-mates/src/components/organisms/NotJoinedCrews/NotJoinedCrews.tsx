@@ -8,12 +8,14 @@ import { ConfigActions } from "@store/slices";
 import { View } from "react-native";
 import { PlusCircle, Users } from "react-native-feather";
 import { Colors } from "@theme";
+import { useDialogService } from "@hooks";
 
 interface NotJoinedCrewsProps {}
 
 const NotJoinedCrews: React.FC<NotJoinedCrewsProps> = () => {
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
+  const {openJoinCrew, openCreateCrew} = useDialogService();
 
   if (!user) {
     return null;
@@ -53,7 +55,7 @@ const NotJoinedCrews: React.FC<NotJoinedCrewsProps> = () => {
       <View style={{ width: "100%" }}>
         <Menu.Item
           label="home.menu.createCrew"
-          onPress={() => {}}
+          onPress={openCreateCrew}
           _t
           icon={
             <PlusCircle
@@ -67,7 +69,7 @@ const NotJoinedCrews: React.FC<NotJoinedCrewsProps> = () => {
         />
         <Menu.Item
           label="home.menu.joinCrew"
-          onPress={() => {}}
+          onPress={openJoinCrew}
           _t
           isLast
           icon={

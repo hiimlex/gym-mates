@@ -1,9 +1,11 @@
 import { ScreenWrapper } from "@components/molecules";
-import React, { useRef } from "react";
+import React, { RefObject, useRef } from "react";
 import S from "./styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -28,6 +30,7 @@ const SignUp: React.FC<
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
+  const scrollRef = useRef<ScrollView>(null);
   const { control, formState, getValues, reset } = useForm<ISignUpForm>({
     mode: "all",
   });
@@ -46,6 +49,7 @@ const SignUp: React.FC<
       reset();
       await AsyncStorage.setItem(AccessTokenKey, data.data.access_token);
       await dispatch(UserActions.fetchCurrentUser());
+      navigate(AppRoutes.SetupAvatar);
     },
     onError: (error) => {
       console.error("Error signing up:", error);
@@ -59,6 +63,20 @@ const SignUp: React.FC<
     }
   };
 
+
+  const scrollToFieldRef = (ref: RefObject<TextInput | null>) => {
+    if (ref.current) {
+      ref.current.measureInWindow((x, y, width, height) => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({
+            y: y - height,
+            animated: true,
+          });
+        }
+      });
+    }
+  };
+
   return (
     <ScreenWrapper>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -68,6 +86,7 @@ const SignUp: React.FC<
             paddingTop: insets.top + 60,
             gap: 24,
           }}
+          ref={scrollRef}
         >
           <View style={{ gap: 12 }}>
             <Typography.Subtitle _t textColor="textDark">
@@ -95,6 +114,7 @@ const SignUp: React.FC<
                   onSubmitEditing: () => {
                     fieldsRef.email.current?.focus();
                   },
+                  onFocus: () => scrollToFieldRef(fieldsRef.name),
                 }}
                 onChange={onChange}
               />
@@ -118,6 +138,7 @@ const SignUp: React.FC<
                   onSubmitEditing: () => {
                     fieldsRef.password.current?.focus();
                   },
+                  onFocus: () => scrollToFieldRef(fieldsRef.email),
                 }}
                 onChange={onChange}
               />
@@ -140,6 +161,7 @@ const SignUp: React.FC<
                   onSubmitEditing: () => {
                     fieldsRef.confirmPassword.current?.focus();
                   },
+                  onFocus: () => scrollToFieldRef(fieldsRef.password),
                 }}
                 onChange={onChange}
               />
@@ -163,6 +185,7 @@ const SignUp: React.FC<
                   secureTextEntry: true,
                   value: value,
                   onSubmitEditing: handleSignSubmit,
+                  onFocus: () => scrollToFieldRef(fieldsRef.confirmPassword),
                 }}
                 onChange={onChange}
               />

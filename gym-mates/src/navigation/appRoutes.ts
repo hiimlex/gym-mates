@@ -10,7 +10,6 @@ export enum AppRoutes {
   Home = "Home",
   Crews = "Crews",
   CrewView = "CrewView",
-  Journey = "Journey",
   Inventory = "Inventory",
   Shop = "Shop",
   ShopCart = "ShopCart",
@@ -18,6 +17,9 @@ export enum AppRoutes {
   Friends = "Friends",
   Settings = "Settings",
   EditProfile = "EditProfile",
+
+  UserView = "UserView",
+  UserJourney = "UserJourney",
 }
 
 export type TRootStackParamList = {
@@ -36,11 +38,14 @@ export type TRootStackParamList = {
   [AppRoutes.CrewView]?: {
     crew: ICrew;
   };
-  [AppRoutes.Journey]?: {};
+  [AppRoutes.UserJourney]?: {};
   [AppRoutes.Inventory]?: {};
   [AppRoutes.Shop]?: {};
   [AppRoutes.ShopCart]?: {};
   [AppRoutes.Friends]?: {};
   [AppRoutes.Settings]?: {};
   [AppRoutes.EditProfile]?: {};
+  [AppRoutes.UserView]: {
+    userId: string;
+  };
 };

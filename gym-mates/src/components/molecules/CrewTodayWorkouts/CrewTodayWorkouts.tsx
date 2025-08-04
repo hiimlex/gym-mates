@@ -17,12 +17,17 @@ const CrewTodayWorkouts: React.FC = () => {
   const todayFormatted = format(today, "MM-dd-yy");
 
   const { data, loading } = useQuery<IWorkoutsByCrew>(
-    WorkoutService.WorkoutsByCrew,
+    WorkoutService.gql.WORKOUTS_BY_CREW,
     {
-      variables: { crewId: crew?._id, range: [todayFormatted, todayFormatted] },
+      variables: {
+        crewId: crew?._id,
+        range: [todayFormatted, todayFormatted],
+        earned_op: { gte: 1 },
+      },
       onError: (error) => {
         console.error("Error fetching today's workouts:", error);
       },
+      fetchPolicy: "cache-and-network",
     }
   );
 

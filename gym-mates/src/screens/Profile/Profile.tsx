@@ -75,6 +75,7 @@ const Profile: React.FC<
             preview={preview}
             onAvatarChange={onAvatarChange}
             loading={isPending}
+            iconSize={40}
           />
           <View style={{ gap: 12 }}>
             <View style={{ gap: 6 }}>
@@ -91,48 +92,60 @@ const Profile: React.FC<
               >
                 {t(
                   user?.title
-                    ? `items.titles.${user?.title?.title}`
-                    : "items.titles.noTitle"
+                    ? `items.title.${user?.title?.name}`
+                    : "items.title.noTitle"
                 )}
               </Text>
             </View>
 
-            <Row gap={12}>
+            <Row gap={6}>
               <View style={{ gap: 6 }}>
-                <Typography.Caption
+                <Typography.Tip
                   _t
                   textColor="textLight"
                   fontWeight="medium"
                 >
-                  {"profile.friends"}
-                </Typography.Caption>
-                <Typography.Body textColor="text" fontWeight="semibold">
-                  {user.friends?.length}
-                </Typography.Body>
+                  {"profile.followers"}
+                </Typography.Tip>
+                <Typography.Button textColor="text" fontWeight="semibold">
+                  {user.followers?.length || 0}
+                </Typography.Button>
               </View>
               <View style={{ gap: 6 }}>
-                <Typography.Caption
+                <Typography.Tip
+                  _t
+                  textColor="textLight"
+                  fontWeight="medium"
+                >
+                  {"profile.following"}
+                </Typography.Tip>
+                <Typography.Button textColor="text" fontWeight="semibold">
+                  {user.following?.length || 0}
+                </Typography.Button>
+              </View>
+              <View style={{ gap: 6 }}>
+                <Typography.Tip
                   _t
                   textColor="textLight"
                   fontWeight="medium"
                 >
                   {"profile.crews"}
-                </Typography.Caption>
-                <Typography.Body textColor="text" fontWeight="semibold">
+                </Typography.Tip>
+                <Typography.Button textColor="text" fontWeight="semibold">
                   {crewsCount}
-                </Typography.Body>
+                </Typography.Button>
               </View>
               <View style={{ gap: 6 }}>
-                <Typography.Caption
+                <Typography.Tip
                   _t
                   textColor="textLight"
                   fontWeight="medium"
                 >
                   {"profile.streak"}
-                </Typography.Caption>
-                <Typography.Body textColor="text" fontWeight="semibold">
+                </Typography.Tip>
+                <Typography.Button textColor="text" fontWeight="semibold">
                   {user.day_streak} {t("units.days")}
-                </Typography.Body>
+                </Typography.Button>
               </View>
             </Row>
           </View>
@@ -152,7 +165,7 @@ const Profile: React.FC<
                   fillOpacity={0.2}
                 />
               }
-              onPress={() => {}}
+              onPress={() => navigate(AppRoutes.UserJourney)}
               label="profile.personal.journey"
               _t
             ></Menu.Item>
@@ -181,7 +194,7 @@ const Profile: React.FC<
                 />
               }
               onPress={() => {}}
-              label="profile.personal.friends"
+              label="profile.personal.followers"
               _t
               isLast
             ></Menu.Item>

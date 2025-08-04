@@ -2,4 +2,4 @@ export const AccessTokenKey = "access_token";
 export const SkipSetupHealthKey = "skip_setup_health";
 export const SkipSetupAvatarKey = "skip_setup_avatar";
 
-export const BackendIp = "http://192.168.0.7:8080";
+export const BackendIp = "http://192.168.0.8:8080";

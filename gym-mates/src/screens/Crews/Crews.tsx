@@ -1,4 +1,4 @@
-import { Badge, Card, Row, Typography } from "@components/atoms";
+import { Badge, Card, Loader, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
@@ -7,24 +7,65 @@ import { StoreState } from "@store/store";
 import { Colors } from "@theme";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { ArrowDown, ArrowRight, Code, User } from "react-native-feather";
+import {
+  ArrowDown,
+  ArrowRight,
+  Code,
+  Frown,
+  Star,
+  User,
+} from "react-native-feather";
 import { useSelector } from "react-redux";
 import S from "./styles";
-import { ICrew, ICrewsFilters } from "@models/collections";
+import {
+  ICrew,
+  ICrewsResponse,
+  ICrewsByMemberFilters,
+} from "@models/collections";
 import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
+import { useQuery } from "@apollo/client";
+import { CrewsService } from "@api/services";
 
 const Crews: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Crews>
 > = ({ navigation: { navigate } }) => {
-  const { crews } = useSelector((state: StoreState) => state.crews);
   const { user } = useSelector((state: StoreState) => state.user);
   const headerHeight = useHeaderHeight();
 
-  const [myCrews, setMyCrews] = useState(crews);
-  const [filters, setFilters] = useState<ICrewsFilters>();
+  const [filters, setFilters] = useState<ICrewsByMemberFilters>({
+    userId: user?._id,
+  });
+
+  const { loading: loadingUserCrews, data: crewsData } = useQuery<
+    ICrewsResponse,
+    ICrewsByMemberFilters
+  >(CrewsService.gql.CREWS_BY_MEMBER, {
+    variables: filters,
+    fetchPolicy: "cache-and-network",
+  });
 
   const navigateToCrew = (crew: ICrew) => {
     navigate(AppRoutes.CrewView, { crew });
+  };
+
+  const isFavorite = (crewId: string): boolean => {
+    return !!user?.favorites?.includes(crewId);
+  };
+
+  const setMineFilter = () => {
+    if (filters.created_by) {
+      setFilters({ ...filters, created_by: undefined });
+    } else {
+      setFilters({ ...filters, created_by: user?._id });
+    }
+  };
+
+  const setFavoritesFilter = () => {
+    if (filters.favorites) {
+      setFilters({ ...filters, favorites: undefined });
+    } else {
+      setFilters({ ...filters, favorites: user?.favorites });
+    }
   };
 
   return (
@@ -38,39 +79,32 @@ const Crews: React.FC<
           </Typography.Heading>
 
           <Row gap={12} align="center">
-            <Badge label="crews.filters.joined" _t />
-            <Badge label="crews.filters.favorites" _t />
-            {/* <S.FilterItem activeOpacity={0.6}>
-              <Typography.Button textColor="textLight" _t>
-                {"crews.filters.joined"}
-              </Typography.Button>
-
-              <ArrowDown
-                width={16}
-                height={16}
-                strokeWidth={2}
-                stroke={Colors.colors.textLight}
+            <S.FilterBadge
+              label="crews.filters.mine"
+              _t
+              touchable
+              onPress={setMineFilter}
+              active={!!filters.created_by}
+            />
+            {user?.favorites && user?.favorites?.length > 0 && (
+              <S.FilterBadge
+                label="crews.filters.favorites"
+                _t
+                touchable
+                onPress={setFavoritesFilter}
+                active={!!filters.favorites}
               />
-            </S.FilterItem>
-
-            <S.FilterItem activeOpacity={0.6}>
-              <Typography.Button textColor="textLight" _t>
-                {"crews.filters.favorites"}
-              </Typography.Button>
-
-              <ArrowDown
-                width={16}
-                height={16}
-                strokeWidth={2}
-                stroke={Colors.colors.textLight}
-              />
-            </S.FilterItem> */}
+            )}
           </Row>
         </View>
 
         <S.ScrollList>
-          {crews.map((crew, index) => (
-            <S.CrewCard key={index} touchable onPress={() => navigateToCrew(crew)}>
+          {crewsData?.crews.map((crew, index) => (
+            <S.CrewCard
+              key={index}
+              touchable
+              onPress={() => navigateToCrew(crew)}
+            >
               <Row justify="space-between" align="center">
                 <Row gap={12} align="center" style={{ flex: 1 }} width={"auto"}>
                   {crew.banner && (
@@ -105,6 +139,15 @@ const Crews: React.FC<
                           {crew.members_w_user.length}
                         </Typography.Caption>
                       </Row>
+                      {isFavorite(crew._id) && (
+                        <Star
+                          width={16}
+                          height={16}
+                          stroke={Colors.colors.secondary}
+                          fill={Colors.colors.secondary}
+                          fillOpacity={0.2}
+                        />
+                      )}
                     </Row>
                   </View>
                 </Row>
@@ -116,6 +159,30 @@ const Crews: React.FC<
               </Row>
             </S.CrewCard>
           ))}
+
+          {crewsData?.crews.length === 0 && (
+            <Card
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              gap={6}
+            >
+              <Frown
+                width={24}
+                height={24}
+                stroke={Colors.colors.text}
+                fill={Colors.colors.text}
+                fillOpacity={0.2}
+              />
+
+              <Typography.Body textColor="text" _t>
+                {"crews.empty"}
+              </Typography.Body>
+            </Card>
+          )}
+
+          {loadingUserCrews && <Loader color="primary" />}
         </S.ScrollList>
       </S.Container>
     </ScreenWrapper>

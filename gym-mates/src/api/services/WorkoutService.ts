@@ -5,9 +5,41 @@ import { Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
 import { AxiosResponse } from "axios";
 
-const WorkoutsByUser = gql`
-  query WorkoutsByUser($userId: MongoID, $range: [Date]) {
-    workouts(filter: { user: $userId, range: $range }) {
+const WORKOUTS_BY_USER = gql`
+  query WorkoutsByUser($userId: MongoID, $range: [Date], $from: [MongoID]) {
+    workouts(filter: { user: $userId, range: $range, from: $from }) {
+      picture {
+        url
+      }
+      user {
+        name
+        avatar {
+          url
+        }
+      }
+      title
+      date
+      duration
+      type
+      earned
+      _id
+      shared_to {
+        name
+      }
+    }
+  }
+`;
+
+const WORKOUTS_BY_CREW = gql`
+  query WorkoutsByCrew(
+    $crewId: [MongoID!]
+    $range: [Date]
+    $earned_op: OperatorsFilterInput
+  ) {
+    workouts(
+      filter: { shared_to: $crewId, range: $range, earned_op: $earned_op }
+      sort: DATE_DESC
+    ) {
       picture {
         url
       }
@@ -27,29 +59,9 @@ const WorkoutsByUser = gql`
   }
 `;
 
-const WorkoutsByCrew = gql`
-  query WorkoutsByCrew($crewId: [MongoID!], $range: [Date]) {
-    workouts(filter: { shared_to: $crewId, range: $range }, sort: DATE_DESC) {
-      picture {
-        url
-      }
-      user {
-        name
-        avatar {
-          url
-        }
-      }
-      title
-      date
-      duration
-      type
-      earned
-      _id
-    }
-  }
-`;
-
-const createWorkout = async (payload: ICreateWorkoutPayload): Promise<AxiosResponse<IWorkout>> => {
+const createWorkout = async (
+  payload: ICreateWorkoutPayload
+): Promise<AxiosResponse<IWorkout>> => {
   const formData = new FormData();
 
   const { picture, shared_to, ...workoutData } = payload;
@@ -76,7 +88,9 @@ const createWorkout = async (payload: ICreateWorkoutPayload): Promise<AxiosRespo
 };
 
 export default {
-  WorkoutsByUser,
-  WorkoutsByCrew,
+  gql: {
+    WORKOUTS_BY_USER,
+    WORKOUTS_BY_CREW,
+  },
   createWorkout,
 };

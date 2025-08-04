@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import S from "./styles";
 import Row from "../Row/Row";
 import Feather from "@react-native-vector-icons/feather";
-import { Colors, setAlpha } from "@theme";
+import { Colors, setAlphaToColor } from "@theme";
 
 interface MenuProps {
   children: React.ReactNode;
@@ -15,8 +15,8 @@ const Root: React.FC<MenuProps> = ({ children }) => {
   return (
     <S.Menu
       colors={[
-        setAlpha("#ffffff", 40),
-        setAlpha("#EBF2FF", 40),
+        setAlphaToColor("#ffffff", 40),
+        setAlphaToColor("#EBF2FF", 40),
       ]}
       start={{ x: 0.1, y: 0.7 }}
     >

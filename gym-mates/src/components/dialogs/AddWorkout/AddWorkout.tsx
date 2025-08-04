@@ -57,6 +57,7 @@ const AddWorkout: React.FC = () => {
 
   const [date, setDate] = useState<Date>(new Date());
   const dispatch = useDispatch<AppDispatch>();
+  const scrollRef = useRef<ScrollView>(null);
 
   const fieldsRef: InputRefRecorder<ICreateWorkoutForm> = {
     title: useRef(null),
@@ -114,7 +115,6 @@ const AddWorkout: React.FC = () => {
     );
   };
 
-  const scrollRef = useRef<ScrollView>(null);
 
   const scrollToFieldRef = (ref: RefObject<TextInput | null>) => {
     if (ref.current) {

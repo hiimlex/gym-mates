@@ -24,7 +24,7 @@ const sizes = {
   body: 16,
   button: 14,
   caption: 14,
-  tip: 10,
+  tip: 12,
 };
 
 export default {

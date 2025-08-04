@@ -1,13 +1,20 @@
 import { Asset } from "react-native-image-picker";
-import { IFile } from "./file.model";
-import { IUser } from "./users.model";
+import { IFile } from "./FileModel";
+import { IUser } from "./UsersModel";
+import { ICrew } from "./CrewsModel";
 
 export interface IWorkoutsByUser {
   workouts: IWorkout[];
 }
 
-export interface IWorkoutsByCrew {
+export interface IWorkoutsByCrew {  
   workouts: IWorkout[];
+}
+
+export interface IWorkoutsFilters {
+  userId?: string; // User ID to filter workouts by a specific user
+  range?: [string, string]; // Date range in MM-dd-yy format
+  from?: string[]; // Array of crew IDs to filter workouts shared with specific crews
 }
 
 export interface IWorkout {
@@ -18,7 +25,7 @@ export interface IWorkout {
   type: string;
   created_at: string;
   updated_at: string;
-  shared_to: string[]; // Array of user IDs
+  shared_to: ICrew[]; // Array of user IDs
   earned: number; // Amount earned for the workout
   receipt: object; // Receipt details
   user: IUser;

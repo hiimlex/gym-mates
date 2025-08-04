@@ -1,5 +1,5 @@
 import styled from "@emotion/native";
-import { setAlpha } from "@theme";
+import { setAlphaToColor } from "@theme";
 import { BlurView } from "expo-blur";
 
 const Container = styled(BlurView)`
@@ -9,7 +9,7 @@ const Container = styled(BlurView)`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: ${({ theme }) => setAlpha(theme.colors.background, 20)};
+  background-color: ${({ theme }) => setAlphaToColor(theme.colors.background, 20)};
 `;
 
 export default { Container };

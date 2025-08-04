@@ -40,11 +40,11 @@ const WorkoutEarns: React.FC = () => {
           width={24}
           height={24}
           stroke={Colors.colors.secondary}
-          strokeWidth={2}
+          strokeWidth={3}
         />
       </S.Coin>
 
-      <Typography.Subtitle
+      <Typography.Heading
         _t
         textAlign="center"
         _params={{
@@ -52,7 +52,7 @@ const WorkoutEarns: React.FC = () => {
         }}
       >
         {"addWorkout.paidText"}
-      </Typography.Subtitle>
+      </Typography.Heading>
     </S.Container>
   );
 };

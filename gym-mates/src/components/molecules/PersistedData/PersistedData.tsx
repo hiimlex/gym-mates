@@ -7,7 +7,11 @@ import S from "./styles";
 import { useAppNavigation } from "@hooks";
 import { AppRoutes } from "@navigation/appRoutes";
 import { useWindowDimensions } from "react-native";
-import { SkipSetupAvatarKey, SkipSetupHealthKey } from "@models/generic";
+import {
+  AccessTokenKey,
+  SkipSetupAvatarKey,
+  SkipSetupHealthKey,
+} from "@models/generic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PersistedData: React.FC = () => {
@@ -20,6 +24,13 @@ const PersistedData: React.FC = () => {
   const navigation = useAppNavigation();
 
   const handlePersistedUser = async () => {
+    const hasAccessToken = await AsyncStorage.getItem(AccessTokenKey);
+
+    if (!hasAccessToken || hasAccessToken === null) {
+      navigation.navigate(AppRoutes.Login);
+      return;
+    }
+
     await dispatch(UserActions.fetchCurrentUser());
   };
 

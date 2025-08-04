@@ -1,8 +1,8 @@
-import { ICrew } from "./crews.model";
-import { IFile } from "./file.model";
-import { IHealthData } from "./health.model";
-import { ITitle } from "./items.model";
-import { IUserJourney } from "./journey.model";
+import { ICrew } from "./CrewsModel";
+import { IFile } from "./FileModel";
+import { IHealthData } from "./HealthModel";
+import { ITitle } from "./ItemsModel";
+import { IUserJourney } from "./JourneyModel";
 
 export interface IUser {
   _id: string;
@@ -16,14 +16,20 @@ export interface IUser {
   healthy?: IHealthData;
 
   journey: IUserJourney;
-  friends?: string[] | IUser[];
-  requests?: string[] | IUser[];
+  followers?: IUser[];
+  following?: IUser[];
   favorites?: string[];
   title?: ITitle;
+
+  crews_count: number;
 }
 
 export interface IUserState {
   user: IUser | null;
   loadingCurrentUser?: boolean;
   isAuthenticated?: boolean;
+}
+
+export interface IUserByIdResponse {
+  userById: IUser;
 }

@@ -1,26 +1,46 @@
+import { client } from "@api/apollo";
+import { CrewsService } from "@api/services";
+import { AppRoutes } from "@navigation/appRoutes";
+import { DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
+import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
+import { AxiosError } from "axios";
 import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Check, ChevronRight, Edit, Image, LogOut } from "react-native-feather";
+import {
+  Check,
+  ChevronRight,
+  Edit,
+  Image,
+  LogOut,
+  Trash,
+} from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
+import { useAppNavigation } from "../../../hooks/";
 import { Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
 import S from "./styles";
-import { useDialogService } from "@hooks";
-import { DialogActions } from "@store/slices";
-import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
 
-const CrewSettings: React.FC = () => {
+interface CrewSettingsProps {
+  openEditCrewSettings: () => void;
+}
+
+const CrewSettings: React.FC<CrewSettingsProps> = ({
+  openEditCrewSettings,
+}) => {
   const { user } = useSelector((state: StoreState) => state.user);
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const dispatch = useDispatch<AppDispatch>();
+  const { navigate } = useAppNavigation();
 
   const isAdmin = useMemo(
     () =>
       crew?.members_w_user.some((m) => m.user._id === user?._id && m.is_admin),
     [crew, user]
   );
+
+  const isOwner = useMemo(() => crew?.created_by === user?._id, [crew, user]);
 
   const activeRules = useMemo(
     () =>
@@ -30,17 +50,31 @@ const CrewSettings: React.FC = () => {
     [crew?.rules]
   );
 
-  const openEditCrewSettings = () => {
-    dispatch(
-      DialogActions.openDialog({
-        content: <EditCrewSettings />,
-        data: {
-          title: "links.editCrew",
-          _t: true,
-        },
-      })
-    );
+  const { mutate: leaveCrew } = useMutation({
+    mutationFn: CrewsService.leave,
+    onSuccess: async () => {
+      console.log("Crew left successfully");
+      await client.refetchQueries({
+        include: ["CrewsByMember"],
+      });
+      dispatch(DialogActions.closeDialog());
+      navigate(AppRoutes.Home);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.error("Error leaving crew:", error.response?.data.message);
+      }
+    },
+  });
+
+  const navigateToUserView = (userId: string) => {
+    dispatch(DialogActions.closeDialog());
+    navigate(AppRoutes.UserView, { userId });
   };
+
+  if (!crew) {
+    return null;
+  }
 
   return (
     <S.Container
@@ -86,7 +120,14 @@ const CrewSettings: React.FC = () => {
         </Row>
 
         {crew?.members_w_user.map((member) => (
-          <CrewMemberInfo member={member} key={member._id} />
+          <CrewMemberInfo
+            touchable
+            onPress={() => {
+              navigateToUserView(member.user._id);
+            }}
+            member={member}
+            key={member._id}
+          />
         ))}
       </S.Group>
 
@@ -147,22 +188,42 @@ const CrewSettings: React.FC = () => {
         </S.ButtonCard>
       )}
 
-      <S.ButtonCard touchable onPress={() => {}}>
-        <S.ButtonCardRow>
-          <LogOut
-            width={20}
-            height={20}
-            stroke={Colors.colors.danger}
-            fill={Colors.colors.danger}
-            fillOpacity={0.2}
-          />
+      {!isOwner && (
+        <S.ButtonCard touchable onPress={() => leaveCrew(crew.code)}>
+          <S.ButtonCardRow>
+            <LogOut
+              width={20}
+              height={20}
+              stroke={Colors.colors.danger}
+              fill={Colors.colors.danger}
+              fillOpacity={0.2}
+            />
 
-          <Typography.Body textColor="text" _t>
-            {"crewSettings.quit"}
-          </Typography.Body>
-        </S.ButtonCardRow>
-        <ChevronRight width={20} height={20} stroke={Colors.colors.text} />
-      </S.ButtonCard>
+            <Typography.Body textColor="text" _t>
+              {"crewSettings.quit"}
+            </Typography.Body>
+          </S.ButtonCardRow>
+          <ChevronRight width={20} height={20} stroke={Colors.colors.text} />
+        </S.ButtonCard>
+      )}
+
+      {isOwner && (
+        <S.ButtonCard touchable onPress={() => {}}>
+          <S.ButtonCardRow>
+            <Trash
+              width={20}
+              height={20}
+              stroke={Colors.colors.danger}
+              fill={Colors.colors.danger}
+              fillOpacity={0.2}
+            />
+            <Typography.Body textColor="text" _t>
+              {"crewSettings.delete"}
+            </Typography.Body>
+          </S.ButtonCardRow>
+          <ChevronRight width={20} height={20} stroke={Colors.colors.text} />
+        </S.ButtonCard>
+      )}
     </S.Container>
   );
 };

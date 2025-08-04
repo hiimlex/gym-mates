@@ -1,4 +1,4 @@
-import { IUser } from "./users.model";
+import { IUser } from "./UsersModel";
 
 export interface IHealthData {
   user: IUser;
