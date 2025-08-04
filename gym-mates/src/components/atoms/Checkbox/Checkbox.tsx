@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import Typography from "../Typography/Typography";
-import S from "./styles";
+import S from "./Checkbox.styles";
 import { Check } from "react-native-feather";
 import { Colors } from "@theme";
 

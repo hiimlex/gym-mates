@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ViewStyle } from "react-native";
-import S from "./styles";
+import S from "./BannerPreview.styles";
 import { CameraOff } from "react-native-feather";
 import { Colors, TColors } from "@theme";
 

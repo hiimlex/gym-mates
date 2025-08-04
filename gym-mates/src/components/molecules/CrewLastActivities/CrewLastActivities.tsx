@@ -8,7 +8,7 @@ import { Frown } from "react-native-feather";
 import { useSelector } from "react-redux";
 import { Loader, Row, Typography } from "../../atoms";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
-import S from "./styles";
+import S from "./CrewLastActivities.styles";
 
 const CrewLastActivities: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);

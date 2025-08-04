@@ -4,7 +4,7 @@ import { Colors, setAlphaToColor } from "@theme";
 import { format } from "date-fns";
 import React from "react";
 import { Circle, DollarSign } from "react-native-feather";
-import S from "./styles";
+import S from "./CrewMemberInfo.styles";
 import { useSelector } from "react-redux";
 import { StoreState } from "@store/store";
 import { TouchableHighlight, TouchableOpacity } from "react-native";

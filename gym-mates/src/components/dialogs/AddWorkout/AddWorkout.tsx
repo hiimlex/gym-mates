@@ -34,7 +34,7 @@ import { Asset } from "react-native-image-picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { IIConProps } from "../../atoms/Icons/Icons";
-import S from "./styles";
+import S from "./AddWorkout.styles";
 import ShareWorkout from "../ShareWorkout/ShareWorkout";
 
 const AddWorkout: React.FC = () => {

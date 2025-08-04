@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, ViewStyle } from "react-native";
 
-import S from "./styles";
+import S from "./Header.styles";
 import { useSelector } from "react-redux";
 import { StoreState } from "@store/store";
 import { CachedImage } from "@georstat/react-native-image-cache";

@@ -1,4 +1,4 @@
-import { Card } from "../../atoms/";
+import { Card } from "../../atoms";
 import styled from "@emotion/native";
 
 const Container = styled.ScrollView``;

@@ -9,7 +9,7 @@ import { Home, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "../../atoms";
-import S from "./styles";
+import S from "./BottomNav.styles";
 import { BlurView } from "expo-blur";
 import { ConfigActions } from "@store/slices";
 

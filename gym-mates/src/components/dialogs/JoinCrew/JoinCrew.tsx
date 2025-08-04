@@ -12,7 +12,7 @@ import { Check } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Button, Input, Loader, Row, Typography } from "../../atoms";
 import CrewInfo from "../../molecules/CrewInfo/CrewInfo";
-import S from "./styles";
+import S from "./JoinCrew.styles";
 
 const JoinCrew: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);

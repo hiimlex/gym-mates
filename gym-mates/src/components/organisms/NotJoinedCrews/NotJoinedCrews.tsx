@@ -1,21 +1,20 @@
-import { AppDispatch, StoreState } from "@store/store";
-import React, { useEffect } from "react";
+import { useDialogService } from "@hooks";
+import { StoreState } from "@store/store";
+import { Colors } from "@theme";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Icons, Menu, Row, Typography } from "../../atoms";
-import S from "./styles";
-import { ConfigActions } from "@store/slices";
 import { View } from "react-native";
 import { PlusCircle, Users } from "react-native-feather";
-import { Colors } from "@theme";
-import { useDialogService } from "@hooks";
+import { useSelector } from "react-redux";
+import { Icons, Menu, Row, Typography } from "../../atoms";
+import S from "./NotJoinedCrews.styles";
 
 interface NotJoinedCrewsProps {}
 
 const NotJoinedCrews: React.FC<NotJoinedCrewsProps> = () => {
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
-  const {openJoinCrew, openCreateCrew} = useDialogService();
+  const { openJoinCrew, openCreateCrew } = useDialogService();
 
   if (!user) {
     return null;

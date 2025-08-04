@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import S from "./styles";
+import S from "./ShareWorkout.styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useWindowDimensions } from "react-native";
 import {

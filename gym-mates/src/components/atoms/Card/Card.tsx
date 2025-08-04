@@ -1,6 +1,6 @@
 import React from "react";
 import { ViewStyle } from "react-native";
-import S from "./styles";
+import S from "./Card.styles";
 
 interface CardProps {
   children?: React.ReactNode;

@@ -215,7 +215,7 @@ const Profile: React.FC<
                   fillOpacity={0.2}
                 />
               }
-              onPress={() => {}}
+              onPress={() => navigate(AppRoutes.EditProfile)}
               label="profile.settings.edit"
               _t
             ></Menu.Item>

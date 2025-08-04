@@ -1,4 +1,4 @@
-import { Row, Typography } from "@components/atoms";
+import { Row, Tabs, Typography } from "@components/atoms";
 import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
 import {
   CrewLastActivities,
@@ -18,6 +18,7 @@ import { Code, User } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./styles";
+import { TabHeader } from "@models/generic";
 
 const CrewView: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.CrewView>
@@ -27,7 +28,16 @@ const CrewView: React.FC<
   const headerHeight = useHeaderHeight();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [scrolled, setScrolled] = useState(false);
+  const headerTabs: TabHeader[] = [
+    {
+      title: "crewView.rank",
+      key: 0,
+    },
+    {
+      title: "crewView.calendar",
+      key: 1,
+    },
+  ];
 
   if (!crew) {
     navigation.goBack();
@@ -42,16 +52,7 @@ const CrewView: React.FC<
 
   return (
     <ScreenWrapper>
-      <S.Container
-        style={{
-          paddingBottom: insets.bottom,
-        }}
-        contentContainerStyle={{
-          padding: 24,
-          paddingTop: headerHeight + 24,
-          gap: 24,
-        }}
-      >
+      <S.Container paddingTop={headerHeight + 24}>
         <Row gap={12} align="center" width={"auto"}>
           <BannerPreview preview={crew?.banner?.url} size={60} iconSize={24} />
 
@@ -84,8 +85,13 @@ const CrewView: React.FC<
           </View>
         </Row>
 
-        <CrewTodayWorkouts />
-        <CrewLastActivities />
+        <Tabs.Root initialPage={0} scrollEnabled header={headerTabs}>
+          <Tabs.Item key={0}>
+            <CrewTodayWorkouts />
+            <CrewLastActivities />
+          </Tabs.Item>
+          <Tabs.Item key={1} styles={{ paddingTop: insets.top }}></Tabs.Item>
+        </Tabs.Root>
       </S.Container>
     </ScreenWrapper>
   );

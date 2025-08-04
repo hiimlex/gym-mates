@@ -10,7 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Circle, G, Svg} from 'react-native-svg';
-import {loaderStyles} from './styles';
+import {loaderStyles} from './Loader.styles';
 import { Colors, TColors } from '@theme';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);

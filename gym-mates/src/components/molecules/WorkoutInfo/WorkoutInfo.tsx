@@ -1,5 +1,5 @@
 import React from "react";
-import S from "./styles";
+import S from "./WorkoutInfo.styles";
 import { IWorkout } from "@models/collections";
 import { BannerPreview, Row, Typography } from "../../atoms";
 import { format } from "date-fns";

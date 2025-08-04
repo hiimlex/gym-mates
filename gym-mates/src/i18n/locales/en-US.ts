@@ -104,6 +104,8 @@ export default {
     hasPaid: "{{name}} has paid.",
     noActivities: "No activities yet.",
     todayWorkout: "Today {{-time}}",
+    rank: "Rank",
+    calendar: "Calendar",
   },
   crewSettings: {
     members: "Members",
@@ -181,6 +183,10 @@ export default {
       accept: "Accept",
       reject: "Reject",
     },
+    tabs: {
+      activities: "Activities",
+      achievements: "Achievements",
+    }
   },
   weekDays: {
     long: {

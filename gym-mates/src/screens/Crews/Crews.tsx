@@ -30,6 +30,7 @@ const Crews: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Crews>
 > = ({ navigation: { navigate } }) => {
   const { user } = useSelector((state: StoreState) => state.user);
+  const { bottomNavHeight } = useSelector((state: StoreState) => state.config);
   const headerHeight = useHeaderHeight();
 
   const [filters, setFilters] = useState<ICrewsByMemberFilters>({
@@ -98,7 +99,13 @@ const Crews: React.FC<
           </Row>
         </View>
 
-        <S.ScrollList>
+        <S.ScrollList
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            gap: 24,
+            paddingBottom: bottomNavHeight + 24,
+          }}
+        >
           {crewsData?.crews.map((crew, index) => (
             <S.CrewCard
               key={index}

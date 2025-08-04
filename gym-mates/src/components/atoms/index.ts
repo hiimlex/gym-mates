@@ -12,6 +12,7 @@ export { default as MediaSelect } from "./MediaSelect/MediaSelect";
 export { default as Menu } from "./Menu/Menu";
 export { default as Row } from "./Row/Row";
 export { default as Typography } from "./Typography/Typography";
+export { default as Tabs } from "./Tabs/Tabs";
 
 export * from "./Dialog/Dialog";
 export * from "./Typography/Typography";

@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { CheckCircle, XCircle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import Typography from "../../atoms/Typography/Typography";
-import S from "./styles";
+import S from "./WeekWorkouts.styles";
 
 interface WeekWorkoutsProps {
   children?: React.ReactNode;

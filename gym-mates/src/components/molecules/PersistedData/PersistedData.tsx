@@ -1,18 +1,14 @@
+import { useAppNavigation } from "@hooks";
+import { AccessTokenKey } from "@models/generic";
+import { AppRoutes } from "@navigation/appRoutes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useWindowDimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "../../atoms";
-import S from "./styles";
-import { useAppNavigation } from "@hooks";
-import { AppRoutes } from "@navigation/appRoutes";
-import { useWindowDimensions } from "react-native";
-import {
-  AccessTokenKey,
-  SkipSetupAvatarKey,
-  SkipSetupHealthKey,
-} from "@models/generic";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import S from "./PersistedData.styles";
 
 const PersistedData: React.FC = () => {
   const { user, loadingCurrentUser, isAuthenticated } = useSelector(

@@ -15,6 +15,7 @@ export interface IWorkoutsFilters {
   userId?: string; // User ID to filter workouts by a specific user
   range?: [string, string]; // Date range in MM-dd-yy format
   from?: string[]; // Array of crew IDs to filter workouts shared with specific crews
+  sort?: '_ID_ASC' | '_ID_DESC' | 'DATE_ASC' | 'DATE_DESC'; // Sorting options
 }
 
 export interface IWorkout {

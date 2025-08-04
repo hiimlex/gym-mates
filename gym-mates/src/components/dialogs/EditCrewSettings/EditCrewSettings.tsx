@@ -17,7 +17,7 @@ import {
   Row,
   Typography,
 } from "../../atoms";
-import S from "./styles";
+import S from "./EditCrewSettings.styles";
 import { CrewsActions, DialogActions } from "@store/slices";
 import Masks from "@utils/masks.utils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

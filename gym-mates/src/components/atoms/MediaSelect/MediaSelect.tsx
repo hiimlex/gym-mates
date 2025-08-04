@@ -2,7 +2,7 @@ import React from "react";
 import { User } from "react-native-feather";
 import { Asset } from "react-native-image-picker";
 import Typography from "../Typography/Typography";
-import S from "./styles";
+import S from "./MediaSelect.styles";
 import { Colors } from "@theme";
 import BannerPreview from "../BannerPreview/BannerPreview";
 

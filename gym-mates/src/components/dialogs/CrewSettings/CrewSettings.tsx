@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppNavigation } from "../../../hooks/";
 import { Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
-import S from "./styles";
+import S from "./CrewSettings.styles";
 
 interface CrewSettingsProps {
   openEditCrewSettings: () => void;

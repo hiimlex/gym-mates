@@ -1,7 +1,11 @@
-import { UsersService } from "@api/services";
+import { UsersService, WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
-import { Avatar, Row, Typography } from "@components/atoms";
-import { IUserByIdResponse } from "@models/collections";
+import { Avatar, Loader, Row, Tabs, Typography } from "@components/atoms";
+import {
+  IUserByIdResponse,
+  IWorkoutsByUser,
+  IWorkoutsFilters,
+} from "@models/collections";
 import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -11,6 +15,8 @@ import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import ScreenWrapper from "../../components/molecules/ScreenWrapper/ScreenWrapper";
 import S from "./styles";
+import { TabHeader } from "@models/generic";
+import { WorkoutInfo } from "@components/molecules";
 
 const UserView: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.UserView>
@@ -19,7 +25,7 @@ const UserView: React.FC<
   console.log("UserView userId:", userId);
   const headerHeight = useHeaderHeight();
 
-  const { data } = useQuery<IUserByIdResponse, { _id: string }>(
+  const { data: userData } = useQuery<IUserByIdResponse, { _id: string }>(
     UsersService.gql.USER_BY_ID,
     {
       variables: { _id: userId },
@@ -27,7 +33,26 @@ const UserView: React.FC<
     }
   );
 
-  const user = useMemo(() => data?.userById, [data]);
+  const { data: workoutsData, loading: loadingUserWorkouts } = useQuery<
+    IWorkoutsByUser,
+    IWorkoutsFilters
+  >(WorkoutService.gql.WORKOUTS_BY_USER, {
+    variables: { userId, sort: "DATE_DESC" },
+    fetchPolicy: "cache-and-network",
+  });
+
+  const user = useMemo(() => userData?.userById, [userData]);
+
+  const tabsHeader: TabHeader[] = [
+    {
+      title: "userView.tabs.activities",
+      key: 0,
+    },
+    {
+      title: "userView.tabs.achievements",
+      key: 1,
+    },
+  ];
 
   if (!user) {
     return (
@@ -45,7 +70,7 @@ const UserView: React.FC<
     <ScreenWrapper>
       <S.Container style={{ paddingTop: headerHeight + 24 }}>
         <Row gap={12} align="center">
-          <Avatar size={80} preview={data?.userById.avatar?.url} />
+          <Avatar size={80} preview={user.avatar?.url} disabled />
           <View style={{ gap: 12 }}>
             <View style={{ gap: 6 }}>
               <Typography.Heading fontWeight="medium">
@@ -103,6 +128,20 @@ const UserView: React.FC<
             </Row>
           </View>
         </Row>
+
+        <Tabs.Root initialPage={0} header={tabsHeader}>
+          <Tabs.Item key={0} contentContainerStyle={{ gap: 12 }}>
+            {workoutsData?.workouts.map((workout) => (
+              <WorkoutInfo
+                key={workout._id}
+                workout={workout}
+                showCrewName
+              ></WorkoutInfo>
+            ))}
+            {loadingUserWorkouts && <Loader color="primary" />}
+          </Tabs.Item>
+          <Tabs.Item key={1}></Tabs.Item>
+        </Tabs.Root>
       </S.Container>
     </ScreenWrapper>
   );

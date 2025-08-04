@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import Typography from "../Typography/Typography";
 import { useTranslation } from "react-i18next";
-import S from "./styles";
+import S from "./Menu.styles";
 import Row from "../Row/Row";
 import Feather from "@react-native-vector-icons/feather";
 import { Colors, setAlphaToColor } from "@theme";

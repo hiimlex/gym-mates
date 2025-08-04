@@ -6,8 +6,8 @@ import { assetToBuffer } from "@utils/file.utils";
 import { AxiosResponse } from "axios";
 
 const WORKOUTS_BY_USER = gql`
-  query WorkoutsByUser($userId: MongoID, $range: [Date], $from: [MongoID]) {
-    workouts(filter: { user: $userId, range: $range, from: $from }) {
+  query WorkoutsByUser($userId: MongoID, $range: [Date], $from: [MongoID], $sort: SortFindManyWorkoutsInput) {
+    workouts(filter: { user: $userId, range: $range, from: $from }, sort: $sort) {
       picture {
         url
       }

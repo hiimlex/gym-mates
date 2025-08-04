@@ -3,7 +3,7 @@ import React from "react";
 import { Colors } from "@theme";
 import { Asset } from "react-native-image-picker";
 import Loader from "../Loader/Loader";
-import S from "./styles";
+import S from "./Avatar.styles";
 import { User } from "react-native-feather";
 
 const ImagePicker = require("react-native-image-picker");

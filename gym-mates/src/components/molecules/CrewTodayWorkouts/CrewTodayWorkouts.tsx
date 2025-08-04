@@ -6,7 +6,7 @@ import { Colors } from "@theme";
 import { format } from "date-fns";
 import React, { useState } from "react";
 import { Frown } from "react-native-feather";
-import S from "./styles";
+import S from "./CrewTodayWorkouts.styles";
 import { useSelector } from "react-redux";
 import { StoreState } from "@store/store";
 

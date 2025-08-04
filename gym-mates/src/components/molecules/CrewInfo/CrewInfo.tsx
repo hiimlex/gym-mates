@@ -6,7 +6,7 @@ import React from "react";
 import { View } from "react-native";
 import { Code, User } from "react-native-feather";
 import { useSelector } from "react-redux";
-import S from "./styles";
+import S from "./CrewInfo.styles";
 
 interface CrewInfoProps {
   crew: ICrew;

@@ -14,7 +14,7 @@ import {
 import { Colors } from "@theme";
 import React, { useMemo } from "react";
 import { DollarSign, Heart, Star } from "react-native-feather";
-import S from "./styles";
+import S from "./JourneyEvent.styles";
 import { useTranslation } from "react-i18next";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
 import { View } from "react-native";

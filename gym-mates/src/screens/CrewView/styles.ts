@@ -1,8 +1,11 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
 
-const Container = styled.ScrollView`
+const Container = styled.View<{paddingTop?: number}>`
   flex: 1;
+  gap: 24px;
+  padding: 24px;
+  padding-top: ${({paddingTop}) => paddingTop + 'px'};
 `;
 
 const CrewBanner = styled(CachedImage)`

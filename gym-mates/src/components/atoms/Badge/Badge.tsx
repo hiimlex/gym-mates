@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import S from "./styles";
+import S from "./Badge.styles";
 import Typography from "../Typography/Typography";
 import { TColors } from "@theme";
 import { ViewStyle } from "react-native";

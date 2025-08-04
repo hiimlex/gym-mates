@@ -6,7 +6,7 @@ import { StoreState } from "@store/store";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
-import S from "./styles";
+import S from "./FollowingActivities.styles";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
 
 const FollowingActivities: React.FC = () => {
@@ -17,6 +17,7 @@ const FollowingActivities: React.FC = () => {
     {
       variables: {
         from: user?.following?.map((f) => f._id) || [],
+        sort: 'DATE_DESC',
       },
     }
   );

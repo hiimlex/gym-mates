@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { TextInput, TextStyle, ViewStyle } from "react-native";
 import Typography, { TypographyStyles } from "../Typography/Typography";
-import S from "./styles";
+import S from "./Input.styles";
 
 interface InputProps {
   children?: React.ReactNode;

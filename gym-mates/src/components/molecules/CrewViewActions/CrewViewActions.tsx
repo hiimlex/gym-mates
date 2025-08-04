@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { TouchableOpacity, ViewStyle } from "react-native";
 import { Settings, Star } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
-import S from "./styles";
+import S from "./CrewView.styles";
 import { useDialogService } from "@hooks";
 import { useMutation } from "@tanstack/react-query";
 import { CrewsService } from "@api/services";

@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   CrewsScreen,
   CrewViewScreen,
+  EditProfileScreen,
   HomeScreen,
   LoginScreen,
   ProfileScreen,
@@ -175,6 +176,25 @@ const AppNavigator = () => {
                 headerLeft: BackLeft,
                 headerTransparent: true,
                 headerRight: () => <UserViewActions />,
+              }}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.EditProfile}
+              component={EditProfileScreen}
+              options={{
+                headerShown: true,
+                headerTitle: () => (
+                  <Typography.HeadingSubtitle
+                    textColor="text"
+                    fontWeight="semibold"
+                    _t
+                  >
+                    {"links.crewActions"}
+                  </Typography.HeadingSubtitle>
+                ),
+                headerLeft: BackLeft,
+                headerTransparent: true,
               }}
             />
           </>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import S from "./styles";
+import S from "./WorkoutEarns.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/store";
 import { Dialog, Typography } from "@components/atoms";

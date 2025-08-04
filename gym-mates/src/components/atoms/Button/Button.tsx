@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import S from "./styles";
+import S from "./Button.styles";
 import { useTranslation } from "react-i18next";
 import Typography from "../Typography/Typography";
 import { ViewStyle } from "react-native";

@@ -10,7 +10,7 @@ import {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Typography from "../Typography/Typography";
-import S from "./styles";
+import S from "./Dialog.styles";
 
 export interface DialogProps {
   children?: React.ReactNode;
