@@ -8,6 +8,8 @@
 		"skipLibCheck": true,
 		"outDir": "dist",
 		"baseUrl": "./src",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"paths": {
 			"types/*": ["./types/*"],
 			"@core/*": ["./core/*"],

@@ -1,6 +1,9 @@
+import { cloudinaryDestroy } from "@config/cloudinary.config";
 import { HttpException } from "@core/http_exception";
 import { HealthyModel } from "@modules/healthy";
-import { handle_error } from "@utils/handle_error";
+import { TitlesModel } from "@modules/items";
+import { JourneyModel } from "@modules/journey";
+import CatchError from "decorators/catch_error";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import {
@@ -12,198 +15,189 @@ import {
 	TUploadedFile,
 } from "types/collections";
 import { UsersModel } from "./users.schema";
-import { TitlesModel } from "@modules/items";
-import { JourneyModel } from "@modules/journey";
 
 class UsersRepository {
+	@CatchError()
 	async follow(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
+		const user: IUserDocument = res.locals.user;
 
-			const { follower_id } = req.body;
+		const { follower_id } = req.body;
 
-			const friend = await UsersModel.findById(follower_id);
+		const friend = await UsersModel.findById(follower_id);
 
-			if (!friend) {
-				throw new HttpException(404, "USER_NOT_FOUND");
-			}
-
-			const already_following = user.followers?.includes(follower_id);
-
-			if (already_following) {
-				throw new HttpException(400, "ALREADY_FOLLOWING");
-			}
-
-			await friend.updateOne({
-				$addToSet: { followers: user._id },
-			});
-
-			await user.updateOne({
-				$addToSet: { following: follower_id },
-			});
-
-			// [Notify] - Notify the friend about the new follower
-
-			return res.sendStatus(204);
-		} catch (error) {
-			return handle_error(res, error);
+		if (!friend) {
+			throw new HttpException(404, "USER_NOT_FOUND");
 		}
+
+		const already_following = user.followers?.includes(follower_id);
+
+		if (already_following) {
+			throw new HttpException(400, "ALREADY_FOLLOWING");
+		}
+
+		await friend.updateOne({
+			$addToSet: { followers: user._id },
+		});
+
+		await user.updateOne({
+			$addToSet: { following: follower_id },
+		});
+
+		// [Notify] - Notify the friend about the new follower
+
+		return res.sendStatus(204);
 	}
 
+	@CatchError()
 	async unfollow(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
+		const user: IUserDocument = res.locals.user;
 
-			const { follower_id } = req.body;
+		const { follower_id } = req.body;
 
-			const follower = await UsersModel.findById(follower_id);
+		const follower = await UsersModel.findById(follower_id);
 
-			if (!follower) {
-				throw new HttpException(404, "USER_NOT_FOUND");
-			}
-
-			await follower.updateOne({
-				$pull: { followers: user._id },
-			});
-
-			await user.updateOne({
-				$pull: { following: follower_id },
-			});
-
-			return res.sendStatus(204);
-		} catch (error) {
-			return handle_error(res, error);
+		if (!follower) {
+			throw new HttpException(404, "USER_NOT_FOUND");
 		}
+
+		await follower.updateOne({
+			$pull: { followers: user._id },
+		});
+
+		await user.updateOne({
+			$pull: { following: follower_id },
+		});
+
+		return res.sendStatus(204);
 	}
 
+	@CatchError()
 	async create_healthy(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
+		const user: IUserDocument = res.locals.user;
 
-			const { weight, height, body_fat } = req.body;
+		const { weight, height, body_fat } = req.body;
 
-			const healthy_info = await HealthyModel.create({
-				weight,
-				height,
-				body_fat,
-				user: user._id,
-			});
+		const healthy_info = await HealthyModel.create({
+			weight,
+			height,
+			body_fat,
+			user: user._id,
+		});
 
-			await user.updateOne({
-				$set: { healthy: healthy_info._id },
-			});
+		await user.updateOne({
+			$set: { healthy: healthy_info._id },
+		});
 
-			// [Journey] - Add a new event to the user's journey
-			const event: TJourneyEvent = {
-				_id: new Types.ObjectId(),
-				action: JourneyEventAction.ADD,
-				schema: JourneyEventSchemaType.Healthy,
-				data: {
-					healthy_info,
-				},
-				created_at: new Date(),
-			};
-			await user.add_journey_event(event);
+		// [Journey] - Add a new event to the user's journey
+		const event: TJourneyEvent = {
+			_id: new Types.ObjectId(),
+			action: JourneyEventAction.ADD,
+			schema: JourneyEventSchemaType.Healthy,
+			data: {
+				healthy_info,
+			},
+			created_at: new Date(),
+		};
+		await user.add_journey_event(event);
 
-			return res.status(200).json(healthy_info);
-		} catch (error) {
-			return handle_error(res, error);
-		}
+		return res.status(200).json(healthy_info);
 	}
 
+	@CatchError()
 	async select_title(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
-			const journey: IJourneyDocument = res.locals.journey;
+		const user: IUserDocument = res.locals.user;
+		const journey: IJourneyDocument = res.locals.journey;
 
-			const { title_id } = req.body;
+		const { title_id } = req.body;
 
-			const title = await TitlesModel.findById(title_id);
+		const title = await TitlesModel.findById(title_id);
 
-			if (!title || !title_id) {
-				throw new HttpException(404, "TITLE_NOT_FOUND");
-			}
-
-			if (
-				!journey.inventory.some((item) => item.item.toString() === title_id)
-			) {
-				throw new HttpException(400, "USER_DOES_NOT_OWN_ITEM");
-			}
-
-			await user.updateOne({
-				$set: { title: title._id },
-			});
-
-			return res.sendStatus(204);
-		} catch (error) {
-			return handle_error(res, error);
+		if (!title || !title_id) {
+			throw new HttpException(404, "TITLE_NOT_FOUND");
 		}
+
+		if (!journey.inventory.some((item) => item.item.toString() === title_id)) {
+			throw new HttpException(400, "USER_DOES_NOT_OWN_ITEM");
+		}
+
+		await user.updateOne({
+			$set: { title: title._id },
+		});
+
+		return res.sendStatus(204);
 	}
 
-	async update_avatar(req: Request, res: Response) {
-		try {
+	@CatchError(async (req) => {
+		if (req.file) {
 			const file = req.file as TUploadedFile;
-			const user: IUserDocument = res.locals.user;
-
-			if (!user) {
-				throw new HttpException(404, "USER_NOT_FOUND");
+			if (file) {
+				await cloudinaryDestroy(file.filename);
 			}
-
-			const updated_user = await UsersModel.findByIdAndUpdate(
-				user._id,
-				{
-					avatar: {
-						public_id: file.filename,
-						url: file.path,
-					},
-				},
-				{ new: true }
-			);
-
-			return res.status(200).json(updated_user);
-		} catch (error) {
-			return handle_error(res, error);
 		}
+	})
+	async update_avatar(req: Request, res: Response) {
+		const file = req.file as TUploadedFile;
+		const user: IUserDocument = res.locals.user;
+
+		if (!file) {
+			throw new HttpException(400, "FILE_NOT_PROVIDED");
+		}
+
+		if (!user) {
+			throw new HttpException(404, "USER_NOT_FOUND");
+		}
+
+		const updated_user = await UsersModel.findByIdAndUpdate(
+			user._id,
+			{
+				avatar: {
+					public_id: file.filename,
+					url: file.path,
+				},
+			},
+			{ new: true }
+		);
+
+		return res.status(200).json(updated_user);
 	}
 
+	@CatchError()
+	async update_profile(req: Request, res: Response) {}
+
+	@CatchError()
 	async get_journey(req: Request, res: Response) {
-		try {
-			const user: IUserDocument = res.locals.user;
+		const user: IUserDocument = res.locals.user;
 
-			const journey = await JourneyModel.findById(user.journey);
+		const journey = await JourneyModel.findById(user.journey);
 
-			if (!journey) {
-				throw new HttpException(404, "JOURNEY_NOT_FOUND");
-			}
-
-			const populated_journey = await journey.populate({
-				path: "inventory.item",
-			});
-
-			if (req.query.sort) {
-				const sort = req.query.sort as string;
-				populated_journey.events.sort((a, b) => {
-					if (sort === "recent") {
-						return (
-							new Date(b.created_at).getTime() -
-							new Date(a.created_at).getTime()
-						);
-					}
-					return 0;
-				});
-			}
-
-			if (req.query.action) {
-				const action = req.query.action as JourneyEventAction;
-				populated_journey.events = populated_journey.events.filter(
-					(event) => event.action === action
-				) as any;
-			}
-
-			return res.status(200).json(populated_journey);
-		} catch (error) {
-			return handle_error(res, error);
+		if (!journey) {
+			throw new HttpException(404, "JOURNEY_NOT_FOUND");
 		}
+
+		const populated_journey = await journey.populate({
+			path: "inventory.item",
+		});
+
+		if (req.query.sort) {
+			const sort = req.query.sort as string;
+			populated_journey.events.sort((a, b) => {
+				if (sort === "recent") {
+					return (
+						new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+					);
+				}
+				return 0;
+			});
+		}
+
+		if (req.query.action) {
+			const action = req.query.action as JourneyEventAction;
+			populated_journey.events = populated_journey.events.filter(
+				(event) => event.action === action
+			) as any;
+		}
+
+		return res.status(200).json(populated_journey);
 	}
 }
 
