@@ -16,7 +16,7 @@ import {
   User,
 } from "react-native-feather";
 import { useSelector } from "react-redux";
-import S from "./styles";
+import S from "./Crews.styles";
 import {
   ICrew,
   ICrewsResponse,

@@ -17,7 +17,7 @@ import { View } from "react-native";
 import { Code, User } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import S from "./styles";
+import S from "./CrewView.styles";
 import { TabHeader } from "@models/generic";
 
 const CrewView: React.FC<

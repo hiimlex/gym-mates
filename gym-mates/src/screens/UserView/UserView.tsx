@@ -14,7 +14,7 @@ import { t } from "i18next";
 import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import ScreenWrapper from "../../components/molecules/ScreenWrapper/ScreenWrapper";
-import S from "./styles";
+import S from "./UserView.styles";
 import { TabHeader } from "@models/generic";
 import { WorkoutInfo } from "@components/molecules";
 

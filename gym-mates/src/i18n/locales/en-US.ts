@@ -186,7 +186,21 @@ export default {
     tabs: {
       activities: "Activities",
       achievements: "Achievements",
-    }
+    },
+  },
+  editProfile: {
+    account: "Profile Account",
+    healthy: "Healthy Info",
+    fields: {
+      name: "Name",
+      email: "Email",
+      oldPassword: "Old Password",
+      newPassword: "New Password",
+      weight: "Weight",
+      height: "Height",
+      body_fat: "Body Fat",
+    },
+    save: "Save",
   },
   weekDays: {
     long: {
@@ -224,6 +238,7 @@ export default {
     shareInCrew: "Share in Crews",
     editCrew: "Edit Crew",
     userJourney: "Journey",
+    editProfile: "Edit Profile",
   },
   units: {
     days: "days",

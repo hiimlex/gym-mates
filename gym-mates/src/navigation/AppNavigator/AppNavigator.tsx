@@ -190,7 +190,7 @@ const AppNavigator = () => {
                     fontWeight="semibold"
                     _t
                   >
-                    {"links.crewActions"}
+                    {"links.editProfile"}
                   </Typography.HeadingSubtitle>
                 ),
                 headerLeft: BackLeft,

@@ -21,7 +21,7 @@ import { AppRoutes } from "@navigation/appRoutes";
 import { UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/store";
 import { useDispatch, useSelector } from "react-redux";
-import S from "./styles";
+import S from "./Login.styles";
 
 interface LoginProps {}
 

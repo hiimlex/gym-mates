@@ -1,6 +1,7 @@
 import api from "@api/api";
 import { gql } from "@apollo/client";
 import {
+  IEditProfileForm,
   IGetJourneyFilters,
   IUpdateHealthForm,
   IUserJourney,
@@ -45,6 +46,19 @@ const USER_BY_ID = gql`
           url
         }
       }
+    }
+  }
+`;
+
+const UPDATE_USER_BY_ID = gql`
+  mutation UpdateUserById($_id: MongoID!, $data: UpdateByIdUsersInput!) {
+    updateUserById(_id: $_id, record: $data) {
+      recordId
+      record {
+        name
+        email
+      }
+      error
     }
   }
 `;
@@ -95,13 +109,27 @@ const unfollow = async (userId: string) => {
   return response;
 };
 
+const updateProfile = async (
+  userId: string,
+  data: Partial<IEditProfileForm>
+): Promise<AxiosResponse<null>> => {
+  const response = await api.put(
+    Endpoints.UsersUpdateProfile,
+    data
+  );
+
+  return response;
+};
+
 export default {
   gql: {
     USER_BY_ID,
+    UPDATE_USER_BY_ID,
   },
   createHealthy,
   updateAvatar,
   getJourney,
   follow,
   unfollow,
+  updateProfile,
 };

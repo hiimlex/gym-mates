@@ -11,7 +11,7 @@ import { TouchableOpacity, View } from "react-native";
 import { User } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import S from "./styles";
+import S from "./SetupAvatar.styles";
 import { Asset } from "react-native-image-picker";
 import { UsersService } from "@api/services";
 import { useMutation } from "@tanstack/react-query";

@@ -21,7 +21,7 @@ import {
 } from "react-native-feather";
 import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import S from "./styles";
+import S from "./Profile.styles";
 
 const Profile: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Profile>

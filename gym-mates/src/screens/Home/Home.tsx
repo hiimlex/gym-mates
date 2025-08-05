@@ -23,7 +23,7 @@ import { View } from "react-native";
 import { Heart, PlusCircle, Users } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import S from "./styles";
+import S from "./Home.styles";
 
 const Home: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.Home>

@@ -12,7 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import S from "./styles";
+import S from "./SetupAvatar.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { InputRefRecorder, SkipSetupHealthKey } from "@models/generic";
 import { UserActions } from "@store/slices";

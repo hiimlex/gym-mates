@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import UserReducer from "./slices/UsersSlice";
+import UserReducer from "./slices/UserSlice";
 import ConfigReducer from "./slices/ConfigSlice";
 import CrewsReducer from "./slices/CrewsSlice";
 import DialogReducer from "./slices/DialogSlice";

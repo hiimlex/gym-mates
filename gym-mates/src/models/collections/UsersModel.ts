@@ -33,3 +33,15 @@ export interface IUserState {
 export interface IUserByIdResponse {
   userById: IUser;
 }
+
+export interface IEditProfileForm {
+  name: string;
+  email: string;
+  oldPassword?: string;
+  newPassword?: string;
+}
+
+export interface UpdateByIdUsersInput {
+  name?: string;
+  email?: string;
+}

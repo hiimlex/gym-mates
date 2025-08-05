@@ -1,6 +1,6 @@
 import { ScreenWrapper } from "@components/molecules";
 import React, { RefObject, useRef } from "react";
-import S from "./styles";
+import S from "./SignUp.styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   KeyboardAvoidingView,

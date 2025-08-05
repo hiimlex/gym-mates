@@ -1,7 +1,10 @@
-import styled from '@emotion/native';
+import styled from "@emotion/native";
 
-const Container = styled.View`
-  flex: 1;
+const Container = styled.ScrollView`
 `;
 
-export default { Container };
+const Group = styled.View`
+  gap: 12px;
+`;
+
+export default { Container, Group };

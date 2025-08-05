@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import S from "./styles";
+import S from "./UserJourney.styles";
 
 const UserJourney: React.FC<
   NativeStackScreenProps<TRootStackParamList, AppRoutes.UserJourney>
