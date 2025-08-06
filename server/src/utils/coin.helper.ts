@@ -88,7 +88,7 @@ export function calculate_coins(
 			({ streak, coins }) => (receipt[streak] = coins)
 		);
 		if (daily_streak_coins > 0) {
-			receipt.daily_streak = daily_streak_coins;
+			receipt.daily = daily_streak_coins;
 		}
 		// set the coins from the streaks
 		coins += streak_sum;

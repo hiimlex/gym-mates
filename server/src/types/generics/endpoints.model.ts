@@ -25,7 +25,7 @@ export const Endpoints = {
 	UsersCreate: "/users",
 	UsersList: "/users",
 	UsersGet: "/users/:id",
-	UsersUpdate: "/users/:id",
+	UsersUpdateProfile: "/users/update-profile",
 	UsersDelete: "/users/:id",
 	UsersFollow: "/users/follow",
 	UsersUnfollow: "/users/unfollow",
@@ -37,4 +37,5 @@ export const Endpoints = {
 	WorkoutsCreate: "/workouts",
 	// Shop
 	ShopBuy: "/shop/buy",
+	ShopListItems: "/shop/items",
 };

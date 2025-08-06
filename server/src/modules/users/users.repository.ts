@@ -15,6 +15,8 @@ import {
 	TUploadedFile,
 } from "types/collections";
 import { UsersModel } from "./users.schema";
+import { compareSync, hashSync } from "bcrypt";
+import { HashSalt } from "types/generics";
 
 class UsersRepository {
 	@CatchError()
@@ -162,7 +164,32 @@ class UsersRepository {
 	}
 
 	@CatchError()
-	async update_profile(req: Request, res: Response) {}
+	async update_profile(req: Request, res: Response) {
+		const user: IUserDocument = res.locals.user;
+
+		const { name, email, oldPassword, newPassword } = req.body;
+
+		if (oldPassword && newPassword) {
+			const is_password_valid = compareSync(oldPassword, user.password);
+
+			if (!is_password_valid) {
+				throw new HttpException(403, "UNAUTHORIZED");
+			}
+			const hash_password = hashSync(newPassword, HashSalt);
+			user.password = hash_password;
+		}
+
+		if (name) {
+			user.name = name;
+		}
+		if (email) {
+			user.email = email;
+		}
+
+		await user.save();
+
+		return res.status(200).json(user);
+	}
 
 	@CatchError()
 	async get_journey(req: Request, res: Response) {

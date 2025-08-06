@@ -46,5 +46,11 @@ export class UsersController extends BaseController {
 			upload.single(upload_key),
 			UsersRepositoryImpl.update_avatar
 		);
+
+		this.router.put(
+			Endpoints.UsersUpdateProfile,
+			AuthRepositoryImpl.is_authenticated,
+			UsersRepositoryImpl.update_profile
+		);
 	}
 }

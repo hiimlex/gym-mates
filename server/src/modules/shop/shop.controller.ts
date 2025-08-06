@@ -14,5 +14,11 @@ export class ShopController extends BaseController {
 			AuthRepositoryImpl.is_authenticated,
 			ShopRepositoryImpl.buy
 		);
+
+		this.router.get(
+			Endpoints.ShopListItems,
+			AuthRepositoryImpl.is_authenticated,
+			ShopRepositoryImpl.list_items
+		)
 	}
 }
