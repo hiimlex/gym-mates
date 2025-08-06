@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import S from "./Button.styles";
 import { useTranslation } from "react-i18next";
-import Typography from "../Typography/Typography";
+import Typography, { TTypographyVariants } from "../Typography/Typography";
 import { ViewStyle } from "react-native";
 import Loader from "../Loader/Loader";
 import { Colors, TColors } from "@theme";
@@ -14,6 +14,7 @@ export interface ButtonProps {
   disabled?: boolean;
   onPress?: () => void;
   loading?: boolean;
+  textVariant?: TTypographyVariants;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   onPress,
   loading,
+  textVariant = "button",
 }) => {
   const { t } = useTranslation();
 
@@ -49,15 +51,17 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <S.Button
-      style={[styles]}
       disabled={disabled}
       buttonVariant={variant}
       colorScheme={colorScheme}
       activeOpacity={0.6}
       onPress={onPress}
+      style={styles}
     >
       {!loading && (
-        <Typography.Button textColor={textColor}>{t(title)}</Typography.Button>
+        <Typography.Typography variant={textVariant} textColor={textColor}>
+          {t(title)}
+        </Typography.Typography>
       )}
       {loading && !disabled && (
         <Loader size="42" strokeWidth={2} color={textColor} />

@@ -28,7 +28,7 @@ export interface IWorkout {
   updated_at: string;
   shared_to: ICrew[]; // Array of user IDs
   earned: number; // Amount earned for the workout
-  receipt: object; // Receipt details
+  receipt: Record<string, number>; // Receipt details
   user: IUser;
   duration: number;
 }

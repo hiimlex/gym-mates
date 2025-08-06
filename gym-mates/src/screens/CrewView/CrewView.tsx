@@ -6,11 +6,15 @@ import {
   CrewViewActions,
   ScreenWrapper,
 } from "@components/molecules";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import {
+  AppRoutes,
+  ScreenProps,
+  TRootStackParamList,
+} from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CrewsActions } from "@store/slices";
-import { AppDispatch } from "@store/store";
+import { AppDispatch } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -20,9 +24,10 @@ import { useDispatch } from "react-redux";
 import S from "./CrewView.styles";
 import { TabHeader } from "@models/generic";
 
-const CrewView: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.CrewView>
-> = ({ navigation, route }) => {
+const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
+  navigation,
+  route,
+}) => {
   const insets = useSafeAreaInsets();
   const crew = route.params?.crew;
   const headerHeight = useHeaderHeight();

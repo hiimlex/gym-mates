@@ -1,4 +1,5 @@
 import { ICrew } from "@models/collections";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export enum AppRoutes {
   // General
@@ -49,3 +50,6 @@ export type TRootStackParamList = {
     userId: string;
   };
 };
+
+export type ScreenProps<T extends keyof TRootStackParamList> =
+  NativeStackScreenProps<TRootStackParamList, T>;

@@ -1,13 +1,20 @@
+import { client } from "@api/apollo";
+import { CrewsService } from "@api/services";
 import {
   CrewStreak,
   CrewVisibility,
   ICrewsResponse,
   IEditCrewRulesForm,
 } from "@models/collections";
-import { AppDispatch, StoreState } from "@store/store";
+import { CrewsActions, DialogActions } from "@store/slices";
+import { AppDispatch, StoreState } from "@store/Store";
+import { useMutation } from "@tanstack/react-query";
+import Masks from "@utils/masks.utils";
 import React, { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { ScrollView, TextInput } from "react-native";
 import { Asset } from "react-native-image-picker";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Badge,
@@ -18,13 +25,6 @@ import {
   Typography,
 } from "../../atoms";
 import S from "./EditCrewSettings.styles";
-import { CrewsActions, DialogActions } from "@store/slices";
-import Masks from "@utils/masks.utils";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ScrollView, TextInput } from "react-native";
-import { useMutation } from "@tanstack/react-query";
-import { CrewsService } from "@api/services";
-import { client } from "@api/apollo";
 
 const EditCrewSettings: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);

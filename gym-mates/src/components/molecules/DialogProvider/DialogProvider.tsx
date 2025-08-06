@@ -1,11 +1,11 @@
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog } from "../../atoms/";
 import { DialogActions } from "@store/slices";
 import React, { cloneElement } from "react";
 
 const DialogProvider: React.FC = () => {
-  const { content, isOpen, data } = useSelector(
+  const { content, isOpen, data, canGoBack } = useSelector(
     (state: StoreState) => state.dialog
   );
 
@@ -16,6 +16,11 @@ const DialogProvider: React.FC = () => {
   }
 
   const handleBackPress = () => {
+    if (canGoBack) {
+      dispatch(DialogActions.moveToPreviousDialog());
+      return;
+    }
+
     if (!!data?.onBackPress) {
       data.onBackPress();
 

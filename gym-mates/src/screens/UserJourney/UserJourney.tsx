@@ -2,19 +2,20 @@ import { UsersService } from "@api/services";
 import { Badge, Loader, Row, Typography } from "@components/atoms";
 import { JourneyEventInfo, ScreenWrapper } from "@components/molecules";
 import { IGetJourneyFilters, JourneyEventAction } from "@models/collections";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import S from "./UserJourney.styles";
+import { QueryKeys } from "@models/generic";
 
 const UserJourney: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.UserJourney>
-> = ({ navigation }) => {
+  ScreenProps<AppRoutes.UserJourney>
+> = () => {
   const headerHeight = useHeaderHeight();
   const { user } = useSelector((state: StoreState) => state.user);
   const [filters, setFilters] = useState<IGetJourneyFilters>({
@@ -23,10 +24,9 @@ const UserJourney: React.FC<
 
   const { data, isLoading } = useQuery({
     queryFn: () => {
-      console.log("Fetching user journey data with filters:", filters);
       return UsersService.getJourney(filters);
     },
-    queryKey: ["userJourney", filters.sort, filters.action],
+    queryKey: [QueryKeys.User.Journey, filters.sort, filters.action],
   });
 
   const setRecentFilter = () => {
@@ -73,10 +73,10 @@ const UserJourney: React.FC<
           </Row>
         </S.Header>
         <S.ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             gap: 0,
             flexGrow: 1,
-            flex: 1,
           }}
         >
           {isLoading && (

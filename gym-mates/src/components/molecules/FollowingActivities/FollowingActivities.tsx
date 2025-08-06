@@ -2,7 +2,7 @@ import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Loader, Typography } from "@components/atoms";
 import { IWorkoutsByUser, IWorkoutsFilters } from "@models/collections";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";

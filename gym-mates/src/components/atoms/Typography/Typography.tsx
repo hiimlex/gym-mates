@@ -4,7 +4,7 @@ import { Text, StyleSheet, TextStyle } from "react-native";
 import { Colors, Fonts, TColors } from "../../../theme";
 import Animated from "react-native-reanimated";
 
-type TTypographyVariants =
+export type TTypographyVariants =
   | "title"
   | "subtitle"
   | "heading"
@@ -14,7 +14,7 @@ type TTypographyVariants =
   | "button"
   | "tip";
 
-type TFontsWeight = keyof typeof Fonts.weights;
+export type TFontsWeight = keyof typeof Fonts.weights;
 
 interface TypographyProps {
   children?: React.ReactNode;

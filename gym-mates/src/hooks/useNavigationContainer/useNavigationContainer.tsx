@@ -1,6 +1,6 @@
-import {NavigationContainerRef, Route} from '@react-navigation/native';
-import {createRef, useState} from 'react';
-import {TRootStackParamList} from '@navigation/appRoutes';
+import { NavigationContainerRef, Route } from "@react-navigation/native";
+import { createRef, useState } from "react";
+import { TRootStackParamList } from "@navigation/appRoutes";
 
 export const navigationRef =
   createRef<NavigationContainerRef<TRootStackParamList>>();

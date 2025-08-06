@@ -10,22 +10,20 @@ import { TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ScreenWrapper } from "@components/molecules";
-import { useAppNavigation } from "@hooks";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import {
   AccessTokenKey,
   InputRefRecorder,
   SkipSetupAvatarKey,
   SkipSetupHealthKey,
 } from "@models/generic";
-import { AppRoutes } from "@navigation/appRoutes";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { UserActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Login.styles";
 
-interface LoginProps {}
-
-const Login: React.FC<LoginProps> = () => {
+const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 

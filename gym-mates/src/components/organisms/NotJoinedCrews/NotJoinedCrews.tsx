@@ -1,5 +1,5 @@
-import { useDialogService } from "@hooks";
-import { StoreState } from "@store/store";
+import { useDialogService } from "@hooks/useDialogService/useDialogService";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React from "react";
 import { useTranslation } from "react-i18next";

@@ -2,7 +2,7 @@ import { client } from "@api/apollo";
 import { CrewsService } from "@api/services";
 import { AppRoutes } from "@navigation/appRoutes";
 import { DialogActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import { AxiosError } from "axios";
@@ -17,18 +17,13 @@ import {
   Trash,
 } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { useAppNavigation } from "../../../hooks/";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
 import S from "./CrewSettings.styles";
+import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
 
-interface CrewSettingsProps {
-  openEditCrewSettings: () => void;
-}
-
-const CrewSettings: React.FC<CrewSettingsProps> = ({
-  openEditCrewSettings,
-}) => {
+const CrewSettings: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const dispatch = useDispatch<AppDispatch>();
@@ -70,6 +65,20 @@ const CrewSettings: React.FC<CrewSettingsProps> = ({
   const navigateToUserView = (userId: string) => {
     dispatch(DialogActions.closeDialog());
     navigate(AppRoutes.UserView, { userId });
+  };
+
+  const openEditCrewSettings = () => {
+    console.log("openEditCrewSettings called");
+
+    dispatch(
+      DialogActions.moveToNextDialog({
+        content: <EditCrewSettings />,
+        data: {
+          title: "crewSettings.editCrew.title",
+          _t: true,
+        },
+      })
+    );
   };
 
   if (!crew) {

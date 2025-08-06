@@ -1,7 +1,15 @@
+import { AuthService } from "@api/services";
+import { Button, Input, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
+import { ISignUpForm } from "@models/collections";
+import { AccessTokenKey, InputRefRecorder } from "@models/generic";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppDispatch } from "@store/Store";
+import { UserActions } from "@store/slices";
+import { useMutation } from "@tanstack/react-query";
 import React, { RefObject, useRef } from "react";
-import S from "./SignUp.styles";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Controller, useForm } from "react-hook-form";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -10,23 +18,13 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { Button, Input, Typography } from "@components/atoms";
-import { Controller, useForm } from "react-hook-form";
-import { ISignUpForm } from "@models/collections";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
-import { AuthService } from "@api/services";
-import { useMutation } from "@tanstack/react-query";
-import { AccessTokenKey, InputRefRecorder } from "@models/generic";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@store/store";
-import { UserActions } from "@store/slices";
-import { AxiosError } from "axios";
+import S from "./SignUp.styles";
 
-const SignUp: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.SignUp>
-> = ({ navigation: { navigate, goBack } }) => {
+const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
+  navigation: { navigate, goBack },
+}) => {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
@@ -62,7 +60,6 @@ const SignUp: React.FC<
       signUpUser(values);
     }
   };
-
 
   const scrollToFieldRef = (ref: RefObject<TextInput | null>) => {
     if (ref.current) {

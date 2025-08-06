@@ -11,9 +11,9 @@
       "@api/*": ["./src/api/*"],
       "@store/*": ["./src/store/*"],
       "@navigation/*": ["./src/navigation/*"],
-      "@hooks": ["./src/hooks"],
+      "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
-      "@providers": ["./src/providers"],
+      "@providers/*": ["./src/providers/*"],
       "@config/*": ["./src/config/*"],
     }
   }

@@ -1,9 +1,13 @@
 import { Badge, Card, Loader, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import {
+  AppRoutes,
+  ScreenProps,
+  TRootStackParamList,
+} from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -26,9 +30,9 @@ import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
 import { useQuery } from "@apollo/client";
 import { CrewsService } from "@api/services";
 
-const Crews: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.Crews>
-> = ({ navigation: { navigate } }) => {
+const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
+  navigation: { navigate },
+}) => {
   const { user } = useSelector((state: StoreState) => state.user);
   const { bottomNavHeight } = useSelector((state: StoreState) => state.config);
   const headerHeight = useHeaderHeight();

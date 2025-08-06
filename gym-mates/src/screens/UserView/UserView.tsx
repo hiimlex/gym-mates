@@ -1,26 +1,23 @@
 import { UsersService, WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Avatar, Loader, Row, Tabs, Typography } from "@components/atoms";
+import { WorkoutInfo } from "@components/molecules";
 import {
   IUserByIdResponse,
   IWorkoutsByUser,
   IWorkoutsFilters,
 } from "@models/collections";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import { TabHeader } from "@models/generic";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Colors } from "@theme";
 import { t } from "i18next";
 import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import ScreenWrapper from "../../components/molecules/ScreenWrapper/ScreenWrapper";
 import S from "./UserView.styles";
-import { TabHeader } from "@models/generic";
-import { WorkoutInfo } from "@components/molecules";
 
-const UserView: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.UserView>
-> = ({ route }) => {
+const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
   const userId = route.params.userId;
   console.log("UserView userId:", userId);
   const headerHeight = useHeaderHeight();

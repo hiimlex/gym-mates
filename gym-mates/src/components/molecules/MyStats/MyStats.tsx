@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { Card, Row, Typography } from "@components/atoms";
 import { IWorkout, IWorkoutsByUser } from "@models/collections";
 import Feather from "@react-native-vector-icons/feather";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";

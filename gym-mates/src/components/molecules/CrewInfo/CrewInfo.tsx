@@ -1,6 +1,6 @@
 import { BannerPreview, Row, Typography } from "@components/atoms";
 import { ICrew } from "@models/collections";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { Colors, TColors } from "@theme";
 import React from "react";
 import { View } from "react-native";

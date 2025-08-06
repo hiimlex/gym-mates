@@ -13,7 +13,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { CrewsService, WorkoutService } from "@api/services";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { ICrewsResponse } from "@models/collections";
 import { AddWorkoutActions, DialogActions, UserActions } from "@store/slices";
 import { useMutation } from "@tanstack/react-query";

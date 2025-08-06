@@ -4,7 +4,7 @@ import {
   PersistedData,
   UserViewActions,
 } from "@components/molecules";
-import { navigationRef } from "@hooks";
+import { navigationRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
@@ -16,11 +16,15 @@ import {
   ProfileScreen,
   SetupAvatarScreen,
   SetupHealthScreen,
+  ShopCartScreen,
+  ShopCartScreenOptions,
+  ShopScreen,
+  ShopScreenOptions,
   SignUpScreen,
   UserJourneyScreen,
   UserViewScreen,
 } from "@screens";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import { TouchableOpacity } from "react-native";
 import { ArrowLeft } from "react-native-feather";
@@ -196,6 +200,17 @@ const AppNavigator = () => {
                 headerLeft: BackLeft,
                 headerTransparent: true,
               }}
+            />
+            <Stack.Screen
+              name={AppRoutes.Shop}
+              component={ShopScreen}
+              options={ShopScreenOptions}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.ShopCart}
+              component={ShopCartScreen}
+              options={ShopCartScreenOptions}
             />
           </>
         )}

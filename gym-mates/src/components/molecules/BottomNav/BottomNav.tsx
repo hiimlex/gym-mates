@@ -1,6 +1,7 @@
-import { useAppNavigation, useNavigationContainerRef } from "@hooks";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
+import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import { AppRoutes } from "@navigation/appRoutes";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +46,6 @@ const BottomNav: React.FC = () => {
 
   const onBottomNavLayoutChange = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
-    console.log("BottomNav height:", height);
     dispatch(ConfigActions.setBottomNavHeight(height));
   };
 

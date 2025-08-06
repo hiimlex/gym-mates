@@ -1,10 +1,10 @@
 import { UsersService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Badge, Row } from "@components/atoms";
-import { useNavigationContainerRef } from "@hooks";
+import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import { IUserByIdResponse } from "@models/collections";
 import { UserActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import React, { useMemo } from "react";

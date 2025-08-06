@@ -3,7 +3,7 @@ import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { CrewVisibility, ICrew, ICrewsResponse } from "@models/collections";
 import { DialogActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import React, { useEffect, useMemo, useState } from "react";
@@ -99,11 +99,7 @@ const JoinCrew: React.FC = () => {
           }}
         />
       </S.InputGroup>
-      {alreadyJoined && (
-        <Typography.Caption textColor="danger" _t>
-          {"joinCrew.alreadyJoined"}
-        </Typography.Caption>
-      )}
+
       <S.Content>
         {crew && (
           <S.CrewCard key={crew._id}>
@@ -176,9 +172,11 @@ const JoinCrew: React.FC = () => {
       </S.Content>
       <Button
         title={
-          crew?.visibility === CrewVisibility.Public
-            ? "joinCrew.join"
-            : "joinCrew.request"
+          alreadyJoined
+            ? "joinCrew.alreadyJoined"
+            : crew?.visibility === CrewVisibility.Public
+              ? "joinCrew.join"
+              : "joinCrew.request"
         }
         colorScheme="secondary"
         disabled={!crew || alreadyJoined}

@@ -1,5 +1,9 @@
 import { ScreenWrapper } from "@components/molecules";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import {
+  AppRoutes,
+  ScreenProps,
+  TRootStackParamList,
+} from "@navigation/appRoutes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { RefObject, useMemo, useRef } from "react";
 import { KeyboardAvoidingView, TextInput, View } from "react-native";
@@ -18,14 +22,14 @@ import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 import Masks from "@utils/masks.utils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { UsersService } from "@api/services";
 import { UserActions } from "@store/slices";
 
-const EditProfile: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.EditProfile>
-> = ({ navigation }) => {
+const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
+  navigation,
+}) => {
   const { user } = useSelector((state: StoreState) => state.user);
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();

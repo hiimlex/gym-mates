@@ -12,6 +12,7 @@ interface BadgeProps {
   _t?: boolean;
   active?: boolean;
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
 const Badge: React.FC<BadgeProps> = ({
@@ -22,6 +23,7 @@ const Badge: React.FC<BadgeProps> = ({
   _t,
   active,
   style,
+  disabled = false,
 }) => {
   const textColor: TColors = useMemo(() => {
     return active ? "white" : "text";
@@ -30,13 +32,13 @@ const Badge: React.FC<BadgeProps> = ({
   return (
     <S.Container
       activeOpacity={0.6}
-      disabled={!touchable}
+      disabled={!touchable || disabled}
       active={active}
       onPress={onPress}
       style={style}
     >
       {label ? (
-        <Typography.Button textColor={textColor} _t={_t}>
+        <Typography.Button width={'auto'} textColor={textColor} _t={_t}>
           {label}
         </Typography.Button>
       ) : (

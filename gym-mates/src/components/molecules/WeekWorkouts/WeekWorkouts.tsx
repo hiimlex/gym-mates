@@ -1,7 +1,7 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { IWorkout, IWorkoutsByUser } from "@models/collections";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import { getCurrentWeek, numberToWeekDay } from "@utils/date.utils";
 import { format } from "date-fns";

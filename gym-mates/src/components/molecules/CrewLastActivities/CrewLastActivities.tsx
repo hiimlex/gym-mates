@@ -1,7 +1,7 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { IWorkoutsByCrew } from "@models/collections";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React from "react";
 import { Frown } from "react-native-feather";

@@ -15,22 +15,12 @@ export interface IItem {
   category: ItemCategory;
   price: number;
   requirements: string[];
+    key?: string;
+  description?: string;
+  file?: IFile;
+  title?: string;
   created_at: string;
   updated_at: string;
+  locked?: boolean;
 }
 
-export type IFigure = IItem & {
-  file: IFile;
-  category: ItemCategory.Figure;
-};
-
-export type ITitle = IItem & {
-  title: string;
-  category: ItemCategory.Title;
-};
-
-export type IAchievement = IItem & {
-  key: string;
-  description: string;
-  category: ItemCategory.Achievement;
-};

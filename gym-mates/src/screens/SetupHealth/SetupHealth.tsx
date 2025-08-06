@@ -2,9 +2,9 @@ import { UsersService } from "@api/services";
 import { Button, Input, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { IUpdateHealthForm } from "@models/collections";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AppDispatch } from "@store/store";
+import { AppDispatch } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import Masks from "@utils/masks.utils";
 import React, { useEffect, useMemo, useRef } from "react";
@@ -18,7 +18,7 @@ import { InputRefRecorder, SkipSetupHealthKey } from "@models/generic";
 import { UserActions } from "@store/slices";
 
 const SetupHealth: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.SetupHealth>
+  ScreenProps<AppRoutes.SetupHealth>
 > = ({ navigation: { navigate, goBack } }) => {
   const insets = useSafeAreaInsets();
 

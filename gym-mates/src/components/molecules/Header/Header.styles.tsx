@@ -7,7 +7,7 @@ const Container = styled.View`
   gap: 24px;
 `;
 
-const CoinsContainer = styled.View`
+const CoinsContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   gap: 5px;

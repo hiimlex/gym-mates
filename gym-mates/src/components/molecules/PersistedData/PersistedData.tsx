@@ -1,9 +1,9 @@
-import { useAppNavigation } from "@hooks";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { AccessTokenKey } from "@models/generic";
 import { AppRoutes } from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import React, { useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,10 +1,10 @@
 import { Avatar, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { SkipSetupAvatarKey } from "@models/generic";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AppDispatch } from "@store/store";
+import { AppDispatch } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -18,7 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import { UserActions } from "@store/slices";
 
 const SetupAvatar: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.SetupAvatar>
+  ScreenProps<AppRoutes.SetupAvatar>
 > = ({ navigation: { navigate, goBack } }) => {
   const insets = useSafeAreaInsets();
 

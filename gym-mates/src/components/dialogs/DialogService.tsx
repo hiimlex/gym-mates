@@ -1,5 +1,5 @@
 import { DialogActions } from "@store/slices";
-import { store } from "@store/store";
+import { store } from "@store/Store";
 import AddWorkout from "./AddWorkout/AddWorkout";
 import CrewSettings from "./CrewSettings/CrewSettings";
 import EditCrewSettings from "./EditCrewSettings/EditCrewSettings";
@@ -57,7 +57,7 @@ const openCreateCrew = () => {
 const openCrewSettings = () => {
   store.dispatch(
     DialogActions.openDialog({
-      content: <CrewSettings openEditCrewSettings={openEditCrewSettings} />,
+      content: <CrewSettings />,
       data: {
         title: "links.crewSettings",
         _t: true,

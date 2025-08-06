@@ -5,11 +5,10 @@ import {
   MediaSelect,
   Typography,
 } from "@components/atoms";
-import { useDialogService } from "@hooks";
 import { ICreateWorkoutForm, WorkoutType } from "@models/collections";
 import { InputRefRecorder } from "@models/generic";
 import { AddWorkoutActions, DialogActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import Masks from "@utils/masks.utils";
 import { subDays } from "date-fns";
@@ -34,8 +33,8 @@ import { Asset } from "react-native-image-picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { IIConProps } from "../../atoms/Icons/Icons";
-import S from "./AddWorkout.styles";
 import ShareWorkout from "../ShareWorkout/ShareWorkout";
+import S from "./AddWorkout.styles";
 
 const AddWorkout: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -114,7 +113,6 @@ const AddWorkout: React.FC = () => {
       })
     );
   };
-
 
   const scrollToFieldRef = (ref: RefObject<TextInput | null>) => {
     if (ref.current) {

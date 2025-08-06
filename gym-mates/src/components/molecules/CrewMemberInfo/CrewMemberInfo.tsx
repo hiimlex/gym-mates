@@ -6,7 +6,7 @@ import React from "react";
 import { Circle, DollarSign } from "react-native-feather";
 import S from "./CrewMemberInfo.styles";
 import { useSelector } from "react-redux";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { TouchableHighlight, TouchableOpacity } from "react-native";
 
 interface CrewMemberInfoProps {

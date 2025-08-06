@@ -1,11 +1,11 @@
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useMemo } from "react";
 import { TouchableOpacity, ViewStyle } from "react-native";
 import { Settings, Star } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./CrewView.styles";
-import { useDialogService } from "@hooks";
+import { useDialogService } from "@hooks/useDialogService/useDialogService";
 import { useMutation } from "@tanstack/react-query";
 import { CrewsService } from "@api/services";
 import { UserActions } from "@store/slices";

@@ -1,7 +1,3 @@
-import JoinCrew from "@components/dialogs/JoinCrew/JoinCrew";
-import { CrewVisibility } from "@models/collections";
-import UserJourney from "src/screens/UserJourney/UserJourney";
-
 export default {
   login: {
     title: "Login",
@@ -202,6 +198,30 @@ export default {
     },
     save: "Save",
   },
+  shop: {
+    title: "Shopping",
+    filters: {
+      all: "All",
+      cost: "Cost",
+      locked: "Locked",
+      list: "List view",
+      grid: "Grid view",
+    },
+    add: "Add",
+    remove: "Remove",
+    noItems: "No items found.",
+    cart: {
+      title: "Bag items",
+      empty: "Your bag is empty.",
+      total: "Total",
+      checkout: "Checkout",
+      notEnoughCoins: "You don't have enough coins.",
+      yourCoins: "Your coins",
+      result: "Result",
+      yourCoinsAfterPurchase: "Your coins after purchase",
+    },
+    empty: "No items found.",
+  },
   weekDays: {
     long: {
       sun: "Sunday",
@@ -239,6 +259,7 @@ export default {
     editCrew: "Edit Crew",
     userJourney: "Journey",
     editProfile: "Edit Profile",
+    shopCart: "Shopping",
   },
   units: {
     days: "days",
@@ -256,6 +277,7 @@ export default {
     weekly: "Weekly",
     monthly: "Monthly",
     daily: "Daily",
+    base: "Base",
   },
   crewVisibility: {
     public: "Public",
@@ -267,6 +289,9 @@ export default {
       "Cool guy": "The cool guy",
       "Hot guy": "The hot guy",
     },
+    achievement: {
+      'HOT!': "HOT!",
+    }
   },
   workoutTypes: {
     gym: "Gym",

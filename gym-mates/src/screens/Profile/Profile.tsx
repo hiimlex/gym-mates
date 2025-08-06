@@ -1,11 +1,11 @@
 import { UsersService } from "@api/services";
 import { Avatar, Menu, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
-import { AppRoutes, TRootStackParamList } from "@navigation/appRoutes";
+import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { UserActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import React, { useMemo, useState } from "react";
@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import S from "./Profile.styles";
 
 const Profile: React.FC<
-  NativeStackScreenProps<TRootStackParamList, AppRoutes.Profile>
+  ScreenProps<AppRoutes.Profile>
 > = ({ navigation: { navigate } }) => {
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);

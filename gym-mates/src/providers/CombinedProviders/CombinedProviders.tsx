@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import { store } from "@store/store";
+import { store } from "@store/Store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as StoreProvider } from "react-redux";

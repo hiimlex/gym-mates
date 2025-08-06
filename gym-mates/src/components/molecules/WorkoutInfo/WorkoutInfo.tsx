@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import S from "./WorkoutInfo.styles";
 import { IWorkout } from "@models/collections";
 import { BannerPreview, Row, Typography } from "../../atoms";
 import { format } from "date-fns";
 import { CameraOff, Circle, DollarSign } from "react-native-feather";
 import { Colors } from "@theme";
-import { StoreState } from "@store/store";
+import { StoreState } from "@store/Store";
 import { useSelector } from "react-redux";
 import { View } from "react-native";
 
@@ -40,7 +40,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
     format(new Date(workout.date), "yyyy-MM-dd") ===
       format(new Date(), "yyyy-MM-dd");
 
-  const receiptLabel = Object.keys(workout.receipt || {});
+  useEffect(() => {},[])
 
   return (
     <S.WorkoutGroup>
@@ -84,20 +84,13 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
             )}
 
             <Row gap={6} align="center">
-              {receiptLabel.map((label, index) => (
-                <Row gap={6} key={index}>
-                  <Typography.Caption textColor="textLight" _t>
-                    {`crewStreaks.${label}`}
-                  </Typography.Caption>
-                  {Dot}
-                </Row>
-              ))}
+              {/* {receiptLabel.map((label, index) => (
+                <Typography.Caption key={label} textColor="textLight" _t>
+                  {`crewStreaks.${label}`}
+                </Typography.Caption>
+              ))} */}
               <Typography.Caption textColor="textLight">
                 {workout.type.charAt(0).toUpperCase() + workout.type.slice(1)}
-              </Typography.Caption>
-              {Dot}
-              <Typography.Caption textColor="textLight">
-                {workout.title}
               </Typography.Caption>
             </Row>
           </S.WorkoutInfo>

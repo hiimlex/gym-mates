@@ -1,5 +1,5 @@
 import { IHealthData } from "./HealthModel";
-import { IAchievement, IFigure, ItemCategory, ITitle } from "./ItemsModel";
+import { IItem } from "./ItemsModel";
 import { IUser } from "./UsersModel";
 import { IWorkout } from "./WorkoutsModel";
 
@@ -20,10 +20,7 @@ export interface IUserJourneyEvent {
     user?: IUser;
     friend?: IUser;
     healthy_info?: IHealthData;
-    item?:
-      | (IFigure & { category: ItemCategory.Figure })
-      | (ITitle & { category: ItemCategory.Title })
-      | (IAchievement & { category: ItemCategory.Achievement });
+    item?: IItem;
   };
   created_at: string;
 }

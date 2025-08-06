@@ -1,7 +1,7 @@
 import { ICrew } from "./CrewsModel";
 import { IFile } from "./FileModel";
 import { IHealthData } from "./HealthModel";
-import { ITitle } from "./ItemsModel";
+import { IItem } from "./ItemsModel";
 import { IUserJourney } from "./JourneyModel";
 
 export interface IUser {
@@ -19,7 +19,7 @@ export interface IUser {
   followers?: IUser[];
   following?: IUser[];
   favorites?: string[];
-  title?: ITitle;
+  title?: IItem;
 
   crews_count: number;
 }

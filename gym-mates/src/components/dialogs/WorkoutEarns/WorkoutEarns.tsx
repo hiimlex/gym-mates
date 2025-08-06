@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import S from "./WorkoutEarns.styles";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreState } from "@store/store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { Dialog, Typography } from "@components/atoms";
 import { DollarSign } from "react-native-feather";
 import { Colors } from "@theme";
