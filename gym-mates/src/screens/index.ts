@@ -14,3 +14,4 @@ export { default as ShopCartScreen } from "./ShopCart/ShopCart";
 
 export * from "./ShopCart";
 export * from "./Shop";
+export * from "./UserInventory";

@@ -25,6 +25,14 @@ import {
   Typography,
 } from "../../atoms";
 import S from "./EditCrewSettings.styles";
+import Animated, {
+  FadeIn,
+  FadeInLeft,
+  FadeInRight,
+  SlideInLeft,
+  SlideInRight,
+  SlideOutRight,
+} from "react-native-reanimated";
 
 const EditCrewSettings: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
@@ -52,7 +60,7 @@ const EditCrewSettings: React.FC = () => {
   });
   const values = watch();
   const loseStreakRef = useRef<TextInput | null>(null);
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<Animated.ScrollView>(null);
 
   const onBannerChange = (file: Asset) => {
     if (file.base64) {
@@ -179,6 +187,8 @@ const EditCrewSettings: React.FC = () => {
       contentContainerStyle={{ gap: 24, paddingBottom: insets.bottom }}
       showsVerticalScrollIndicator={false}
       ref={scrollRef}
+      entering={FadeInRight}
+      exiting={SlideOutRight}
     >
       <MediaSelect
         preview={preview}

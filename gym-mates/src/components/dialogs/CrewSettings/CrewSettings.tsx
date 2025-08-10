@@ -22,6 +22,7 @@ import { Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
 import S from "./CrewSettings.styles";
 import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
+import { FadeInLeft, FadeOutLeft, SlideOutLeft, SlideOutRight } from "react-native-reanimated";
 
 const CrewSettings: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -89,6 +90,8 @@ const CrewSettings: React.FC = () => {
     <S.Container
       contentContainerStyle={{ gap: 24, flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
+      exiting={SlideOutLeft}
+      entering={FadeInLeft}
     >
       <Row gap={12} align="center" width={"auto"}>
         {crew?.banner?.url ? (

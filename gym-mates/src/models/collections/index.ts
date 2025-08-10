@@ -2,6 +2,7 @@ export * from "./AuthModel";
 export * from "./CrewsModel";
 export * from "./FileModel";
 export * from "./HealthModel";
+export * from "./InventoryModel";
 export * from "./ItemsModel";
 export * from "./JourneyModel";
 export * from "./ShopModel";

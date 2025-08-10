@@ -1,8 +1,11 @@
 import { UsersService, WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Avatar, Loader, Row, Tabs, Typography } from "@components/atoms";
-import { WorkoutInfo } from "@components/molecules";
+import { ItemCard, WorkoutInfo } from "@components/molecules";
 import {
+  IGetInventoryFilters,
+  IGetInventoryResponse,
+  ItemCategory,
   IUserByIdResponse,
   IWorkoutsByUser,
   IWorkoutsFilters,
@@ -19,7 +22,6 @@ import S from "./UserView.styles";
 
 const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
   const userId = route.params.userId;
-  console.log("UserView userId:", userId);
   const headerHeight = useHeaderHeight();
 
   const { data: userData } = useQuery<IUserByIdResponse, { _id: string }>(
@@ -30,6 +32,8 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
     }
   );
 
+  const user = useMemo(() => userData?.userById, [userData]);
+
   const { data: workoutsData, loading: loadingUserWorkouts } = useQuery<
     IWorkoutsByUser,
     IWorkoutsFilters
@@ -38,7 +42,16 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
     fetchPolicy: "cache-and-network",
   });
 
-  const user = useMemo(() => userData?.userById, [userData]);
+  const { data: achievementsData, loading: loadingAchievements } = useQuery<
+    IGetInventoryResponse,
+    IGetInventoryFilters
+  >(UsersService.gql.GET_INVENTORY, {
+    variables: {
+      journeyId: user?.journey._id || "",
+      category: ItemCategory.Achievement,
+    },
+    fetchPolicy: "cache-and-network",
+  });
 
   const tabsHeader: TabHeader[] = [
     {
@@ -137,7 +150,24 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
             ))}
             {loadingUserWorkouts && <Loader color="primary" />}
           </Tabs.Item>
-          <Tabs.Item key={1}></Tabs.Item>
+          <Tabs.Item
+            key={1}
+            contentContainerStyle={{
+              gap: 24,
+              flexDirection: "row",
+              flexWrap: "wrap",
+            }}
+          >
+            {achievementsData?.journeyById.inventory.map((achievement) => (
+              <ItemCard
+                item={achievement.item}
+                key={achievement.item._id}
+                itemsPerRow={3}
+                mode="view"
+              />
+            ))}
+            {loadingAchievements && <Loader color="primary" />}
+          </Tabs.Item>
         </Tabs.Root>
       </S.Container>
     </ScreenWrapper>

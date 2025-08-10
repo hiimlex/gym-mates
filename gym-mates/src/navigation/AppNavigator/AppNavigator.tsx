@@ -5,6 +5,8 @@ import {
   UserViewActions,
 } from "@components/molecules";
 import { navigationRef } from "@hooks/useNavigationContainer/useNavigationContainer";
+import { PersistedStateKey } from "@models/generic";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
@@ -21,15 +23,15 @@ import {
   ShopScreen,
   ShopScreenOptions,
   SignUpScreen,
+  UserInventoryScreen,
+  UserInventoryScreenOptions,
   UserJourneyScreen,
   UserViewScreen,
 } from "@screens";
 import { StoreState } from "@store/Store";
-import { Colors } from "@theme";
-import { TouchableOpacity } from "react-native";
-import { ArrowLeft } from "react-native-feather";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Typography } from "../../components/atoms";
+import { HeaderBack, Typography } from "../../components/atoms";
 import { BottomNav, Header } from "../../components/molecules";
 import { AppRoutes, TRootStackParamList } from "../appRoutes";
 
@@ -39,23 +41,31 @@ const AppNavigator = () => {
   const { user, isAuthenticated } = useSelector(
     (state: StoreState) => state.user
   );
+  const [isReady, setIsReady] = useState(false);
+  const [initialState, setInitialState] = useState();
 
-  const BackLeft = () => (
-    <TouchableOpacity
-      activeOpacity={0.6}
-      onPress={() => navigationRef.current?.goBack()}
-    >
-      <ArrowLeft
-        color={Colors.colors.text}
-        width={24}
-        height={24}
-        stroke={Colors.colors.text}
-      />
-    </TouchableOpacity>
-  );
+  useEffect(() => {
+    const restoreState = async () => {
+      const savedStateString = await AsyncStorage.getItem(PersistedStateKey);
+      const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+
+      setInitialState(state);
+      setIsReady(true);
+    };
+
+    restoreState();
+  }, []);
+
+  if (!isReady) return null;
 
   return (
-    <NavigationContainer<TRootStackParamList> ref={navigationRef}>
+    <NavigationContainer<TRootStackParamList>
+      ref={navigationRef}
+      initialState={initialState}
+      onStateChange={(state) =>
+        AsyncStorage.setItem(PersistedStateKey, JSON.stringify(state))
+      }
+    >
       <Stack.Navigator
         initialRouteName={AppRoutes.Login}
         screenOptions={{
@@ -110,7 +120,7 @@ const AppNavigator = () => {
               options={{
                 headerShown: true,
                 headerTransparent: true,
-                headerLeft: BackLeft,
+                headerLeft: () => <HeaderBack />,
                 headerTitle: () => (
                   <Typography.HeadingSubtitle
                     textColor="text"
@@ -138,7 +148,7 @@ const AppNavigator = () => {
                     {"links.profile"}
                   </Typography.HeadingSubtitle>
                 ),
-                headerLeft: BackLeft,
+                headerLeft: () => <HeaderBack />,
                 headerRight: () => <Header.Coins size={10} />,
                 headerTransparent: true,
               }}
@@ -158,7 +168,7 @@ const AppNavigator = () => {
                     {"links.userJourney"}
                   </Typography.HeadingSubtitle>
                 ),
-                headerLeft: BackLeft,
+                headerLeft: () => <HeaderBack />,
                 headerTransparent: true,
               }}
             />
@@ -177,7 +187,7 @@ const AppNavigator = () => {
                     {"links.user"}
                   </Typography.HeadingSubtitle>
                 ),
-                headerLeft: BackLeft,
+                headerLeft: () => <HeaderBack />,
                 headerTransparent: true,
                 headerRight: () => <UserViewActions />,
               }}
@@ -197,7 +207,7 @@ const AppNavigator = () => {
                     {"links.editProfile"}
                   </Typography.HeadingSubtitle>
                 ),
-                headerLeft: BackLeft,
+                headerLeft: () => <HeaderBack />,
                 headerTransparent: true,
               }}
             />
@@ -211,6 +221,12 @@ const AppNavigator = () => {
               name={AppRoutes.ShopCart}
               component={ShopCartScreen}
               options={ShopCartScreenOptions}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.UserInventory}
+              component={UserInventoryScreen}
+              options={UserInventoryScreenOptions}
             />
           </>
         )}

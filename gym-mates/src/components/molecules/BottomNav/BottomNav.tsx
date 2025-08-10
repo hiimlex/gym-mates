@@ -13,6 +13,7 @@ import { Typography } from "../../atoms";
 import S from "./BottomNav.styles";
 import { BlurView } from "expo-blur";
 import { ConfigActions } from "@store/slices";
+import { SlideInDown, SlideInLeft, SlideInUp } from "react-native-reanimated";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
@@ -63,6 +64,7 @@ const BottomNav: React.FC = () => {
   return (
     <S.Float
       ref={ref}
+      entering={SlideInDown}
       onLayout={onBottomNavLayoutChange}
       intensity={10}
       style={{ width, bottom: 0, padding: 12, paddingBottom: insets.bottom }}

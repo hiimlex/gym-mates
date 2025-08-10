@@ -1,8 +1,9 @@
 import { Card } from "../../atoms";
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
+import Animated from "react-native-reanimated";
 
-const Container = styled.ScrollView`
+const Container = styled(Animated.ScrollView)`
   flex: 1;
 `;
 

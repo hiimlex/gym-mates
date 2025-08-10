@@ -8,8 +8,7 @@ export interface IUserJourney {
   _id: string;
   events: IUserJourneyEvent[];
   workouts: IWorkout[];
-  achievements: string[];
-  inventory: string[];
+  inventory: IItem[];
 }
 
 export interface IUserJourneyEvent {

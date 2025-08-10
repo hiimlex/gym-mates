@@ -179,7 +179,7 @@ const Profile: React.FC<
                   fillOpacity={0.2}
                 />
               }
-              onPress={() => {}}
+              onPress={() => navigate(AppRoutes.UserInventory)}
               label="profile.personal.inventory"
               _t
             ></Menu.Item>

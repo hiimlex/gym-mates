@@ -13,15 +13,17 @@ import { ShopActions } from "@store/slices";
 interface ItemCardProps {
   item: IItem;
   forcedView?: "grid" | "list";
-  showAsInCart?: boolean;
   disabled?: boolean;
+  mode?: "view" | "buy" | "checkout";
+  itemsPerRow?: number;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
   item,
   forcedView,
-  showAsInCart = false,
   disabled = false,
+  mode = "buy",
+  itemsPerRow = 2,
 }) => {
   const { width } = useWindowDimensions();
 
@@ -40,7 +42,6 @@ const ItemCard: React.FC<ItemCardProps> = ({
   }, [forcedView, stateView]);
 
   const paddings = 24;
-  const itemsPerRow = 2;
   const mediaSize = useMemo(() => {
     if (view === "grid") {
       return width / itemsPerRow - paddings - 12;
@@ -51,7 +52,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
     }
 
     return 0;
-  }, [view]);
+  }, [view, itemsPerRow]);
 
   const isOnCart = useMemo(
     () => cart?.some((i) => i._id === item?._id),
@@ -67,9 +68,14 @@ const ItemCard: React.FC<ItemCardProps> = ({
   };
 
   const isGridView = useMemo(() => view === "grid", [view]);
+  const isListView = useMemo(() => view === "list", [view]);
 
   return (
-    <S.Container view={view} locked={item.locked}>
+    <S.Container
+      view={view}
+      locked={item.locked}
+      style={{ width: isGridView ? mediaSize : "100%" }}
+    >
       <S.MediaWrapper size={mediaSize}>
         {item.file?.url && (
           <S.MediaImage source={item.file.url} onError={() => {}} />
@@ -84,7 +90,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
             strokeWidth={2}
           />
         )}
-        {isGridView && !item.locked && (
+        {isGridView && !item.locked && mode === "buy" && (
           <S.FloatingPrice>
             <Header.Coins
               size={8}
@@ -98,69 +104,116 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <Row
         justify="space-between"
         align={!item.locked && isGridView ? "flex-end" : "center"}
-        width={!isGridView ? "75%" : "auto"}
+        width={isListView ? "75%" : "100%"}
       >
-        {/* Name e category & Price */}
-        <S.Info>
-          <Typography.Typography
-            variant={isGridView ? "button" : "headingSubtitle"}
+        {/* Only View mode */}
+        {mode === "view" && (
+          <S.Info
+            style={{
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            {item.name}
-          </Typography.Typography>
-          {!item.locked && !isGridView && !showAsInCart && (
-            <Header.Coins
-              size={8}
-              textVariant="button"
-              coinValue={item?.price.toString()}
-              disabled
-            />
-          )}
-          <Typography.Tip
-            textColor="textLight"
-            _t
-          >{`itemCategoryTypes.${item.category}`}</Typography.Tip>
-        </S.Info>
-        <S.Info>
-          {/* Add button */}
-          {!showAsInCart && !item.locked && !isOnCart && (
-            <S.CardButton colorScheme="primary" activeOpacity={0.6} onPress={addToCart} disabled={disabled}>
-              <Typography.Tip textColor="white" _t>
-                {"shop.add"}
-              </Typography.Tip>
-            </S.CardButton>
-          )}
-          {/* Remove button */}
-          {!showAsInCart && !item.locked && isOnCart && (
-            <S.CardButton
-              activeOpacity={0.6}
-              onPress={removeFromCart}
-              colorScheme="danger"
-            >
-              <Typography.Tip textColor="white" _t>
-                {"shop.remove"}
-              </Typography.Tip>
-            </S.CardButton>
-          )}
-          {/* Lock item */}
-          {item.locked && (
-            <Lock
-              width={20}
-              height={20}
-              stroke={Colors.colors.text}
-              fill={Colors.colors.text}
-              fillOpacity={0.2}
-            />
-          )}
-          {showAsInCart && (
-            <Header.Coins
-              size={8}
-              textVariant="button"
-              coinValue={"-" + item?.price.toString()}
-              textColor="danger"
-              disabled
-            />
-          )}
-        </S.Info>
+            <Typography.Button>{item.name}</Typography.Button>
+            {!item.locked && isListView && (
+              <Header.Coins
+                size={8}
+                textVariant="button"
+                coinValue={item?.price.toString()}
+                disabled
+              />
+            )}
+            <Typography.Tip
+              textColor="textLight"
+              _t
+            >{`itemCategoryTypes.${item.category}`}</Typography.Tip>
+          </S.Info>
+        )}
+
+        {/* Buy view mode */}
+        {mode === "buy" && (
+          <>
+            <S.Info>
+              <Typography.Typography
+                variant={isGridView ? "button" : "headingSubtitle"}
+              >
+                {item.name}
+              </Typography.Typography>
+              {!item.locked && isListView && mode === "buy" && (
+                <Header.Coins
+                  size={8}
+                  textVariant="button"
+                  coinValue={item?.price.toString()}
+                  disabled
+                />
+              )}
+              <Typography.Tip
+                textColor="textLight"
+                _t
+              >{`itemCategoryTypes.${item.category}`}</Typography.Tip>
+            </S.Info>
+            <S.Info>
+              {/* Add button */}
+              {!item.locked && !isOnCart && (
+                <S.CardButton
+                  colorScheme="primary"
+                  activeOpacity={0.6}
+                  onPress={addToCart}
+                  disabled={disabled}
+                >
+                  <Typography.Tip textColor="white" _t>
+                    {"shop.add"}
+                  </Typography.Tip>
+                </S.CardButton>
+              )}
+              {/* Remove button */}
+              {!item.locked && isOnCart && (
+                <S.CardButton
+                  activeOpacity={0.6}
+                  onPress={removeFromCart}
+                  colorScheme="danger"
+                >
+                  <Typography.Tip textColor="white" _t>
+                    {"shop.remove"}
+                  </Typography.Tip>
+                </S.CardButton>
+              )}
+              {/* Lock item */}
+              {item.locked && (
+                <Lock
+                  width={20}
+                  height={20}
+                  stroke={Colors.colors.text}
+                  fill={Colors.colors.text}
+                  fillOpacity={0.2}
+                />
+              )}
+            </S.Info>
+          </>
+        )}
+
+        {/* Checkout mode */}
+        {mode === "checkout" && (
+          <>
+            <S.Info>
+              <Typography.Button>{item.name}</Typography.Button>
+              <Typography.Tip
+                textColor="textLight"
+                _t
+              >{`itemCategoryTypes.${item.category}`}</Typography.Tip>
+            </S.Info>
+            <S.Info>
+              <Header.Coins
+                size={8}
+                textVariant="button"
+                coinValue={"-" + item?.price.toString()}
+                textColor="danger"
+                disabled
+              />
+            </S.Info>
+          </>
+        )}
       </Row>
     </S.Container>
   );

@@ -209,7 +209,6 @@ export default {
     },
     add: "Add",
     remove: "Remove",
-    noItems: "No items found.",
     cart: {
       title: "Bag items",
       empty: "Your bag is empty.",
@@ -221,6 +220,16 @@ export default {
       yourCoinsAfterPurchase: "Your coins after purchase",
     },
     empty: "No items found.",
+  },
+  inventory: {
+    title: "Inventory",
+    empty: "No items found.",
+    filters: {
+      cost: "Cost",
+      category: "Category",
+      achievements: "Achievements",
+      badges: "Badges",
+    },
   },
   weekDays: {
     long: {

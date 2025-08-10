@@ -46,6 +46,9 @@ const USER_BY_ID = gql`
           url
         }
       }
+      journey {
+        _id
+      }
     }
   }
 `;
@@ -59,6 +62,75 @@ const UPDATE_USER_BY_ID = gql`
         email
       }
       error
+    }
+  }
+`;
+
+const GET_INVENTORY = gql`
+  query GetInventory($journeyId: MongoID!, $category: String, $search: String) {
+    journeyById(_id: $journeyId) {
+      inventory(filter: { category: $category, search: $search }) {
+        owned_at
+        item {
+          ... on Title {
+            _id
+            category
+            name
+            price
+            requirements
+            created_at
+            updated_at
+            title
+          }
+          ... on Achievement {
+            _id
+            category
+            name
+            price
+            requirements
+            created_at
+            updated_at
+            key
+            description
+          }
+          ... on Badge {
+            _id
+            category
+            name
+            price
+            requirements
+            created_at
+            updated_at
+          }
+          ... on Avatar {
+            _id
+            category
+            name
+            price
+            requirements
+            created_at
+            updated_at
+          }
+          ... on Skin {
+            _id
+            category
+            name
+            price
+            requirements
+            created_at
+            updated_at
+          }
+          ... on Figure {
+            _id
+            category
+            name
+            price
+            requirements
+            created_at
+            updated_at
+          }
+        }
+      }
     }
   }
 `;
@@ -113,10 +185,7 @@ const updateProfile = async (
   userId: string,
   data: Partial<IEditProfileForm>
 ): Promise<AxiosResponse<null>> => {
-  const response = await api.put(
-    Endpoints.UsersUpdateProfile,
-    data
-  );
+  const response = await api.put(Endpoints.UsersUpdateProfile, data);
 
   return response;
 };
@@ -125,6 +194,7 @@ export default {
   gql: {
     USER_BY_ID,
     UPDATE_USER_BY_ID,
+    GET_INVENTORY,
   },
   createHealthy,
   updateAvatar,

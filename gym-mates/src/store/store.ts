@@ -5,6 +5,7 @@ import CrewsReducer from "./slices/CrewsSlice";
 import DialogReducer from "./slices/DialogSlice";
 import AddWorkoutReducer from "./slices/AddWorkoutSlice";
 import ShopReducer from "./slices/ShopSlice";
+import UserInventoryReducer from "./slices/UserInventorySlice";
 
 const rootReducer = combineReducers({
   user: UserReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   dialog: DialogReducer,
   addWorkout: AddWorkoutReducer,
   shop: ShopReducer,
+  userInventory: UserInventoryReducer,
 });
 
 export const store = configureStore({

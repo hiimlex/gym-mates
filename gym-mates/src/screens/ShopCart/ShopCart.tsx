@@ -70,7 +70,7 @@ const ShopCart: React.FC<ScreenProps<AppRoutes.ShopCart>> = ({
               key={item._id}
               item={item}
               forcedView="list"
-              showAsInCart
+              mode="checkout"
             />
           ))}
 

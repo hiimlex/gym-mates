@@ -1,8 +1,9 @@
 import styled from "@emotion/native";
 import { setAlphaToColor } from "@theme";
 import { BlurView } from "expo-blur";
+import Animated from "react-native-reanimated";
 
-const Float = styled(BlurView)`
+const Float = styled(Animated.createAnimatedComponent(BlurView))`
   background-color: ${({ theme }) =>
     setAlphaToColor(theme.colors.background, 40)};
   position: absolute;

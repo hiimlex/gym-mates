@@ -1,7 +1,8 @@
+import Animated from "react-native-reanimated";
 import { Card } from "../../atoms";
 import styled from "@emotion/native";
 
-const Container = styled.ScrollView``;
+const Container = styled(Animated.ScrollView)``;
 
 const VisibilityCard = styled(Card)<{ isActive?: boolean }>`
   flex-direction: column;
