@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/SF-Pro-Rounded-Bold.ttf",
+      "sha1": "be06b519a33d40f0aeb1413570346cd9e8859b49"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Rounded-Medium.ttf",
+      "sha1": "73a30e67de565fea6a7bda6e190e883b870f14d8"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Rounded-Regular.ttf",
+      "sha1": "adc9ba820a73be7f4cdf267bfbdfefa0b95d1118"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Rounded-Semibold.ttf",
+      "sha1": "7ce2886d6190466dcac1b9bf9bc728e5920ba351"
+    }
+  ]
+}
