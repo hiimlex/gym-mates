@@ -69,7 +69,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
 
       <S.WorkoutRow>
         <Row gap={12} align="center" width={"auto"}>
-          <BannerPreview preview={workout.picture?.url} size={48} />
+          <BannerPreview preview={workout.picture?.url} size={48} iconSize={24} />
 
           <S.WorkoutInfo>
             {loggedUserWorkout && (

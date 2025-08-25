@@ -70,7 +70,7 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
               }
               emptyBgColor="background"
               size={48}
-              iconSize={20}
+              iconSize={24}
             />
             <S.EventInfo>
               <Typography.Body
