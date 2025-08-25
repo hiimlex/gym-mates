@@ -36,6 +36,7 @@ export enum Endpoints {
   UsersSelectTitle = "/users/select-title",
   UsersUpdateAvatar = "/users/update-avatar",
   UsersGetJourney = "/users/journey",
+	UsersRegisterDeviceToken = "/users/register-device-token",
   // Workouts
   WorkoutsCreate = "/workouts",
   // Shop

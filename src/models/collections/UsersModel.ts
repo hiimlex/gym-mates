@@ -56,3 +56,13 @@ export interface IGetFollowersInfoResponse {
   followers: IFollowerInfo[];
   following: IFollowerInfo[];
 }
+
+export interface IDeviceRegistration {
+  pushToken: string;
+  deviceInfo: IDeviceInfo;
+}
+
+export interface IDeviceInfo {
+  os: string;
+  model: string;
+}

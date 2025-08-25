@@ -14,6 +14,7 @@ export { default as PersistedData } from "./PersistedData/PersistedData";
 export { default as ScreenWrapper } from "./ScreenWrapper/ScreenWrapper";
 export { default as ShopCheckoutPreview } from "./ShopCheckoutPreview/ShopCheckoutPreview";
 export { default as UserInfo } from "./UserInfo/UserInfo";
+export { default as UserSelectTitle } from "./UserSelectTitle/UserSelectTitle";
 export { default as UserViewActions } from "./UserViewActions/UserViewActions";
 export { default as WeekWorkouts } from "./WeekWorkouts/WeekWorkouts";
 export { default as WorkoutInfo } from "./WorkoutInfo/WorkoutInfo";

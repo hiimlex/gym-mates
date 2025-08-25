@@ -1,6 +1,8 @@
 import api from "@api/api";
 import { gql } from "@apollo/client";
 import {
+  IDeviceInfo,
+  IDeviceRegistration,
   IEditProfileForm,
   IGetFollowersInfoResponse,
   IGetJourneyFilters,
@@ -10,7 +12,7 @@ import {
 import { BackendImageMulterKey, Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
 import { queryBuilder } from "@utils/queryBuilder";
-import { Axios, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { Asset } from "react-native-image-picker";
 
 const USER_BY_ID = gql`
@@ -198,6 +200,18 @@ const getFollowersInfo = async (): Promise<
   return response;
 };
 
+const registerDevice = async (payload: IDeviceRegistration) => {
+  const response = await api.post(Endpoints.UsersRegisterDeviceToken, payload);
+
+  return response;
+};
+
+const selectTitle = async (title_id: string) => {
+  const response = await api.put(Endpoints.UsersSelectTitle, { title_id });
+
+  return response;
+}
+
 export default {
   gql: {
     USER_BY_ID,
@@ -211,4 +225,6 @@ export default {
   unfollow,
   updateProfile,
   getFollowersInfo,
+  registerDevice,
+  selectTitle
 };

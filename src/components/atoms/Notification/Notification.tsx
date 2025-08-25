@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import S from "./Notification.styles";
 import { ICreateNotification, INotificationType } from "@models/generic";
 import Typography from "../Typography/Typography";
@@ -29,6 +29,8 @@ const Notification: React.FC<ICreateNotification> = ({
   _params,
   _t = true,
 }) => {
+  const { width } = useWindowDimensions();
+
   const textColor: TColors = useMemo(() => {
     if (type === "info" || type === "warning") return "textDark";
 
@@ -78,10 +80,16 @@ const Notification: React.FC<ICreateNotification> = ({
       disabled={!closable}
       entering={FadeInUp}
       exiting={FadeOutUp}
+      style={{ maxWidth: width * 0.8 }}
     >
       {showDefaultIcon && !icon && iconByType[type]}
       {icon && <View>{icon}</View>}
-      <Typography.Button _t={_t} _params={_params} textColor={textColor}>
+      <Typography.Button
+        style={{ flexWrap: "wrap" }}
+        _t={_t}
+        _params={_params}
+        textColor={textColor}
+      >
         {message}
       </Typography.Button>
     </S.Notification>

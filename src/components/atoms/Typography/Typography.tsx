@@ -26,6 +26,7 @@ interface TypographyProps {
   _t?: boolean;
   _params?: Record<string, any>;
   width?: TextStyle["width"];
+  style?: TextStyle | TextStyle[];
 }
 
 const Typography: React.FC<
@@ -43,6 +44,7 @@ const Typography: React.FC<
   width,
   _t,
   _params,
+  style,
 }) => {
   const { t } = useTranslation();
 
@@ -68,7 +70,7 @@ const Typography: React.FC<
   }, [fontWeight, resolvedTextColor, fontFamily, fontStyle, textAlign, width]);
 
   return (
-    <Text style={[stylesByVariant, customStyles]}>
+    <Text style={[stylesByVariant, customStyles, style]}>
       {_t ? t(children?.toString() || "", _params) : children}
     </Text>
   );

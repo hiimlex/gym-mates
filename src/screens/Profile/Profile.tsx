@@ -1,6 +1,6 @@
 import { UsersService } from "@api/services";
 import { Avatar, Menu, Row, Typography } from "@components/atoms";
-import { ScreenWrapper } from "@components/molecules";
+import { ScreenWrapper, UserSelectTitle } from "@components/molecules";
 import {
   AppRoutes,
   ScreenProps,
@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import {
   Award,
   Edit,
@@ -36,6 +36,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
   const headerHeight = useHeaderHeight();
   const { crews } = useSelector((state: StoreState) => state.crews);
   const [preview, setPreview] = useState<string | undefined>(user?.avatar?.url);
+  const [showSelectTitle, setShowSelectTitle] = useState(false);
 
   const crewsCount = useMemo(() => crews.length, [crews]);
 
@@ -98,19 +99,24 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
                 {user.name}
               </Typography.Heading>
 
-              <Text
-                style={{
-                  fontWeight: "500",
-                  fontStyle: "italic",
-                  color: Colors.colors.primary,
-                }}
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => setShowSelectTitle((prev) => !prev)}
               >
-                {t(
-                  user?.title
-                    ? `items.title.${user?.title?.name}`
-                    : "items.title.noTitle"
-                )}
-              </Text>
+                <Text
+                  style={{
+                    fontWeight: "500",
+                    fontStyle: "italic",
+                    color: Colors.colors.primary,
+                  }}
+                >
+                  {t(
+                    user?.title
+                      ? `items.title.${user?.title?.name}`
+                      : "items.title.noTitle"
+                  )}
+                </Text>
+              </TouchableOpacity>
             </View>
 
             <Row gap={6}>
@@ -250,6 +256,9 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
           </Menu.Root>
         </View>
       </S.Container>
+      {showSelectTitle && (
+        <UserSelectTitle close={() => setShowSelectTitle(false)} />
+      )}
     </ScreenWrapper>
   );
 };

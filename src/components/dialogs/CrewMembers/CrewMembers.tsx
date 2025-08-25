@@ -1,17 +1,15 @@
-import React, { useEffect, useMemo } from "react";
-import S from "./CrewMembers.styles";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreState } from "@store/Store";
-import { TouchableOpacity, View } from "react-native";
-import { CrewMemberInfo, UserInfo } from "@components/molecules";
-import { Avatar, Typography } from "@components/atoms";
-import { DialogActions } from "@store/slices";
-import { AppRoutes } from "@navigation/appRoutes";
-import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
-import { useMutation } from "@tanstack/react-query";
-import { useQuery } from "@apollo/client";
 import { CrewsService } from "@api/services";
+import { useQuery } from "@apollo/client";
+import { Avatar, Typography } from "@components/atoms";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { ICrew } from "@models/collections";
+import { AppDispatch, StoreState } from "@store/Store";
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useMemo } from "react";
+import { TouchableOpacity } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
+import S from "./CrewMembers.styles";
 
 const CrewMembers: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -32,10 +30,10 @@ const CrewMembers: React.FC = () => {
   });
 
   useEffect(() => {
-    if(data){
+    if (data) {
       console.log("data updated", data);
     }
-  },[data])
+  }, [data]);
 
   const showActionsMenu = () => {
     console.log("showActionsMenu on long press");
@@ -45,7 +43,7 @@ const CrewMembers: React.FC = () => {
     mutationFn: async () => {},
     onSuccess: async () => {
       await refetch();
-    }
+    },
   });
 
   return (

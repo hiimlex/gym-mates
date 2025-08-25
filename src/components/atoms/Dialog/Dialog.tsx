@@ -42,7 +42,10 @@ const Dialog: React.FC<DialogProps> = ({
       entering={FadeIn.duration(150)}
       exiting={FadeOut.duration(150)}
     >
-      <S.Container entering={SlideInDown} exiting={SlideOutDown}>
+      <S.Container
+        entering={SlideInDown}
+        exiting={SlideOutDown}
+      >
         <S.Blur intensity={10} style={{ paddingBottom: insets.bottom }}>
           {showTitle && (
             <S.Title>

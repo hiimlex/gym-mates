@@ -1,28 +1,29 @@
 import React, { useRef } from "react";
 
-import { AuthService } from "@api/services";
+import { AuthService, UsersService } from "@api/services";
 import { Button, Input, Typography } from "@components/atoms";
-import { ILoginForm } from "@models/collections";
+import { IDeviceInfo, ILoginForm } from "@models/collections";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
-import { TouchableOpacity, useWindowDimensions, View } from "react-native";
+import {
+  Platform,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ScreenWrapper } from "@components/molecules";
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
-import {
-  AccessTokenKey,
-  InputRefRecorder,
-  SkipSetupAvatarKey,
-  SkipSetupHealthKey,
-} from "@models/generic";
+import { AccessTokenKey, InputRefRecorder } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
+import { getPushToken } from "@utils/getPushToken";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Login.styles";
-import { getMessageFromError } from "@utils/handleAxiosError";
 
 const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
   const { width } = useWindowDimensions();
@@ -45,12 +46,21 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
     onSuccess: async (data) => {
       await AsyncStorage.setItem(AccessTokenKey, data.data.access_token);
       await dispatch(UserActions.fetchCurrentUser());
+
+      // const tokenData = await getPushToken();
+
+      // console.log("tokenData", tokenData);
+      // if (tokenData) {
+      //   await UsersService.registerDevice(tokenData);
+      // }
+
       navigate(AppRoutes.Home);
 
       fieldsRef.email.current?.focus();
       reset();
     },
     onError: (error) => {
+      console.log("Login error", error);
       const message = getMessageFromError(error);
 
       if (message) {
