@@ -7,7 +7,7 @@ import {
   IUpdateHealthForm,
   IUserJourney,
 } from "@models/collections";
-import { Endpoints } from "@models/generic";
+import { BackendImageMulterKey, Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
 import { queryBuilder } from "@utils/queryBuilder";
 import { Axios, AxiosResponse } from "axios";
@@ -144,7 +144,7 @@ const createHealthy = async (body: IUpdateHealthForm) => {
 
 const updateAvatar = async (file: Asset) => {
   const formData = new FormData();
-  formData.append("image", assetToBuffer([file])[0] as any);
+  formData.append(BackendImageMulterKey, assetToBuffer([file])[0] as any);
 
   const response = await api.put(Endpoints.UsersUpdateAvatar, formData, {
     headers: {

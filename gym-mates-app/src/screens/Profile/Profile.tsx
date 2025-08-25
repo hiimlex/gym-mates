@@ -8,7 +8,7 @@ import {
 } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
@@ -26,6 +26,7 @@ import {
 import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Profile.styles";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
   navigation: { navigate },
@@ -46,7 +47,17 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
       await dispatch(UserActions.fetchCurrentUser());
     },
     onError: (error) => {
-      console.error("Error signing up:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "update-avatar-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

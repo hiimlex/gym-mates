@@ -149,7 +149,7 @@ const Shop: React.FC<
             </S.FiltersBadge>
 
             <S.FiltersBadge touchable onPress={changeCurrentView}>
-              {view === "grid" && (
+              {view === "list" && (
                 <Grid
                   width={14}
                   height={14}
@@ -159,7 +159,7 @@ const Shop: React.FC<
                   fillOpacity={0.2}
                 />
               )}
-              {view === "list" && (
+              {view === "grid" && (
                 <List
                   width={14}
                   height={14}
@@ -168,7 +168,7 @@ const Shop: React.FC<
                 />
               )}
               <Typography.Button textColor="text" _t>
-                {view === "grid" ? "shop.filters.grid" : "shop.filters.list"}
+                {view === "grid" ? "shop.filters.list" : "shop.filters.grid"}
               </Typography.Button>
             </S.FiltersBadge>
           </S.HorizontalScrollView>

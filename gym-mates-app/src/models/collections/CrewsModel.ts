@@ -81,3 +81,39 @@ export interface IUpdateCrewBannerPayload {
   file: Asset;
   crew_id: string;
 }
+
+export enum CreateCrewSteps {
+  Info = "info",
+  Settings = "settings",
+}
+export type ICreateCrewSteps = "info" | "settings";
+
+export interface ICreateCrewInfoForm {
+  name: string;
+  code: string;
+  media: Asset;
+  mediaPreview: string;
+}
+
+export interface ICreateCrewSettingsForm {
+  visibility: CrewVisibility;
+  rules: IEditCrewRulesForm;
+  streak: CrewStreak[];
+}
+
+export interface ICreateCrewPayload {
+  name: string;
+  code: string;
+  banner?: Asset;
+  visibility: CrewVisibility;
+  rules: IEditCrewRulesForm;
+  streak: CrewStreak[];
+}
+
+export interface ICreateCrewState {
+  step: ICreateCrewSteps;
+  banner?: Asset;
+  infoForm?: ICreateCrewInfoForm;
+  settingsForm?: ICreateCrewSettingsForm;
+  error?: string;
+}

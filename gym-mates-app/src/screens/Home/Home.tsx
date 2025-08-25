@@ -11,7 +11,7 @@ import {
 } from "@navigation/appRoutes";
 import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ConfigActions, CrewsActions } from "@store/slices";
+import { ConfigActions, CrewsActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Home.styles";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
   const insets = useSafeAreaInsets();
@@ -45,7 +46,7 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
       dispatch(ConfigActions.setHideBottomNav(true));
     }
 
-    if (data) {
+    if (data?.crews && data?.crews.length > 0) {
       dispatch(CrewsActions.setCrews(data.crews));
       dispatch(ConfigActions.setHideBottomNav(false));
     }
@@ -53,7 +54,17 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
 
   useEffect(() => {
     if (error) {
-      console.error("Error fetching crews:", { ...error });
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "home-fetch-crews-error",
+            type: "error",
+            message,
+          })
+        );
+      }
       dispatch(ConfigActions.setHideBottomNav(true));
     }
   }, [error]);

@@ -15,12 +15,18 @@ import { CrewsService, WorkoutService } from "@api/services";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/Store";
 import { ICrewsResponse } from "@models/collections";
-import { AddWorkoutActions, DialogActions, UserActions } from "@store/slices";
+import {
+  AddWorkoutActions,
+  DialogActions,
+  NotifierActions,
+  UserActions,
+} from "@store/slices";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { DateTimeFormat } from "@models/generic";
 import { client } from "@api/apollo";
 import WorkoutEarns from "../WorkoutEarns/WorkoutEarns";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const ShareWorkout: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -73,7 +79,17 @@ const ShareWorkout: React.FC = () => {
       );
     },
     onError: (error) => {
-      console.error("Error creating workout:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "share-workout-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

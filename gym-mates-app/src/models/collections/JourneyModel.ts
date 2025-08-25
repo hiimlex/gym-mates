@@ -1,3 +1,4 @@
+import { ICrew } from "./CrewsModel";
 import { IHealthData } from "./HealthModel";
 import { IItem } from "./ItemsModel";
 import { IUser } from "./UsersModel";
@@ -17,9 +18,9 @@ export interface IUserJourneyEvent {
   data: {
     workout?: IWorkout;
     user?: IUser;
-    friend?: IUser;
     healthy_info?: IHealthData;
     item?: IItem;
+    crew?: ICrew;
   };
   created_at: string;
 }
@@ -35,6 +36,7 @@ export enum JourneyEventAction {
   PAID = "paid",
   LOSE_STREAK = "lose_streak",
   START = "start",
+  FOLLOW = "follow",
 }
 
 export enum JourneyEventSchemaType {

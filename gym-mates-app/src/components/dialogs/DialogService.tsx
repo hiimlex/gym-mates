@@ -5,6 +5,7 @@ import CrewSettings from "./CrewSettings/CrewSettings";
 import EditCrewSettings from "./EditCrewSettings/EditCrewSettings";
 import ShareWorkout from "./ShareWorkout/ShareWorkout";
 import JoinCrew from "./JoinCrew/JoinCrew";
+import CreateCrew from "./CreateCrew/CreateCrew";
 
 const openAddWorkout = () => {
   store.dispatch(
@@ -45,7 +46,7 @@ const openJoinCrew = () => {
 const openCreateCrew = () => {
   store.dispatch(
     DialogActions.openDialog({
-      content: <></>,
+      content: <CreateCrew />,
       data: {
         title: "links.createCrew",
         _t: true,

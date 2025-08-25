@@ -2,6 +2,7 @@ export * from "./AddWorkoutSlice";
 export * from "./ConfigSlice";
 export * from "./CrewsSlice";
 export * from "./DialogSlice";
+export * from "./NotifierSlice";
 export * from "./ShopSlice";
 export * from "./UserInventorySlice";
 export * from "./UserSlice";

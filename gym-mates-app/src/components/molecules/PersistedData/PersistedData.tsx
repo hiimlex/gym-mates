@@ -2,7 +2,7 @@ import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { AccessTokenKey } from "@models/generic";
 import { AppRoutes } from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import React, { useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
@@ -11,9 +11,8 @@ import { Loader } from "../../atoms";
 import S from "./PersistedData.styles";
 
 const PersistedData: React.FC = () => {
-  const { user, loadingCurrentUser, isAuthenticated } = useSelector(
-    (state: StoreState) => state.user
-  );
+  const { user, loadingCurrentUser, isAuthenticated, errorLoadingCurrentUser } =
+    useSelector((state: StoreState) => state.user);
   const { width, height } = useWindowDimensions();
   const [firstRender, setFirstRender] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
@@ -40,6 +39,16 @@ const PersistedData: React.FC = () => {
       setFirstRender(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (errorLoadingCurrentUser) {
+      dispatch(NotifierActions.createNotification({
+        id: 'fetch-current-user-error',
+        type: 'error',
+        message: 'errors.FETCH_CURRENT_USER',
+      }));
+    }
+  }, [errorLoadingCurrentUser]);
 
   return (
     loadingCurrentUser &&

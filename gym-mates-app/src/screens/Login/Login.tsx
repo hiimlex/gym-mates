@@ -18,10 +18,11 @@ import {
   SkipSetupHealthKey,
 } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Login.styles";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
   const { width } = useWindowDimensions();
@@ -50,7 +51,17 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
       reset();
     },
     onError: (error) => {
-      console.error("Error logging in:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "login-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

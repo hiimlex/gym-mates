@@ -2,7 +2,7 @@ import { client } from "@api/apollo";
 import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { CrewVisibility, ICrew, ICrewsResponse } from "@models/collections";
-import { DialogActions } from "@store/slices";
+import { DialogActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Button, Input, Loader, Row, Typography } from "../../atoms";
 import CrewInfo from "../../molecules/CrewInfo/CrewInfo";
 import S from "./JoinCrew.styles";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const JoinCrew: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -62,13 +63,22 @@ const JoinCrew: React.FC = () => {
   const { mutate: joinCrew, isPending: isJoining } = useMutation({
     mutationFn: CrewsService.joinCrew,
     onSuccess: async () => {
-      console.log("Crew joined successfully");
       await client.refetchQueries({ include: ["CrewsByMember"] });
 
       dispatch(DialogActions.closeDialog());
     },
     onError: (error) => {
-      console.error("Error joining crew:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "join-crew-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

@@ -10,6 +10,7 @@ export { default as Input } from "./Input/Input";
 export { default as Loader } from "./Loader/Loader";
 export { default as MediaSelect } from "./MediaSelect/MediaSelect";
 export { default as Menu } from "./Menu/Menu";
+export { default as Notification } from "./Notification/Notification";
 export { default as Row } from "./Row/Row";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Typography } from "./Typography/Typography";

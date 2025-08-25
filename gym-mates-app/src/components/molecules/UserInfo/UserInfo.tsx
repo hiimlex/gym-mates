@@ -9,6 +9,8 @@ import { TouchableOpacity } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UsersService } from "@api/services";
 import { QueryKeys } from "@models/generic";
+import { getMessageFromError } from "@utils/handleAxiosError";
+import { NotifierActions } from "@store/slices";
 
 interface UserInfoProps {
   user: IUser;
@@ -31,10 +33,22 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const { mutate: handleFollowFn } = useMutation({
     mutationFn: async () => UsersService.follow(user._id),
     onSuccess: async () => {
-      console.log("UserInfo: Followed user successfully");
       await queryClient.invalidateQueries({
         queryKey: [QueryKeys.User.FollowersInfo],
       });
+    },
+    onError: (error) => {
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "follow-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 
@@ -88,3 +102,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
 };
 
 export default UserInfo;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+

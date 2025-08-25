@@ -1,13 +1,19 @@
 import { ThemeProvider } from "@emotion/react";
-import { store } from "@store/Store";
+import { store, StoreState } from "@store/Store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Provider as StoreProvider } from "react-redux";
+import { Provider as StoreProvider, useSelector } from "react-redux";
 import AppNavigator from "../../navigation";
 import { Colors } from "../../theme";
+import NotifierProvider from "../NotifierProvider/NotifierProvider";
 
 import { client } from "@api/apollo";
 import { ApolloProvider } from "@apollo/client";
+import {
+  BottomNav,
+  DialogProvider,
+  PersistedData,
+} from "@components/molecules";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +28,12 @@ const CombinedProviders: React.FC = () => {
                 colors: Colors.colors,
               }}
             >
-              <AppNavigator />
+              <AppNavigator>
+                <BottomNav />
+                <PersistedData />
+                <DialogProvider />
+                <NotifierProvider />
+              </AppNavigator>
             </ThemeProvider>
           </ApolloProvider>
         </QueryClientProvider>
