@@ -8,6 +8,7 @@ const DialogProvider: React.FC = () => {
   const { content, isOpen, data, canGoBack } = useSelector(
     (state: StoreState) => state.dialog
   );
+  const {isAuthenticated} = useSelector((state: StoreState) => state.user);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -29,6 +30,10 @@ const DialogProvider: React.FC = () => {
 
     dispatch(DialogActions.closeDialog());
   };
+
+  if(!isAuthenticated) {
+    return null;
+  }
 
   return (
     <Dialog {...data} onBackPress={handleBackPress}>

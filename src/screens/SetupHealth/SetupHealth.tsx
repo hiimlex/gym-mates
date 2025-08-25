@@ -2,7 +2,11 @@ import { UsersService } from "@api/services";
 import { Button, Input, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { IUpdateHealthForm } from "@models/collections";
-import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
+import {
+  AppRoutes,
+  ScreenProps,
+  TRootStackParamList,
+} from "@navigation/appRoutes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppDispatch } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
@@ -15,11 +19,12 @@ import { useDispatch } from "react-redux";
 import S from "./SetupAvatar.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { InputRefRecorder, SkipSetupHealthKey } from "@models/generic";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
-const SetupHealth: React.FC<
-  ScreenProps<AppRoutes.SetupHealth>
-> = ({ navigation: { navigate, goBack } }) => {
+const SetupHealth: React.FC<ScreenProps<AppRoutes.SetupHealth>> = ({
+  navigation: { navigate, goBack },
+}) => {
   const insets = useSafeAreaInsets();
 
   const { control, formState, getValues, reset } = useForm<IUpdateHealthForm>({
@@ -48,7 +53,17 @@ const SetupHealth: React.FC<
       navigate(AppRoutes.Home);
     },
     onError: (error) => {
-      console.error("Error signing up:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "setup-health-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

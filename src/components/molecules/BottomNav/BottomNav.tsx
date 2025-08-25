@@ -1,24 +1,24 @@
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import { AppRoutes } from "@navigation/appRoutes";
+import { ConfigActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
+import { BlurView } from "expo-blur";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { LayoutChangeEvent, useWindowDimensions, View } from "react-native";
+import { LayoutChangeEvent, useWindowDimensions } from "react-native";
 import { Home, Users } from "react-native-feather";
+import { SlideInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "../../atoms";
 import S from "./BottomNav.styles";
-import { BlurView } from "expo-blur";
-import { ConfigActions } from "@store/slices";
-import { SlideInDown, SlideInLeft, SlideInUp } from "react-native-reanimated";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
-
+  const { isAuthenticated } = useSelector((state: StoreState) => state.user);
   const insets = useSafeAreaInsets();
   const ref = useRef<BlurView>(null);
 
@@ -33,7 +33,7 @@ const BottomNav: React.FC = () => {
   );
 
   const hideBottomNav = useMemo(
-    () => !(currentRoute?.params as any)?.showBottomNav || configHide,
+    () => configHide || !(currentRoute?.params as any)?.showBottomNav,
     [currentRoute, configHide]
   );
 
@@ -57,7 +57,7 @@ const BottomNav: React.FC = () => {
     };
   }, []);
 
-  if (hideBottomNav) {
+  if (hideBottomNav || !isAuthenticated) {
     return null;
   }
 

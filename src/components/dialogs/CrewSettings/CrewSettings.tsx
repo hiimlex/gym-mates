@@ -1,7 +1,7 @@
 import { client } from "@api/apollo";
 import { CrewsService } from "@api/services";
 import { AppRoutes } from "@navigation/appRoutes";
-import { DialogActions } from "@store/slices";
+import { DialogActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
@@ -18,11 +18,17 @@ import {
 } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
-import { Row, Typography } from "../../atoms";
+import { BannerPreview, Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
 import S from "./CrewSettings.styles";
 import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
-import { FadeInLeft, FadeOutLeft, SlideOutLeft, SlideOutRight } from "react-native-reanimated";
+import {
+  FadeInLeft,
+  FadeOutLeft,
+  SlideOutLeft,
+  SlideOutRight,
+} from "react-native-reanimated";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const CrewSettings: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -49,7 +55,6 @@ const CrewSettings: React.FC = () => {
   const { mutate: leaveCrew } = useMutation({
     mutationFn: CrewsService.leave,
     onSuccess: async () => {
-      console.log("Crew left successfully");
       await client.refetchQueries({
         include: ["CrewsByMember"],
       });
@@ -57,8 +62,16 @@ const CrewSettings: React.FC = () => {
       navigate(AppRoutes.Home);
     },
     onError: (error) => {
-      if (error instanceof AxiosError) {
-        console.error("Error leaving crew:", error.response?.data.message);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "leave-crew-error",
+            type: "error",
+            message,
+          })
+        );
       }
     },
   });
@@ -69,8 +82,6 @@ const CrewSettings: React.FC = () => {
   };
 
   const openEditCrewSettings = () => {
-    console.log("openEditCrewSettings called");
-
     dispatch(
       DialogActions.moveToNextDialog({
         content: <EditCrewSettings />,
@@ -94,20 +105,7 @@ const CrewSettings: React.FC = () => {
       entering={FadeInLeft}
     >
       <Row gap={12} align="center" width={"auto"}>
-        {crew?.banner?.url ? (
-          <S.Banner source={crew?.banner?.url || ""} onError={() => {}} />
-        ) : (
-          <S.EmptyPreview>
-            <Image
-              width={28}
-              height={28}
-              strokeWidth={1.5}
-              stroke={Colors.colors.text}
-              fill={Colors.colors.text}
-              fillOpacity={0.2}
-            />
-          </S.EmptyPreview>
-        )}
+        <BannerPreview size={60} preview={crew?.banner?.url} />
         <View style={{ gap: 6 }}>
           <Typography.Heading textColor="textDark">
             {crew?.name}

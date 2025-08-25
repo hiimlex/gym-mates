@@ -6,7 +6,7 @@ import {
   ICrewsResponse,
   IEditCrewRulesForm,
 } from "@models/collections";
-import { CrewsActions, DialogActions } from "@store/slices";
+import { CrewsActions, DialogActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import Masks from "@utils/masks.utils";
@@ -33,6 +33,8 @@ import Animated, {
   SlideInRight,
   SlideOutRight,
 } from "react-native-reanimated";
+import { mountImageURLFromBase64 } from "@utils/file.utils";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const EditCrewSettings: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
@@ -64,7 +66,7 @@ const EditCrewSettings: React.FC = () => {
 
   const onBannerChange = (file: Asset) => {
     if (file.base64) {
-      setPreview(`data:image/jpeg;base64,${file.base64}`);
+      setPreview(mountImageURLFromBase64(file.base64));
     }
 
     setNewBanner(file);
@@ -114,7 +116,6 @@ const EditCrewSettings: React.FC = () => {
         hasChangedStreaks
       ) {
         const { lose_streak_in_days, ...rest } = values;
-        console.log("Updating crew settings...", rest);
         await CrewsService.updateSettings({
           crew_id: crew?._id || "",
           rules: rest,
@@ -125,7 +126,6 @@ const EditCrewSettings: React.FC = () => {
       }
 
       if (!!newBanner) {
-        console.log("Updating crew banner...");
         await CrewsService.updateBanner({
           crew_id: crew?._id || "",
           file: newBanner,
@@ -138,11 +138,23 @@ const EditCrewSettings: React.FC = () => {
         variables: { _id: crew?._id, limit: 1 },
         fetchPolicy: "network-only",
       });
-      console.log("Crew settings updated successfully", data.crews[0].rules);
       dispatch(CrewsActions.setCrewView(data.crews[0]));
 
       if (dialogData?.onBackPress) {
         dialogData.onBackPress();
+      }
+    },
+    onError: (error) => {
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "update-crew-settings-error",
+            type: "error",
+            message,
+          })
+        );
       }
     },
   });

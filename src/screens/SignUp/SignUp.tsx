@@ -6,7 +6,7 @@ import { AccessTokenKey, InputRefRecorder } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppDispatch } from "@store/Store";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
 import { useMutation } from "@tanstack/react-query";
 import React, { RefObject, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -21,6 +21,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./SignUp.styles";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
   navigation: { navigate, goBack },
@@ -50,7 +51,17 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
       navigate(AppRoutes.SetupAvatar);
     },
     onError: (error) => {
-      console.error("Error signing up:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "sign-up-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

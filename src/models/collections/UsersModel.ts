@@ -28,6 +28,7 @@ export interface IUserState {
   user: IUser | null;
   loadingCurrentUser?: boolean;
   isAuthenticated?: boolean;
+  errorLoadingCurrentUser?: unknown;
 }
 
 export interface IUserByIdResponse {

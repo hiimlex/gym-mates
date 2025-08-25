@@ -15,7 +15,7 @@ import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { Colors } from "@theme";
 import { t } from "i18next";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import ScreenWrapper from "../../components/molecules/ScreenWrapper/ScreenWrapper";
 import S from "./UserView.styles";
@@ -62,10 +62,6 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
       key: 1,
     },
   ];
-
-  useEffect(() => {
-    console.log("UserView: userData changed");
-  }, [userData]);
 
   if (!user) {
     return (

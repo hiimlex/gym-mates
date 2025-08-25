@@ -168,6 +168,8 @@ export default {
         healthy: "Added a healthy info.",
       },
       bodyFat: "BF {{bf}}%",
+      join: "Joined {{name}} crew.",
+      follow: "Started following {{name}}.",
     },
     filters: {
       recent: "Recent",
@@ -238,6 +240,17 @@ export default {
     followers: "Followers",
     following: "Following",
     followBack: "Follow Back",
+  },
+  createCrew: {
+    infoStep: {
+      name: "First, let's name your crew",
+      namePlaceholder: "Insert your crew name",
+      code: "Create a friendly code for your mates to join.",
+      codePlaceholder: "Insert your crew code",
+      banner: "Select an image for your banner",
+    },
+    goNext: "Next",
+    finish: "Finish",
   },
   weekDays: {
     long: {
@@ -329,5 +342,41 @@ export default {
     badge: "Badge",
     skin: "Skin",
     avatar: "Avatar",
+  },
+  errors: {
+    FETCH_CURRENT_USER: "Please log in again.",
+    // General
+    UNAUTHORIZED: "Please log in again.",
+    FORBIDDEN: "You don't have permission for it.",
+    // Auth
+    INVALID_CREDENTIALS: "Invalid credentials.",
+    // Crew
+    CREW_NOT_FOUND: "Crew not found.",
+    ALREADY_MEMBER: "Already a member of this crew.",
+    ALREADY_IN_WHITELIST: "Already in the whitelist of this crew.",
+    INVALID_DATE: "Invalid date.",
+    FILE_NOT_PROVIDED: "File not provided.",
+    CANNOT_LEAVE_CREW_OWNER: "Owner cannot leave crew .",
+    // Workout
+    INVALID_WORKOUT_DATE: "Invalid workout date.",
+    WORKOUT_DATE_IN_FUTURE: "Workout date cannot be in future.",
+    WORKOUT_DATE_TOO_OLD: "Workout date is too old.",
+    CREW_RULES_VIOLATION: "Workout violates crew rules.",
+    WORKOUT_DATE_OLDER_THAN_CREW: "Workout date is older than crew.",
+    // User
+    USER_NOT_FOUND: "User not found.",
+    USER_NOT_A_MEMBER: "User is not a member.",
+    USER_NOT_IN_WHITELIST: "User is not in whitelist.",
+    ALREADY_FOLLOWING: "Already following this user.",
+    TITLE_NOT_FOUND: "Title not found.",
+    USER_DOES_NOT_OWN_ITEM: "User does not own this item.",
+
+    // Journey
+    JOURNEY_NOT_FOUND: "Journey not found.",
+    // Shop
+    CART_IS_EMPTY: "Cart is empty.",
+    SOME_ITEMS_ALREADY_OWNED: "Some items are already owned.",
+    USER_NOT_MET_ITEMS_REQUIREMENTS: "User does not meet items requirements to buy.",
+    USER_DO_NOT_HAVE_ENOUGH_COINS: "User does not have enough coins.",
   },
 };

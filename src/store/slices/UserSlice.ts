@@ -56,9 +56,10 @@ const UserSlice = createSlice({
       state.isAuthenticated = true;
     });
 
-    builder.addCase(fetchCurrentUser.rejected, (state) => {
+    builder.addCase(fetchCurrentUser.rejected, (state, action) => {
       state.loadingCurrentUser = false;
       state.isAuthenticated = false;
+      state.errorLoadingCurrentUser = action.payload;
     });
 
     builder.addCase(logout.fulfilled, (state) => {

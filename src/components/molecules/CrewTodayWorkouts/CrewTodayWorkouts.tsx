@@ -7,14 +7,17 @@ import { format } from "date-fns";
 import React, { useState } from "react";
 import { Frown } from "react-native-feather";
 import S from "./CrewTodayWorkouts.styles";
-import { useSelector } from "react-redux";
-import { StoreState } from "@store/Store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, StoreState } from "@store/Store";
+import { getMessageFromError } from "@utils/handleAxiosError";
+import { NotifierActions } from "@store/slices";
 
 const CrewTodayWorkouts: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const [membersAvatar, setMembersAvatar] = useState<IFile[]>([]);
   const today = new Date();
   const todayFormatted = format(today, "MM-dd-yy");
+  const dispatch = useDispatch<AppDispatch>();
 
   const { data, loading } = useQuery<IWorkoutsByCrew>(
     WorkoutService.gql.WORKOUTS_BY_CREW,
@@ -25,7 +28,17 @@ const CrewTodayWorkouts: React.FC = () => {
         earned_op: { gte: 1 },
       },
       onError: (error) => {
-        console.error("Error fetching today's workouts:", error);
+        const message = getMessageFromError(error);
+
+        if (message) {
+          dispatch(
+            NotifierActions.createNotification({
+              id: "home-fetch-crews-error",
+              type: "error",
+              message,
+            })
+          );
+        }
       },
       fetchPolicy: "cache-and-network",
     }

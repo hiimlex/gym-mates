@@ -21,7 +21,6 @@ const ShopSearch = () => {
     }
 
     const newTimeout = setTimeout(() => {
-      console.log("Search text:", text);
       dispatch(ShopActions.setFilters({ search: text }));
     }, 300);
 

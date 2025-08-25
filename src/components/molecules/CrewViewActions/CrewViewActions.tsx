@@ -8,8 +8,9 @@ import S from "./CrewView.styles";
 import { useDialogService } from "@hooks/useDialogService/useDialogService";
 import { useMutation } from "@tanstack/react-query";
 import { CrewsService } from "@api/services";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AxiosError } from "axios";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
 interface CrewViewActionsProps {
   style?: ViewStyle;
@@ -34,8 +35,16 @@ const CrewViewActions: React.FC<CrewViewActionsProps> = ({ style }) => {
       await dispatch(UserActions.fetchCurrentUser());
     },
     onError: (error) => {
-      if (error instanceof AxiosError) {
-        console.error("Error favoriting crew:", error.response?.data.message);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "favorite-crew-error",
+            type: "error",
+            message,
+          })
+        );
       }
     },
   });

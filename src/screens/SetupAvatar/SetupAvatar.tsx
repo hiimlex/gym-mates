@@ -1,7 +1,11 @@
 import { Avatar, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { SkipSetupAvatarKey } from "@models/generic";
-import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
+import {
+  AppRoutes,
+  ScreenProps,
+  TRootStackParamList,
+} from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppDispatch } from "@store/Store";
@@ -15,11 +19,12 @@ import S from "./SetupAvatar.styles";
 import { Asset } from "react-native-image-picker";
 import { UsersService } from "@api/services";
 import { useMutation } from "@tanstack/react-query";
-import { UserActions } from "@store/slices";
+import { NotifierActions, UserActions } from "@store/slices";
+import { getMessageFromError } from "@utils/handleAxiosError";
 
-const SetupAvatar: React.FC<
-  ScreenProps<AppRoutes.SetupAvatar>
-> = ({ navigation: { navigate, goBack } }) => {
+const SetupAvatar: React.FC<ScreenProps<AppRoutes.SetupAvatar>> = ({
+  navigation: { navigate, goBack },
+}) => {
   const insets = useSafeAreaInsets();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -42,7 +47,17 @@ const SetupAvatar: React.FC<
       navigate(AppRoutes.SetupHealth);
     },
     onError: (error) => {
-      console.error("Error signing up:", error);
+      const message = getMessageFromError(error);
+
+      if (message) {
+        dispatch(
+          NotifierActions.createNotification({
+            id: "setup-avatar-error",
+            type: "error",
+            message,
+          })
+        );
+      }
     },
   });
 

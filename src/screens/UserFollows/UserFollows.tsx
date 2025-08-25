@@ -1,12 +1,12 @@
 import { UsersService } from "@api/services";
-import { Tabs, Typography } from "@components/atoms";
+import { Row, Tabs, Typography } from "@components/atoms";
 import { ScreenWrapper, UserInfo } from "@components/molecules";
 import { useScreenSize } from "@hooks/useScreenSize/useScreenSize";
 import { QueryKeys, TabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import S from "./UserFollows.styles";
 
@@ -31,10 +31,6 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
     },
     queryKey: [QueryKeys.User.FollowersInfo],
   });
-
-  useEffect(() => {
-    console.log("UserFollows: Data fetched");
-  }, [data]);
 
   if (!user) {
     return null;
@@ -62,6 +58,14 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
                 inCrews={follower.in_crews?.map((crew) => crew.name)}
               />
             ))}
+
+            {data?.data.followers.length === 0 && (
+              <Row justify="center" style={{ paddingTop: 24 }}>
+                <Typography.Body textColor="textLight" _t>
+                  {"userFollows.noFollowers"}
+                </Typography.Body>
+              </Row>
+            )}
           </Tabs.Item>
           <Tabs.Item key={1}>
             {data?.data.following.map((following) => (
@@ -72,6 +76,14 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
                 inCrews={following.in_crews?.map((crew) => crew.name)}
               />
             ))}
+
+            {data?.data.following.length === 0 && (
+              <Row justify="center" style={{ paddingTop: 24 }}>
+                <Typography.Body textColor="textLight" _t>
+                  {"userFollows.noFollowing"}
+                </Typography.Body>
+              </Row>
+            )}
           </Tabs.Item>
         </Tabs.Root>
       </S.Container>

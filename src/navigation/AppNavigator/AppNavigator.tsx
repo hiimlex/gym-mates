@@ -31,7 +31,7 @@ import {
   UserViewScreen,
 } from "@screens";
 import { StoreState } from "@store/Store";
-import { useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Typography } from "../../components/atoms";
 import { BottomNav, Header } from "../../components/molecules";
@@ -39,35 +39,13 @@ import { AppRoutes, TRootStackParamList } from "../appRoutes";
 
 const Stack = createNativeStackNavigator<TRootStackParamList>();
 
-const AppNavigator = () => {
+const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
   const { user, isAuthenticated } = useSelector(
     (state: StoreState) => state.user
   );
-  const [isReady, setIsReady] = useState(false);
-  const [initialState, setInitialState] = useState();
-
-  useEffect(() => {
-    const restoreState = async () => {
-      const savedStateString = await AsyncStorage.getItem(PersistedStateKey);
-      const state = savedStateString ? JSON.parse(savedStateString) : undefined;
-
-      setInitialState(state);
-      setIsReady(true);
-    };
-
-    restoreState();
-  }, []);
-
-  if (!isReady) return null;
 
   return (
-    <NavigationContainer<TRootStackParamList>
-      ref={navigationRef}
-      initialState={initialState}
-      onStateChange={(state) =>
-        AsyncStorage.setItem(PersistedStateKey, JSON.stringify(state))
-      }
-    >
+    <NavigationContainer<TRootStackParamList> ref={navigationRef}>
       <Stack.Navigator
         initialRouteName={AppRoutes.Login}
         screenOptions={{
@@ -239,10 +217,8 @@ const AppNavigator = () => {
           </>
         )}
       </Stack.Navigator>
-
-      {isAuthenticated && <BottomNav />}
-      <PersistedData />
-      {isAuthenticated && <DialogProvider />}
+      {/* Children that need to be inner NavigationContainer */}
+      {children}
     </NavigationContainer>
   );
 };

@@ -136,7 +136,9 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
                     {`${event.data.healthy_info.height} cm`}
                   </Typography.Caption>
 
-                  <Typography.Caption textColor="textLight" _t
+                  <Typography.Caption
+                    textColor="textLight"
+                    _t
                     _params={{
                       bf: event.data.healthy_info.body_fat,
                     }}
@@ -149,20 +151,52 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
         </S.EventCard>
       )}
 
-      {event.action === JourneyEventAction.ADD && addFriendEvent && (
+      {event.action === JourneyEventAction.FOLLOW && event.data.user && (
         <S.EventRow>
           <S.EventWithBanner>
             <Avatar
               size={48}
               iconSize={24}
-              preview={event.data.friend?.avatar?.url}
+              preview={event.data.user?.avatar?.url}
               disabled
+              borderOffset={1}
             />
+            <S.EventInfo>
+              <Typography.Body
+                textColor="textDark"
+                _t
+                _params={{
+                  name: event.data.user?.name,
+                }}
+              >
+                {"journey.events.follow"}
+              </Typography.Body>
+            </S.EventInfo>
           </S.EventWithBanner>
         </S.EventRow>
       )}
 
-      {event.action === JourneyEventAction.JOIN && <></>}
+      {event.action === JourneyEventAction.JOIN && event.data.crew && (
+        <S.EventRow>
+          <S.EventWithBanner>
+            <BannerPreview
+              size={48}
+              preview={event.data.crew?.banner?.url}
+            ></BannerPreview>
+            <S.EventInfo>
+              <Typography.Body
+                textColor="textDark"
+                _t
+                _params={{
+                  name: event.data.crew?.name,
+                }}
+              >
+                {"journey.events.join"}
+              </Typography.Body>
+            </S.EventInfo>
+          </S.EventWithBanner>
+        </S.EventRow>
+      )}
 
       {event.action === JourneyEventAction.LEAVE && <></>}
 

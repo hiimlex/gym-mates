@@ -1,7 +1,7 @@
 import api from "@api/api";
 import { gql } from "@apollo/client";
 import { ICreateWorkoutPayload, IWorkout } from "@models/collections";
-import { Endpoints } from "@models/generic";
+import { BackendImageMulterKey, Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
 import { AxiosResponse } from "axios";
 
@@ -66,7 +66,7 @@ const createWorkout = async (
 
   const { picture, shared_to, ...workoutData } = payload;
   if (picture) {
-    formData.append("image", assetToBuffer([picture])[0] as any);
+    formData.append(BackendImageMulterKey, assetToBuffer([picture])[0] as any);
   }
 
   if (workoutData) {
