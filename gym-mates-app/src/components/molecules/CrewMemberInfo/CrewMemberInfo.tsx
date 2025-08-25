@@ -13,12 +13,14 @@ interface CrewMemberInfoProps {
   member: ICrewMember;
   touchable?: boolean;
   onPress?: () => void;
+  onLongPress?: () => void;
 }
 
 const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
   member,
   touchable,
   onPress,
+  onLongPress
 }) => {
   const { user } = useSelector((state: StoreState) => state.user);
 
@@ -38,6 +40,7 @@ const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
       disabled={!touchable || itSelf}
       onPress={onPress}
       activeOpacity={0.6}
+      onLongPress={onLongPress}
     >
       <S.Container>
         <S.Content>

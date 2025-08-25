@@ -1,14 +1,13 @@
 import api from "@api/api";
 import { gql } from "@apollo/client";
 import {
-  ICreateCrewSettingsForm,
   ICreateCrewInfoForm,
+  ICreateCrewSettingsForm,
   IUpdateCrewBannerPayload,
   IUpdateCrewPayload,
 } from "@models/collections";
 import { BackendImageMulterKey, Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
-import { Asset } from "react-native-image-picker";
 
 const CREWS_BY_MEMBER = gql`
   query CrewsByMember(
@@ -102,6 +101,45 @@ const SEARCH_CREWS = gql`
   }
 `;
 
+const GET_CREW_BY_ID = gql`
+  query CrewById($_id: MongoID) {
+    crews(filter: { _id: $_id }, limit: 1) {
+      _id
+      name
+      banner {
+        url
+      }
+      members_w_user {
+        _id
+        is_admin
+        joined_at
+        user {
+          _id
+          name
+          avatar {
+            url
+          }
+          coins
+        }
+      }
+      code
+      visibility
+      rules {
+        gym_focused
+        pay_on_past
+        pay_without_picture
+        show_members_rank
+        free_weekends
+      }
+      streak
+      created_by
+      created_at
+      updated_at
+      lose_streak_in_days
+    }
+  }
+`;
+
 const favorite = async (crewId: string) => {
   const response = await api.put(Endpoints.CrewsFavorite, {
     crew_id: crewId,
@@ -117,7 +155,10 @@ const updateSettings = async (payload: IUpdateCrewPayload) => {
 
 const updateBanner = async (payload: IUpdateCrewBannerPayload) => {
   const formData = new FormData();
-  formData.append(BackendImageMulterKey, assetToBuffer([payload.file])[0] as any);
+  formData.append(
+    BackendImageMulterKey,
+    assetToBuffer([payload.file])[0] as any
+  );
   formData.append("crew_id", payload.crew_id);
 
   const response = await api.put(Endpoints.CrewsUpdateBanner, formData);
@@ -162,11 +203,12 @@ export default {
   gql: {
     CREWS_BY_MEMBER,
     SEARCH_CREWS,
+    GET_CREW_BY_ID,
   },
   favorite,
   updateSettings,
   updateBanner,
   joinCrew,
   leave,
-  create
+  create,
 };

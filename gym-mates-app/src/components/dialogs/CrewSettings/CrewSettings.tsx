@@ -1,34 +1,22 @@
 import { client } from "@api/apollo";
 import { CrewsService } from "@api/services";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { AppRoutes } from "@navigation/appRoutes";
 import { DialogActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
-import { AxiosError } from "axios";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
-import {
-  Check,
-  ChevronRight,
-  Edit,
-  Image,
-  LogOut,
-  Trash,
-} from "react-native-feather";
+import { Check, ChevronRight, Edit, LogOut, Trash } from "react-native-feather";
+import { FadeInLeft, SlideOutLeft } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
-import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { BannerPreview, Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
-import S from "./CrewSettings.styles";
 import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
-import {
-  FadeInLeft,
-  FadeOutLeft,
-  SlideOutLeft,
-  SlideOutRight,
-} from "react-native-reanimated";
-import { getMessageFromError } from "@utils/handleAxiosError";
+import S from "./CrewSettings.styles";
+import CrewMembers from "../CrewMembers/CrewMembers";
 
 const CrewSettings: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -93,6 +81,18 @@ const CrewSettings: React.FC = () => {
     );
   };
 
+  const openCrewMembers = () => {
+    dispatch(
+      DialogActions.moveToNextDialog({
+        content: <CrewMembers />,
+        data: {
+          title: "crewMembers.title",
+          _t: true,
+        }
+      })
+    )
+  };
+
   if (!crew) {
     return null;
   }
@@ -121,7 +121,7 @@ const CrewSettings: React.FC = () => {
           </Typography.Body>
 
           {isAdmin && (
-            <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
+            <TouchableOpacity activeOpacity={0.6} onPress={openCrewMembers}>
               <Typography.Button textColor="primary" _t>
                 {"crewSettings.member.all"}
               </Typography.Button>

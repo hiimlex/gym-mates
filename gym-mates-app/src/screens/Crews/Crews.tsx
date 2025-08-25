@@ -119,7 +119,11 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
               <Row justify="space-between" align="center">
                 <Row gap={12} align="center" style={{ flex: 1 }} width={"auto"}>
                   {crew.banner && (
-                    <BannerPreview preview={crew.banner.url} size={48} />
+                    <BannerPreview
+                      preview={crew.banner.url}
+                      size={48}
+                      iconSize={24}
+                    />
                   )}
 
                   <View style={{ gap: 6 }}>

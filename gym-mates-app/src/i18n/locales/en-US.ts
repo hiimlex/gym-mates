@@ -252,6 +252,14 @@ export default {
     goNext: "Next",
     finish: "Finish",
   },
+  crewMembers: {
+    title: "Crew Members",
+    requests: "Requests.",
+    noRequests: "No requests at the moment.",
+    accept: "Accept",
+    wantsToJoin: "{{name}} wants to join.",
+  },
+  // Generic
   weekDays: {
     long: {
       sun: "Sunday",
@@ -376,7 +384,8 @@ export default {
     // Shop
     CART_IS_EMPTY: "Cart is empty.",
     SOME_ITEMS_ALREADY_OWNED: "Some items are already owned.",
-    USER_NOT_MET_ITEMS_REQUIREMENTS: "User does not meet items requirements to buy.",
+    USER_NOT_MET_ITEMS_REQUIREMENTS:
+      "User does not meet items requirements to buy.",
     USER_DO_NOT_HAVE_ENOUGH_COINS: "User does not have enough coins.",
   },
 };
