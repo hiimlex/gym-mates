@@ -1,5 +1,6 @@
 import { Badge } from "@components/atoms";
 import styled from "@emotion/native";
+import Animated from "react-native-reanimated";
 
 const Container = styled.View`
   flex: 1;
@@ -33,7 +34,7 @@ const ShopCartIcon = styled.TouchableOpacity`
   position: relative;
 `;
 
-const ItemsCount = styled.View`
+const ItemsCount = styled(Animated.View)`
   position: absolute;
   top: -8px;
   right: -8px;

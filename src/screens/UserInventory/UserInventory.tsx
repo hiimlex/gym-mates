@@ -5,16 +5,18 @@ import { ItemCard, ScreenWrapper } from "@components/molecules";
 import {
   IGetInventoryFilters,
   IGetInventoryResponse,
+  IItem,
   ItemCategory,
 } from "@models/collections";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { UserInventoryActions } from "@store/slices";
+import { OverlayActions, UserInventoryActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import React, { useEffect, useMemo } from "react";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./UserInventory.styles";
+import { OverlayType } from "@models/generic";
 
 const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
   const headerHeight = useHeaderHeight();
@@ -41,12 +43,25 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
     [data]
   );
 
+  useEffect(() => {
+    console.log("UserInventory - data, error", { data, error });
+  }, [data, error]);
+
   const inventory = useMemo(() => data?.journeyById.inventory || [], [data]);
 
   const setAchievementsFilter = (category: ItemCategory) => {
     dispatch(
       UserInventoryActions.setFilters({
         category: filters?.category !== category ? category : undefined,
+      })
+    );
+  };
+
+  const handleOnItemPress = (item: IItem) => {
+    dispatch(
+      OverlayActions.show({
+        type: OverlayType.ItemPreview,
+        data: { item },
       })
     );
   };
@@ -89,6 +104,8 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
               item={inventoryItem.item}
               mode="view"
               itemsPerRow={3}
+              touchableImage
+              onImagePress={() => handleOnItemPress(inventoryItem.item)}
             />
           ))}
 

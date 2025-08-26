@@ -268,6 +268,9 @@ export default {
     title: "Workout Preview",
     tip: "Swipe left or right to see more workouts!",
   },
+  itemViewer: {
+    title: "Item Preview",
+  },
 
   // Generic
   weekDays: {

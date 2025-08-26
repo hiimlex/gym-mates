@@ -9,7 +9,7 @@ import Header from "../Header/Header";
 import S from "./ShopCheckoutPreview.styles";
 import { useRoute } from "@react-navigation/native";
 import { AppRoutes } from "@navigation/appRoutes";
-import { SlideInDown } from "react-native-reanimated";
+import { SlideInDown, SlideOutDown } from "react-native-reanimated";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ShopService } from "@api/services";
 import { ShopActions, UserActions } from "@store/slices";
@@ -54,7 +54,7 @@ const ShopCheckoutPreview: React.FC<ShopCheckoutPreviewProps> = () => {
   }
 
   return (
-    <S.FloatBottomContainer style={{ width }} entering={SlideInDown}>
+    <S.FloatBottomContainer style={{ width }} entering={SlideInDown} exiting={SlideOutDown}>
       <S.BlurBackground
         intensity={15}
         style={{ paddingBottom: insets.bottom + 12 }}

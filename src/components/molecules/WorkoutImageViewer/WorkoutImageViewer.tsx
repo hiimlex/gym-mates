@@ -1,30 +1,20 @@
-import { StoreState } from "@store/Store";
-import React, { useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import S from "./WorkoutImageViewer.styles";
-import { TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { OverlayActions } from "@store/slices";
 import { Row, Tabs, Typography } from "@components/atoms";
-import { ArrowLeft } from "react-native-feather";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { OverlayActions } from "@store/slices";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
+import React, { useMemo, useState } from "react";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
+import { X } from "react-native-feather";
+import { Easing, FadeIn, FadeOut, SlideInRight, SlideOutRight } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeOut,
-  FadeOutDown,
-  SlideInDown,
-  SlideInRight,
-  SlideInUp,
-  SlideOutDown,
-  SlideOutRight,
-} from "react-native-reanimated";
+import S from "./WorkoutImageViewer.styles";
 
 interface WorkoutImageViewerProps {}
 
 const WorkoutImageViewer: React.FC<WorkoutImageViewerProps> = ({}) => {
-  const {user} = useSelector((state: StoreState) => state.user);
+  const { user } = useSelector((state: StoreState) => state.user);
   const { data } = useSelector((state: StoreState) => state.overlay);
   const workouts = useMemo(() => data?.workouts || [], [data]);
   const initialIndex = useMemo(() => data?.initialIndex || 0, [data]);
@@ -54,12 +44,12 @@ const WorkoutImageViewer: React.FC<WorkoutImageViewerProps> = ({}) => {
         paddingBottom: insets.bottom + 48,
       }}
       intensity={15}
-      entering={SlideInRight}
-      exiting={SlideOutRight}
+      entering={FadeIn.duration(100)}
+      exiting={FadeOut.easing(Easing.inOut(Easing.ease))}
     >
       <Row gap={12}>
         <TouchableOpacity activeOpacity={0.6} onPress={close}>
-          <ArrowLeft stroke={Colors.colors.white} />
+          <X stroke={Colors.colors.white} />
         </TouchableOpacity>
         <Typography.HeadingSubtitle textColor="white" _t>
           {"workoutViewer.title"}

@@ -6,6 +6,7 @@ import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavi
 import {
   IGetInventoryFilters,
   IGetInventoryResponse,
+  IItem,
   ItemCategory,
   IUserByIdResponse,
   IWorkoutsByUser,
@@ -76,6 +77,15 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
           workouts: workoutsData?.workouts || [],
           initialIndex,
         },
+      })
+    );
+  };
+
+  const handleOnItemPress = (item: IItem) => {
+    dispatch(
+      OverlayActions.show({
+        type: OverlayType.ItemPreview,
+        data: { item },
       })
     );
   };
@@ -189,6 +199,8 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
                 key={achievement.item._id}
                 itemsPerRow={3}
                 mode="view"
+                touchableImage
+                onImagePress={() => handleOnItemPress(achievement.item)}
               />
             ))}
             {loadingAchievements && <Loader color="primary" />}

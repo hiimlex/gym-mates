@@ -6,7 +6,11 @@ import {
   ScreenWrapper,
   ShopCheckoutPreview,
 } from "@components/molecules";
-import { AppRoutes, ScreenProps, TRootStackParamList } from "@navigation/appRoutes";
+import {
+  AppRoutes,
+  ScreenProps,
+  TRootStackParamList,
+} from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppDispatch, StoreState } from "@store/Store";
@@ -17,14 +21,12 @@ import { ArrowDown, ArrowUp, Grid, List } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Shop.styles";
 import { View, ViewStyle } from "react-native";
-import { ShopActions } from "@store/slices";
-import { IShopFilters, IShopListView } from "@models/collections";
-import { QueryKeys } from "@models/generic";
+import { OverlayActions, ShopActions } from "@store/slices";
+import { IItem, IShopFilters, IShopListView } from "@models/collections";
+import { OverlayType, QueryKeys } from "@models/generic";
 
-const Shop: React.FC<
-  ScreenProps<AppRoutes.Shop>
-> = ({ navigation }) => {
-  const { view, filters, cartItemsSum } = useSelector(
+const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
+  const { view, filters, cartItemsSum, cart } = useSelector(
     (state: StoreState) => state.shop
   );
   const { user } = useSelector((state: StoreState) => state.user);
@@ -40,19 +42,23 @@ const Shop: React.FC<
   });
 
   const scrollStyles: ViewStyle = useMemo(() => {
+    const paddingBottom = cart.length === 0 ? 24 : 84;
+
     if (view === "grid") {
       return {
         flexDirection: "row",
         flexWrap: "wrap",
         gap: 24,
+        paddingBottom,
       };
     }
 
     return {
       flexDirection: "column",
       gap: 12,
+      paddingBottom,
     };
-  }, [view]);
+  }, [view, cart.length]);
 
   const items = useMemo(() => data?.data.items || [], [data?.data.items]);
 
@@ -85,6 +91,13 @@ const Shop: React.FC<
       return true;
     }
   };
+
+  const handleOnItemPress = (item: IItem) => {
+    dispatch(OverlayActions.show({
+      type: OverlayType.ItemPreview,
+      data: { item },
+    }))
+  }
 
   return (
     <ScreenWrapper>
@@ -183,6 +196,8 @@ const Shop: React.FC<
               item={item}
               key={item._id}
               disabled={userCannotAfford(item.price)}
+              touchableImage
+              onImagePress={handleOnItemPress}
             />
           ))}
           {isLoading && (

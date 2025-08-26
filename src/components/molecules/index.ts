@@ -8,6 +8,7 @@ export { default as DialogProvider } from "./DialogProvider/DialogProvider";
 export { default as FollowingActivities } from "./FollowingActivities/FollowingActivities";
 export { default as Header } from "./Header/Header";
 export { default as ItemCard } from "./ItemCard/ItemCard";
+export { default as ItemPreview } from "./ItemPreview/ItemPreview";
 export { default as JourneyEventInfo } from "./JourneyEventInfo/JourneyEventInfo";
 export { default as MyStats } from "./MyStats/MyStats";
 export { default as PersistedData } from "./PersistedData/PersistedData";

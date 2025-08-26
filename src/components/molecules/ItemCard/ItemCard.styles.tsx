@@ -56,7 +56,7 @@ const CardButton = styled(TouchableOpacity)<{
   colorScheme: TColors;
 }>`
   background: ${({ theme, colorScheme }) => theme.colors[colorScheme]};
-  padding: 8px 12px;
+  padding: 6px 8px;
   border-radius: 6px;
 
   ${({ theme, active }) =>

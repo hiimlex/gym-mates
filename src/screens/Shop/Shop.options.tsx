@@ -10,6 +10,7 @@ import { ShoppingBag } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Shop.styles";
 import { Header } from "@components/molecules";
+import { FadeIn, FadeOut } from "react-native-reanimated";
 
 const ShopSearch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,7 +49,10 @@ const ShopCart = () => {
       onPress={() => navigate(AppRoutes.ShopCart)}
     >
       {!!cart && cart?.length > 0 && (
-        <S.ItemsCount>
+        <S.ItemsCount
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(200)}
+        >
           <Typography.Tip textColor="white">{cart?.length}</Typography.Tip>
         </S.ItemsCount>
       )}

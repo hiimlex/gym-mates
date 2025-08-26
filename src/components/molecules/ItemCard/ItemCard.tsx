@@ -1,7 +1,7 @@
 import { Badge, Button, Row, Typography } from "@components/atoms";
 import React, { useMemo } from "react";
 import S from "./ItemCard.styles";
-import { useWindowDimensions } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import Header from "../Header/Header";
 import { IItem, ItemCategory } from "@models/collections";
 import { CameraOff, Lock } from "react-native-feather";
@@ -9,6 +9,7 @@ import { Colors } from "@theme";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/Store";
 import { ShopActions } from "@store/slices";
+import { sliceText } from "@utils/sliceText";
 
 interface ItemCardProps {
   item: IItem;
@@ -16,6 +17,8 @@ interface ItemCardProps {
   disabled?: boolean;
   mode?: "view" | "buy" | "checkout";
   itemsPerRow?: number;
+  touchableImage?: boolean;
+  onImagePress?: (item: IItem) => void;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
@@ -24,6 +27,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
   disabled = false,
   mode = "buy",
   itemsPerRow = 2,
+  touchableImage = false,
+  onImagePress,
 }) => {
   const { width } = useWindowDimensions();
 
@@ -78,7 +83,14 @@ const ItemCard: React.FC<ItemCardProps> = ({
     >
       <S.MediaWrapper size={mediaSize}>
         {item.preview?.url && (
-          <S.MediaImage source={item.preview.url} onError={() => {}} />
+          <TouchableOpacity
+            style={{ width: "100%", height: "100%" }}
+            disabled={!touchableImage}
+            activeOpacity={0.6}
+            onPress={() => onImagePress?.(item)}
+          >
+            <S.MediaImage source={item.preview.url} onError={() => {}} />
+          </TouchableOpacity>
         )}
         {!item.preview?.url && (
           <CameraOff
@@ -116,7 +128,9 @@ const ItemCard: React.FC<ItemCardProps> = ({
               justifyContent: "center",
             }}
           >
-            <Typography.Button textAlign="center">{item.name}</Typography.Button>
+            <Typography.Button textAlign="center">
+              {item.name}
+            </Typography.Button>
             {!item.locked && isListView && (
               <Header.Coins
                 size={8}
@@ -137,9 +151,10 @@ const ItemCard: React.FC<ItemCardProps> = ({
           <>
             <S.Info>
               <Typography.Typography
-                variant={isGridView ? "button" : "headingSubtitle"}
+                variant={isGridView ? "button" : "body"}
+                fontWeight="medium"
               >
-                {item.name}
+                {sliceText(item.name, 14)}
               </Typography.Typography>
               {!item.locked && isListView && mode === "buy" && (
                 <Header.Coins

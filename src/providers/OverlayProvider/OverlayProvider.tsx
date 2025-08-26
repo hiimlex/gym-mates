@@ -1,4 +1,4 @@
-import { UserSelectTitle, WorkoutImageViewer } from "@components/molecules";
+import { ItemPreview, UserSelectTitle, WorkoutImageViewer } from "@components/molecules";
 import { OverlayType } from "@models/generic";
 import { StoreState } from "@store/Store";
 import { ReactElement } from "react";
@@ -10,6 +10,7 @@ const OverlayProvider = () => {
   const componentMap: Record<OverlayType, ReactElement> = {
     UserSelectTitle: <UserSelectTitle />,
     WorkoutImageViewer: <WorkoutImageViewer />,
+    ItemPreview: <ItemPreview />,
   };
 
   return <>{showing && componentMap[showing]}</>;

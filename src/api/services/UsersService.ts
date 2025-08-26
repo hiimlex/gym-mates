@@ -131,6 +131,12 @@ const GET_INVENTORY = gql`
             requirements
             created_at
             updated_at
+            file {
+              url
+            }
+            preview {
+              url
+            }
           }
         }
       }
