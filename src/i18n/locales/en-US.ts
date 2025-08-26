@@ -97,6 +97,7 @@ export default {
   crewView: {
     todayWorkouts: "Paid today",
     noTodayWorkouts: "No one shared their workout today. Be the first!",
+    activities: "Activities",
     lastActivities: "Last Activities",
     hasPaid: "{{name}} has paid.",
     noActivities: "No activities yet.",
@@ -187,6 +188,8 @@ export default {
       activities: "Activities",
       achievements: "Achievements",
     },
+    noWorkouts: "No workouts yet.",
+    noAchievements: "No achievements yet.",
   },
   editProfile: {
     account: "Profile Account",
@@ -286,6 +289,22 @@ export default {
       fri: "Fri",
       sat: "Sat",
     },
+  },
+  months: {
+    long: {
+      jan: "January",
+      feb: "February",
+      mar: "March",
+      apr: "April",
+      may: "May",
+      jun: "June",
+      jul: "July",
+      aug: "August",
+      sep: "September",
+      oct: "October",
+      nov: "November",
+      dec: "December",
+    }
   },
   bottomNav: {
     home: "Home",

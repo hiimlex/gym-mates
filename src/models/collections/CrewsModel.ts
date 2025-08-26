@@ -117,3 +117,13 @@ export interface ICreateCrewState {
   settingsForm?: ICreateCrewSettingsForm;
   error?: string;
 }
+
+export type IGetActivitiesDaysResponse = {
+  date: string;
+  count: number;
+}[];
+export interface IGetActivitiesDaysFilters {
+  start_date?: string;
+  end_date?: string;
+  crew_id: string;
+}

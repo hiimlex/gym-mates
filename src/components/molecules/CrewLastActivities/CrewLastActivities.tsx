@@ -1,6 +1,8 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
-import { IWorkoutsByCrew } from "@models/collections";
+import { IWorkoutsByCrew, IWorkoutsFilters } from "@models/collections";
+import { OverlayType } from "@models/generic";
+import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React from "react";
@@ -9,17 +11,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader, Row, Typography } from "../../atoms";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
 import S from "./CrewLastActivities.styles";
-import { OverlayActions } from "@store/slices";
-import { OverlayType } from "@models/generic";
 
-const CrewLastActivities: React.FC = () => {
+interface CrewLastActivitiesProps {
+  filters?: IWorkoutsFilters;
+  label?: string;
+}
+
+const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({ filters, label = '' }) => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const { user: currentUser } = useSelector((state: StoreState) => state.user);
 
-  const { data, loading } = useQuery<IWorkoutsByCrew>(
+  const { data, loading } = useQuery<IWorkoutsByCrew, IWorkoutsFilters>(
     WorkoutService.gql.WORKOUTS_BY_CREW,
     {
-      variables: { crewId: crew?._id },
+      variables: { crewId: crew?._id || "", ...filters },
       fetchPolicy: "cache-and-network",
     }
   );
@@ -40,7 +45,7 @@ const CrewLastActivities: React.FC = () => {
 
   return (
     <S.Container>
-      <Typography.Body _t>{"crewView.lastActivities"}</Typography.Body>
+      <Typography.Body _t>{label}</Typography.Body>
 
       {loading && <Loader color="primary" />}
 

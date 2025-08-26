@@ -6,9 +6,10 @@ import { QueryKeys, TabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import S from "./UserFollows.styles";
+import PagerView from "react-native-pager-view";
 
 const tabsHeader: TabHeader[] = [
   {
@@ -24,6 +25,7 @@ const tabsHeader: TabHeader[] = [
 const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
   const { user } = useSelector((state: StoreState) => state.user);
   const { headerHeight } = useScreenSize();
+  const pagerRef = useRef<PagerView>(null);
 
   const { data, isLoading } = useQuery({
     queryFn: async () => {
@@ -43,7 +45,7 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
           <Typography.Heading _t>{"userFollows.title"}</Typography.Heading>
         </S.Header>
 
-        <Tabs.Root initialPage={0} header={tabsHeader}>
+        <Tabs.Root initialPage={0} header={tabsHeader} pagerRef={pagerRef}>
           <Tabs.Item
             key={0}
             contentContainerStyle={{

@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { IWorkout, IWorkoutsByUser } from "@models/collections";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
-import { getCurrentWeek, numberToWeekDay } from "@utils/date.utils";
+import { getCurrentWeek } from "@utils/date.utils";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ import { CheckCircle, XCircle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import Typography from "../../atoms/Typography/Typography";
 import S from "./WeekWorkouts.styles";
+import { numberToWeekDay } from "@models/generic";
 
 interface WeekWorkoutsProps {
   children?: React.ReactNode;

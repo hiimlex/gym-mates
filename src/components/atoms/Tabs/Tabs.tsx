@@ -1,6 +1,6 @@
 import { TabHeader } from "@models/generic";
 import React, { useRef, useState } from "react";
-import { ScrollViewProps, ViewStyle } from "react-native";
+import { ScrollViewProps, ViewProps, ViewStyle } from "react-native";
 import PagerView, { PagerViewProps } from "react-native-pager-view";
 import { OnPageSelectedEventData } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent";
 import { DirectEventHandler } from "react-native/Libraries/Types/CodegenTypes";
@@ -11,15 +11,16 @@ interface TabsProps extends PagerViewProps {
   children?: React.ReactNode;
   header?: TabHeader[];
   containerStyle?: ViewStyle;
+  pagerRef?: React.RefObject<PagerView | null>;
 }
 
 const Root: React.FC<TabsProps> = ({
   children,
   header,
   containerStyle,
+  pagerRef,
   ...rest
 }) => {
-  const ref = useRef<PagerView>(null);
   const [currentPage, setCurrentPage] = useState(rest.initialPage);
 
   const onPageChange: DirectEventHandler<OnPageSelectedEventData> = (event) => {
@@ -31,8 +32,8 @@ const Root: React.FC<TabsProps> = ({
   };
 
   const updatePage = (page: number) => {
-    if (ref.current) {
-      ref.current.setPage(page);
+    if (pagerRef?.current) {
+      pagerRef.current.setPage(page);
     }
   };
 
@@ -61,7 +62,7 @@ const Root: React.FC<TabsProps> = ({
           })}
         </S.Header>
       )}
-      <S.Pager ref={ref} {...rest} onPageSelected={(e) => onPageChange(e)}>
+      <S.Pager ref={pagerRef} {...rest} onPageSelected={(e) => onPageChange(e)}>
         {children}
       </S.Pager>
     </S.Container>
@@ -88,6 +89,11 @@ const Item: React.FC<TabItemProps> = ({ children, styles, ...rest }) => {
     </S.Page>
   );
 };
+
+interface NoScrollItemProps extends ViewProps {
+  children?: React.ReactNode;
+  styles?: ViewStyle;
+}
 
 export default {
   Root,

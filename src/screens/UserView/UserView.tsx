@@ -2,6 +2,7 @@ import { UsersService, WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Avatar, Loader, Row, Tabs, Typography } from "@components/atoms";
 import { ItemCard, WorkoutInfo } from "@components/molecules";
+import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import {
   IGetInventoryFilters,
   IGetInventoryResponse,
@@ -10,19 +11,22 @@ import {
   IWorkoutsByUser,
   IWorkoutsFilters,
 } from "@models/collections";
-import { TabHeader } from "@models/generic";
+import { OverlayType, TabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { OverlayActions } from "@store/slices";
 import { Colors } from "@theme";
 import { t } from "i18next";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { Text, View } from "react-native";
+import { useDispatch } from "react-redux";
 import ScreenWrapper from "../../components/molecules/ScreenWrapper/ScreenWrapper";
 import S from "./UserView.styles";
 
 const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
   const userId = route.params.userId;
   const headerHeight = useHeaderHeight();
+  const pagerRef = useRef(null);
 
   const { data: userData } = useQuery<IUserByIdResponse, { _id: string }>(
     UsersService.gql.USER_BY_ID,
@@ -62,6 +66,19 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
       key: 1,
     },
   ];
+
+  const dispatch = useDispatch();
+  const showImageViewerOnPress = (initialIndex: number) => {
+    dispatch(
+      OverlayActions.show({
+        type: OverlayType.WorkoutImageViewer,
+        data: {
+          workouts: workoutsData?.workouts || [],
+          initialIndex,
+        },
+      })
+    );
+  };
 
   if (!user) {
     return (
@@ -140,16 +157,23 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
           </View>
         </Row>
 
-        <Tabs.Root initialPage={0} header={tabsHeader}>
+        <Tabs.Root pagerRef={pagerRef} initialPage={0} header={tabsHeader}>
           <Tabs.Item key={0} contentContainerStyle={{ gap: 12 }}>
-            {workoutsData?.workouts.map((workout) => (
+            {workoutsData?.workouts.map((workout, index) => (
               <WorkoutInfo
                 key={workout._id}
                 workout={workout}
                 showCrewName
+                showImageViewerOnPress
+                onImagePress={() => showImageViewerOnPress(index)}
               ></WorkoutInfo>
             ))}
             {loadingUserWorkouts && <Loader color="primary" />}
+            {!loadingUserWorkouts && workoutsData?.workouts.length === 0 && (
+              <Typography.Body textColor="textLight" _t>
+                {"userView.noWorkouts"}
+              </Typography.Body>
+            )}
           </Tabs.Item>
           <Tabs.Item
             key={1}
@@ -168,6 +192,12 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
               />
             ))}
             {loadingAchievements && <Loader color="primary" />}
+            {!loadingAchievements &&
+              achievementsData?.journeyById.inventory.length === 0 && (
+                <Typography.Body textColor="textLight" _t>
+                  {"userView.noAchievements"}
+                </Typography.Body>
+              )}
           </Tabs.Item>
         </Tabs.Root>
       </S.Container>

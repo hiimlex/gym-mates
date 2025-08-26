@@ -6,3 +6,4 @@ export * from "./QueryKeysModel";
 export * from "./TabsModel";
 export * from "./ErrorsModel";
 export * from "./OverlayModel";
+export * from "./CalendarModel";

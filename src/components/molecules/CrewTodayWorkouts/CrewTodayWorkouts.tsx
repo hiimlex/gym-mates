@@ -1,7 +1,7 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Loader, Row, Typography } from "@components/atoms";
-import { IFile, IWorkoutsByCrew } from "@models/collections";
+import { IFile, IWorkoutsByCrew, IWorkoutsFilters } from "@models/collections";
 import { Colors } from "@theme";
 import { format } from "date-fns";
 import React, { useState } from "react";
@@ -19,7 +19,7 @@ const CrewTodayWorkouts: React.FC = () => {
   const todayFormatted = format(today, "MM-dd-yy");
   const dispatch = useDispatch<AppDispatch>();
 
-  const { data, loading } = useQuery<IWorkoutsByCrew>(
+  const { data, loading } = useQuery<IWorkoutsByCrew, IWorkoutsFilters>(
     WorkoutService.gql.WORKOUTS_BY_CREW,
     {
       variables: {

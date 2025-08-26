@@ -3,11 +3,15 @@ import { gql } from "@apollo/client";
 import {
   ICreateCrewInfoForm,
   ICreateCrewSettingsForm,
+  IGetActivitiesDaysFilters,
+  IGetActivitiesDaysResponse,
   IUpdateCrewBannerPayload,
   IUpdateCrewPayload,
 } from "@models/collections";
 import { BackendImageMulterKey, Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
+import { queryBuilder } from "@utils/queryBuilder";
+import { AxiosResponse } from "axios";
 
 const CREWS_BY_MEMBER = gql`
   query CrewsByMember(
@@ -199,6 +203,17 @@ const create = async (
   return response;
 };
 
+const getActivitiesDays = async (
+  payload: IGetActivitiesDaysFilters
+): Promise<AxiosResponse<IGetActivitiesDaysResponse>> => {
+  const queryParams = queryBuilder(payload);
+
+  const response = await api.get(
+    Endpoints.CrewsGetActivitiesDays + `?${queryParams}`
+  );
+  return response;
+};
+
 export default {
   gql: {
     CREWS_BY_MEMBER,
@@ -211,4 +226,5 @@ export default {
   joinCrew,
   leave,
   create,
+  getActivitiesDays,
 };

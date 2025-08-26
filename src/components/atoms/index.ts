@@ -14,6 +14,8 @@ export { default as Notification } from "./Notification/Notification";
 export { default as Row } from "./Row/Row";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Typography } from "./Typography/Typography";
+export { default as Calendar } from "./Calendar";
 
 export * from "./Dialog/Dialog";
 export * from "./Typography/Typography";
+export * from "./Calendar";

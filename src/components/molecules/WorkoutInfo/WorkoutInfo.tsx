@@ -112,7 +112,11 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
 
           <S.WorkoutInfo>
             {loggedUserWorkout && (
-              <Typography.Body _t _params={{ name: user?.name }}>
+              <Typography.Body
+                _t
+                textColor={textColor}
+                _params={{ name: user?.name }}
+              >
                 {"crewView.youPaid"}
               </Typography.Body>
             )}

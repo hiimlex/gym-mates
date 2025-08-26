@@ -2,6 +2,7 @@ import { Asset } from "react-native-image-picker";
 import { IFile } from "./FileModel";
 import { IUser } from "./UsersModel";
 import { ICrew } from "./CrewsModel";
+import { IQueryOperators } from "@models/generic";
 
 export interface IWorkoutsByUser {
   workouts: IWorkout[];
@@ -17,6 +18,8 @@ export interface IWorkoutsFilters {
   from?: string[]; // Array of crew IDs to filter workouts shared with specific crews
   sort?: '_ID_ASC' | '_ID_DESC' | 'DATE_ASC' | 'DATE_DESC'; // Sorting options
   limit?: number;
+  crewId?: string; // Crew ID to filter workouts by a specific crew
+  earned_op?: IQueryOperators;
 }
 
 export interface IWorkout {

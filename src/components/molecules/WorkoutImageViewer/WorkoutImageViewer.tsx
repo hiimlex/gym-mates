@@ -24,6 +24,7 @@ import Animated, {
 interface WorkoutImageViewerProps {}
 
 const WorkoutImageViewer: React.FC<WorkoutImageViewerProps> = ({}) => {
+  const {user} = useSelector((state: StoreState) => state.user);
   const { data } = useSelector((state: StoreState) => state.overlay);
   const workouts = useMemo(() => data?.workouts || [], [data]);
   const initialIndex = useMemo(() => data?.initialIndex || 0, [data]);
@@ -92,6 +93,7 @@ const WorkoutImageViewer: React.FC<WorkoutImageViewerProps> = ({}) => {
               textColor="white"
               textAlt="secondary"
               showImage={false}
+              loggedUserWorkout={workout.user._id === user?._id}
             />
           </Tabs.Item>
         ))}

@@ -82,8 +82,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
         )}
         {!item.preview?.url && (
           <CameraOff
-            width={mediaSize / 3}
-            height={mediaSize / 3}
+            width={mediaSize / 4}
+            height={mediaSize / 4}
             stroke={Colors.colors.border}
             fill={Colors.colors.border}
             fillOpacity={0.2}
@@ -116,7 +116,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
               justifyContent: "center",
             }}
           >
-            <Typography.Button>{item.name}</Typography.Button>
+            <Typography.Button textAlign="center">{item.name}</Typography.Button>
             {!item.locked && isListView && (
               <Header.Coins
                 size={8}
