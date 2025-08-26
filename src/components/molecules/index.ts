@@ -17,4 +17,5 @@ export { default as UserInfo } from "./UserInfo/UserInfo";
 export { default as UserSelectTitle } from "./UserSelectTitle/UserSelectTitle";
 export { default as UserViewActions } from "./UserViewActions/UserViewActions";
 export { default as WeekWorkouts } from "./WeekWorkouts/WeekWorkouts";
+export { default as WorkoutImageViewer } from "./WorkoutImageViewer/WorkoutImageViewer";
 export { default as WorkoutInfo } from "./WorkoutInfo/WorkoutInfo";

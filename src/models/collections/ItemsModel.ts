@@ -18,6 +18,7 @@ export interface IItem {
     key?: string;
   description?: string;
   file?: IFile;
+  preview?: IFile;
   title?: string;
   created_at: string;
   updated_at: string;

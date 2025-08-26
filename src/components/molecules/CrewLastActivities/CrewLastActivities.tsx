@@ -5,13 +5,16 @@ import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React from "react";
 import { Frown } from "react-native-feather";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Loader, Row, Typography } from "../../atoms";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
 import S from "./CrewLastActivities.styles";
+import { OverlayActions } from "@store/slices";
+import { OverlayType } from "@models/generic";
 
 const CrewLastActivities: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
+  const { user: currentUser } = useSelector((state: StoreState) => state.user);
 
   const { data, loading } = useQuery<IWorkoutsByCrew>(
     WorkoutService.gql.WORKOUTS_BY_CREW,
@@ -20,6 +23,20 @@ const CrewLastActivities: React.FC = () => {
       fetchPolicy: "cache-and-network",
     }
   );
+
+  const dispatch = useDispatch();
+
+  const showImageViewerOverlay = (index: number) => {
+    dispatch(
+      OverlayActions.show({
+        type: OverlayType.WorkoutImageViewer,
+        data: {
+          initialIndex: index,
+          workouts: data?.workouts || [],
+        },
+      })
+    );
+  };
 
   return (
     <S.Container>
@@ -30,8 +47,14 @@ const CrewLastActivities: React.FC = () => {
       {!loading &&
         data &&
         data.workouts &&
-        data.workouts.map((workout) => (
-          <WorkoutInfo workout={workout} key={workout._id} />
+        data.workouts.map((workout, index) => (
+          <WorkoutInfo
+            showImageViewerOnPress
+            loggedUserWorkout={workout.user._id === currentUser?._id}
+            workout={workout}
+            key={workout._id}
+            onImagePress={() => showImageViewerOverlay(index)}
+          />
         ))}
 
       {!loading && (!data || (data.workouts && data.workouts.length === 0)) && (

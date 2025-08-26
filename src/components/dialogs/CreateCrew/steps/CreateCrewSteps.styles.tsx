@@ -5,6 +5,7 @@ import Animated from "react-native-reanimated";
 const Container = styled(Animated.View)`
   flex: 1;
   gap: 24px;
+  padding-bottom: 24px;
 `;
 
 const Group = styled.View`

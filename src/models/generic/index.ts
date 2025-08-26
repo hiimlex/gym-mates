@@ -5,3 +5,4 @@ export * from "./NotifierModel";
 export * from "./QueryKeysModel";
 export * from "./TabsModel";
 export * from "./ErrorsModel";
+export * from "./OverlayModel";

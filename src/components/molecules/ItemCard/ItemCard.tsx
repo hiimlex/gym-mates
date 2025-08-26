@@ -77,10 +77,10 @@ const ItemCard: React.FC<ItemCardProps> = ({
       style={{ width: isGridView ? mediaSize : "100%" }}
     >
       <S.MediaWrapper size={mediaSize}>
-        {item.file?.url && (
-          <S.MediaImage source={item.file.url} onError={() => {}} />
+        {item.preview?.url && (
+          <S.MediaImage source={item.preview.url} onError={() => {}} />
         )}
-        {!item.file?.url && (
+        {!item.preview?.url && (
           <CameraOff
             width={mediaSize / 3}
             height={mediaSize / 3}
@@ -93,10 +93,11 @@ const ItemCard: React.FC<ItemCardProps> = ({
         {isGridView && !item.locked && mode === "buy" && (
           <S.FloatingPrice>
             <Header.Coins
-              size={8}
+              size={6}
               textVariant="button"
               coinValue={item.price.toString()}
               disabled
+              textColor="tertiary"
             />
           </S.FloatingPrice>
         )}

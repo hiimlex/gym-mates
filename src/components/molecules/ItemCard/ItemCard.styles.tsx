@@ -35,12 +35,16 @@ const MediaWrapper = styled.View<{ size: number }>`
   position: relative;
 `;
 
-const MediaImage = styled(CachedImage)``;
+const MediaImage = styled(CachedImage)`
+  width: 100%;
+  height: 100%;
+`;
 
 const FloatingPrice = styled.View`
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
 `;
 
 const Info = styled.View`

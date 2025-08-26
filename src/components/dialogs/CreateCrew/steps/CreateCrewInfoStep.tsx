@@ -29,7 +29,9 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
     infoForm?.mediaPreview
   );
   const [media, setMedia] = useState<Asset | undefined>(undefined);
-  const fieldsRef: InputRefRecorder<ICreateCrewInfoForm> = {
+  const fieldsRef: InputRefRecorder<
+    Omit<ICreateCrewInfoForm, "media" | "mediaPreview">
+  > = {
     name: useRef(null),
     code: useRef(null),
   };
@@ -45,15 +47,17 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
 
   const goNext = () => {
     const infoValues = values;
-    dispatch(
-      CreateCrewActions.setInfoForm({ ...infoValues, media, mediaPreview })
-    );
-    dispatch(CreateCrewActions.setStep(CreateCrewSteps.Settings));
+    if (media && mediaPreview) {
+      dispatch(
+        CreateCrewActions.setInfoForm({ ...infoValues, media, mediaPreview })
+      );
+      dispatch(CreateCrewActions.setStep(CreateCrewSteps.Settings));
+    }
   };
 
   const canGoNext = useMemo(
-    () => !!media && formState.isValid,
-    [media, formState, values]
+    () => !!media && mediaPreview && formState.isValid,
+    [media, formState, values, mediaPreview]
   );
 
   useEffect(() => {
@@ -88,6 +92,10 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
                 onChange={onChange}
                 inputProps={{
                   value,
+                  returnKeyType: "next",
+                  onSubmitEditing: () => {
+                    fieldsRef.code.current?.focus();
+                  },
                 }}
                 inputRef={fieldsRef.name}
               />
@@ -110,8 +118,9 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
                 }}
                 inputProps={{
                   value,
+                  returnKeyType: "none",
                 }}
-                inputRef={fieldsRef.name}
+                inputRef={fieldsRef.code}
               />
             )}
           />

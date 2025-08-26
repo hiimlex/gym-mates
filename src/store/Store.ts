@@ -8,6 +8,7 @@ import NotifierReducer from "./slices/NotifierSlice";
 import ShopReducer from "./slices/ShopSlice";
 import UserInventoryReducer from "./slices/UserInventorySlice";
 import UserReducer from "./slices/UserSlice";
+import OverlayReduce from "./slices/OverlaySlice";
 
 const rootReducer = combineReducers({
   user: UserReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   userInventory: UserInventoryReducer,
   createCrew: CreateCrewReducer,
   notifier: NotifierReducer,
+  overlay: OverlayReduce,
 });
 
 export const store = configureStore({

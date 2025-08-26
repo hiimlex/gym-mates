@@ -8,18 +8,25 @@ const Float = styled(Animated.createAnimatedComponent(TouchableOpacity))`
   bottom: 0;
   left: 0;
   flex: 1;
-  background: ${({ theme }) => '#00000011'};
+  background: #00000011;
   align-items: flex-end;
   justify-content: flex-end;
 `;
-const VerticalList = styled(Animated.ScrollView)`
-  max-height: 160px;
+
+const BottomSheet = styled(Animated.createAnimatedComponent(TouchableOpacity))`
+  height: 160px;
   width: 100%;
   background: ${({ theme }) => theme.colors.background};
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   border: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 12px;
+  z-index: 1000;
+  position: absolute;
+  bottom: 0;
 `;
+
+const VerticalList = styled(Animated.ScrollView)``;
 
 const TitleView = styled.TouchableOpacity`
   height: 24px;
@@ -28,4 +35,4 @@ const TitleView = styled.TouchableOpacity`
   width: 100%;
 `;
 
-export default { Float, VerticalList, TitleView };
+export default { Float, VerticalList, TitleView, BottomSheet };

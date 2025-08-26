@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
-import S from "./WorkoutInfo.styles";
 import { IWorkout } from "@models/collections";
-import { BannerPreview, Row, Typography } from "../../atoms";
-import { format } from "date-fns";
-import { CameraOff, Circle, DollarSign } from "react-native-feather";
-import { Colors } from "@theme";
 import { StoreState } from "@store/Store";
+import { Colors, TColors } from "@theme";
+import { format } from "date-fns";
+import React, { useMemo } from "react";
+import { TouchableOpacity } from "react-native";
+import { Circle, DollarSign } from "react-native-feather";
 import { useSelector } from "react-redux";
-import { View } from "react-native";
+import { BannerPreview, Row, Typography } from "../../atoms";
+import S from "./WorkoutInfo.styles";
+import Header from "../Header/Header";
 
 interface WorkoutInfoProps {
   workout: IWorkout;
@@ -15,6 +16,11 @@ interface WorkoutInfoProps {
   loggedUserWorkout?: boolean;
   showDateTime?: boolean;
   showCrewName?: boolean;
+  showImageViewerOnPress?: boolean;
+  onImagePress?: () => void;
+  showImage?: boolean;
+  textColor?: TColors;
+  textAlt?: TColors;
 }
 
 const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
@@ -23,6 +29,11 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
   loggedUserWorkout = false,
   showDateTime = true,
   showCrewName = false,
+  showImageViewerOnPress = false,
+  onImagePress,
+  showImage = true,
+  textColor = "textDark",
+  textAlt = "textLight",
 }) => {
   const { user } = useSelector((state: StoreState) => state.user);
 
@@ -30,8 +41,8 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
     <Circle
       width={5}
       height={5}
-      stroke={Colors.colors.textLight}
-      fill={Colors.colors.textLight}
+      stroke={Colors.colors[textAlt]}
+      fill={Colors.colors[textAlt]}
     />
   );
 
@@ -40,14 +51,30 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
     format(new Date(workout.date), "yyyy-MM-dd") ===
       format(new Date(), "yyyy-MM-dd");
 
-  useEffect(() => {},[])
+  const receiptLabel = useMemo(() => {
+    const labels: string[] = [workout.title];
+
+    if (workout.type) {
+      labels.push(`workoutTypes.${workout.type}`);
+    }
+
+    if (workout.receipt) {
+      Object.keys(workout.receipt).forEach((key) => {
+        if (workout.receipt[key as keyof typeof workout.receipt] > 0) {
+          labels.push(`crewStreaks.${key}`);
+        }
+      });
+    }
+
+    return labels;
+  }, [workout]);
 
   return (
     <S.WorkoutGroup>
       <S.WorkoutRow>
         {isToday && showDateTime && (
           <Typography.Caption
-            textColor="textLight"
+            textColor={textAlt}
             _t
             _params={{ time: format(new Date(workout.date), "HH:mm") }}
           >
@@ -55,7 +82,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
           </Typography.Caption>
         )}
         {!isToday && showDateTime && (
-          <Typography.Caption textColor="textLight">
+          <Typography.Caption textColor={textAlt}>
             {format(new Date(workout.date), dateFormat)}
           </Typography.Caption>
         )}
@@ -69,48 +96,55 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
 
       <S.WorkoutRow>
         <Row gap={12} align="center" width={"auto"}>
-          <BannerPreview preview={workout.picture?.url} size={48} iconSize={24} />
+          {showImage && (
+            <TouchableOpacity
+              disabled={!showImageViewerOnPress || !workout.picture?.url}
+              onPress={onImagePress}
+              activeOpacity={0.6}
+            >
+              <BannerPreview
+                preview={workout.picture?.url}
+                size={48}
+                iconSize={24}
+              />
+            </TouchableOpacity>
+          )}
 
           <S.WorkoutInfo>
             {loggedUserWorkout && (
               <Typography.Body _t _params={{ name: user?.name }}>
-                {"journey.events.paid"}
+                {"crewView.youPaid"}
               </Typography.Body>
             )}
             {!loggedUserWorkout && (
-              <Typography.Body _t _params={{ name: workout.user.name }}>
+              <Typography.Body
+                textColor={textColor}
+                _t
+                _params={{ name: workout.user.name }}
+              >
                 {"crewView.hasPaid"}
               </Typography.Body>
             )}
 
             <Row gap={6} align="center">
-              {/* {receiptLabel.map((label, index) => (
-                <Typography.Caption key={label} textColor="textLight" _t>
-                  {`crewStreaks.${label}`}
-                </Typography.Caption>
-              ))} */}
-              <Typography.Caption textColor="textLight">
-                {workout.type.charAt(0).toUpperCase() + workout.type.slice(1)}
-              </Typography.Caption>
+              {receiptLabel.map((label, index) => (
+                <Row gap={6} width="auto" align="center" key={index}>
+                  <Typography.Caption textColor={textAlt} _t>
+                    {label}
+                  </Typography.Caption>
+                  {index < receiptLabel.length - 1 && Dot}
+                </Row>
+              ))}
             </Row>
           </S.WorkoutInfo>
         </Row>
 
-        <Row gap={6} align="center" width={"auto"}>
-          <Typography.Button textColor="text">
-            + {workout.earned}
-          </Typography.Button>
-          <S.CoinWrapper>
-            <DollarSign
-              width={10}
-              height={10}
-              strokeWidth={2}
-              stroke={Colors.colors.secondary}
-              fill={Colors.colors.secondary}
-              fillOpacity={0.2}
-            />
-          </S.CoinWrapper>
-        </Row>
+        <Header.Coins
+          coinValue={"+" + workout.earned.toString()}
+          textColor={textColor}
+          textVariant="body"
+          size={8}
+        />
       </S.WorkoutRow>
     </S.WorkoutGroup>
   );

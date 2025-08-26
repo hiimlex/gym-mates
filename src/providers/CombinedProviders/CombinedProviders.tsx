@@ -14,6 +14,7 @@ import {
   DialogProvider,
   PersistedData,
 } from "@components/molecules";
+import OverlayProvider from "../OverlayProvider/OverlayProvider";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const CombinedProviders: React.FC = () => {
               }}
             >
               <AppNavigator>
+                <OverlayProvider />
                 <BottomNav />
                 <PersistedData />
                 <DialogProvider />

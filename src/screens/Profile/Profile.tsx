@@ -8,7 +8,7 @@ import {
 } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { NotifierActions, UserActions } from "@store/slices";
+import { NotifierActions, OverlayActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
@@ -27,6 +27,7 @@ import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Profile.styles";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import { OverlayType } from "@models/generic";
 
 const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
   navigation: { navigate },
@@ -36,7 +37,6 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
   const headerHeight = useHeaderHeight();
   const { crews } = useSelector((state: StoreState) => state.crews);
   const [preview, setPreview] = useState<string | undefined>(user?.avatar?.url);
-  const [showSelectTitle, setShowSelectTitle] = useState(false);
 
   const crewsCount = useMemo(() => crews.length, [crews]);
 
@@ -76,6 +76,10 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
     navigate(AppRoutes.Login);
   };
 
+  const showSelectTitleOverlay = () => {
+    dispatch(OverlayActions.show({ type: OverlayType.UserSelectTitle }));
+  };
+
   if (!user) {
     return null;
   }
@@ -101,7 +105,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
 
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => setShowSelectTitle((prev) => !prev)}
+                onPress={showSelectTitleOverlay}
               >
                 <Text
                   style={{
@@ -256,9 +260,6 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
           </Menu.Root>
         </View>
       </S.Container>
-      {showSelectTitle && (
-        <UserSelectTitle close={() => setShowSelectTitle(false)} />
-      )}
     </ScreenWrapper>
   );
 };

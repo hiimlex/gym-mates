@@ -1,7 +1,11 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Card, Row, Typography } from "@components/atoms";
-import { IWorkout, IWorkoutsByUser } from "@models/collections";
+import {
+  IWorkout,
+  IWorkoutsByUser,
+  IWorkoutsFilters,
+} from "@models/collections";
 import Feather from "@react-native-vector-icons/feather";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
@@ -22,10 +26,10 @@ const MyStats: React.FC<MyStatsProps> = ({ children }) => {
 
   const [lastWorkout, setLastWorkout] = useState<IWorkout | null>(null);
 
-  const { data } = useQuery<IWorkoutsByUser>(
+  const { data } = useQuery<IWorkoutsByUser, IWorkoutsFilters>(
     WorkoutService.gql.WORKOUTS_BY_USER,
     {
-      variables: { userId: user?._id },
+      variables: { userId: user?._id, sort: "DATE_DESC", limit: 1 },
       fetchPolicy: "cache-and-network",
     }
   );

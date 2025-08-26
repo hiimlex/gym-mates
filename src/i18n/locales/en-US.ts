@@ -71,6 +71,7 @@ export default {
     following: "Following",
     crews: "Crews",
     streak: "Streak",
+    selectATitle: "Select a title",
     personal: {
       title: "Personal",
       journey: "Journey",
@@ -102,6 +103,7 @@ export default {
     todayWorkout: "Today {{-time}}",
     rank: "Rank",
     calendar: "Calendar",
+    youPaid: "You paid",
   },
   crewSettings: {
     members: "Members",
@@ -259,6 +261,11 @@ export default {
     accept: "Accept",
     wantsToJoin: "{{name}} wants to join.",
   },
+  workoutViewer: {
+    title: "Workout Preview",
+    tip: "Swipe left or right to see more workouts!",
+  },
+
   // Generic
   weekDays: {
     long: {
