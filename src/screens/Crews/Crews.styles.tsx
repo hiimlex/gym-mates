@@ -22,6 +22,8 @@ const FilterBadge = styled(Badge)`
 const CrewCard = styled(Card)`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.background};
+  padding: 12px;
+  width: 100%;
 `;
 
 export default { Container, ScrollList, FilterBadge, CrewCard };

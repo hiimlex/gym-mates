@@ -79,7 +79,7 @@ const BackLeft = ({ backTo }: BackLeftProps) => {
     <TouchableOpacity
       activeOpacity={0.6}
       onPress={() => {
-        if(backTo){
+        if (backTo) {
           navigate(backTo as any);
           return;
         }

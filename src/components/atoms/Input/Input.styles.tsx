@@ -10,10 +10,13 @@ const Container = styled.View`
 
 const Input = styled.TextInput`
   width: 100%;
-  padding: 16px 12px;
+  padding: 12px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.background};
+  align-items: center;
+  justify-content: flex-start;
+  height: 48px;
 `;
 
 const FloatSuffix = styled.View`

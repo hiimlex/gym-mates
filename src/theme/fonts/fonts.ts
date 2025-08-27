@@ -1,15 +1,13 @@
 import { TextStyle } from "react-native";
 
 const types = {
-  light: "SF Pro Rounded",
-  regular: "SF Pro Rounded",
-  medium: "SF Pro Rounded",
-  semibold: "SF Pro Rounded",
-  bold: "SF Pro Rounded",
+  regular: "SF-Pro-Rounded-Regular",
+  medium: "SF-Pro-Rounded-Medium",
+  semibold: "SF-Pro-Rounded-Semibold",
+  bold: "SF-Pro-Rounded-Bold",
 };
 
 const weights: Record<string, TextStyle["fontWeight"]> = {
-  light: "300",
   regular: "400",
   medium: "500",
   semibold: "600",

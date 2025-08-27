@@ -99,16 +99,18 @@ const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
           initialPage={0}
           scrollEnabled
           header={headerTabs}
-          onPageSelected={(e) =>
-            setCurrentPage((prev) => e.nativeEvent.position)
-          }
+          onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
         >
           <Tabs.Item key={0}>
-            <CrewTodayWorkouts />
-            <CrewLastActivities label="crewView.lastActivities" />
+            {currentPage === 0 && (
+              <>
+                <CrewTodayWorkouts />
+                <CrewLastActivities label="crewView.lastActivities" />
+              </>
+            )}
           </Tabs.Item>
           <Tabs.Item key={1}>
-            <CrewCalendarView />
+            {currentPage === 1 && <CrewCalendarView />}
           </Tabs.Item>
         </Tabs.Root>
       </S.Container>

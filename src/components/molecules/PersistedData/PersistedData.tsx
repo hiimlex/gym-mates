@@ -1,5 +1,5 @@
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
-import { AccessTokenKey } from "@models/generic";
+import { AccessTokenKey, BlurProps } from "@models/generic";
 import { AppRoutes } from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NotifierActions, UserActions } from "@store/slices";
@@ -42,18 +42,20 @@ const PersistedData: React.FC = () => {
 
   useEffect(() => {
     if (errorLoadingCurrentUser) {
-      dispatch(NotifierActions.createNotification({
-        id: 'fetch-current-user-error',
-        type: 'error',
-        message: 'errors.FETCH_CURRENT_USER',
-      }));
+      dispatch(
+        NotifierActions.createNotification({
+          id: "fetch-current-user-error",
+          type: "error",
+          message: "errors.FETCH_CURRENT_USER",
+        })
+      );
     }
   }, [errorLoadingCurrentUser]);
 
   return (
     loadingCurrentUser &&
     firstRender && (
-      <S.Container style={{ width, height }} intensity={15}>
+      <S.Container style={{ width, height }} {...BlurProps}>
         <Loader color="primary" />
       </S.Container>
     )

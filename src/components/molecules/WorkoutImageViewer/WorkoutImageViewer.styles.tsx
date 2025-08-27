@@ -34,4 +34,9 @@ const TabWrapper = styled.View`
   gap: 24px;
 `;
 
-export default { FloatingBlur, WorkoutPreview, WorkoutPreviewWrapper, TabWrapper };
+export default {
+  FloatingBlur,
+  WorkoutPreview,
+  WorkoutPreviewWrapper,
+  TabWrapper,
+};

@@ -16,6 +16,7 @@ import {
   SlideInRight,
   SlideOutRight,
 } from "react-native-reanimated";
+import { BlurProps } from "@models/generic";
 
 interface ItemPreviewProps {}
 
@@ -39,11 +40,11 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
         paddingTop: insets.top + 24,
         paddingBottom: insets.bottom + 48,
       }}
-      intensity={15}
+      {...BlurProps}
       entering={FadeIn}
       exiting={FadeOut.easing(Easing.inOut(Easing.ease))}
     >
-      <Row gap={12}>
+      <Row gap={12} align="center">
         <TouchableOpacity activeOpacity={0.6} onPress={close}>
           <X stroke={Colors.colors.white} />
         </TouchableOpacity>
@@ -54,10 +55,7 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
 
       <S.ExpandedContent>
         <S.MediaWrapper size={height * 0.4}>
-          <S.ItemPreview
-            source={item?.preview?.url || ""}
-            onError={() => {}}
-          />
+          <S.ItemPreview source={item?.preview?.url || ""} onError={() => {}} />
         </S.MediaWrapper>
 
         <S.ItemInfo>

@@ -81,41 +81,49 @@ export const TypographyStyles = StyleSheet.create({
     fontWeight: Fonts.weights.bold,
     fontFamily: Fonts.types.bold,
     fontSize: Fonts.sizes.title,
+    lineHeight: Fonts.sizes.title * 1.4,
   },
   subtitle: {
     fontWeight: Fonts.weights.semibold,
     fontFamily: Fonts.types.semibold,
     fontSize: Fonts.sizes.subtitle,
+    lineHeight: Fonts.sizes.subtitle * 1.4,
   },
   heading: {
     fontWeight: Fonts.weights.bold,
     fontFamily: Fonts.types.bold,
     fontSize: Fonts.sizes.heading,
+    lineHeight: Fonts.sizes.heading * 1.4,
   },
   headingSubtitle: {
     fontWeight: Fonts.weights.semibold,
     fontFamily: Fonts.types.semibold,
     fontSize: Fonts.sizes.headingSubtitle,
+    lineHeight: Fonts.sizes.headingSubtitle * 1.4,
   },
   body: {
     fontWeight: Fonts.weights.medium,
     fontFamily: Fonts.types.medium,
     fontSize: Fonts.sizes.body,
+    lineHeight: Fonts.sizes.body * 1.4,
   },
   caption: {
     fontWeight: Fonts.weights.medium,
     fontFamily: Fonts.types.medium,
     fontSize: Fonts.sizes.caption,
+    lineHeight: Fonts.sizes.caption * 1.4,
   },
   button: {
     fontWeight: Fonts.weights.bold,
     fontFamily: Fonts.types.bold,
     fontSize: Fonts.sizes.button,
+    lineHeight: Fonts.sizes.button * 1.4,
   },
   tip: {
     fontWeight: Fonts.weights.medium,
     fontFamily: Fonts.types.medium,
     fontSize: Fonts.sizes.tip,
+    lineHeight: Fonts.sizes.tip * 1.4,
   },
 });
 

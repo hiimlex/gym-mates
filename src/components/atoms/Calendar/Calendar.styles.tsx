@@ -1,8 +1,7 @@
 import styled from "@emotion/native";
 import Animated from "react-native-reanimated";
 
-const Container = styled.View`
-`;
+const Container = styled.View``;
 
 const Card = styled.View`
   width: 100%;
@@ -38,9 +37,9 @@ const WeekDaysGrid = styled(Animated.View)`
   flex-wrap: wrap;
 `;
 
-const DayItem = styled.TouchableOpacity<{ width: number }>`
+const DayItem = styled.TouchableOpacity<{ width: number; height: number }>`
   width: ${({ width }) => `${width}px`};
-  padding: 3px 0;
+  height: ${({ height }) => `${height}px`};
   justify-content: center;
   align-items: center;
   gap: 3px;

@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "../../atoms";
 import S from "./BottomNav.styles";
+import { BlurProps } from "@models/generic";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
@@ -66,7 +67,7 @@ const BottomNav: React.FC = () => {
       ref={ref}
       entering={SlideInDown}
       onLayout={onBottomNavLayoutChange}
-      intensity={10}
+      {...BlurProps}
       style={{ width, bottom: 0, padding: 12, paddingBottom: insets.bottom }}
     >
       <S.Item

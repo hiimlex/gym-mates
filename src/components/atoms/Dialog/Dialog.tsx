@@ -11,6 +11,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Typography from "../Typography/Typography";
 import S from "./Dialog.styles";
+import { BlurProps } from "@models/generic";
 
 export interface DialogProps {
   children?: React.ReactNode;
@@ -42,11 +43,8 @@ const Dialog: React.FC<DialogProps> = ({
       entering={FadeIn.duration(150)}
       exiting={FadeOut.duration(150)}
     >
-      <S.Container
-        entering={SlideInDown}
-        exiting={SlideOutDown}
-      >
-        <S.Blur intensity={10} style={{ paddingBottom: insets.bottom }}>
+      <S.Container entering={SlideInDown} exiting={SlideOutDown}>
+        <S.Blur {...BlurProps} style={{ paddingBottom: insets.bottom }}>
           {showTitle && (
             <S.Title>
               <S.TitleInfo>

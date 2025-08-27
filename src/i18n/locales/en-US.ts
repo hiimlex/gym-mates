@@ -78,6 +78,7 @@ export default {
       inventory: "Inventory",
       followers: "Followers",
       following: "Following",
+      mates: "Mates",
     },
     settings: {
       edit: "Edit Profile",
@@ -307,7 +308,7 @@ export default {
       oct: "October",
       nov: "November",
       dec: "December",
-    }
+    },
   },
   bottomNav: {
     home: "Home",

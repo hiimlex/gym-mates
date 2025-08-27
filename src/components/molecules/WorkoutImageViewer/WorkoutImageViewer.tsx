@@ -5,11 +5,18 @@ import { Colors } from "@theme";
 import React, { useMemo, useState } from "react";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { X } from "react-native-feather";
-import { Easing, FadeIn, FadeOut, SlideInRight, SlideOutRight } from "react-native-reanimated";
+import {
+  Easing,
+  FadeIn,
+  FadeOut,
+  SlideInRight,
+  SlideOutRight,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
 import S from "./WorkoutImageViewer.styles";
+import { BlurProps } from "@models/generic";
 
 interface WorkoutImageViewerProps {}
 
@@ -43,11 +50,11 @@ const WorkoutImageViewer: React.FC<WorkoutImageViewerProps> = ({}) => {
         paddingTop: insets.top + 24,
         paddingBottom: insets.bottom + 48,
       }}
-      intensity={15}
+      {...BlurProps}
       entering={FadeIn.duration(100)}
       exiting={FadeOut.easing(Easing.inOut(Easing.ease))}
     >
-      <Row gap={12}>
+      <Row gap={12} align="center">
         <TouchableOpacity activeOpacity={0.6} onPress={close}>
           <X stroke={Colors.colors.white} />
         </TouchableOpacity>

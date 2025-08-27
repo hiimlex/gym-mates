@@ -41,7 +41,7 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
   });
 
   useEffect(() => {
-    if (!data || data.crews.length === 0) {
+    if (!data || !data.crews || data.crews.length === 0) {
       dispatch(CrewsActions.setCrews([]));
       dispatch(ConfigActions.setHideBottomNav(true));
     }

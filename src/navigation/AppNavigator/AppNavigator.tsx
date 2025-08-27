@@ -1,21 +1,18 @@
-import {
-  CrewViewActions,
-  DialogProvider,
-  PersistedData,
-  UserViewActions,
-} from "@components/molecules";
+import { CrewViewActions, UserViewActions } from "@components/molecules";
 import { navigationRef } from "@hooks/useNavigationContainer/useNavigationContainer";
-import { PersistedStateKey } from "@models/generic";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
-  CrewsScreen,
   CrewViewScreen,
+  CrewViewScreenOptions,
+  CrewsScreen,
+  CrewsScreenOptions,
   EditProfileScreen,
+  EditProfileScreenOptions,
   HomeScreen,
   LoginScreen,
   ProfileScreen,
+  ProfileScreenOptions,
   SetupAvatarScreen,
   SetupHealthScreen,
   ShopCartScreen,
@@ -28,13 +25,15 @@ import {
   UserInventoryScreen,
   UserInventoryScreenOptions,
   UserJourneyScreen,
+  UserJourneyScreenOptions,
   UserViewScreen,
+  UserViewScreenOptions,
 } from "@screens";
 import { StoreState } from "@store/Store";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
 import { Typography } from "../../components/atoms";
-import { BottomNav, Header } from "../../components/molecules";
+import { Header } from "../../components/molecules";
 import { AppRoutes, TRootStackParamList } from "../appRoutes";
 
 const Stack = createNativeStackNavigator<TRootStackParamList>();
@@ -77,119 +76,37 @@ const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
               name={AppRoutes.Crews}
               component={CrewsScreen}
               initialParams={{ showBottomNav: true }}
-              options={{
-                headerShown: true,
-                headerTransparent: true,
-                headerBackVisible: false,
-                headerTitle: () => (
-                  <Typography.HeadingSubtitle
-                    textColor="text"
-                    fontWeight="semibold"
-                    _t
-                  >
-                    {"links.crews"}
-                  </Typography.HeadingSubtitle>
-                ),
-                animation: "slide_from_right",
-              }}
+              options={CrewsScreenOptions}
             />
 
             <Stack.Screen
               name={AppRoutes.CrewView}
               component={CrewViewScreen}
-              options={{
-                headerShown: true,
-                headerTransparent: true,
-                headerLeft: () => <Header.BackLeft />,
-                headerTitle: () => (
-                  <Typography.HeadingSubtitle
-                    textColor="text"
-                    fontWeight="semibold"
-                    _t
-                  >
-                    {"links.crew"}
-                  </Typography.HeadingSubtitle>
-                ),
-                headerRight: () => <CrewViewActions />,
-              }}
+              options={CrewViewScreenOptions}
             />
 
             <Stack.Screen
               name={AppRoutes.Profile}
               component={ProfileScreen}
-              options={{
-                headerShown: true,
-                headerTitle: () => (
-                  <Typography.HeadingSubtitle
-                    textColor="text"
-                    fontWeight="semibold"
-                    _t
-                  >
-                    {"links.profile"}
-                  </Typography.HeadingSubtitle>
-                ),
-                headerLeft: () => <Header.BackLeft />,
-                headerRight: () => <Header.Coins size={10} />,
-                headerTransparent: true,
-              }}
+              options={ProfileScreenOptions}
             />
 
             <Stack.Screen
               name={AppRoutes.UserJourney}
               component={UserJourneyScreen}
-              options={{
-                headerShown: true,
-                headerTitle: () => (
-                  <Typography.HeadingSubtitle
-                    textColor="text"
-                    fontWeight="semibold"
-                    _t
-                  >
-                    {"links.userJourney"}
-                  </Typography.HeadingSubtitle>
-                ),
-                headerLeft: () => <Header.BackLeft />,
-                headerTransparent: true,
-              }}
+              options={UserJourneyScreenOptions}
             />
 
             <Stack.Screen
               name={AppRoutes.UserView}
               component={UserViewScreen}
-              options={{
-                headerShown: true,
-                headerTitle: () => (
-                  <Typography.HeadingSubtitle
-                    textColor="text"
-                    fontWeight="semibold"
-                    _t
-                  >
-                    {"links.user"}
-                  </Typography.HeadingSubtitle>
-                ),
-                headerLeft: () => <Header.BackLeft />,
-                headerTransparent: true,
-                headerRight: () => <UserViewActions />,
-              }}
+              options={UserViewScreenOptions}
             />
 
             <Stack.Screen
               name={AppRoutes.EditProfile}
               component={EditProfileScreen}
-              options={{
-                headerShown: true,
-                headerTitle: () => (
-                  <Typography.HeadingSubtitle
-                    textColor="text"
-                    fontWeight="semibold"
-                    _t
-                  >
-                    {"links.editProfile"}
-                  </Typography.HeadingSubtitle>
-                ),
-                headerLeft: () => <Header.BackLeft />,
-                headerTransparent: true,
-              }}
+              options={EditProfileScreenOptions}
             />
             <Stack.Screen
               name={AppRoutes.Shop}

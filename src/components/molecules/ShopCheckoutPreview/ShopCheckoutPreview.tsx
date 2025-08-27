@@ -13,7 +13,7 @@ import { SlideInDown, SlideOutDown } from "react-native-reanimated";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ShopService } from "@api/services";
 import { ShopActions, UserActions } from "@store/slices";
-import { QueryKeys } from "@models/generic";
+import { BlurProps, QueryKeys } from "@models/generic";
 
 interface ShopCheckoutPreviewProps {}
 
@@ -54,9 +54,13 @@ const ShopCheckoutPreview: React.FC<ShopCheckoutPreviewProps> = () => {
   }
 
   return (
-    <S.FloatBottomContainer style={{ width }} entering={SlideInDown} exiting={SlideOutDown}>
+    <S.FloatBottomContainer
+      style={{ width }}
+      entering={SlideInDown}
+      exiting={SlideOutDown}
+    >
       <S.BlurBackground
-        intensity={15}
+        {...BlurProps}
         style={{ paddingBottom: insets.bottom + 12 }}
       >
         <S.Receipt>

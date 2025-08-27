@@ -43,10 +43,6 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
     [data]
   );
 
-  useEffect(() => {
-    console.log("UserInventory - data, error", { data, error });
-  }, [data, error]);
-
   const inventory = useMemo(() => data?.journeyById.inventory || [], [data]);
 
   const setAchievementsFilter = (category: ItemCategory) => {

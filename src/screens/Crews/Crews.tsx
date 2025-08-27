@@ -117,7 +117,7 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
               onPress={() => navigateToCrew(crew)}
             >
               <Row justify="space-between" align="center">
-                <Row gap={12} align="center" style={{ flex: 1 }} width={"auto"}>
+                <Row gap={12} align="center" width="auto">
                   {crew.banner && (
                     <BannerPreview
                       preview={crew.banner.url}
@@ -131,7 +131,7 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
                       {crew.name}
                     </Typography.Body>
 
-                    <Row gap={12}>
+                    <Row gap={12} align="center">
                       <Row gap={3} align="center" width={"auto"}>
                         <Code
                           width={16}

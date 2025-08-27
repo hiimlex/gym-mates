@@ -6,7 +6,7 @@ import {
 } from "@models/generic";
 import { Colors } from "@theme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { TouchableOpacity, useWindowDimensions } from "react-native";
+import { Platform, TouchableOpacity, useWindowDimensions } from "react-native";
 import { ChevronLeft, ChevronRight } from "react-native-feather";
 import { FadeIn } from "react-native-reanimated";
 import { SvgProps } from "react-native-svg";
@@ -40,6 +40,8 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
     getDaysInMonth(currentMonth, currentYear)
   );
   const [daysRowsCount, setDaysRowsCount] = useState<number>(0);
+
+  const dayItemHeight = Platform.OS === "ios" ? 38 : 42;
 
   // width - scree padding - card padding - gaps between days
   const daysGap = 6;
@@ -136,7 +138,8 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
         pagerRef={pagerRef}
         initialPage={selectedMonth}
         onPageSelected={(e) => handleChangeMonth(e.nativeEvent.position)}
-        containerStyle={{ height: daysRowsCount * 38 }}
+        containerStyle={{ height: daysRowsCount * dayItemHeight }}
+        orientation={"vertical"}
       >
         {Months.map((_, index) => (
           <Tabs.Item key={index} bounces={false}>
@@ -144,7 +147,12 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
               <S.WeekDaysGrid entering={FadeIn.duration(100)}>
                 {WeekDays.map((day, index) => {
                   return (
-                    <S.DayItem key={index} width={daysWidth} disabled>
+                    <S.DayItem
+                      key={index}
+                      width={daysWidth}
+                      disabled
+                      height={24}
+                    >
                       <Typography.Body
                         fontWeight={
                           isSelectedWeekDay(index) ? "bold" : "medium"
@@ -166,6 +174,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
 
                   return (
                     <S.DayItem
+                      height={40}
                       key={day.getTime()}
                       width={daysWidth}
                       onPress={() => handleSelectDay(day, isInMonth)}

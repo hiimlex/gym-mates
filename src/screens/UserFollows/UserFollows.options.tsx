@@ -6,9 +6,10 @@ export const UserFollowsScreenOptions: NativeStackNavigationOptions = {
   headerShown: true,
   headerTransparent: true,
   headerLeft: () => <Header.BackLeft />,
+  headerTitleAlign: "center",
   headerTitle: () => (
-    <Typography.Heading textColor="text" fontWeight="semibold" _t>
+    <Typography.HeadingSubtitle textColor="text" fontWeight="semibold" _t>
       {"links.userFollows"}
-    </Typography.Heading>
+    </Typography.HeadingSubtitle>
   ),
 };

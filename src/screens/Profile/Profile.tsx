@@ -203,7 +203,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
                 />
               }
               onPress={() => navigate(AppRoutes.UserFollows)}
-              label="profile.personal.followers"
+              label="profile.personal.mates"
               _t
               isLast
             ></Menu.Item>
