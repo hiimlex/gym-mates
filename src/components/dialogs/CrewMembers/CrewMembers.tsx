@@ -10,6 +10,8 @@ import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
 import S from "./CrewMembers.styles";
+import { DialogActions } from "@store/slices";
+import { AppRoutes } from "@navigation/appRoutes";
 
 const CrewMembers: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -29,14 +31,13 @@ const CrewMembers: React.FC = () => {
     fetchPolicy: "cache-and-network",
   });
 
-  useEffect(() => {
-    if (data) {
-      console.log("data updated", data);
-    }
-  }, [data]);
-
   const showActionsMenu = () => {
     console.log("showActionsMenu on long press");
+  };
+
+  const navigateToUserView = (userId: string) => {
+    dispatch(DialogActions.closeDialog());
+    navigate(AppRoutes.UserView, { userId });
   };
 
   const { mutate } = useMutation({
