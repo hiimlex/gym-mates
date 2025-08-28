@@ -3,8 +3,8 @@ import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useMemo, useState } from "react";
-import { TouchableOpacity, useWindowDimensions } from "react-native";
-import { X } from "react-native-feather";
+import { TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { CameraOff, X } from "react-native-feather";
 import {
   Easing,
   FadeIn,
@@ -79,11 +79,16 @@ const WorkoutImageViewer: React.FC<WorkoutImageViewerProps> = ({}) => {
             bounces={false}
           >
             <S.WorkoutPreviewWrapper>
-              <S.WorkoutPreview
-                source={workout.picture?.url || ""}
-                style={{ height: height * 0.6 }}
-                onError={() => {}}
-              ></S.WorkoutPreview>
+              {workout.picture?.url && (
+                <S.WorkoutPreview
+                  source={workout.picture?.url || ""}
+                  style={{ height: height * 0.6 }}
+                  onError={() => {}}
+                ></S.WorkoutPreview>
+              )}
+              {!workout.picture?.url && (
+                <CameraOff width={64} height={64} color={Colors.colors.white} />
+              )}
             </S.WorkoutPreviewWrapper>
             <WorkoutInfo
               workout={workout}

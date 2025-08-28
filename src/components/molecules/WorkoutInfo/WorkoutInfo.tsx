@@ -105,7 +105,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
               <BannerPreview
                 preview={workout.picture?.url}
                 size={48}
-                iconSize={24}
+                iconSize={20}
               />
             </TouchableOpacity>
           )}

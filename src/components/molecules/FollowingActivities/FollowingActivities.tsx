@@ -32,6 +32,10 @@ const FollowingActivities: React.FC = () => {
   const dispatch = useDispatch();
 
   const showImageViewerOverlay = (index: number) => {
+    const workout = data?.workouts.filter(
+      (w) => !!w.picture?.url 
+    )
+
     dispatch(
       OverlayActions.show({
         type: OverlayType.WorkoutImageViewer,
