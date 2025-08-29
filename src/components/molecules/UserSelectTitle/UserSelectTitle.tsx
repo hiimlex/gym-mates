@@ -17,7 +17,7 @@ import { UsersService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/Store";
-import { Typography } from "@components/atoms";
+import { Loader, Typography } from "@components/atoms";
 import { useMutation } from "@tanstack/react-query";
 import { NotifierActions, OverlayActions, UserActions } from "@store/slices";
 import { getMessageFromError } from "@utils/handleAxiosError";
@@ -48,7 +48,7 @@ const UserSelectTitle: React.FC<UserSelectTitleProps> = ({}) => {
     return user?.title?._id === titleId;
   };
 
-  const { mutate: selectTitle } = useMutation({
+  const { mutate: selectTitle, isPending } = useMutation({
     mutationFn: (titleId: string) => {
       return UsersService.selectTitle(titleId);
     },
@@ -111,22 +111,35 @@ const UserSelectTitle: React.FC<UserSelectTitleProps> = ({}) => {
           }}
           disableIntervalMomentum={true}
         >
-          {data?.journeyById.inventory.map(({ item }, index) => (
-            <S.TitleView
-              key={index}
-              activeOpacity={0.6}
-              onPress={() => selectTitle(item._id)}
-              disabled={isSelected(item._id)}
-            >
-              <Typography.Typography
-                variant={isSelected(item._id) ? "headingSubtitle" : "body"}
-                textAlign="center"
-                textColor={isSelected(item._id) ? "primary" : "text"}
+          {(loading || isPending) && (
+            <S.LoaderWrapper>
+              <Loader color="primary" />
+              {isPending && (
+                <Typography.Button _t textAlign="center">
+                  {"profile.saving"}
+                </Typography.Button>
+              )}
+            </S.LoaderWrapper>
+          )}
+
+          {!loading &&
+            !isPending &&
+            data?.journeyById.inventory.map(({ item }, index) => (
+              <S.TitleView
+                key={index}
+                activeOpacity={0.6}
+                onPress={() => selectTitle(item._id)}
+                disabled={isSelected(item._id)}
               >
-                {item.title}
-              </Typography.Typography>
-            </S.TitleView>
-          ))}
+                <Typography.Typography
+                  variant={isSelected(item._id) ? "headingSubtitle" : "body"}
+                  textAlign="center"
+                  textColor={isSelected(item._id) ? "primary" : "text"}
+                >
+                  {item.title}
+                </Typography.Typography>
+              </S.TitleView>
+            ))}
         </S.VerticalList>
       </S.BottomSheet>
     </S.Float>

@@ -32,8 +32,8 @@ const ShopSearch = () => {
     <S.SearchWrapper>
       <Input
         placeholder="Search"
-        style={{ paddingTop: 12, paddingBottom: 12 }}
-        onChange={onShopSearch}
+        style={{ height: 40 }}
+        onChangeText={onShopSearch}
       />
     </S.SearchWrapper>
   );

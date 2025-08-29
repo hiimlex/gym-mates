@@ -1,17 +1,12 @@
 import React, { useRef } from "react";
 
-import { AuthService, UsersService } from "@api/services";
-import { Button, Input, Typography } from "@components/atoms";
-import { IDeviceInfo, ILoginForm } from "@models/collections";
+import { AuthService } from "@api/services";
+import { Button, ControlledInput, Typography } from "@components/atoms";
+import { ILoginForm } from "@models/collections";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@tanstack/react-query";
-import { Controller, useForm } from "react-hook-form";
-import {
-  Platform,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { useForm } from "react-hook-form";
+import { TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ScreenWrapper } from "@components/molecules";
@@ -20,7 +15,6 @@ import { AccessTokenKey, InputRefRecorder } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
-import { getPushToken } from "@utils/getPushToken";
 import { getMessageFromError } from "@utils/handleAxiosError";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Login.styles";
@@ -47,6 +41,7 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
       await AsyncStorage.setItem(AccessTokenKey, data.data.access_token);
       await dispatch(UserActions.fetchCurrentUser());
 
+      // Register device for push notifications
       // const tokenData = await getPushToken();
 
       // console.log("tokenData", tokenData);
@@ -94,47 +89,34 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
             {"login.subtitle"}
           </Typography.Body>
         </View>
-        <Controller
+        <ControlledInput
+          control={control}
           name="email"
-          control={control}
+          label="login.email"
+          placeholder="login.email"
           rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              placeholder="login.email"
-              label="login.email"
-              inputRef={fieldsRef.email}
-              inputProps={{
-                textContentType: "emailAddress",
-                keyboardType: "email-address",
-                value: value,
-                returnKeyType: "next",
-                onSubmitEditing: () => {
-                  fieldsRef.password.current?.focus();
-                },
-              }}
-              onChange={onChange}
-            />
-          )}
+          textContentType="emailAddress"
+          keyboardType="email-address"
+          returnKeyType="next"
+          inputRef={fieldsRef.email}
+          onSubmitEditing={() => {
+            fieldsRef.password.current?.focus();
+          }}
         />
-        <Controller
+
+        <ControlledInput
+          control={control}
           name="password"
-          control={control}
+          label="login.password"
+          placeholder="login.password"
           rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              placeholder="login.password"
-              label="login.password"
-              inputRef={fieldsRef.password}
-              inputProps={{
-                secureTextEntry: true,
-                textContentType: "password",
-                value: value,
-                onSubmitEditing: handleLoginSubmit,
-              }}
-              onChange={onChange}
-            />
-          )}
+          secureTextEntry
+          textContentType="password"
+          returnKeyType="done"
+          inputRef={fieldsRef.password}
+          onSubmitEditing={handleLoginSubmit}
         />
+
         <Button
           title="login.title"
           disabled={!formState.isValid}

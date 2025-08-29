@@ -89,13 +89,11 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="createCrew.infoStep.namePlaceholder"
-                onChange={onChange}
-                inputProps={{
-                  value,
-                  returnKeyType: "next",
-                  onSubmitEditing: () => {
-                    fieldsRef.code.current?.focus();
-                  },
+                onChangeText={onChange}
+                value={value}
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  fieldsRef.code.current?.focus();
                 }}
                 inputRef={fieldsRef.name}
               />
@@ -111,15 +109,13 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="createCrew.infoStep.codePlaceholder"
-                onChange={(value) => {
+                onChangeText={(value) => {
                   const maskedValue = Masks.crewName(value);
 
                   onChange(maskedValue);
                 }}
-                inputProps={{
-                  value,
-                  returnKeyType: "none",
-                }}
+                value={value}
+                returnKeyType="none"
                 inputRef={fieldsRef.code}
               />
             )}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Colors } from "@theme";
+import { Colors, TColors } from "@theme";
 import { Asset } from "react-native-image-picker";
 import Loader from "../Loader/Loader";
 import S from "./Avatar.styles";
@@ -17,6 +17,7 @@ interface IAvatarProps {
   preview?: string;
   loading?: boolean;
   showBorder?: boolean;
+  borderColor?: TColors;
 }
 
 const Avatar: React.FC<IAvatarProps> = ({
@@ -28,6 +29,7 @@ const Avatar: React.FC<IAvatarProps> = ({
   preview,
   loading,
   showBorder = true,
+  borderColor = 'border',
 }) => {
   const getFile = async () => {
     const result = await ImagePicker.launchImageLibrary({
@@ -51,6 +53,7 @@ const Avatar: React.FC<IAvatarProps> = ({
       showBorder={showBorder}
       active={!!preview && !disabled}
       size={size + borderOffset}
+      borderColor={borderColor}
     >
       <S.AvatarContent
         size={size}

@@ -1,5 +1,6 @@
 import {
   Button,
+  ControlledInput,
   Icons,
   Input,
   MediaSelect,
@@ -147,11 +148,9 @@ const AddWorkout: React.FC = () => {
               <Typography.Body _t>{"addWorkout.fields.title"}</Typography.Body>
               <Input
                 placeholder="addWorkout.fields.title"
-                onChange={onChange}
+                onChangeText={onChange}
                 inputRef={fieldsRef.title}
-                inputProps={{
-                  value: value,
-                }}
+                value={value}
               />
             </View>
           )}
@@ -237,6 +236,7 @@ const AddWorkout: React.FC = () => {
           control={control}
           name="duration"
           rules={{ required: true }}
+          defaultValue={0}
           render={({ field: { onChange, value } }) => (
             <View style={{ gap: 6 }}>
               <Typography.Body _t>
@@ -244,20 +244,14 @@ const AddWorkout: React.FC = () => {
               </Typography.Body>
               <Input
                 placeholder="0"
-                onChange={(value) => {
+                onChangeText={(value) => {
                   const masked = Masks.number(value);
                   onChange(masked);
                 }}
                 inputRef={fieldsRef.duration}
-                inputProps={{
-                  value: (value && value.toString()) || undefined,
-                  keyboardType: "numeric",
-                  onFocus: () => {
-                    if (fieldsRef.duration.current) {
-                      scrollToFieldRef(fieldsRef.duration);
-                    }
-                  },
-                }}
+                value={value.toString()}
+                keyboardType="numeric"
+                onFocus={() => scrollToFieldRef(fieldsRef.duration)}
                 suffix={
                   <Typography.Caption textColor="textLight" _t>
                     {"units.minutes"}

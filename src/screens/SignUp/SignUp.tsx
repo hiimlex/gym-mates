@@ -1,5 +1,5 @@
 import { AuthService } from "@api/services";
-import { Button, Input, Typography } from "@components/atoms";
+import { Button, ControlledInput, Input, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { ISignUpForm } from "@models/collections";
 import { AccessTokenKey, InputRefRecorder } from "@models/generic";
@@ -8,12 +8,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppDispatch } from "@store/Store";
 import { NotifierActions, UserActions } from "@store/slices";
 import { useMutation } from "@tanstack/react-query";
-import React, { RefObject, useRef } from "react";
+import { getMessageFromError } from "@utils/handleAxiosError";
+import { scrollToFieldRef } from "@utils/scrollToFieldRef";
+import React, { useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   KeyboardAvoidingView,
   ScrollView,
-  TextInput,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -21,7 +22,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./SignUp.styles";
-import { getMessageFromError } from "@utils/handleAxiosError";
+import Masks from "@utils/masks.utils";
 
 const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
   navigation: { navigate, goBack },
@@ -72,19 +73,6 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
     }
   };
 
-  const scrollToFieldRef = (ref: RefObject<TextInput | null>) => {
-    if (ref.current) {
-      ref.current.measureInWindow((x, y, width, height) => {
-        if (scrollRef.current) {
-          scrollRef.current.scrollTo({
-            y: y - height,
-            animated: true,
-          });
-        }
-      });
-    }
-  };
-
   return (
     <ScreenWrapper>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -105,99 +93,75 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
             </Typography.Body>
           </View>
 
-          <Controller
+          <ControlledInput
+            control={control}
             name="name"
-            control={control}
+            placeholder="signup.fields.name"
+            label="signup.fields.name"
+            inputRef={fieldsRef.name}
+            onFocus={() => scrollToFieldRef(fieldsRef.name, scrollRef)}
             rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="signup.fields.name"
-                label="signup.fields.name"
-                inputRef={fieldsRef.name}
-                inputProps={{
-                  textContentType: "name",
-                  keyboardType: "default",
-                  value: value,
-                  returnKeyType: "next",
-                  onSubmitEditing: () => {
-                    fieldsRef.email.current?.focus();
-                  },
-                  onFocus: () => scrollToFieldRef(fieldsRef.name),
-                }}
-                onChange={onChange}
-              />
-            )}
+            keyboardType="default"
+            textContentType="name"
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              fieldsRef.email.current?.focus();
+            }}
+            showErrorMessage
+            onChangeText={(text) => {
+
+            }}
           />
 
-          <Controller
+          <ControlledInput
+            control={control}
             name="email"
-            control={control}
+            placeholder="signup.fields.email"
+            label="signup.fields.email"
+            inputRef={fieldsRef.email}
+            onFocus={() => scrollToFieldRef(fieldsRef.email, scrollRef)}
             rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="signup.fields.email"
-                label="signup.fields.email"
-                inputRef={fieldsRef.email}
-                inputProps={{
-                  textContentType: "emailAddress",
-                  keyboardType: "email-address",
-                  value: value,
-                  returnKeyType: "next",
-                  onSubmitEditing: () => {
-                    fieldsRef.password.current?.focus();
-                  },
-                  onFocus: () => scrollToFieldRef(fieldsRef.email),
-                }}
-                onChange={onChange}
-              />
-            )}
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              fieldsRef.password.current?.focus();
+            }}
+            maskFn={Masks.email}
+            showErrorMessage
           />
 
-          <Controller
+          <ControlledInput
+            control={control}
             name="password"
-            control={control}
+            placeholder="signup.fields.password"
+            label="signup.fields.password"
+            inputRef={fieldsRef.password}
+            onFocus={() => scrollToFieldRef(fieldsRef.password, scrollRef)}
             rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="signup.fields.password"
-                label="signup.fields.password"
-                inputRef={fieldsRef.password}
-                inputProps={{
-                  secureTextEntry: true,
-                  value: value,
-                  returnKeyType: "next",
-                  onSubmitEditing: () => {
-                    fieldsRef.confirmPassword.current?.focus();
-                  },
-                  onFocus: () => scrollToFieldRef(fieldsRef.password),
-                }}
-                onChange={onChange}
-              />
-            )}
+            secureTextEntry
+            textContentType="newPassword"
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              fieldsRef.confirmPassword.current?.focus();
+            }}
+            showErrorMessage
           />
 
-          <Controller
-            name="confirmPassword"
+          <ControlledInput
             control={control}
+            name="confirmPassword"
+            placeholder="signup.fields.confirmPassword"
+            label="signup.fields.confirmPassword"
+            inputRef={fieldsRef.confirmPassword}
+            onFocus={() =>
+              scrollToFieldRef(fieldsRef.confirmPassword, scrollRef)
+            }
             rules={{
               required: true,
               validate: (value, formValues) =>
-                value === formValues.password || "Passwords do not match",
+                value === formValues.password || "fieldErrors.passwordMatch",
             }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="signup.fields.confirmPassword"
-                label="signup.fields.confirmPassword"
-                inputRef={fieldsRef.confirmPassword}
-                inputProps={{
-                  secureTextEntry: true,
-                  value: value,
-                  onSubmitEditing: handleSignSubmit,
-                  onFocus: () => scrollToFieldRef(fieldsRef.confirmPassword),
-                }}
-                onChange={onChange}
-              />
-            )}
           />
 
           <Button

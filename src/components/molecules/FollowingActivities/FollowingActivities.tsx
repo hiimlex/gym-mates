@@ -25,6 +25,7 @@ const FollowingActivities: React.FC = () => {
       variables: {
         from: [...followingIds, user?._id || ""],
         sort: "DATE_DESC",
+        limit: 10,
       },
     }
   );
@@ -32,9 +33,7 @@ const FollowingActivities: React.FC = () => {
   const dispatch = useDispatch();
 
   const showImageViewerOverlay = (index: number) => {
-    const workout = data?.workouts.filter(
-      (w) => !!w.picture?.url 
-    )
+    const workout = data?.workouts.filter((w) => !!w.picture?.url);
 
     dispatch(
       OverlayActions.show({
@@ -67,6 +66,12 @@ const FollowingActivities: React.FC = () => {
           onImagePress={() => showImageViewerOverlay(index)}
         />
       ))}
+
+      {data?.workouts.length === 0 && !loading && (
+        <Typography.Caption _t>
+          {"home.noFollowingActivities"}
+        </Typography.Caption>
+      )}
     </S.Container>
   );
 };

@@ -8,7 +8,7 @@ const Container = styled.View`
 
 const SearchWrapper = styled.View`
   width: 100%;
-  padding-left: 18px;
+  padding-left: 12px;
 `;
 
 const Header = styled.View`

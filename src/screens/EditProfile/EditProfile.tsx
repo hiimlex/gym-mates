@@ -1,39 +1,27 @@
-import { ScreenWrapper } from "@components/molecules";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { RefObject, useMemo, useRef } from "react";
-import { KeyboardAvoidingView, TextInput, View } from "react-native";
-import S from "./EditProfile.styles";
-import { Controller, useForm } from "react-hook-form";
-import {
-  ICreateWorkoutForm,
-  IEditProfileForm,
-  IUpdateHealthForm,
-} from "@models/collections";
+import { UsersService } from "@api/services";
 import { Button, Input, Typography } from "@components/atoms";
-import { useHeaderHeight } from "@react-navigation/elements";
-import { useTranslation } from "react-i18next";
+import { ScreenWrapper } from "@components/molecules";
+import { IEditProfileForm } from "@models/collections";
 import { InputRefRecorder } from "@models/generic";
-import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
-import Masks from "@utils/masks.utils";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
+import { useHeaderHeight } from "@react-navigation/elements";
+import { UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
-import { UsersService } from "@api/services";
-import { UserActions } from "@store/slices";
+import React, { RefObject, useMemo, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { KeyboardAvoidingView, TextInput } from "react-native";
+import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import S from "./EditProfile.styles";
 
 const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
   navigation,
 }) => {
   const { user } = useSelector((state: StoreState) => state.user);
-  const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
-  const { t } = useTranslation();
   const {
     control: editControl,
     formState: editState,
@@ -131,20 +119,18 @@ const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
                 <Input
                   label={"editProfile.fields.name"}
                   placeholder={"editProfile.fields.name"}
-                  onChange={onChange}
+                  onChangeText={onChange}
                   inputRef={fieldsRef.name}
-                  inputProps={{
-                    value,
-                    autoCapitalize: "none",
-                    autoCorrect: false,
-                    autoComplete: undefined,
-                    textContentType: "name",
-                    returnKeyType: "next",
-                    onSubmitEditing: () => {
-                      fieldsRef.email.current?.focus();
-                    },
-                    onFocus: () => scrollToFieldRef(fieldsRef.name),
+                  value={value}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  autoComplete="off"
+                  textContentType="name"
+                  returnKeyType="next"
+                  onAccessibilityAction={() => {
+                    fieldsRef.email.current?.focus();
                   }}
+                  onFocus={() => scrollToFieldRef(fieldsRef.name)}
                 />
               )}
             />
@@ -156,20 +142,19 @@ const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
                 <Input
                   label={"editProfile.fields.email"}
                   placeholder={"editProfile.fields.email"}
-                  onChange={onChange}
+                  onChangeText={onChange}
                   inputRef={fieldsRef.email}
-                  inputProps={{
-                    value,
-                    autoCapitalize: "none",
-                    autoCorrect: false,
-                    autoComplete: undefined,
-                    textContentType: "emailAddress",
-                    returnKeyType: "next",
-                    onSubmitEditing: () => {
-                      fieldsRef.oldPassword.current?.focus();
-                    },
-                    onFocus: () => scrollToFieldRef(fieldsRef.email),
+                  value={value}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  autoComplete="off"
+                  textContentType="emailAddress"
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    fieldsRef.oldPassword.current?.focus();
                   }}
+                  onFocus={() => scrollToFieldRef(fieldsRef.email)}
                 />
               )}
             />
@@ -181,16 +166,14 @@ const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
                 <Input
                   label={"editProfile.fields.oldPassword"}
                   placeholder={"editProfile.fields.oldPassword"}
-                  onChange={onChange}
+                  onChangeText={onChange}
                   inputRef={fieldsRef.oldPassword}
-                  inputProps={{
-                    value,
-                    secureTextEntry: true,
-                    onFocus: () => scrollToFieldRef(fieldsRef.oldPassword),
-                    returnKeyType: "next",
-                    onSubmitEditing: () => {
-                      fieldsRef.newPassword.current?.focus();
-                    },
+                  value={value}
+                  secureTextEntry
+                  onFocus={() => scrollToFieldRef(fieldsRef.oldPassword)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    fieldsRef.newPassword.current?.focus();
                   }}
                 />
               )}
@@ -202,105 +185,19 @@ const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
                 <Input
                   label={"editProfile.fields.newPassword"}
                   placeholder={"editProfile.fields.newPassword"}
-                  onChange={onChange}
+                  onChangeText={onChange}
                   inputRef={fieldsRef.newPassword}
-                  inputProps={{
-                    value,
-                    secureTextEntry: true,
-                    onFocus: () => scrollToFieldRef(fieldsRef.newPassword),
-                    returnKeyType: "done",
-                    onSubmitEditing: () => {
-                      fieldsRef.newPassword.current?.blur();
-                    },
+                  value={value}
+                  secureTextEntry
+                  onFocus={() => scrollToFieldRef(fieldsRef.newPassword)}
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    fieldsRef.newPassword.current?.blur();
                   }}
                 />
               )}
             />
           </S.Group>
-          {/* <S.Group>
-            <Typography.Body _t>{"editProfile.healthy"}</Typography.Body>
-
-            <Controller
-              name="weight"
-              control={healthControl}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="setupHealth.fields.weight"
-                  label="setupHealth.fields.weight"
-                  inputRef={fieldsRef.weight}
-                  inputProps={{
-                    keyboardType: "number-pad",
-                    value: value,
-                    returnKeyType: "next",
-                    onSubmitEditing: () => {
-                      fieldsRef.height.current?.focus();
-                    },
-                    onFocus: () => scrollToFieldRef(fieldsRef.weight),
-                  }}
-                  suffix={
-                    <Typography.Caption textColor="textLight">
-                      kg
-                    </Typography.Caption>
-                  }
-                  onChange={(value) => onChange(Masks.number(value))}
-                />
-              )}
-            />
-
-            <Controller
-              name="height"
-              control={healthControl}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="setupHealth.fields.height"
-                  label="setupHealth.fields.height"
-                  inputRef={fieldsRef.height}
-                  inputProps={{
-                    keyboardType: "number-pad",
-                    value: value,
-                    returnKeyType: "next",
-                    onSubmitEditing: () => {
-                      fieldsRef.body_fat.current?.focus();
-                    },
-                    onFocus: () => scrollToFieldRef(fieldsRef.height),
-                  }}
-                  suffix={
-                    <Typography.Caption textColor="textLight">
-                      cm
-                    </Typography.Caption>
-                  }
-                  onChange={(value) => onChange(Masks.number(value))}
-                />
-              )}
-            />
-
-            <Controller
-              name="body_fat"
-              control={healthControl}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="setupHealth.fields.body_fat"
-                  label="setupHealth.fields.body_fat"
-                  inputRef={fieldsRef.body_fat}
-                  inputProps={{
-                    keyboardType: "number-pad",
-                    value: value,
-                    returnKeyType: "done",
-                    onSubmitEditing: () => {
-                      fieldsRef.body_fat.current?.blur();
-                    },
-                    onFocus: () => scrollToFieldRef(fieldsRef.body_fat),
-                  }}
-                  suffix={
-                    <Typography.Caption textColor="textLight">
-                      %
-                    </Typography.Caption>
-                  }
-                  onChange={(value) => onChange(Masks.number(value))}
-                />
-              )}
-            />
-          </S.Group> */}
 
           <Button
             title="editProfile.save"

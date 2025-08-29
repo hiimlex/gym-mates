@@ -14,6 +14,9 @@ const colors = {
   borderDark: "#8181A1",
   border: "#C0C9DA",
   disabled: "#CDCDCD",
+  bronze: "#BC5E00",
+  silver: "#CDCFE5",
+  gold: "#F3C70D",
 };
 
 export type TColors = keyof typeof colors;

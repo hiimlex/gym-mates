@@ -1,26 +1,21 @@
 import { UsersService } from "@api/services";
-import { Button, Input, Row, Typography } from "@components/atoms";
+import { ControlledInput, Input, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { IUpdateHealthForm } from "@models/collections";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { InputRefRecorder, SkipSetupHealthKey } from "@models/generic";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import Masks from "@utils/masks.utils";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./SetupAvatar.styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { InputRefRecorder, SkipSetupHealthKey } from "@models/generic";
-import { NotifierActions, UserActions } from "@store/slices";
-import { getMessageFromError } from "@utils/handleAxiosError";
 
 const SetupHealth: React.FC<ScreenProps<AppRoutes.SetupHealth>> = ({
   navigation: { navigate, goBack },
@@ -107,83 +102,58 @@ const SetupHealth: React.FC<ScreenProps<AppRoutes.SetupHealth>> = ({
           </TouchableOpacity>
         </Row>
 
-        <Controller
+        <ControlledInput
+          control={control}
           name="weight"
-          control={control}
           rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              placeholder="setupHealth.fields.weight"
-              label="setupHealth.fields.weight"
-              inputRef={fieldsRef.weight}
-              inputProps={{
-                keyboardType: "number-pad",
-                value: value,
-                returnKeyType: "next",
-                onSubmitEditing: () => {
-                  fieldsRef.height.current?.focus();
-                },
-              }}
-              suffix={
-                <Typography.Caption textColor="textLight">
-                  kg
-                </Typography.Caption>
-              }
-              onChange={(value) => onChange(Masks.number(value))}
-            />
-          )}
+          placeholder="setupHealth.fields.weight"
+          label="setupHealth.fields.weight"
+          inputRef={fieldsRef.weight}
+          keyboardType="number-pad"
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            fieldsRef.height.current?.focus();
+          }}
+          suffix={
+            <Typography.Caption textColor="textLight">kg</Typography.Caption>
+          }
+          maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
         />
 
-        <Controller
+        <ControlledInput
+          control={control}
           name="height"
-          control={control}
           rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              placeholder="setupHealth.fields.height"
-              label="setupHealth.fields.height"
-              inputRef={fieldsRef.height}
-              inputProps={{
-                keyboardType: "number-pad",
-                value: value,
-                returnKeyType: "next",
-                onSubmitEditing: () => {
-                  fieldsRef.body_fat.current?.focus();
-                },
-              }}
-              suffix={
-                <Typography.Caption textColor="textLight">
-                  cm
-                </Typography.Caption>
-              }
-              onChange={(value) => onChange(Masks.number(value))}
-            />
-          )}
+          placeholder="setupHealth.fields.height"
+          label="setupHealth.fields.height"
+          inputRef={fieldsRef.height}
+          keyboardType="number-pad"
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            fieldsRef.body_fat.current?.focus();
+          }}
+          suffix={
+            <Typography.Caption textColor="textLight">cm</Typography.Caption>
+          }
+          maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
         />
 
-        <Controller
-          name="body_fat"
+        <ControlledInput
           control={control}
+          name="body_fat"
           rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              placeholder="setupHealth.fields.body_fat"
-              label="setupHealth.fields.body_fat"
-              inputRef={fieldsRef.body_fat}
-              inputProps={{
-                keyboardType: "number-pad",
-                value: value,
-                returnKeyType: "done",
-                onSubmitEditing: () => {
-                  fieldsRef.body_fat.current?.blur();
-                },
-              }}
-              suffix={
-                <Typography.Caption textColor="textLight">%</Typography.Caption>
-              }
-              onChange={(value) => onChange(Masks.number(value))}
-            />
-          )}
+          placeholder="setupHealth.fields.body_fat"
+          label="setupHealth.fields.body_fat"
+          inputRef={fieldsRef.body_fat}
+          keyboardType="number-pad"
+          returnKeyType="done"
+          onSubmitEditing={() => {
+            fieldsRef.body_fat.current?.blur();
+          }}
+          suffix={
+            <Typography.Caption textColor="textLight">%</Typography.Caption>
+          }
+          maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
         />
       </S.Container>
     </ScreenWrapper>

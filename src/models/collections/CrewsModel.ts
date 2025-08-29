@@ -127,3 +127,14 @@ export interface IGetActivitiesDaysFilters {
   end_date?: string;
   crew_id: string;
 }
+
+export interface IGetCrewRankParams {
+  crew_id: string;
+  show_all?: boolean;
+}
+export type IGetCrewRankResponse = {
+  _id: string;
+  name: string;
+  coins: number;
+  avatar: IFile;
+}[];

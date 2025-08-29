@@ -1,30 +1,20 @@
 import { Row, Tabs, Typography } from "@components/atoms";
 import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
-import {
-  CrewLastActivities,
-  CrewTodayWorkouts,
-  CrewViewActions,
-  ScreenWrapper,
-} from "@components/molecules";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
+import { ScreenWrapper } from "@components/molecules";
+import { CrewCalendarView, CrewRankView } from "@components/organisms";
+import { TabHeader } from "@models/generic";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CrewsActions } from "@store/slices";
 import { AppDispatch } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { Code, User } from "react-native-feather";
+import PagerView from "react-native-pager-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./CrewView.styles";
-import { TabHeader } from "@models/generic";
-import CrewCalendarView from "@components/organisms/CrewCalendarView/CrewCalendarView";
-import PagerView from "react-native-pager-view";
 
 const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
   navigation,
@@ -101,14 +91,7 @@ const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
           header={headerTabs}
           onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
         >
-          <Tabs.Item key={0}>
-            {currentPage === 0 && (
-              <>
-                <CrewTodayWorkouts />
-                <CrewLastActivities label="crewView.lastActivities" />
-              </>
-            )}
-          </Tabs.Item>
+          <Tabs.Item key={0}>{currentPage === 0 && <CrewRankView />}</Tabs.Item>
           <Tabs.Item key={1}>
             {currentPage === 1 && <CrewCalendarView />}
           </Tabs.Item>

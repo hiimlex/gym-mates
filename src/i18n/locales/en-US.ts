@@ -42,6 +42,7 @@ export default {
     title: "Hello {{name}}",
     subtitle: "Let's do some workout?",
     noCrewsSubtitle: "It seems you've not joined any crew yet.",
+    noFollowingActivities: "No activities from your mates yet.",
     followingActivities: "Following activities",
     highlight: {
       new: "new",
@@ -72,6 +73,8 @@ export default {
     crews: "Crews",
     streak: "Streak",
     selectATitle: "Select a title",
+    noTitle: "No Title",
+    saving: "Saving...",
     personal: {
       title: "Personal",
       journey: "Journey",
@@ -106,6 +109,7 @@ export default {
     rank: "Rank",
     calendar: "Calendar",
     youPaid: "You paid",
+    loadingRank: "Loading rank...",
   },
   crewSettings: {
     members: "Members",
@@ -355,11 +359,6 @@ export default {
   items: {
     title: {
       noTitle: "No Title",
-      "Cool guy": "The cool guy",
-      "Hot guy": "The hot guy",
-    },
-    achievement: {
-      "HOT!": "HOT!",
     },
   },
   workoutTypes: {
@@ -417,5 +416,15 @@ export default {
     USER_NOT_MET_ITEMS_REQUIREMENTS:
       "User does not meet items requirements to buy.",
     USER_DO_NOT_HAVE_ENOUGH_COINS: "User does not have enough coins.",
+  },
+  fieldErrors: {
+    required: "Field is required.",
+    maxLength: "Field is too long. Max length is {{value}}}.",
+    minLength: "Field is too short. Min length is {{value}}.",
+    pattern: "Field is invalid.",
+    max: "Field must be less than or equal to {{value}}.",
+    min: "Field must be greater than or equal to {{value}}.",
+    validate: "Field is invalid.",
+    passwordMatch: "Passwords do not match.",
   },
 };

@@ -1,5 +1,6 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
+import { TColors } from "@theme";
 
 const LoaderWrapper = styled.View`
   position: absolute;
@@ -33,6 +34,7 @@ const OffsetContainer = styled.View<{
   active: boolean;
   size: number;
   showBorder?: boolean;
+  borderColor: TColors;
 }>`
   width: ${({ size }) => size + 'px'};
   height: ${({ size }) => size + 'px'};
@@ -42,12 +44,12 @@ const OffsetContainer = styled.View<{
   overflow: hidden;
   
 
-  ${({ showBorder, theme }) =>
+  ${({ showBorder, theme, borderColor }) =>
     showBorder &&
     `
      border-width: 1px;
      border-style: solid;
-     border-color: ${theme.colors.border};
+     border-color: ${theme.colors[borderColor]};
   `}
 
   ${({ active, theme }) =>

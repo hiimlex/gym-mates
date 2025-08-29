@@ -7,7 +7,9 @@ const EmptyPreview = styled.View<{ size?: number; bgColor?: TColors }>`
   height: ${({ size }) => size + "px"};
   border-radius: 4px;
   background-color: ${({ theme, bgColor }) =>
-    bgColor ? theme.colors[bgColor] : setAlphaToColor(theme.colors.border, 20)};
+    bgColor
+      ? theme.colors[bgColor]
+      : setAlphaToColor(theme.colors.background, 40)};
   border: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: center;
   align-items: center;

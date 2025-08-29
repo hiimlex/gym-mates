@@ -1,17 +1,14 @@
 import { UsersService } from "@api/services";
 import { Avatar, Menu, Row, Typography } from "@components/atoms";
-import { ScreenWrapper, UserSelectTitle } from "@components/molecules";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
+import { ScreenWrapper } from "@components/molecules";
+import { OverlayType } from "@models/generic";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { NotifierActions, OverlayActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -26,8 +23,6 @@ import {
 import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Profile.styles";
-import { getMessageFromError } from "@utils/handleAxiosError";
-import { OverlayType } from "@models/generic";
 
 const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
   navigation: { navigate },
@@ -114,11 +109,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
                     color: Colors.colors.primary,
                   }}
                 >
-                  {t(
-                    user?.title
-                      ? `items.title.${user?.title?.name}`
-                      : "items.title.noTitle"
-                  )}
+                  {user?.title?.title || t("profile.noTitle")}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -307,16 +307,14 @@ const EditCrewSettings: React.FC = () => {
           rules={{ required: true }}
           render={({ field: { onChange, value } }) => (
             <Input
-              inputProps={{
-                style: { width: 100, paddingLeft: 24 },
-                autoCorrect: false,
-                keyboardType: "numeric",
-                autoComplete: "off",
-                onFocus: () => scrollToFieldRef(loseStreakRef),
-                value: value.toString(),
-              }}
+              style={{ width: 100, paddingLeft: 24 }}
+              autoCorrect={false}
+              keyboardType="numeric"
+              autoComplete="off"
+              value={value.toString()}
+              onFocus={() => scrollToFieldRef(loseStreakRef)}
               inputRef={loseStreakRef}
-              onChange={(value) => {
+              onChangeText={(value) => {
                 const masked = Masks.number(value);
 
                 onChange(masked);

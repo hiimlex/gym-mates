@@ -5,6 +5,8 @@ import {
   ICreateCrewSettingsForm,
   IGetActivitiesDaysFilters,
   IGetActivitiesDaysResponse,
+  IGetCrewRankParams,
+  IGetCrewRankResponse,
   IUpdateCrewBannerPayload,
   IUpdateCrewPayload,
 } from "@models/collections";
@@ -214,6 +216,13 @@ const getActivitiesDays = async (
   return response;
 };
 
+const getCrewRank = async (params: IGetCrewRankParams): Promise<AxiosResponse<IGetCrewRankResponse>> => {
+  const queryParams = queryBuilder(params);
+
+  const response = await api.get(Endpoints.CrewsGetRank + `?${queryParams}`);
+  return response;
+};
+
 export default {
   gql: {
     CREWS_BY_MEMBER,
@@ -227,4 +236,5 @@ export default {
   leave,
   create,
   getActivitiesDays,
+  getCrewRank,
 };

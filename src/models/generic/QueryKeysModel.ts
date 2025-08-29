@@ -8,6 +8,7 @@ export const QueryKeys = {
   },
   Crew: {
     GetActivityDays: "crew.getActivityDays",
+    GetCrewRank: "crew.getCrewRank",
   }
 };
 

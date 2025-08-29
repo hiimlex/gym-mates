@@ -3,7 +3,7 @@ import Animated from "react-native-reanimated";
 
 const Container = styled.View``;
 
-const Card = styled.View`
+const Card = styled(Animated.View)`
   width: 100%;
   padding: 12px;
   background: ${({ theme }) => theme.colors.background};

@@ -6,6 +6,7 @@ import { DialogActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Check } from "react-native-feather";
@@ -13,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Button, Input, Loader, Row, Typography } from "../../atoms";
 import CrewInfo from "../../molecules/CrewInfo/CrewInfo";
 import S from "./JoinCrew.styles";
-import { getMessageFromError } from "@utils/handleAxiosError";
 
 const JoinCrew: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -100,13 +100,11 @@ const JoinCrew: React.FC = () => {
         </Typography.Body>
         <Input
           placeholder={"..."}
-          onChange={(value) => setFilters({ search: value })}
-          inputProps={{
-            autoComplete: "off",
-            autoCorrect: false,
-            autoCapitalize: "none",
-            value: filters.search,
-          }}
+          onChangeText={(value) => setFilters({ search: value })}
+          autoComplete="off"
+          autoCorrect={false}
+          autoCapitalize="none"
+          value={filters.search}
         />
       </S.InputGroup>
 

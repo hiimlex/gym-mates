@@ -35,4 +35,11 @@ const TitleView = styled.TouchableOpacity`
   width: 100%;
 `;
 
-export default { Float, VerticalList, TitleView, BottomSheet };
+const LoaderWrapper = styled.View`
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+`;
+
+export default { Float, VerticalList, TitleView, BottomSheet, LoaderWrapper };

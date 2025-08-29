@@ -8,7 +8,12 @@ import { Colors } from "@theme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Platform, TouchableOpacity, useWindowDimensions } from "react-native";
 import { ChevronLeft, ChevronRight } from "react-native-feather";
-import { FadeIn } from "react-native-reanimated";
+import {
+  FadeIn,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { SvgProps } from "react-native-svg";
 import Tabs from "../Tabs/Tabs";
 import Typography from "../Typography/Typography";
@@ -41,7 +46,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
   );
   const [daysRowsCount, setDaysRowsCount] = useState<number>(0);
 
-  const dayItemHeight = Platform.OS === "ios" ? 38 : 42;
+  const dayItemHeight = Platform.OS === "ios" ? 42 : 42;
 
   // width - scree padding - card padding - gaps between days
   const daysGap = 6;
@@ -110,8 +115,22 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
     setDaysRowsCount(newDaysRowsCount);
   }, []);
 
+  useEffect(() => {
+    cardHeight.value = withTiming(dayItemHeight * daysRowsCount + 72, {
+      duration: 300,
+    });
+  }, [daysRowsCount]);
+
+  const minHeight = 60;
+  const cardHeight = useSharedValue(minHeight);
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      height: cardHeight.value,
+    };
+  });
+
   return (
-    <S.Card>
+    <S.Card style={animatedStyle}>
       <S.MonthHeader>
         <Typography.Body fontWeight="semibold" _t>
           {`months.long.` + numberToMonth[selectedMonth]}
@@ -122,14 +141,26 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
             activeOpacity={0.6}
             onPress={() => moveTo(selectedMonth - 1)}
           >
-            <ChevronLeft {...iconProps} />
+            <ChevronLeft
+              {...iconProps}
+              stroke={
+                selectedMonth <= 0 ? Colors.colors.disabled : Colors.colors.text
+              }
+            />
           </TouchableOpacity>
           <TouchableOpacity
             disabled={selectedMonth >= 11}
             activeOpacity={0.6}
             onPress={() => moveTo(selectedMonth + 1)}
           >
-            <ChevronRight {...iconProps} />
+            <ChevronRight
+              {...iconProps}
+              stroke={
+                selectedMonth >= 11
+                  ? Colors.colors.disabled
+                  : Colors.colors.text
+              }
+            />
           </TouchableOpacity>
         </S.MonthHeaderActions>
       </S.MonthHeader>
@@ -138,8 +169,6 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
         pagerRef={pagerRef}
         initialPage={selectedMonth}
         onPageSelected={(e) => handleChangeMonth(e.nativeEvent.position)}
-        containerStyle={{ height: daysRowsCount * dayItemHeight }}
-        orientation={"vertical"}
       >
         {Months.map((_, index) => (
           <Tabs.Item key={index} bounces={false}>

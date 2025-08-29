@@ -68,16 +68,15 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
               preview={
                 item?.category === ItemCategory.Figure ? item?.file?.url : ""
               }
-              emptyBgColor="background"
               size={48}
-              iconSize={24}
+              iconSize={20}
             />
             <S.EventInfo>
               <Typography.Body
                 textColor="textDark"
                 _t
                 _params={{
-                  itemName: t(`items.${item?.category}.${item?.name}`),
+                  itemName: item?.name,
                 }}
               >
                 {"journey.events.buy"}
@@ -156,7 +155,7 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
           <S.EventWithBanner>
             <Avatar
               size={48}
-              iconSize={24}
+              iconSize={20}
               preview={event.data.user?.avatar?.url}
               disabled
               borderOffset={1}

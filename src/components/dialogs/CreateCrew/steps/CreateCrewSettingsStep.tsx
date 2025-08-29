@@ -233,16 +233,17 @@ const CreateCrewSettingsStep: React.FC<CreateCrewSettingsStepProps> = () => {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Input
-                  inputProps={{
-                    style: { width: 100, paddingLeft: 24 },
-                    autoCorrect: false,
-                    keyboardType: "numeric",
-                    autoComplete: "off",
-                    onFocus: () => scrollToFieldRef(loseStreakRef, scrollRef),
-                    value: value.toString(),
+                  style={{
+                    width: 100,
+                    paddingLeft: 24,
                   }}
+                  autoCorrect={false}
+                  autoComplete="off"
+                  keyboardType="numeric"
+                  value={value.toString()}
+                  onFocus={() => scrollToFieldRef(loseStreakRef, scrollRef)}
                   inputRef={loseStreakRef}
-                  onChange={(value) => {
+                  onChangeText={(value) => {
                     const masked = Masks.number(value);
 
                     onChange(masked);
