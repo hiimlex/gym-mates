@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "@models/generic";
 import { CrewsService } from "@api/services";
 import Masks from "@utils/masks.utils";
+import { View } from "react-native";
 
 const CrewRankView: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
@@ -26,16 +27,16 @@ const CrewRankView: React.FC = () => {
 
   return (
     <S.Container>
-      {rank && (
+      {rank && rank.length === 3 && (
         <S.RankRow>
           <S.RankColumnWrapper>
             <Avatar
               size={42}
-              borderOffset={1}
+              borderOffset={4}
               showBorder
               iconSize={24}
               borderColor="bronze"
-              preview={rank[2].avatar.url}
+              preview={rank[2]?.avatar?.url}
               disabled
             />
             <Typography.Body textColor="text">
@@ -48,11 +49,11 @@ const CrewRankView: React.FC = () => {
           <S.RankColumnWrapper>
             <Avatar
               size={42}
-              borderOffset={1}
+              borderOffset={4}
               showBorder
               iconSize={24}
               borderColor="gold"
-              preview={rank[0].avatar.url}
+              preview={rank[0].avatar?.url}
               disabled
             />
             <Typography.Body textColor="text">
@@ -65,11 +66,11 @@ const CrewRankView: React.FC = () => {
           <S.RankColumnWrapper>
             <Avatar
               size={42}
-              borderOffset={1}
+              borderOffset={4}
               showBorder
               iconSize={24}
               borderColor="silver"
-              preview={rank[1].avatar.url}
+              preview={rank[1].avatar?.url}
               disabled
             />
             <Typography.Body textColor="text">
@@ -80,6 +81,13 @@ const CrewRankView: React.FC = () => {
             </S.RankColumn>
           </S.RankColumnWrapper>
         </S.RankRow>
+      )}
+      {(!rank || rank.length < 3) && (
+        <View>
+          <Typography.Body textColor="textLight" _t>
+            {"crewView.noRank"}
+          </Typography.Body>
+        </View>
       )}
       {isPending && (
         <S.LoaderWrapper>

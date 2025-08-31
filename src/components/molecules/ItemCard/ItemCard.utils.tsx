@@ -1,0 +1,36 @@
+import { IItem } from "@models/collections";
+import { Colors } from "@theme";
+import { Circle } from "react-native-feather";
+
+export interface ItemCardProps {
+  item: IItem;
+  forcedView?: "grid" | "list";
+  disabled?: boolean;
+  mode?: "view" | "buy" | "checkout";
+  itemsPerRow?: number;
+  touchableImage?: boolean;
+  onImagePress?: (item: IItem) => void;
+}
+
+export const Dot = () => (
+  <Circle
+    width={3}
+    height={3}
+    stroke={Colors.colors.textLight}
+    fill={Colors.colors.textLight}
+  />
+);
+
+export function calculateMediaSize(
+  width: number,
+  itemsPerRow: number,
+  screenPadding: number,
+  innerPadding: number,
+  view: ItemCardProps["forcedView"] = "grid"
+): number {
+  if (view === "list") {
+    return 70;
+  }
+
+  return width / itemsPerRow - screenPadding - itemsPerRow * innerPadding;
+}

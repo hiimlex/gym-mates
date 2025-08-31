@@ -18,6 +18,7 @@ import { AppDispatch, StoreState } from "@store/Store";
 import { getMessageFromError } from "@utils/handleAxiosError";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Login.styles";
+import Masks from "@utils/masks.utils";
 
 const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
   const { width } = useWindowDimensions();
@@ -99,6 +100,7 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
           keyboardType="email-address"
           returnKeyType="next"
           inputRef={fieldsRef.email}
+          maskFn={(e) => Masks.email(e)}
           onSubmitEditing={() => {
             fieldsRef.password.current?.focus();
           }}

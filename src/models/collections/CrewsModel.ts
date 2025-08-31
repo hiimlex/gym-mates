@@ -136,5 +136,5 @@ export type IGetCrewRankResponse = {
   _id: string;
   name: string;
   coins: number;
-  avatar: IFile;
+  avatar?: IFile;
 }[];

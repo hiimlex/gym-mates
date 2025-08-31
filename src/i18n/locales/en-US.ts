@@ -75,6 +75,7 @@ export default {
     selectATitle: "Select a title",
     noTitle: "No Title",
     saving: "Saving...",
+    donate: "Feel free to donate",
     personal: {
       title: "Personal",
       journey: "Journey",
@@ -110,6 +111,7 @@ export default {
     calendar: "Calendar",
     youPaid: "You paid",
     loadingRank: "Loading rank...",
+    noRank: "Not enough members or data to show the rank.",
   },
   crewSettings: {
     members: "Members",
@@ -331,7 +333,7 @@ export default {
     editCrew: "Edit Crew",
     userJourney: "Journey",
     editProfile: "Edit Profile",
-    shopCart: "Shopping",
+    shopCart: "Bag Items",
     userFollows: "Mates",
   },
   units: {
@@ -379,6 +381,17 @@ export default {
     badge: "Badge",
     skin: "Skin",
     avatar: "Avatar",
+  },
+  itemSex: {
+    male: "Male",
+    female: "Female",
+  },
+  itemPiece: {
+    hair: "Hair",
+    top: "Top",
+    bottom: "Bottom",
+    shoes: "Shoes",
+    accessory: "Accessory",
   },
   errors: {
     FETCH_CURRENT_USER: "Please log in again.",

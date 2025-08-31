@@ -117,7 +117,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
 
   useEffect(() => {
     cardHeight.value = withTiming(dayItemHeight * daysRowsCount + 72, {
-      duration: 300,
+      duration:200,
     });
   }, [daysRowsCount]);
 

@@ -1,5 +1,5 @@
 import { UsersService } from "@api/services";
-import { Avatar, Menu, Row, Typography } from "@components/atoms";
+import { Avatar, DonateCard, Menu, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
 import { OverlayType } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
@@ -250,6 +250,8 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
             ></Menu.Item>
           </Menu.Root>
         </View>
+
+        <DonateCard />
       </S.Container>
     </ScreenWrapper>
   );

@@ -5,7 +5,7 @@ import { TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./ItemPreview.styles";
 import { Row, Typography } from "@components/atoms";
-import { ArrowLeft, X } from "react-native-feather";
+import { ArrowLeft, Circle, X } from "react-native-feather";
 import { Colors } from "@theme";
 import { OverlayActions } from "@store/slices";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,6 +19,15 @@ import {
 import { BlurProps } from "@models/generic";
 
 interface ItemPreviewProps {}
+
+const Dot = () => (
+  <Circle
+    width={5}
+    height={5}
+    stroke={Colors.colors.disabled}
+    fill={Colors.colors.disabled}
+  />
+);
 
 const ItemPreview: React.FC<ItemPreviewProps> = () => {
   const { data } = useSelector((state: StoreState) => state.overlay);
@@ -62,7 +71,21 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
           <Typography.Heading textColor="white" textAlign="center">
             {item?.name}
           </Typography.Heading>
-          <Typography.Body textColor="border">{item?.category}</Typography.Body>
+          <Row gap={6} align="center">
+            <Typography.Body
+              textColor="disabled"
+              _t
+            >{`itemCategoryTypes.${item?.category}`}</Typography.Body>
+            {item?.sex && (
+              <>
+                <Dot />
+                <Typography.Body
+                  textColor="disabled"
+                  _t
+                >{`itemSex.${item.sex}`}</Typography.Body>
+              </>
+            )}
+          </Row>
         </S.ItemInfo>
       </S.ExpandedContent>
     </S.FloatingBlur>

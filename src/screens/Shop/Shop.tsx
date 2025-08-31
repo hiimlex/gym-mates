@@ -50,6 +50,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
         flexWrap: "wrap",
         gap: 24,
         paddingBottom,
+        paddingTop: 12,
       };
     }
 
@@ -93,11 +94,13 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
   };
 
   const handleOnItemPress = (item: IItem) => {
-    dispatch(OverlayActions.show({
-      type: OverlayType.ItemPreview,
-      data: { item },
-    }))
-  }
+    dispatch(
+      OverlayActions.show({
+        type: OverlayType.ItemPreview,
+        data: { item },
+      })
+    );
+  };
 
   return (
     <ScreenWrapper>
@@ -192,7 +195,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
           contentContainerStyle={scrollStyles}
         >
           {items?.map((item) => (
-            <ItemCard
+            <ItemCard.Buy
               item={item}
               key={item._id}
               disabled={userCannotAfford(item.price)}

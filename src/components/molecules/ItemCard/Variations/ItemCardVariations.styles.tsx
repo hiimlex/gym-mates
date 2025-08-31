@@ -1,12 +1,17 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
 import { IShopListView } from "@models/collections";
-import { TColors } from "@theme";
+import { setAlphaToColor, TColors } from "@theme";
 import { TouchableOpacity } from "react-native";
 
 const Container = styled.View<{ locked?: boolean; view?: IShopListView }>`
   flex-direction: column;
   gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDark};
+  background: ${({ theme }) => setAlphaToColor(theme.colors.background, 100)};
+  position: relative;
 
   ${({ locked }) =>
     locked &&
@@ -18,20 +23,29 @@ const Container = styled.View<{ locked?: boolean; view?: IShopListView }>`
     view === "list" &&
     `
     flex-direction: row;
-    align-items: center;
     gap: 12px;
   `}
+
+  /* Border as shadow */
+  border-right-width: 4px;
+  border-bottom-width: 4px;
+  border-bottom-color: ${({ theme }) => theme.colors.text};
+  border-right-color: ${({ theme }) => theme.colors.text};
+  shadow-color: ${({ theme }) => theme.colors.borderDark};
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.25;
+  shadow-radius: 3.84px;
+  elevation: 5;
 `;
 
 const MediaWrapper = styled.View<{ size: number }>`
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   border-radius: 6px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: 1px solid ${({ theme }) => theme.colors.borderDark};
   background: ${({ theme }) => theme.colors.background};
   justify-content: center;
   align-items: center;
-  position: relative;
 `;
 
 const MediaImage = styled(CachedImage)`
@@ -39,15 +53,40 @@ const MediaImage = styled(CachedImage)`
   height: 100%;
 `;
 
-const FloatingPrice = styled.View`
+const FloatingAdd = styled(TouchableOpacity)<{
+  isOnCart?: boolean;
+  isGridView?: boolean;
+  disabled?: boolean;
+}>`
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: -12px;
+  right: -12px;
   z-index: 1;
-  padding: 3px 6px;
-  border-radius: 3px;
-  background: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 3px;
+
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.primary};
+  border: 1px solid ${({ theme }) => theme.colors.borderDark};
+
+  ${({ isOnCart }) =>
+    isOnCart &&
+    `
+    background: red;
+  `}
+
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
+    background: ${theme.colors.disabled} !important;
+  `}
+
+  ${({ isGridView }) =>
+    !isGridView &&
+    `
+    top: none;
+    bottom: 12px;
+    right: 12px;
+  `}
 `;
 
 const Info = styled.View`
@@ -76,7 +115,7 @@ const CardButton = styled(TouchableOpacity)<{
 
 export default {
   MediaImage,
-  FloatingPrice,
+  FloatingAdd,
   MediaWrapper,
   Container,
   Info,

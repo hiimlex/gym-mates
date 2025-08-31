@@ -7,6 +7,7 @@ export { default as Card } from "./Card/Card";
 export { default as Checkbox } from "./Checkbox/Checkbox";
 export { default as ControlledInput } from "./ControlledInput/ControlledInput";
 export { default as Dialog } from "./Dialog/Dialog";
+export { default as DonateCard } from "./DonateCard/DonateCard";
 export { default as Icons } from "./Icons/Icons";
 export { default as Input } from "./Input/Input";
 export { default as Loader } from "./Loader/Loader";
