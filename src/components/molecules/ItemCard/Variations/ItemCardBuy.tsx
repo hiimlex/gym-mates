@@ -4,7 +4,7 @@ import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useMemo } from "react";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
-import { CameraOff, Minus, Plus } from "react-native-feather";
+import { CameraOff, Lock, Minus, Plus } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../Header/Header";
 import { calculateMediaSize, Dot, ItemCardProps } from "../ItemCard.utils";
@@ -20,11 +20,9 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
 }) => {
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
-  const {
-    cart,
-    view: stateView,
-    cartItemsSum,
-  } = useSelector((state: StoreState) => state.shop);
+  const { cart, view: stateView } = useSelector(
+    (state: StoreState) => state.shop
+  );
 
   const view = useMemo(() => {
     if (forcedView) {
@@ -35,7 +33,7 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
   }, [forcedView, stateView]);
 
   const mediaSize = useMemo(
-    () => calculateMediaSize(width, itemsPerRow, 24, 24, view),
+    () => calculateMediaSize(width, itemsPerRow, view),
     [view, itemsPerRow]
   );
 
@@ -55,7 +53,7 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
   const isGridView = useMemo(() => view === "grid", [view]);
 
   return (
-    <S.Container view={view}>
+    <S.Container view={view} locked={item.locked}>
       {!item.locked && (
         <S.FloatingAdd
           activeOpacity={1}
@@ -74,6 +72,12 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
               stroke={disabled ? Colors.colors.text : Colors.colors.white}
             />
           )}
+        </S.FloatingAdd>
+      )}
+
+      {item.locked && (
+        <S.FloatingAdd disabled isGridView={isGridView}>
+          <Lock width={20} height={20} stroke={Colors.colors.text} />
         </S.FloatingAdd>
       )}
 
@@ -107,14 +111,16 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
         }}
       >
         <Row align="center" justify="space-between" width={"auto"}>
-          <Typography.Body>{item.name}</Typography.Body>
+          <Typography.Body fontWeight="semibold" textColor="textDark">
+            {item.name}
+          </Typography.Body>
 
           <Header.Coins
-            size={6}
-            textVariant="button"
+            size={10}
+            textVariant="body"
             coinValue={item.price.toString()}
             disabled
-            textColor="tertiary"
+            textColor="text"
           />
         </Row>
 

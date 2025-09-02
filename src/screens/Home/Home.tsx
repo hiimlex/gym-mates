@@ -1,6 +1,6 @@
 import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
-import { Loader, Typography } from "@components/atoms";
+import { Loader, Row, Typography } from "@components/atoms";
 import { Header, ScreenWrapper } from "@components/molecules";
 import { JoinedCrewsView, NotJoinedCrews } from "@components/organisms";
 import { ICrewsResponse } from "@models/collections";
@@ -11,15 +11,23 @@ import {
 } from "@navigation/appRoutes";
 import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ConfigActions, CrewsActions, NotifierActions } from "@store/slices";
+import {
+  ConfigActions,
+  CrewsActions,
+  NotifierActions,
+  OverlayActions,
+} from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Home.styles";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import { Paperclip } from "react-native-feather";
+import { OverlayType } from "@models/generic";
+import { MissionIcon } from "@components/dialogs";
 
 const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
   const insets = useSafeAreaInsets();
@@ -88,7 +96,11 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
       >
         <Header.Root justifyContent="space-between">
           <Header.User />
-          <Header.Coins />
+
+          <Row gap={24} align="center" width={"auto"}>
+            <MissionIcon />
+            <Header.Coins />
+          </Row>
         </Header.Root>
 
         {hasJoinedCrews && (

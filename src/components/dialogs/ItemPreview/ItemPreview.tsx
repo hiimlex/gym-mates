@@ -17,17 +17,9 @@ import {
   SlideOutRight,
 } from "react-native-reanimated";
 import { BlurProps } from "@models/generic";
+import { Dot } from "../../molecules";
 
 interface ItemPreviewProps {}
-
-const Dot = () => (
-  <Circle
-    width={5}
-    height={5}
-    stroke={Colors.colors.disabled}
-    fill={Colors.colors.disabled}
-  />
-);
 
 const ItemPreview: React.FC<ItemPreviewProps> = () => {
   const { data } = useSelector((state: StoreState) => state.overlay);
@@ -68,10 +60,10 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
         </S.MediaWrapper>
 
         <S.ItemInfo>
-          <Typography.Heading textColor="white" textAlign="center">
+          <Typography.Heading textColor="white">
             {item?.name}
           </Typography.Heading>
-          <Row gap={6} align="center">
+          <Row gap={6}>
             <Typography.Body
               textColor="disabled"
               _t

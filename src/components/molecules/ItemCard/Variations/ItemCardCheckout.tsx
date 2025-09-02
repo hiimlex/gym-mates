@@ -23,7 +23,7 @@ const ItemCardCheckout: React.FC<Omit<ItemCardProps, "mode">> = ({
   const { cart } = useSelector((state: StoreState) => state.shop);
 
   const mediaSize = useMemo(
-    () => calculateMediaSize(width, itemsPerRow, 24, 24, view),
+    () => calculateMediaSize(width, itemsPerRow, view),
     [view, itemsPerRow]
   );
 
@@ -96,11 +96,11 @@ const ItemCardCheckout: React.FC<Omit<ItemCardProps, "mode">> = ({
           <Typography.Body>{item.name}</Typography.Body>
 
           <Header.Coins
-            size={6}
-            textVariant="button"
+            size={10}
+            textVariant="body"
             coinValue={item.price.toString()}
             disabled
-            textColor="tertiary"
+            textColor="text"
           />
         </Row>
 

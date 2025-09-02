@@ -17,7 +17,7 @@ const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
   const { width } = useWindowDimensions();
 
   const mediaSize = useMemo(
-    () => calculateMediaSize(width, itemsPerRow, 24, 24, view),
+    () => calculateMediaSize(width, itemsPerRow, view),
     [itemsPerRow]
   );
 

@@ -1,29 +1,25 @@
 import { ShopService } from "@api/services";
 import { Loader, Row, Typography } from "@components/atoms";
 import {
+  GridShopGap,
   Header,
   ItemCard,
   ScreenWrapper,
   ShopCheckoutPreview,
 } from "@components/molecules";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
+import { IItem, IShopFilters, IShopListView } from "@models/collections";
+import { OverlayType, QueryKeys } from "@models/generic";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { OverlayActions, ShopActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
 import { Colors } from "@theme";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
+import { View, ViewStyle } from "react-native";
 import { ArrowDown, ArrowUp, Grid, List } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Shop.styles";
-import { View, ViewStyle } from "react-native";
-import { OverlayActions, ShopActions } from "@store/slices";
-import { IItem, IShopFilters, IShopListView } from "@models/collections";
-import { OverlayType, QueryKeys } from "@models/generic";
 
 const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
   const { view, filters, cartItemsSum, cart } = useSelector(
@@ -38,7 +34,12 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
       const response = await ShopService.list(filters);
       return response;
     },
-    queryKey: [QueryKeys.Shop.Items, filters?.search, filters?.price_sort],
+    queryKey: [
+      QueryKeys.Shop.Items,
+      filters?.search,
+      filters?.price_sort,
+      filters?.locked,
+    ],
   });
 
   const scrollStyles: ViewStyle = useMemo(() => {
@@ -48,7 +49,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
       return {
         flexDirection: "row",
         flexWrap: "wrap",
-        gap: 24,
+        gap: GridShopGap,
         paddingBottom,
         paddingTop: 12,
       };
@@ -80,6 +81,10 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
     }
 
     dispatch(ShopActions.setFilters({ price_sort: newCostSortValue }));
+  };
+
+  const showLockedItems = () => {
+    dispatch(ShopActions.setFilters({ locked: !filters?.locked }));
   };
 
   const hasPriceFilter = useMemo(
@@ -124,11 +129,11 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
           >
             <S.FiltersBadge
               touchable
-              active
+              onPress={showLockedItems}
+              active={filters?.locked || false}
               _t
               label="shop.filters.all"
-            ></S.FiltersBadge>
-
+            />
             <S.FiltersBadge
               touchable
               onPress={sortByCost}

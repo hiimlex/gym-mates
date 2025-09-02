@@ -14,6 +14,8 @@ import { View } from "react-native";
 const CrewRankView: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
 
+  console.log("CrewRankView -> rank", crew?._id, crew?.name);
+
   const { data, error, isPending } = useQuery({
     queryFn: () =>
       CrewsService.getCrewRank({
@@ -21,6 +23,7 @@ const CrewRankView: React.FC = () => {
         show_all: false,
       }),
     queryKey: [QueryKeys.Crew.GetCrewRank],
+    staleTime: 0,
   });
 
   const rank = useMemo(() => data?.data, [data]);
@@ -82,7 +85,7 @@ const CrewRankView: React.FC = () => {
           </S.RankColumnWrapper>
         </S.RankRow>
       )}
-      {(!rank || rank.length < 3) && (
+      {(!rank || rank.length < 3) && !isPending && (
         <View>
           <Typography.Body textColor="textLight" _t>
             {"crewView.noRank"}

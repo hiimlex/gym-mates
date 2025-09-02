@@ -21,16 +21,20 @@ export const Dot = () => (
   />
 );
 
+export const GridShopGap = 24;
+export const ScreenPadding = 24;
+export const InnerPadding = 12;
+
 export function calculateMediaSize(
   width: number,
   itemsPerRow: number,
-  screenPadding: number,
-  innerPadding: number,
   view: ItemCardProps["forcedView"] = "grid"
 ): number {
   if (view === "list") {
     return 70;
   }
 
-  return width / itemsPerRow - screenPadding - itemsPerRow * innerPadding;
+  const gap = (itemsPerRow - 1) * GridShopGap;
+
+  return width / itemsPerRow - ScreenPadding - itemsPerRow * InnerPadding - gap;
 }

@@ -7,7 +7,7 @@ import {
 } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StoreState } from "@store/Store";
+import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -19,7 +19,7 @@ import {
   Star,
   User,
 } from "react-native-feather";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import S from "./Crews.styles";
 import {
   ICrew,
@@ -29,6 +29,7 @@ import {
 import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
 import { useQuery } from "@apollo/client";
 import { CrewsService } from "@api/services";
+import { CrewsActions } from "@store/slices";
 
 const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
   navigation: { navigate },
@@ -48,8 +49,10 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
     variables: filters,
     fetchPolicy: "cache-and-network",
   });
+  const dispatch = useDispatch<AppDispatch>();
 
   const navigateToCrew = (crew: ICrew) => {
+    dispatch(CrewsActions.setCrewView(crew));
     navigate(AppRoutes.CrewView, { crew });
   };
 

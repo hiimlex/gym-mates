@@ -62,7 +62,7 @@ const FloatingAdd = styled(TouchableOpacity)<{
   top: -12px;
   right: -12px;
   z-index: 1;
-  padding: 3px;
+  padding: 6px;
 
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.primary};
@@ -86,6 +86,7 @@ const FloatingAdd = styled(TouchableOpacity)<{
     top: none;
     bottom: 12px;
     right: 12px;
+    padding: 3px;
   `}
 `;
 

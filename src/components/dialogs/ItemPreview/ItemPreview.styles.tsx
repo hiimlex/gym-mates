@@ -32,8 +32,8 @@ const ItemPreviewWrapper = styled(Animated.View)`
 
 const ItemInfo = styled.View`
   gap: 6px;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
 `;
 
@@ -53,6 +53,7 @@ const ExpandedContent = styled.View`
   align-items: center;
   justify-content: center;
   gap: 24px;
+  width: 100%;
 `;
 
 export default {

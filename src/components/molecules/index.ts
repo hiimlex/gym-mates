@@ -8,15 +8,14 @@ export { default as DialogProvider } from "./DialogProvider/DialogProvider";
 export { default as FollowingActivities } from "./FollowingActivities/FollowingActivities";
 export { default as Header } from "./Header/Header";
 export { default as ItemCard } from "./ItemCard/ItemCard";
-export { default as ItemPreview } from "./ItemPreview/ItemPreview";
 export { default as JourneyEventInfo } from "./JourneyEventInfo/JourneyEventInfo";
 export { default as MyStats } from "./MyStats/MyStats";
 export { default as PersistedData } from "./PersistedData/PersistedData";
 export { default as ScreenWrapper } from "./ScreenWrapper/ScreenWrapper";
 export { default as ShopCheckoutPreview } from "./ShopCheckoutPreview/ShopCheckoutPreview";
 export { default as UserInfo } from "./UserInfo/UserInfo";
-export { default as UserSelectTitle } from "./UserSelectTitle/UserSelectTitle";
 export { default as UserViewActions } from "./UserViewActions/UserViewActions";
 export { default as WeekWorkouts } from "./WeekWorkouts/WeekWorkouts";
-export { default as WorkoutImageViewer } from "./WorkoutImageViewer/WorkoutImageViewer";
 export { default as WorkoutInfo } from "./WorkoutInfo/WorkoutInfo";
+
+export * from "./ItemCard/ItemCard.utils";

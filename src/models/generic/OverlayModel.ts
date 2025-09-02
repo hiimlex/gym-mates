@@ -13,6 +13,7 @@ export enum OverlayType {
   WorkoutImageViewer = 'WorkoutImageViewer',
   UserSelectTitle = 'UserSelectTitle',
   ItemPreview = 'ItemPreview',
+  Missions = 'Missions',
 }
 
 export interface IShowOverlayPayload {

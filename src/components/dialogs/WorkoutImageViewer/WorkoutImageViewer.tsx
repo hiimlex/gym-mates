@@ -1,22 +1,16 @@
 import { Row, Tabs, Typography } from "@components/atoms";
+import { BlurProps } from "@models/generic";
 import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useMemo, useState } from "react";
-import { TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { CameraOff, X } from "react-native-feather";
-import {
-  Easing,
-  FadeIn,
-  FadeOut,
-  SlideInRight,
-  SlideOutRight,
-} from "react-native-reanimated";
+import { Easing, FadeIn, FadeOut } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
+import WorkoutInfo from "../../molecules/WorkoutInfo/WorkoutInfo";
 import S from "./WorkoutImageViewer.styles";
-import { BlurProps } from "@models/generic";
 
 interface WorkoutImageViewerProps {}
 

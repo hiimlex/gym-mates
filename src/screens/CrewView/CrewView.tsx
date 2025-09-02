@@ -5,25 +5,20 @@ import { CrewCalendarView, CrewRankView } from "@components/organisms";
 import { TabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { CrewsActions } from "@store/slices";
-import { AppDispatch } from "@store/Store";
 import { Colors } from "@theme";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { Code, User } from "react-native-feather";
 import PagerView from "react-native-pager-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
 import S from "./CrewView.styles";
 
 const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
   navigation,
   route,
 }) => {
-  const insets = useSafeAreaInsets();
   const crew = route.params?.crew;
   const headerHeight = useHeaderHeight();
-  const dispatch = useDispatch<AppDispatch>();
   const pagerRef = useRef<PagerView | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -42,12 +37,6 @@ const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
     navigation.goBack();
     return null;
   }
-
-  useEffect(() => {
-    if (crew) {
-      dispatch(CrewsActions.setCrewView(crew));
-    }
-  }, [crew]);
 
   return (
     <ScreenWrapper>
