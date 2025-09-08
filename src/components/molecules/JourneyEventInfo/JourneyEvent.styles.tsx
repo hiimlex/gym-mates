@@ -21,12 +21,13 @@ const EventRow = styled.View`
 const EventWithBanner = styled.View`
   flex-direction: row;
   align-items: center;
-
   gap: 12px;
+  flex: 1;
 `;
 
 const EventInfo = styled.View`
   gap: 6px;
+  flex: 1;
 `;
 
 const CoinWrapper = styled.View`

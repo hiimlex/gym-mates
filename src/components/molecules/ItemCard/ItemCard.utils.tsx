@@ -23,14 +23,13 @@ export const Dot = () => (
   />
 );
 
-
 export function calculateMediaSize(
   width: number,
   itemsPerRow: number,
   view: ItemCardProps["forcedView"] = "grid",
   gridGap = 12,
   innerPadding = 12,
-  screenPadding = 24,
+  screenPadding = 24
 ): number {
   if (view === "list") {
     return 70;
@@ -38,6 +37,13 @@ export function calculateMediaSize(
 
   const gap = (itemsPerRow - 1) * gridGap;
   const padding = itemsPerRow * innerPadding;
+
+  console.log({
+    w: width / itemsPerRow - gap - screenPadding,
+    gap,
+    padding,
+    screenPadding,
+  });
 
   return width / itemsPerRow - gap - padding - screenPadding;
 }

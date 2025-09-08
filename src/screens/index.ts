@@ -11,6 +11,7 @@ export { default as ShopCartScreen } from "./ShopCart/ShopCart";
 export { default as SignUpScreen } from "./SignUp/SignUp";
 export { default as UserJourneyScreen } from "./UserJourney/UserJourney";
 export { default as UserViewScreen } from "./UserView/UserView";
+export { default as HelpScreen } from "./Help/Help";
 
 export * from "./CrewView";
 export * from "./Crews";
@@ -22,3 +23,4 @@ export * from "./UserFollows";
 export * from "./UserInventory";
 export * from "./UserJourney";
 export * from "./UserView";
+export * from "./Help";

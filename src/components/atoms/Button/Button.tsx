@@ -8,13 +8,14 @@ import { Colors, TColors } from "@theme";
 
 export interface ButtonProps {
   title: string;
-  colorScheme?: "primary" | "secondary" | "tertiary";
+  colorScheme?: "primary" | "secondary" | "tertiary" | "danger";
   variant?: "filled" | "outlined" | "text";
   styles?: ViewStyle;
   disabled?: boolean;
   onPress?: () => void;
   loading?: boolean;
   textVariant?: TTypographyVariants;
+  fillWidth?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -26,6 +27,7 @@ const Button: React.FC<ButtonProps> = ({
   onPress,
   loading,
   textVariant = "button",
+  fillWidth = false,
 }) => {
   const { t } = useTranslation();
 
@@ -44,6 +46,10 @@ const Button: React.FC<ButtonProps> = ({
 
     if (colorScheme === "secondary" || colorScheme === "tertiary") {
       return "textDark";
+    }
+
+    if (colorScheme === "danger") {
+      return "white";
     }
 
     return "white";

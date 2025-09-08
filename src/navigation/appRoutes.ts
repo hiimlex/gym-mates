@@ -6,21 +6,24 @@ export enum AppRoutes {
   Login = "Login",
   SignUp = "SignUp",
   // Authenticated
-  SetupAvatar = "SetupAvatar",
   SetupHealth = "SetupHealth",
+  SetupAvatar = "SetupAvatar",
   Home = "Home",
+  // Crews
   Crews = "Crews",
   CrewView = "CrewView",
   Shop = "Shop",
   ShopCart = "ShopCart",
+  // User
   Profile = "Profile",
-  Settings = "Settings",
   EditProfile = "EditProfile",
-  
   UserView = "UserView",
   UserJourney = "UserJourney",
   UserInventory = "UserInventory",
   UserFollows = "UserFollows",
+  // Settings
+  Help = "Help",
+  Settings = "Settings",
 }
 
 export type TRootStackParamList = {
@@ -49,6 +52,7 @@ export type TRootStackParamList = {
     userId: string;
   };
   [AppRoutes.UserFollows]?: {}
+  [AppRoutes.Help]?: {};
 };
 
 export type ScreenProps<T extends keyof TRootStackParamList> =

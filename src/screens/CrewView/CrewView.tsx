@@ -6,12 +6,12 @@ import { TabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { Colors } from "@theme";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { Code, User } from "react-native-feather";
 import PagerView from "react-native-pager-view";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import S from "./CrewView.styles";
+import { useDispatch } from "react-redux";
 
 const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
   navigation,

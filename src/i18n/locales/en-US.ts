@@ -89,6 +89,7 @@ export default {
       title: "Settings",
       settings: "Settings",
       logout: "Logout",
+      help: "Help & Support",
     },
   },
   crews: {
@@ -122,6 +123,7 @@ export default {
     streaks: "Streaks",
     admin: "Admin",
     loseStreakAt: "Lose streak at fail for",
+    owner: "Owner",
     rulesType: {
       gym_focused: "Gym Focused",
       pay_on_past: "Pay on Past",
@@ -181,6 +183,7 @@ export default {
       join: "Joined {{name}} crew.",
       follow: "Started following {{name}}.",
       loseStreak: "Lost the streak of {{days}} day(s).",
+      completeMission: 'Completed the mission "{{name}}".',
     },
     filters: {
       recent: "Recent",
@@ -279,6 +282,28 @@ export default {
   itemViewer: {
     title: "Item Preview",
   },
+  leaveCrew: {
+    title: "Leave Crew",
+    body: "By quitting this crew, you are not be able to see any data from this crew anymore.\n\nAre you sure?",
+    buttons: {
+      yes: "Yes, leave",
+      no: "No, cancel",
+    },
+  },
+  help: {
+    title: "Hello {{name}}.",
+    body: "We are here to help you. If you want to report a problem, have any questions or just want to say hi, contact us.",
+    future:
+      "We are working on adding more features to help you have the best experience while using GymMates, stay tuned on beta updates!'",
+    faq: "Frequently Asked Questions",
+    contact: "Contact Support",
+    faqList: {
+      rulesSystem: "What are the crew rules?",
+      streakSystem: "How does the streak system work?",
+      coinSystem: "How does the coin system work?",
+    },
+    devNote: "Dev. Note",
+  },
 
   // Generic
   weekDays: {
@@ -336,6 +361,7 @@ export default {
     editProfile: "Edit Profile",
     shopCart: "Bag Items",
     userFollows: "Mates",
+    help: "Help & Support",
   },
   units: {
     days: "days",
@@ -414,6 +440,9 @@ export default {
     WORKOUT_DATE_TOO_OLD: "Workout date is too old.",
     CREW_RULES_VIOLATION: "Workout violates crew rules.",
     WORKOUT_DATE_OLDER_THAN_CREW: "Workout date is older than crew.",
+    GYM_FOCUSED_RULE_VIOLATION: "Crew {{crews}} workouts type must be gym focused.",
+    PAY_ON_PAST_RULE_VIOLATION: "Crew {{crews}} workouts doesn't allow pay on past.",
+    PAID_WITHOUT_PICTURE_RULE_VIOLATION: "Crew {{crews}} workouts must have a picture.",
     // User
     USER_NOT_FOUND: "User not found.",
     USER_NOT_A_MEMBER: "User is not a member.",
@@ -440,5 +469,11 @@ export default {
     min: "Field must be greater than or equal to {{value}}.",
     validate: "Field is invalid.",
     passwordMatch: "Passwords do not match.",
+  },
+  achievementRarity: {
+    common: "Common",
+    rare: "Rare",
+    epic: "Epic",
+    legendary: "Legendary",
   },
 };

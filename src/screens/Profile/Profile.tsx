@@ -15,6 +15,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import {
   Award,
   Edit,
+  HelpCircle,
   LogOut,
   Map,
   Settings,
@@ -221,6 +222,20 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
             ></Menu.Item>
             <Menu.Item
               icon={
+                <HelpCircle
+                  width={20}
+                  height={20}
+                  fill={Colors.colors.text}
+                  stroke={Colors.colors.text}
+                  fillOpacity={0.2}
+                />
+              }
+              onPress={() => navigate(AppRoutes.Help)}
+              label="profile.settings.help"
+              _t
+            ></Menu.Item>
+            <Menu.Item
+              icon={
                 <Settings
                   width={20}
                   height={20}
@@ -233,6 +248,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
               label="profile.settings.settings"
               _t
             ></Menu.Item>
+
             <Menu.Item
               icon={
                 <LogOut

@@ -39,7 +39,7 @@ const WORKOUTS_BY_CREW = gql`
     $earned_op: OperatorsFilterInput
   ) {
     workouts(
-      filter: { shared_to: $crewId, range: $range, earned_op: $earned_op }
+      filter: { shared_to_in: $crewId, range: $range, earned_op: $earned_op }
       sort: DATE_DESC
     ) {
       picture {

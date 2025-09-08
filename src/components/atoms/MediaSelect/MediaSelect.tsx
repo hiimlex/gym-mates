@@ -40,7 +40,7 @@ const MediaSelect: React.FC<MediaSelectProps> = ({
 
   return (
     <S.Container activeOpacity={0.6} onPress={getFile}>
-      <BannerPreview preview={preview} />
+      <BannerPreview size={60} preview={preview} iconSize={24} />
 
       <S.MediaInfo>
         <Typography.Body _t textColor="text">

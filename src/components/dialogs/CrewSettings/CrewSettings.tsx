@@ -1,22 +1,26 @@
-import { client } from "@api/apollo";
-import { CrewsService } from "@api/services";
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { AppRoutes } from "@navigation/appRoutes";
-import { DialogActions, NotifierActions } from "@store/slices";
+import { DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
-import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
-import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Check, ChevronRight, Edit, LogOut, Trash } from "react-native-feather";
+import {
+  Check,
+  ChevronRight,
+  Edit,
+  LogOut,
+  Trash,
+  X,
+} from "react-native-feather";
 import { FadeInLeft, SlideOutLeft } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
 import { BannerPreview, Row, Typography } from "../../atoms";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
-import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
-import S from "./CrewSettings.styles";
 import CrewMembers from "../CrewMembers/CrewMembers";
+import EditCrewSettings from "../EditCrewSettings/EditCrewSettings";
+import LeaveCrew from "../LeaveCrew/LeaveCrew";
+import S from "./CrewSettings.styles";
 
 const CrewSettings: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -32,37 +36,13 @@ const CrewSettings: React.FC = () => {
 
   const isOwner = useMemo(() => crew?.created_by === user?._id, [crew, user]);
 
-  const activeRules = useMemo(
+  const rulesAsArray = useMemo(
     () =>
-      Object.keys(crew?.rules || {}).filter(
-        (ruleKey) => (crew?.rules as any)[ruleKey] === true
-      ),
+      Object.entries(crew?.rules || {})
+        .map((entry) => entry)
+        .filter(([key]) => key !== "__typename" && key !== "show_members_rank"),
     [crew?.rules]
   );
-
-  const { mutate: leaveCrew } = useMutation({
-    mutationFn: CrewsService.leave,
-    onSuccess: async () => {
-      await client.refetchQueries({
-        include: ["CrewsByMember"],
-      });
-      dispatch(DialogActions.closeDialog());
-      navigate(AppRoutes.Home);
-    },
-    onError: (error) => {
-      const message = getMessageFromError(error);
-
-      if (message) {
-        dispatch(
-          NotifierActions.createNotification({
-            id: "leave-crew-error",
-            type: "error",
-            message,
-          })
-        );
-      }
-    },
-  });
 
   const navigateToUserView = (userId: string) => {
     dispatch(DialogActions.closeDialog());
@@ -88,9 +68,21 @@ const CrewSettings: React.FC = () => {
         data: {
           title: "crewMembers.title",
           _t: true,
-        }
+        },
       })
-    )
+    );
+  };
+
+  const handleLeaveCrew = () => {
+    dispatch(
+      DialogActions.moveToNextDialog({
+        content: <LeaveCrew crewCode={crew?.code || ""} />,
+        data: {
+          title: "leaveCrew.title",
+          _t: true,
+        },
+      })
+    );
   };
 
   if (!crew) {
@@ -105,7 +97,7 @@ const CrewSettings: React.FC = () => {
       entering={FadeInLeft}
     >
       <Row gap={12} align="center" width={"auto"}>
-        <BannerPreview size={60} preview={crew?.banner?.url} />
+        <BannerPreview size={60} iconSize={24} preview={crew?.banner?.url} />
         <View style={{ gap: 6 }}>
           <Typography.Heading textColor="textDark">
             {crew?.name}
@@ -137,6 +129,7 @@ const CrewSettings: React.FC = () => {
             }}
             member={member}
             key={member._id}
+            isOwner={isOwner}
           />
         ))}
       </S.Group>
@@ -155,9 +148,18 @@ const CrewSettings: React.FC = () => {
             </Typography.Body>
           </S.Rule>
 
-          {activeRules.map((rule) => (
-            <S.Rule key={rule}>
-              <Check width={16} height={16} stroke={Colors.colors.borderDark} />
+          {rulesAsArray.map(([rule, value], index) => (
+            <S.Rule key={index}>
+              {!value && (
+                <X width={16} height={16} stroke={Colors.colors.danger} />
+              )}
+              {value && (
+                <Check
+                  width={16}
+                  height={16}
+                  stroke={Colors.colors.borderDark}
+                />
+              )}
 
               <Typography.Body _t textColor="text">
                 {"crewSettings.rulesType." + rule}
@@ -199,7 +201,7 @@ const CrewSettings: React.FC = () => {
       )}
 
       {!isOwner && (
-        <S.ButtonCard touchable onPress={() => leaveCrew(crew.code)}>
+        <S.ButtonCard touchable onPress={() => handleLeaveCrew()}>
           <S.ButtonCardRow>
             <LogOut
               width={20}

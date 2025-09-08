@@ -25,6 +25,7 @@ const CrewMembers: React.FC = () => {
       crew?.members_w_user.some((m) => m.user._id === user?._id && m.is_admin),
     [crew, user]
   );
+  const isOwner = useMemo(() => crew?.created_by === user?._id, [crew, user]);
 
   const { data, refetch } = useQuery<ICrew>(CrewsService.gql.GET_CREW_BY_ID, {
     variables: { _id: crew?._id },
@@ -55,6 +56,7 @@ const CrewMembers: React.FC = () => {
           member={member}
           key={member._id}
           onLongPress={showActionsMenu}
+          isOwner={isOwner}
         />
       ))}
 
@@ -71,8 +73,8 @@ const CrewMembers: React.FC = () => {
                   <Avatar
                     preview={requestUser.avatar?.url}
                     size={48}
-                    borderOffset={1}
                     iconSize={24}
+                    borderOffset={1}
                   />
                   <Typography.Body
                     _t

@@ -27,7 +27,7 @@ const JoinCrew: React.FC = () => {
     loading: loadingCrew,
     refetch,
   } = useQuery<ICrewsResponse>(CrewsService.gql.SEARCH_CREWS, {
-    variables: filters,
+    variables: { ...filters },
     fetchPolicy: "cache-and-network",
   });
   const dispatch = useDispatch<AppDispatch>();
@@ -122,9 +122,9 @@ const JoinCrew: React.FC = () => {
                     preview={member?.user?.avatar?.url}
                     disabled
                     size={48}
+                    iconSize={24}
                     showBorder
                     borderOffset={1}
-                    iconSize={24}
                   />
                 ))}
               </Row>

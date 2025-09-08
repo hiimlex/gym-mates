@@ -52,7 +52,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
       format(new Date(), "yyyy-MM-dd");
 
   const receiptLabel = useMemo(() => {
-    const labels: string[] = [workout.title];
+    const labels: string[] = [];
 
     if (workout.type) {
       labels.push(`workoutTypes.${workout.type}`);
@@ -105,7 +105,6 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
               <BannerPreview
                 preview={workout.picture?.url}
                 size={48}
-                iconSize={20}
               />
             </TouchableOpacity>
           )}

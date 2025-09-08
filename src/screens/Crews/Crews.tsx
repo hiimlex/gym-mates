@@ -124,7 +124,6 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
                   <BannerPreview
                     preview={crew.banner?.url}
                     size={48}
-                    iconSize={20}
                   />
 
                   <View style={{ gap: 6 }}>

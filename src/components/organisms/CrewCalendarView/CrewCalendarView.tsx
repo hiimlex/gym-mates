@@ -38,7 +38,7 @@ const CrewCalendarView: React.FC<CrewCalendarViewProps> = () => {
     const startDate = format(day, DateFormat);
     const endDate = format(day, DateFormat);
 
-    setWorkoutFilters({ range: [startDate, endDate] });
+    setWorkoutFilters({ range: [startDate, endDate], crewId: crew?._id || "" });
 
     const firstDayOfMonth = startOfMonth(day);
     const lastDayOfMonth = endOfMonth(day);
@@ -55,7 +55,10 @@ const CrewCalendarView: React.FC<CrewCalendarViewProps> = () => {
   return (
     <S.Container>
       <Calendar.Month onSelectDay={handleOnSelectDay} markDays={markedDays} />
-      <CrewLastActivities filters={workoutFilters} label="crewView.activities" />
+      <CrewLastActivities
+        filters={workoutFilters}
+        label="crewView.activities"
+      />
     </S.Container>
   );
 };

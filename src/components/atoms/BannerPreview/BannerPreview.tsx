@@ -15,8 +15,8 @@ interface BannerPreviewProps {
 
 const BannerPreview: React.FC<BannerPreviewProps> = ({
   preview,
-  size = 60,
-  iconSize = 24,
+  size = 48,
+  iconSize = 20,
   noPreviewIcon,
   emptyBgColor,
 }) => {

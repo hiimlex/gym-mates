@@ -5,7 +5,7 @@ import { OverlayType } from "@models/generic";
 import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
-import React from "react";
+import React, { useEffect } from "react";
 import { Frown } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader, Row, Typography } from "../../atoms";
@@ -17,17 +17,20 @@ interface CrewLastActivitiesProps {
   label?: string;
 }
 
-const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({ filters, label = '' }) => {
+const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({
+  filters,
+  label = "",
+}) => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const { user: currentUser } = useSelector((state: StoreState) => state.user);
 
-  const { data, loading } = useQuery<IWorkoutsByCrew, IWorkoutsFilters>(
-    WorkoutService.gql.WORKOUTS_BY_CREW,
-    {
-      variables: { crewId: crew?._id || "", ...filters },
-      fetchPolicy: "cache-and-network",
-    }
-  );
+  const { data, loading, refetch } = useQuery<
+    IWorkoutsByCrew,
+    IWorkoutsFilters
+  >(WorkoutService.gql.WORKOUTS_BY_CREW, {
+    variables: { crewId: crew?._id || "", ...filters },
+    fetchPolicy: "cache-and-network",
+  });
 
   const dispatch = useDispatch();
 

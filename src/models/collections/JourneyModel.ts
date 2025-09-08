@@ -1,6 +1,7 @@
 import { ICrew } from "./CrewsModel";
 import { IHealthData } from "./HealthModel";
 import { IItem } from "./ItemsModel";
+import { IMission } from "./MissionsModel";
 import { IUser } from "./UsersModel";
 import { IWorkout } from "./WorkoutsModel";
 
@@ -23,6 +24,8 @@ export interface IUserJourneyEvent {
     crew?: ICrew;
     user_streak?: number;
     lose_streak_at?: Date;
+    mission?: IMission;
+    achievement?: IItem;
   };
   created_at: string;
 }
@@ -39,6 +42,7 @@ export enum JourneyEventAction {
   LOSE_STREAK = "lose_streak",
   START = "start",
   FOLLOW = "follow",
+  COMPLETE_MISSION = "complete_mission",
 }
 
 export enum JourneyEventSchemaType {
@@ -48,6 +52,7 @@ export enum JourneyEventSchemaType {
   Friend = "friend",
   Crew = "crew",
   User = "user",
+  Mission = "mission",
 }
 
 export interface IGetJourneyFilters {

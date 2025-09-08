@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { Coin, Loader, Row, Typography } from "@components/atoms";
 import { Header, ScreenWrapper } from "@components/molecules";
 import { JoinedCrewsView, NotJoinedCrews } from "@components/organisms";
-import { ICrewsResponse } from "@models/collections";
+import { ICrewRules, ICrewsResponse } from "@models/collections";
 import {
   AppRoutes,
   ScreenProps,
@@ -28,6 +28,7 @@ import { getMessageFromError } from "@utils/handleAxiosError";
 import { Paperclip } from "react-native-feather";
 import { OverlayType } from "@models/generic";
 import { MissionIcon } from "@components/dialogs";
+import { getCrewRules } from "@utils/getCrewRules";
 
 const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
   navigation: { navigate },
@@ -59,6 +60,14 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
     if (data?.crews && data?.crews.length > 0) {
       dispatch(CrewsActions.setCrews(data.crews));
       dispatch(ConfigActions.setHideBottomNav(false));
+
+      // Check crew rules by all crews
+      // E.G: If the user is in a crew that has no free weekends, the rule apply to user rules
+      const userRules = getCrewRules(data.crews);
+
+      if (userRules) {
+        dispatch(CrewsActions.setRules(userRules));
+      }
     }
   }, [data]);
 

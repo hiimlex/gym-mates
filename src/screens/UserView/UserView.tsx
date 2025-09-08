@@ -96,9 +96,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Typography.Body textColor="text" fontWeight="semibold">
-            {t("userView.loading")}
-          </Typography.Body>
+          <Loader color="primary" />
         </View>
       </ScreenWrapper>
     );
@@ -180,7 +178,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
             ))}
             {loadingUserWorkouts && <Loader color="primary" />}
             {!loadingUserWorkouts && workoutsData?.workouts.length === 0 && (
-              <Typography.Body textColor="textLight" _t>
+              <Typography.Body textColor="textLight" _t textAlign="center">
                 {"userView.noWorkouts"}
               </Typography.Body>
             )}
@@ -205,7 +203,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
             {loadingAchievements && <Loader color="primary" />}
             {!loadingAchievements &&
               achievementsData?.journeyById.inventory.length === 0 && (
-                <Typography.Body textColor="textLight" _t>
+                <Typography.Body textColor="textLight" _t textAlign="center" width={"100%"}>
                   {"userView.noAchievements"}
                 </Typography.Body>
               )}

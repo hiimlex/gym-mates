@@ -62,7 +62,7 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
   };
 
   const mediaSize = useMemo(
-    () => calculateMediaSize(width, 2, "grid"),
+    () => calculateMediaSize(width, 3, "grid", 6, 0, 24),
     [width]
   );
 
@@ -95,8 +95,9 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
           contentContainerStyle={{
             flexDirection: "row",
             flexWrap: "wrap",
-            gap: 12,
+            gap: 24,
           }}
+          showsVerticalScrollIndicator={false}
         >
           {inventory.map((inventoryItem) => (
             <ItemCard.View

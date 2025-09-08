@@ -14,7 +14,7 @@ import { useQuery } from "@apollo/client";
 import { CrewsService, WorkoutService } from "@api/services";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/Store";
-import { ICrewsResponse } from "@models/collections";
+import { ICrew, ICrewsResponse } from "@models/collections";
 import {
   AddWorkoutActions,
   DialogActions,
@@ -27,6 +27,7 @@ import { DateTimeFormat } from "@models/generic";
 import { client } from "@api/apollo";
 import WorkoutEarns from "../WorkoutEarns/WorkoutEarns";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import { Axios, AxiosError } from "axios";
 
 const ShareWorkout: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -79,14 +80,24 @@ const ShareWorkout: React.FC = () => {
       );
     },
     onError: (error) => {
-      const message = getMessageFromError(error);
-
+      let message = getMessageFromError(error);
       if (message) {
+        let crewNames: string[] = [];
+
+        if (error instanceof AxiosError) {
+          const axiosError = error as AxiosError;
+          const responseData = axiosError.response?.data as any;
+          crewNames = responseData.content.crews.map((crew: ICrew) => crew.name);
+        }
+
         dispatch(
           NotifierActions.createNotification({
             id: "share-workout-error",
             type: "error",
             message,
+            _params: {
+              crews: crewNames.join(", "),
+            },
           })
         );
       }
@@ -116,7 +127,7 @@ const ShareWorkout: React.FC = () => {
           active={shared_to?.includes(crew._id)}
         >
           <Row gap={12} align="center" width={"auto"}>
-            <BannerPreview iconSize={20} preview={crew?.banner?.url} size={48} />
+            <BannerPreview preview={crew?.banner?.url} size={48} />
             <Typography.HeadingSubtitle textColor="primary">
               {crew?.name}
             </Typography.HeadingSubtitle>

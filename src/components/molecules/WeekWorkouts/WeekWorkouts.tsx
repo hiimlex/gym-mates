@@ -5,9 +5,9 @@ import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import { getCurrentWeek } from "@utils/date.utils";
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CheckCircle, XCircle } from "react-native-feather";
+import { CheckCircle, Minus, MinusCircle, XCircle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import Typography from "../../atoms/Typography/Typography";
 import S from "./WeekWorkouts.styles";
@@ -19,6 +19,7 @@ interface WeekWorkoutsProps {
 
 const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
   const { user } = useSelector((state: StoreState) => state.user);
+  const { mergedRules } = useSelector((state: StoreState) => state.crews);
   const { t } = useTranslation();
 
   const currentWeek = getCurrentWeek();
@@ -46,6 +47,11 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
     }
   );
 
+  const free_weekends = useMemo(
+    () => mergedRules?.free_weekends,
+    [mergedRules]
+  );
+
   const handleDataUpdate = (newData: IWorkoutsByUser) => {
     const { workouts } = newData;
     const workoutsMap = currentWeek.map((day) => {
@@ -71,6 +77,7 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
   return (
     <S.Container>
       {currentWeek.map((day, index) => {
+        const isWeekend = day.getDay() === 0 || day.getDay() === 6;
         const isCurrentDay = day.getDate() === current.getDate();
         const isPast = day < current;
         const isFuture = day > current;
@@ -85,7 +92,7 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
               {t(`weekDays.short.${numberToWeekDay[day.getDay()]}`)}
             </Typography.Caption>
 
-            {workoutsByDay[index] && (
+            {isPast && workoutsByDay[index] && (
               <>
                 <CheckCircle
                   width={20}
@@ -102,27 +109,33 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
 
             {isPast && !workoutsByDay[index] && (
               <>
-                <XCircle
-                  width={20}
-                  height={20}
-                  fill={Colors.colors.border}
-                  stroke={Colors.colors.border}
-                  fillOpacity={0.2}
-                />
+                {isWeekend && free_weekends ? (
+                  <MinusCircle
+                    width={20}
+                    height={20}
+                    fill={Colors.colors.border}
+                    stroke={Colors.colors.border}
+                    fillOpacity={0.2}
+                  />
+                ) : (
+                  <XCircle
+                    width={20}
+                    height={20}
+                    fill={Colors.colors.border}
+                    stroke={Colors.colors.border}
+                    fillOpacity={0.2}
+                  />
+                )}
                 <Typography.Tip textColor={textColor}>
                   {day.getDate().toString().padStart(2, "0")}
                 </Typography.Tip>
               </>
             )}
 
-            {isFuture && (
-              <Typography.Body textColor="textDark">
-                {day.getDate().toString().padStart(2, "0")}
-              </Typography.Body>
-            )}
-
-            {isCurrentDay && !workoutsByDay[index] && (
-              <Typography.Body textColor="primary">
+            {!isPast && !workoutsByDay[index] && (
+              <Typography.Body
+                textColor={isCurrentDay ? "primary" : "textDark"}
+              >
                 {day.getDate().toString().padStart(2, "0")}
               </Typography.Body>
             )}

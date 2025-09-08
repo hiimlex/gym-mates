@@ -10,10 +10,11 @@ const Notification = styled(
 }>`
   flex-direction: row;
   border-radius: 12px;
-  padding: 12px;
+  padding: 6px 12px;
   gap: 6px;
   align-items: center;
   justify-content: center;
+  width: 60%;
 
   ${({ type, theme }) => {
     switch (type) {

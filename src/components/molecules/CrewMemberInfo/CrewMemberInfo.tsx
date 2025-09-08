@@ -14,13 +14,15 @@ interface CrewMemberInfoProps {
   touchable?: boolean;
   onPress?: () => void;
   onLongPress?: () => void;
+  isOwner?: boolean;
 }
 
 const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
   member,
   touchable,
   onPress,
-  onLongPress
+  onLongPress,
+  isOwner,
 }) => {
   const { user } = useSelector((state: StoreState) => state.user);
 
@@ -57,10 +59,18 @@ const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
               {itSelf ? "crewSettings.member.you" : member.user.name}
             </Typography.Body>
             <Row gap={6} align="center" width={"auto"}>
-              {member.is_admin && (
+              {member.is_admin && !isOwner && (
                 <>
                   <Typography.Caption _t textColor="textLight">
                     {"crewSettings.admin"}
+                  </Typography.Caption>
+                  {Dot}
+                </>
+              )}
+              {isOwner && (
+                <>
+                  <Typography.Caption _t textColor="textLight">
+                    {"crewSettings.owner"}
                   </Typography.Caption>
                   {Dot}
                 </>

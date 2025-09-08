@@ -63,7 +63,9 @@ const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
           justify={isAchievement ? "center" : "space-between"}
           style={{ flexWrap: "wrap", maxWidth: mediaSize }}
         >
-          <Typography.Body>{item?.name}</Typography.Body>
+          <Typography.Body textAlign={isAchievement ? "center" : "left"}>
+            {item?.name}
+          </Typography.Body>
 
           {!isAchievement && (
             <Coin

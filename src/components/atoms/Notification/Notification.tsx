@@ -19,7 +19,7 @@ import { FadeInDown, FadeInUp, FadeOutUp } from "react-native-reanimated";
 const Notification: React.FC<ICreateNotification> = ({
   id,
   message,
-  duration = 2000,
+  duration = 3000,
   type = "info",
   showDefaultIcon = true,
   closable = true,
@@ -85,7 +85,7 @@ const Notification: React.FC<ICreateNotification> = ({
       {showDefaultIcon && !icon && iconByType[type]}
       {icon && <View>{icon}</View>}
       <Typography.Button
-        style={{ flexWrap: "wrap" }}
+        style={{ flex: 1 }}
         _t={_t}
         _params={_params}
         textColor={textColor}

@@ -1,7 +1,6 @@
-import { CachedImage } from "@georstat/react-native-image-cache";
 import { AchievementRarity } from "@models/collections";
 import React from "react";
-import { Image } from "react-native";
+import { Image, ViewStyle } from "react-native";
 import S from "./AchievementIcon.styles";
 
 const common = require("../../../assets/achievement_common.png");
@@ -19,14 +18,17 @@ const imageByRarity: Record<AchievementRarity, any> = {
 interface AchievementIconProps {
   rarity: AchievementRarity;
   size?: number;
+  asCard?: boolean;
+  styles?: ViewStyle;
 }
 
 const AchievementIcon: React.FC<AchievementIconProps> = ({
   rarity = "common",
   size = 48,
+  asCard = false,
 }) => {
   return (
-    <S.Container style={{ width: size, height: size }}>
+    <S.Container style={{ width: size, height: size }} asCard={asCard}>
       <Image
         source={imageByRarity[rarity]}
         resizeMode="cover"

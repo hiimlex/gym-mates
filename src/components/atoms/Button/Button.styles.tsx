@@ -5,6 +5,7 @@ import { setAlphaToColor } from "@theme";
 const Button = styled.TouchableOpacity<{
   colorScheme?: ButtonProps["colorScheme"];
   buttonVariant?: ButtonProps["variant"];
+  fillWidth?: boolean;
 }>`
   padding: 12px;
   border-radius: 5px;
@@ -21,6 +22,12 @@ const Button = styled.TouchableOpacity<{
       )};
       border-width: 1px;
       border-color: ${colorScheme ? theme.colors[colorScheme] : theme.colors.primary};
+    `};
+
+  ${({ fillWidth }) =>
+    fillWidth &&
+    `
+      width: 100%;
     `};
 
   ${({ disabled, theme }) =>

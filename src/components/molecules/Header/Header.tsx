@@ -20,10 +20,10 @@ const User = () => {
       onPress={() => navigate(AppRoutes.Profile)}
     >
       <Avatar
-        size={50}
+        size={48}
+        iconSize={24}
         disabled
         preview={user?.avatar?.url}
-        iconSize={24}
         borderOffset={1}
       />
     </TouchableOpacity>

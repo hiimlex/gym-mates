@@ -51,6 +51,7 @@ export interface ICrewRules {
 export interface ICrewsState {
   crews: ICrew[];
   crewView?: ICrew;
+  mergedRules?: ICrewRules;
 }
 
 export interface ICrewsByMemberFilters {

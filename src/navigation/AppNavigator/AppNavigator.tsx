@@ -9,6 +9,8 @@ import {
   CrewsScreenOptions,
   EditProfileScreen,
   EditProfileScreenOptions,
+  HelpScreen,
+  HelpScreenOptions,
   HomeScreen,
   LoginScreen,
   ProfileScreen,
@@ -130,6 +132,12 @@ const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
               name={AppRoutes.UserFollows}
               component={UserFollowsScreen}
               options={UserFollowsScreenOptions}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.Help}
+              component={HelpScreen}
+              options={HelpScreenOptions}
             />
           </>
         )}

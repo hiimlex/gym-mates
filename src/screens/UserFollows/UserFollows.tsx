@@ -1,5 +1,5 @@
 import { UsersService } from "@api/services";
-import { Row, Tabs, Typography } from "@components/atoms";
+import { Loader, Row, Tabs, Typography } from "@components/atoms";
 import { ScreenWrapper, UserInfo } from "@components/molecules";
 import { useScreenSize } from "@hooks/useScreenSize/useScreenSize";
 import { QueryKeys, TabHeader } from "@models/generic";
@@ -68,6 +68,8 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
                 </Typography.Body>
               </Row>
             )}
+
+            {isLoading && <Loader color="primary" />}
           </Tabs.Item>
           <Tabs.Item key={1}>
             {data?.data.following.map((following) => (
@@ -86,6 +88,8 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
                 </Typography.Body>
               </Row>
             )}
+
+            {isLoading && <Loader color="primary" />}
           </Tabs.Item>
         </Tabs.Root>
       </S.Container>
