@@ -1,4 +1,4 @@
-import { Row, Typography } from "@components/atoms";
+import { Coin, Row, Typography } from "@components/atoms";
 import { ShopActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
@@ -17,8 +17,8 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
   itemsPerRow = 2,
   touchableImage = false,
   onImagePress,
+  mediaSize = 0,
 }) => {
-  const { width } = useWindowDimensions();
   const dispatch = useDispatch();
   const { cart, view: stateView } = useSelector(
     (state: StoreState) => state.shop
@@ -31,11 +31,6 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
 
     return stateView;
   }, [forcedView, stateView]);
-
-  const mediaSize = useMemo(
-    () => calculateMediaSize(width, itemsPerRow, view),
-    [view, itemsPerRow]
-  );
 
   const isOnCart = useMemo(
     () => cart?.some((i) => i._id === item?._id),
@@ -51,30 +46,21 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
   };
 
   const isGridView = useMemo(() => view === "grid", [view]);
+  const imagePerCent = useMemo(
+    () => (isGridView ? "80%" : "100%"),
+    [isGridView]
+  );
+
+  const CoinJSX = (
+    <Coin textVariant="body" label={item?.price?.toString()} textColor="text" />
+  );
 
   return (
     <S.Container view={view} locked={item.locked}>
-      {!item.locked && (
-        <S.FloatingAdd
-          activeOpacity={1}
-          onPress={isOnCart ? removeFromCart : addToCart}
-          isOnCart={isOnCart}
-          disabled={disabled && !isOnCart}
-          isGridView={isGridView}
-        >
-          {isOnCart && (
-            <Minus width={20} height={20} stroke={Colors.colors.white} />
-          )}
-          {!isOnCart && (
-            <Plus
-              width={20}
-              height={20}
-              stroke={disabled ? Colors.colors.text : Colors.colors.white}
-            />
-          )}
-        </S.FloatingAdd>
-      )}
+      {/* Floating coin */}
+      {isGridView && <S.FloatingCoin>{CoinJSX}</S.FloatingCoin>}
 
+      {/* Floating locked */}
       {item.locked && (
         <S.FloatingAdd disabled isGridView={isGridView}>
           <Lock width={20} height={20} stroke={Colors.colors.text} />
@@ -84,12 +70,21 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
       <S.MediaWrapper size={mediaSize}>
         {item.preview?.url && (
           <TouchableOpacity
-            style={{ width: "100%", height: "100%" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
             disabled={!touchableImage}
             activeOpacity={0.6}
             onPress={() => onImagePress?.(item)}
           >
-            <S.MediaImage source={item.preview?.url} onError={() => {}} />
+            <S.MediaImage
+              source={item.preview?.url}
+              onError={() => {}}
+              style={{ width: imagePerCent, height: imagePerCent }}
+            />
           </TouchableOpacity>
         )}
         {!item.preview?.url && (
@@ -110,21 +105,43 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
           gap: 6,
         }}
       >
+        {/* Floating add/remove */}
+        {!item.locked && (
+          <S.FloatingAdd
+            activeOpacity={1}
+            onPress={isOnCart ? removeFromCart : addToCart}
+            isOnCart={isOnCart}
+            disabled={disabled && !isOnCart}
+            isGridView={isGridView}
+          >
+            {isOnCart && (
+              <Minus width={20} height={20} stroke={Colors.colors.white} />
+            )}
+            {!isOnCart && (
+              <Plus
+                width={20}
+                height={20}
+                stroke={disabled ? Colors.colors.text : Colors.colors.white}
+              />
+            )}
+          </S.FloatingAdd>
+        )}
         <Row align="center" justify="space-between" width={"auto"}>
           <Typography.Body fontWeight="semibold" textColor="textDark">
             {item.name}
           </Typography.Body>
 
-          <Header.Coins
-            size={10}
-            textVariant="body"
-            coinValue={item.price.toString()}
-            disabled
-            textColor="text"
-          />
+          {!isGridView && CoinJSX}
         </Row>
 
-        <Row gap={3} align="center" style={{ flexWrap: "wrap", flex: 1 }}>
+        <Row
+          gap={3}
+          align="center"
+          style={{
+            flexWrap: "wrap",
+            maxWidth: isGridView ? mediaSize - 20 : "80%",
+          }}
+        >
           <Typography.Caption
             textColor="textLight"
             _t

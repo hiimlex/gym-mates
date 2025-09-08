@@ -4,7 +4,8 @@ import { OverlayActions } from "@store/slices";
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
-import Mission from './mission_icon.svg';
+// import Mission from "../../../assets/mission_icon.svg";
+import S from "./Missions.styles";
 
 interface MissionsIconProps {
   children?: React.ReactNode;
@@ -22,24 +23,20 @@ const MissionIcon: React.FC<MissionsIconProps> = ({ children }) => {
   };
 
   return (
-    <TouchableOpacity
+    <S.MissionButton
       activeOpacity={0.6}
       onPress={openMissionsDialog}
       style={{
-        width: 32,
-        height: 32,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <CachedImage
-        source={require("./mission_icon.png")}
-        style={{ width: 60, height: 60 }}
-        imageStyle={{ width: 60, height: 60 }}
+      <Image
+        source={require("../../../assets/mission_icon_paper.png")}
+        style={{ width: 32, height: 32 }}
       />
       {/* <Mission width={48} height={48} /> */}
-
-    </TouchableOpacity>
+    </S.MissionButton>
   );
 };
 

@@ -72,6 +72,7 @@ const UPDATE_USER_BY_ID = gql`
 const GET_INVENTORY = gql`
   query GetInventory($journeyId: MongoID!, $category: String, $search: String) {
     journeyById(_id: $journeyId) {
+      _id
       inventory(filter: { category: $category, search: $search }) {
         owned_at
         item {
@@ -87,14 +88,13 @@ const GET_INVENTORY = gql`
           }
           ... on Achievement {
             _id
-            category
             name
-            price
-            requirements
+            category
             created_at
             updated_at
             key
             description
+            rarity
           }
           ... on Badge {
             _id

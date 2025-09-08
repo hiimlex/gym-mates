@@ -194,11 +194,10 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
             }}
           >
             {achievementsData?.journeyById.inventory.map((achievement) => (
-              <ItemCard
+              <ItemCard.View
                 item={achievement.item}
                 key={achievement.item._id}
                 itemsPerRow={3}
-                mode="view"
                 touchableImage
                 onImagePress={() => handleOnItemPress(achievement.item)}
               />

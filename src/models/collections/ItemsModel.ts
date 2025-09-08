@@ -22,11 +22,24 @@ export enum SkinSex {
   female = "female",
 }
 
+export type AchievementRarity = "common" | "rare" | "epic" | "legendary";
+
+export const AchievementRarityColors: Record<AchievementRarity, string> = {
+  // white pastel color
+  common: "#daf2f6cc",
+  // green
+  rare: "#44863bcc",
+  // red
+  epic: "#de2f1fcc",
+  // purple
+  legendary: "#8b23d1cc",
+}
+
 export interface IItem {
   _id: string;
-  name: string;
+  name?: string;
   category: ItemCategory;
-  price: number;
+  price?: number;
   requirements: string[];
   key?: string;
   description?: string;
@@ -35,9 +48,11 @@ export interface IItem {
   title?: string;
   created_at: string;
   updated_at: string;
-  //
+  // Skins
   sex?: SkinSex;
   piece?: SkinPiece;
-  //
+  // Achievements
+  rarity?: AchievementRarity;
+  // General
   locked?: boolean;
 }

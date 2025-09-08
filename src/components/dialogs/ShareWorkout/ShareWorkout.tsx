@@ -116,7 +116,7 @@ const ShareWorkout: React.FC = () => {
           active={shared_to?.includes(crew._id)}
         >
           <Row gap={12} align="center" width={"auto"}>
-            <BannerPreview preview={crew?.banner?.url} size={48} />
+            <BannerPreview iconSize={20} preview={crew?.banner?.url} size={48} />
             <Typography.HeadingSubtitle textColor="primary">
               {crew?.name}
             </Typography.HeadingSubtitle>

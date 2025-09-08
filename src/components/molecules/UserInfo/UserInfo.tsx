@@ -1,4 +1,4 @@
-import { Avatar, Row, Typography } from "@components/atoms";
+import { Avatar, Coin, Row, Typography } from "@components/atoms";
 import { IUser } from "@models/collections";
 import React from "react";
 import Header from "../Header/Header";
@@ -89,12 +89,10 @@ const UserInfo: React.FC<UserInfoProps> = ({
           </Typography.Button>
         </TouchableOpacity>
       ) : (
-        <Header.Coins
-          coinValue={user.coins.toString()}
+        <Coin
+          label={user.coins.toString()}
           textColor="text"
           textVariant="button"
-          size={10}
-          disabled
         />
       )}
     </S.Container>

@@ -21,6 +21,8 @@ export interface IUserJourneyEvent {
     healthy_info?: IHealthData;
     item?: IItem;
     crew?: ICrew;
+    user_streak?: number;
+    lose_streak_at?: Date;
   };
   created_at: string;
 }

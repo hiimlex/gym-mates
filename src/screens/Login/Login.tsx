@@ -56,7 +56,6 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
       reset();
     },
     onError: (error) => {
-      console.log("Login error", error);
       const message = getMessageFromError(error);
 
       if (message) {

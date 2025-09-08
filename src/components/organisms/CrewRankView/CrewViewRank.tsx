@@ -4,17 +4,16 @@ import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import S from "./CrewRankView.styles";
 import { setAlphaToColor } from "@theme";
-import { Avatar, Loader, Typography } from "@components/atoms";
+import { Avatar, Loader, Row, Typography } from "@components/atoms";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "@models/generic";
 import { CrewsService } from "@api/services";
 import Masks from "@utils/masks.utils";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 
 const CrewRankView: React.FC = () => {
+  const { user } = useSelector((state: StoreState) => state.user);
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
-
-  console.log("CrewRankView -> rank", crew?._id, crew?.name);
 
   const { data, error, isPending } = useQuery({
     queryFn: () =>
@@ -45,9 +44,10 @@ const CrewRankView: React.FC = () => {
             <Typography.Body textColor="text">
               {Masks.getFirstName(rank[2].name) || "N/A"}
             </Typography.Body>
-            <S.RankColumn height={30} bg={setAlphaToColor("#BC5E00", 60)}>
-              <Typography.Body textAlign="center">{"3º"}</Typography.Body>
-            </S.RankColumn>
+            <Image
+              source={require("../../../assets/podium_3.png")}
+              style={{ marginRight: -12 }}
+            />
           </S.RankColumnWrapper>
           <S.RankColumnWrapper>
             <Avatar
@@ -62,9 +62,7 @@ const CrewRankView: React.FC = () => {
             <Typography.Body textColor="text">
               {Masks.getFirstName(rank[0].name) || "N/A"}
             </Typography.Body>
-            <S.RankColumn height={56} bg={setAlphaToColor("#F3C70D", 60)}>
-              <Typography.Body textAlign="center">{"1º"}</Typography.Body>
-            </S.RankColumn>
+            <Image source={require("../../../assets/podium_1.png")} />
           </S.RankColumnWrapper>
           <S.RankColumnWrapper>
             <Avatar
@@ -79,12 +77,14 @@ const CrewRankView: React.FC = () => {
             <Typography.Body textColor="text">
               {Masks.getFirstName(rank[1].name) || "N/A"}
             </Typography.Body>
-            <S.RankColumn height={40} bg={setAlphaToColor("#CDCFE5", 60)}>
-              <Typography.Body textAlign="center">{"2º"}</Typography.Body>
-            </S.RankColumn>
+            <Image
+              source={require("../../../assets/podium_2.png")}
+              style={{ marginLeft: -22 }}
+            />
           </S.RankColumnWrapper>
         </S.RankRow>
       )}
+
       {(!rank || rank.length < 3) && !isPending && (
         <View>
           <Typography.Body textColor="textLight" _t>

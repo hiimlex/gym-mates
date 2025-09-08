@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Row, Typography } from "../../atoms";
+import { Button, Coin, Row, Typography } from "../../atoms";
 import Header from "../Header/Header";
 import S from "./ShopCheckoutPreview.styles";
 import { useRoute } from "@react-navigation/native";
@@ -68,13 +68,11 @@ const ShopCheckoutPreview: React.FC<ShopCheckoutPreviewProps> = () => {
             <Typography.Body _t textColor="text" fontWeight="semibold">
               {"shop.cart.total"}
             </Typography.Body>
-            <Header.Coins
-              disabled
-              size={8}
+            <Coin
               textVariant="body"
-              coinValue={"-" + cartItemsSum}
+              label={"-" + cartItemsSum}
               textColor="danger"
-            ></Header.Coins>
+            ></Coin>
           </Row>
 
           {isOnCart && (
@@ -83,11 +81,7 @@ const ShopCheckoutPreview: React.FC<ShopCheckoutPreviewProps> = () => {
                 <Typography.Body textColor="text" _t fontWeight="semibold">
                   {"shop.cart.yourCoins"}
                 </Typography.Body>
-                <Header.Coins
-                  disabled
-                  size={8}
-                  textVariant="body"
-                ></Header.Coins>
+                <Coin showUserCoins textVariant="body"></Coin>
               </Row>
               <S.HR />
 
@@ -95,12 +89,10 @@ const ShopCheckoutPreview: React.FC<ShopCheckoutPreviewProps> = () => {
                 <Typography.Body textColor="text" _t fontWeight="semibold">
                   {"shop.cart.yourCoinsAfterPurchase"}
                 </Typography.Body>
-                <Header.Coins
-                  disabled
-                  size={8}
+                <Coin
                   textVariant="body"
-                  coinValue={String((user?.coins || 0) - cartItemsSum)}
-                ></Header.Coins>
+                  label={String((user?.coins || 0) - cartItemsSum)}
+                ></Coin>
               </Row>
             </>
           )}

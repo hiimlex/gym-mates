@@ -8,6 +8,8 @@ export interface ItemCardProps {
   disabled?: boolean;
   mode?: "view" | "buy" | "checkout";
   itemsPerRow?: number;
+  itemsGap?: number;
+  mediaSize?: number;
   touchableImage?: boolean;
   onImagePress?: (item: IItem) => void;
 }
@@ -21,20 +23,21 @@ export const Dot = () => (
   />
 );
 
-export const GridShopGap = 24;
-export const ScreenPadding = 24;
-export const InnerPadding = 12;
 
 export function calculateMediaSize(
   width: number,
   itemsPerRow: number,
-  view: ItemCardProps["forcedView"] = "grid"
+  view: ItemCardProps["forcedView"] = "grid",
+  gridGap = 12,
+  innerPadding = 12,
+  screenPadding = 24,
 ): number {
   if (view === "list") {
     return 70;
   }
 
-  const gap = (itemsPerRow - 1) * GridShopGap;
+  const gap = (itemsPerRow - 1) * gridGap;
+  const padding = itemsPerRow * innerPadding;
 
-  return width / itemsPerRow - ScreenPadding - itemsPerRow * InnerPadding - gap;
+  return width / itemsPerRow - gap - padding - screenPadding;
 }

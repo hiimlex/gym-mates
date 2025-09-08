@@ -1,4 +1,4 @@
-import { Row, Typography } from "@components/atoms";
+import { AchievementIcon, Coin, Row, Typography } from "@components/atoms";
 import { Colors } from "@theme";
 import React, { useMemo } from "react";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
@@ -6,43 +6,49 @@ import { CameraOff } from "react-native-feather";
 import Header from "../../Header/Header";
 import { calculateMediaSize, Dot, ItemCardProps } from "../ItemCard.utils";
 import S from "./ItemCardVariations.styles";
+import { AchievementRarityColors } from "@models/collections";
 
 const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
   item,
   itemsPerRow = 2,
+  itemsGap = 12,
   touchableImage = false,
   onImagePress,
+  mediaSize = 12,
 }) => {
   const view = "grid";
-  const { width } = useWindowDimensions();
 
-  const mediaSize = useMemo(
-    () => calculateMediaSize(width, itemsPerRow, view),
-    [itemsPerRow]
-  );
+  const isAchievement = item.category === "achievement";
 
   return (
     <S.Container view={view}>
       <S.MediaWrapper size={mediaSize}>
-        {item.preview?.url && (
-          <TouchableOpacity
-            style={{ width: "100%", height: "100%" }}
-            disabled={!touchableImage}
-            activeOpacity={0.6}
-            onPress={() => onImagePress?.(item)}
-          >
-            <S.MediaImage source={item.preview?.url} onError={() => {}} />
-          </TouchableOpacity>
+        {isAchievement && item.rarity && (
+          <AchievementIcon rarity={item.rarity} size={mediaSize} />
         )}
-        {!item.preview?.url && (
-          <CameraOff
-            width={mediaSize / 4}
-            height={mediaSize / 4}
-            stroke={Colors.colors.border}
-            fill={Colors.colors.border}
-            fillOpacity={0.2}
-            strokeWidth={2}
-          />
+        {!isAchievement && (
+          <>
+            {item.preview?.url && (
+              <TouchableOpacity
+                style={{ width: "100%", height: "100%" }}
+                disabled={!touchableImage}
+                activeOpacity={0.6}
+                onPress={() => onImagePress?.(item)}
+              >
+                <S.MediaImage source={item.preview?.url} onError={() => {}} />
+              </TouchableOpacity>
+            )}
+            {!item.preview?.url && (
+              <CameraOff
+                width={mediaSize / 4}
+                height={mediaSize / 4}
+                stroke={Colors.colors.border}
+                fill={Colors.colors.border}
+                fillOpacity={0.2}
+                strokeWidth={2}
+              />
+            )}
+          </>
         )}
       </S.MediaWrapper>
 
@@ -52,19 +58,28 @@ const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
           gap: 6,
         }}
       >
-        <Row align="center" justify="space-between" width={"auto"}>
-          <Typography.Body>{item.name}</Typography.Body>
+        <Row
+          align="center"
+          justify={isAchievement ? "center" : "space-between"}
+          style={{ flexWrap: "wrap", maxWidth: mediaSize }}
+        >
+          <Typography.Body>{item?.name}</Typography.Body>
 
-          <Header.Coins
-            size={6}
-            textVariant="button"
-            coinValue={item.price.toString()}
-            disabled
-            textColor="tertiary"
-          />
+          {!isAchievement && (
+            <Coin
+              textVariant="button"
+              label={item?.price?.toString()}
+              textColor="tertiary"
+            />
+          )}
         </Row>
 
-        <Row gap={3} align="center" style={{ flexWrap: "wrap", flex: 1 }}>
+        <Row
+          gap={3}
+          justify={isAchievement ? "center" : "flex-start"}
+          align="center"
+          style={{ flexWrap: "wrap", maxWidth: mediaSize }}
+        >
           <Typography.Caption
             textColor="textLight"
             _t

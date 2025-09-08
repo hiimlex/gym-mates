@@ -6,6 +6,7 @@ import {
 } from "@apollo/client";
 import { removeTypenameFromVariables } from "@apollo/client/link/remove-typename";
 import { BackendIp } from "@models/generic";
+import { defaultDataIdFromObject } from "@apollo/client";
 
 export const client = new ApolloClient({
   uri: `${BackendIp}/graphql`,

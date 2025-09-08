@@ -5,7 +5,7 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
 `;
 
 const Coin = styled.View`

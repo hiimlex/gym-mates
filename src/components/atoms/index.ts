@@ -1,3 +1,4 @@
+export { default as AchievementIcon } from "./AchievementIcon/AchievementIcon";
 export { default as Avatar } from "./Avatar/Avatar";
 export { default as Badge } from "./Badge/Badge";
 export { default as BannerPreview } from "./BannerPreview/BannerPreview";
@@ -17,6 +18,7 @@ export { default as Notification } from "./Notification/Notification";
 export { default as Row } from "./Row/Row";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Typography } from "./Typography/Typography";
+export { default as Coin } from "./Coin/Coin";
 
 export * from "./Calendar";
 export * from "./Dialog/Dialog";

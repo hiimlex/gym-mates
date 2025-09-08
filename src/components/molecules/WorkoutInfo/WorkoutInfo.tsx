@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import { TouchableOpacity } from "react-native";
 import { Circle, DollarSign } from "react-native-feather";
 import { useSelector } from "react-redux";
-import { BannerPreview, Row, Typography } from "../../atoms";
+import { BannerPreview, Coin, Row, Typography } from "../../atoms";
 import S from "./WorkoutInfo.styles";
 import Header from "../Header/Header";
 
@@ -143,11 +143,10 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
           </S.WorkoutInfo>
         </Row>
 
-        <Header.Coins
-          coinValue={"+" + workout.earned.toString()}
+        <Coin
+          label={"+" + workout.earned.toString()}
           textColor={textColor}
           textVariant="body"
-          size={8}
         />
       </S.WorkoutRow>
     </S.WorkoutGroup>

@@ -1,7 +1,7 @@
 import { ShopService } from "@api/services";
-import { Loader, Row, Typography } from "@components/atoms";
+import { Coin, Loader, Row, Typography } from "@components/atoms";
 import {
-  GridShopGap,
+  calculateMediaSize,
   Header,
   ItemCard,
   ScreenWrapper,
@@ -16,12 +16,14 @@ import { AppDispatch, StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import React, { useMemo } from "react";
-import { View, ViewStyle } from "react-native";
+import { useWindowDimensions, View, ViewStyle } from "react-native";
 import { ArrowDown, ArrowUp, Grid, List } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Shop.styles";
 
 const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
+  const { width } = useWindowDimensions();
+
   const { view, filters, cartItemsSum, cart } = useSelector(
     (state: StoreState) => state.shop
   );
@@ -49,7 +51,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
       return {
         flexDirection: "row",
         flexWrap: "wrap",
-        gap: GridShopGap,
+        gap: 24,
         paddingBottom,
         paddingTop: 12,
       };
@@ -57,7 +59,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
 
     return {
       flexDirection: "column",
-      gap: 12,
+      gap: 24,
       paddingBottom,
     };
   }, [view, cart.length]);
@@ -116,7 +118,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
               {"shop.title"}
             </Typography.Heading>
 
-            <Header.Coins disabled />
+            <Coin showUserCoins textVariant="body" />
           </Row>
 
           <S.HorizontalScrollView
@@ -203,8 +205,9 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
             <ItemCard.Buy
               item={item}
               key={item._id}
-              disabled={userCannotAfford(item.price)}
+              disabled={userCannotAfford(item?.price || 0)}
               touchableImage
+              mediaSize={calculateMediaSize(width, 2, view, 24, 0, 12)}
               onImagePress={handleOnItemPress}
             />
           ))}

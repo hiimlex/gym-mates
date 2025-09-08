@@ -155,7 +155,7 @@ export default {
       duration: "Duration",
       type: "Workout type",
     },
-    paidText: "Ow! Good job you earned +{{coins}} coins.",
+    paidText: "Ow! Good job you earned \n +{{coins}} coin{{plural}}",
     buttons: {
       next: "Next",
       paid: "Paid",
@@ -180,6 +180,7 @@ export default {
       bodyFat: "BF {{bf}}%",
       join: "Joined {{name}} crew.",
       follow: "Started following {{name}}.",
+      loseStreak: "Lost the streak of {{days}} day(s).",
     },
     filters: {
       recent: "Recent",

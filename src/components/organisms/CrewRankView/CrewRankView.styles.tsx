@@ -11,11 +11,11 @@ const RankRow = styled.View`
   align-items: flex-end;
   position: relative;
   overflow: hidden;
-  height: 140px;
+  height: 200px;
   width: 100%;
   flex-direction: row;
   border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.border};
+  border-bottom-color: ${({ theme }) => theme.colors.borderDark};
 `;
 
 const RankColumnWrapper = styled(Animated.View)`
@@ -29,12 +29,6 @@ const RankColumn = styled(Animated.View)<{ height?: number; bg: string }>`
   width: 88px;
   background-color: ${({ bg }) => bg};
   padding: 6px;
-  /* shadow */
-  shadow-color: #000;
-  shadow-offset: 0px 4px;
-  shadow-opacity: 0.3;
-  shadow-radius: 4px;
-  elevation: 8;
 `;
 
 const LoaderWrapper = styled.View`
@@ -44,4 +38,10 @@ const LoaderWrapper = styled.View`
   gap: 12px;
 `;
 
-export default { Container, RankRow, RankColumn, RankColumnWrapper, LoaderWrapper };
+export default {
+  Container,
+  RankRow,
+  RankColumn,
+  RankColumnWrapper,
+  LoaderWrapper,
+};

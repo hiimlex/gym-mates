@@ -1,6 +1,6 @@
 import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
-import { Loader, Row, Typography } from "@components/atoms";
+import { Coin, Loader, Row, Typography } from "@components/atoms";
 import { Header, ScreenWrapper } from "@components/molecules";
 import { JoinedCrewsView, NotJoinedCrews } from "@components/organisms";
 import { ICrewsResponse } from "@models/collections";
@@ -29,7 +29,9 @@ import { Paperclip } from "react-native-feather";
 import { OverlayType } from "@models/generic";
 import { MissionIcon } from "@components/dialogs";
 
-const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
+const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
+  navigation: { navigate },
+}) => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
@@ -99,7 +101,13 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = () => {
 
           <Row gap={24} align="center" width={"auto"}>
             <MissionIcon />
-            <Header.Coins />
+
+            <Coin
+              showUserCoins
+              textVariant="body"
+              touchable
+              onPress={() => navigate(AppRoutes.Shop)}
+            />
           </Row>
         </Header.Root>
 

@@ -1,6 +1,7 @@
 import {
   Avatar,
   BannerPreview,
+  Coin,
   Icons,
   Row,
   Typography,
@@ -13,7 +14,7 @@ import {
 } from "@models/collections";
 import { Colors } from "@theme";
 import React, { useMemo } from "react";
-import { DollarSign, Heart, Star } from "react-native-feather";
+import { DollarSign, Frown, Heart, Star } from "react-native-feather";
 import S from "./JourneyEvent.styles";
 import { useTranslation } from "react-i18next";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
@@ -66,7 +67,7 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
           <S.EventWithBanner>
             <BannerPreview
               preview={
-                item?.category === ItemCategory.Figure ? item?.file?.url : ""
+                item?.category === ItemCategory.Figure ? item?.preview?.url : ""
               }
               size={48}
               iconSize={20}
@@ -88,21 +89,11 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
             </S.EventInfo>
           </S.EventWithBanner>
 
-          <Row gap={6} align="center" width={"auto"}>
-            <Typography.Button textColor="danger">
-              - {item.price}
-            </Typography.Button>
-            <S.CoinWrapper>
-              <DollarSign
-                width={10}
-                height={10}
-                strokeWidth={2}
-                stroke={Colors.colors.secondary}
-                fill={Colors.colors.secondary}
-                fillOpacity={0.2}
-              />
-            </S.CoinWrapper>
-          </Row>
+          <Coin
+            textColor="danger"
+            textVariant="body"
+            label={`-${item.price}`}
+          />
         </S.EventRow>
       )}
 
@@ -199,7 +190,25 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
 
       {event.action === JourneyEventAction.LEAVE && <></>}
 
-      {event.action === JourneyEventAction.LOSE_STREAK && <></>}
+      {event.action === JourneyEventAction.LOSE_STREAK && (
+        <S.EventCard>
+          <Frown
+            width={20}
+            height={20}
+            stroke={Colors.colors.primary}
+            fill={Colors.colors.primary}
+            fillOpacity={0.2}
+          />
+          <Typography.Body
+            _t
+            _params={{
+              days: event.data.user_streak || 0,
+            }}
+          >
+            {"journey.events.loseStreak"}
+          </Typography.Body>
+        </S.EventCard>
+      )}
     </S.Container>
   );
 };

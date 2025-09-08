@@ -3,7 +3,7 @@ import { View } from "react-native";
 import S from "./WorkoutEarns.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/Store";
-import { Dialog, Typography } from "@components/atoms";
+import { Coin, Dialog, Typography } from "@components/atoms";
 import { DollarSign } from "react-native-feather";
 import { Colors } from "@theme";
 import { AddWorkoutActions, DialogActions } from "@store/slices";
@@ -35,20 +35,14 @@ const WorkoutEarns: React.FC = () => {
 
   return (
     <S.Container>
-      <S.Coin>
-        <DollarSign
-          width={24}
-          height={24}
-          stroke={Colors.colors.secondary}
-          strokeWidth={3}
-        />
-      </S.Coin>
+      <Coin showLabel={false} size={80} />
 
       <Typography.Heading
         _t
         textAlign="center"
         _params={{
           coins: createdWorkout?.earned,
+          plural: (createdWorkout?.earned || 0) < 1 ? "s" : "",
         }}
       >
         {"addWorkout.paidText"}

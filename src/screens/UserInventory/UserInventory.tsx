@@ -1,41 +1,40 @@
 import { UsersService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Badge, Loader, Row, Typography } from "@components/atoms";
-import { ItemCard, ScreenWrapper } from "@components/molecules";
+import {
+  calculateMediaSize,
+  ItemCard,
+  ScreenWrapper,
+} from "@components/molecules";
 import {
   IGetInventoryFilters,
   IGetInventoryResponse,
   IItem,
   ItemCategory,
 } from "@models/collections";
+import { OverlayType } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { OverlayActions, UserInventoryActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
-import React, { useEffect, useMemo } from "react";
-import { View } from "react-native";
+import React, { useMemo } from "react";
+import { useWindowDimensions, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./UserInventory.styles";
-import { OverlayType } from "@models/generic";
 
 const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
+  const { width } = useWindowDimensions();
   const headerHeight = useHeaderHeight();
   const { user } = useSelector((state: StoreState) => state.user);
   const { filters } = useSelector((state: StoreState) => state.userInventory);
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    dispatch(
-      UserInventoryActions.setFilters({ journeyId: user?.journey._id || "" })
-    );
-  }, []);
-
-  const { data, loading, error } = useQuery<
+  const { data, loading } = useQuery<
     IGetInventoryResponse,
     IGetInventoryFilters
   >(UsersService.gql.GET_INVENTORY, {
-    variables: filters,
-    fetchPolicy: "cache-and-network",
+    variables: { journeyId: user?.journey._id || "", ...filters },
+    fetchPolicy: "network-only",
   });
 
   const isEmpty = useMemo(
@@ -61,6 +60,11 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
       })
     );
   };
+
+  const mediaSize = useMemo(
+    () => calculateMediaSize(width, 2, "grid"),
+    [width]
+  );
 
   return (
     <ScreenWrapper>
@@ -89,17 +93,18 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
 
         <S.List
           contentContainerStyle={{
-            gap: 24,
             flexDirection: "row",
             flexWrap: "wrap",
+            gap: 12,
           }}
         >
           {inventory.map((inventoryItem) => (
-            <ItemCard
+            <ItemCard.View
               key={inventoryItem.item._id}
               item={inventoryItem.item}
-              mode="view"
-              itemsPerRow={3}
+              itemsPerRow={2}
+              itemsGap={12}
+              mediaSize={mediaSize}
               touchableImage
               onImagePress={() => handleOnItemPress(inventoryItem.item)}
             />

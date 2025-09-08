@@ -1,4 +1,4 @@
-import { Row, Typography } from "@components/atoms";
+import { Coin, Row, Typography } from "@components/atoms";
 import { ShopActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
@@ -95,11 +95,9 @@ const ItemCardCheckout: React.FC<Omit<ItemCardProps, "mode">> = ({
         <Row align="center" justify="space-between" width={"auto"}>
           <Typography.Body>{item.name}</Typography.Body>
 
-          <Header.Coins
-            size={10}
+          <Coin
             textVariant="body"
-            coinValue={item.price.toString()}
-            disabled
+            label={item.price?.toString()}
             textColor="text"
           />
         </Row>
