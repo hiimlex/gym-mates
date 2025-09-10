@@ -78,8 +78,6 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <S.Container
           contentContainerStyle={{
-            padding: 24,
-            paddingTop: insets.top + 60,
             gap: 24,
           }}
           ref={scrollRef}
@@ -108,9 +106,7 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
               fieldsRef.email.current?.focus();
             }}
             showErrorMessage
-            onChangeText={(text) => {
-
-            }}
+            onChangeText={(text) => {}}
           />
 
           <ControlledInput

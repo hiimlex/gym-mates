@@ -58,13 +58,13 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
   return (
     <S.Container view={view} locked={item.locked}>
       {/* Floating coin */}
-      {isGridView && <S.FloatingCoin>{CoinJSX}</S.FloatingCoin>}
+      {isGridView && !item.locked && <S.FloatingCoin>{CoinJSX}</S.FloatingCoin>}
 
       {/* Floating locked */}
       {item.locked && (
-        <S.FloatingAdd disabled isGridView={isGridView}>
-          <Lock width={20} height={20} stroke={Colors.colors.text} />
-        </S.FloatingAdd>
+        <S.FloatingLocked disabled isGridView={isGridView} style={{ right: 6}}>
+          <Lock width={18} height={18} stroke={Colors.colors.text} />
+        </S.FloatingLocked>
       )}
 
       <S.MediaWrapper size={mediaSize}>
@@ -131,7 +131,7 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
             {item.name}
           </Typography.Body>
 
-          {!isGridView && CoinJSX}
+          {!isGridView && !item.locked && CoinJSX}
         </Row>
 
         <Row

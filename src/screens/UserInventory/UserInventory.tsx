@@ -67,65 +67,63 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
   );
 
   return (
-    <ScreenWrapper>
-      <S.Container style={{ paddingTop: headerHeight + 24 }}>
-        <S.Header>
-          <Typography.Heading _t>{"inventory.title"}</Typography.Heading>
+    <ScreenWrapper useHeaderHeight>
+      <S.Header>
+        <Typography.Heading _t>{"inventory.title"}</Typography.Heading>
 
-          <Row gap={12}>
-            <Badge
-              touchable
-              _t
-              label="inventory.filters.achievements"
-              active={filters?.category === ItemCategory.Achievement}
-              onPress={() => setAchievementsFilter(ItemCategory.Achievement)}
-            ></Badge>
+        <Row gap={12}>
+          <Badge
+            touchable
+            _t
+            label="inventory.filters.achievements"
+            active={filters?.category === ItemCategory.Achievement}
+            onPress={() => setAchievementsFilter(ItemCategory.Achievement)}
+          ></Badge>
 
-            <Badge
-              touchable
-              _t
-              label="inventory.filters.badges"
-              active={filters?.category === ItemCategory.Badge}
-              onPress={() => setAchievementsFilter(ItemCategory.Badge)}
-            ></Badge>
+          <Badge
+            touchable
+            _t
+            label="inventory.filters.badges"
+            active={filters?.category === ItemCategory.Badge}
+            onPress={() => setAchievementsFilter(ItemCategory.Badge)}
+          ></Badge>
+        </Row>
+      </S.Header>
+
+      <S.List
+        contentContainerStyle={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 24,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        {inventory.map((inventoryItem) => (
+          <ItemCard.View
+            key={inventoryItem.item._id}
+            item={inventoryItem.item}
+            itemsPerRow={2}
+            itemsGap={12}
+            mediaSize={mediaSize}
+            touchableImage
+            onImagePress={() => handleOnItemPress(inventoryItem.item)}
+          />
+        ))}
+
+        {isEmpty && (
+          <Row justify="center">
+            <Typography.Body textColor="textLight" _t>
+              {"inventory.empty"}
+            </Typography.Body>
           </Row>
-        </S.Header>
+        )}
 
-        <S.List
-          contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: 24,
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          {inventory.map((inventoryItem) => (
-            <ItemCard.View
-              key={inventoryItem.item._id}
-              item={inventoryItem.item}
-              itemsPerRow={2}
-              itemsGap={12}
-              mediaSize={mediaSize}
-              touchableImage
-              onImagePress={() => handleOnItemPress(inventoryItem.item)}
-            />
-          ))}
-
-          {isEmpty && (
-            <Row justify="center">
-              <Typography.Body textColor="textLight" _t>
-                {"inventory.empty"}
-              </Typography.Body>
-            </Row>
-          )}
-
-          {loading && (
-            <View style={{ flex: 1 }}>
-              <Loader color="primary" />
-            </View>
-          )}
-        </S.List>
-      </S.Container>
+        {loading && (
+          <View style={{ flex: 1 }}>
+            <Loader color="primary" />
+          </View>
+        )}
+      </S.List>
     </ScreenWrapper>
   );
 };

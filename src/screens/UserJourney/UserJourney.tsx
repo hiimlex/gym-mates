@@ -1,5 +1,5 @@
 import { UsersService } from "@api/services";
-import { Badge, Loader, Row, Typography } from "@components/atoms";
+import { Badge, Coin, Loader, Row, Typography } from "@components/atoms";
 import { JourneyEventInfo, ScreenWrapper } from "@components/molecules";
 import { IGetJourneyFilters, JourneyEventAction } from "@models/collections";
 import { QueryKeys } from "@models/generic";
@@ -46,61 +46,59 @@ const UserJourney: React.FC<ScreenProps<AppRoutes.UserJourney>> = () => {
   };
 
   return (
-    <ScreenWrapper>
-      <S.Container style={{ paddingTop: headerHeight + 24 }}>
-        <S.Header>
-          <Typography.Heading _t>{"journey.title"}</Typography.Heading>
+    <ScreenWrapper useHeaderHeight>
+      <S.Header>
+        <Typography.Heading _t>{"journey.title"}</Typography.Heading>
 
-          <Row gap={12} align="center" width={"auto"}>
-            <Badge
-              label={"journey.filters.recent"}
-              _t
-              touchable
-              active={filters.sort === "recent"}
-              onPress={setRecentFilter}
-            />
+        <Row gap={12} align="center" width={"auto"}>
+          <Badge
+            label={"journey.filters.recent"}
+            _t
+            touchable
+            active={filters.sort === "recent"}
+            onPress={setRecentFilter}
+          />
 
-            <Badge
-              label={"journey.events.paid"}
-              _t
-              touchable
-              active={filters.action === JourneyEventAction.PAID}
-              onPress={() => setActionFilter(JourneyEventAction.PAID)}
-            />
-          </Row>
-        </S.Header>
-        <S.ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            gap: 0,
-            flexGrow: 1,
-          }}
-        >
-          {isLoading && (
-            <S.LoaderWrapper>
-              <Loader color="primary" />
-            </S.LoaderWrapper>
-          )}
+          <Badge
+            label={"journey.events.paid"}
+            _t
+            touchable
+            active={filters.action === JourneyEventAction.PAID}
+            onPress={() => setActionFilter(JourneyEventAction.PAID)}
+          />
+        </Row>
+      </S.Header>
+      <S.ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          gap: 0,
+          flexGrow: 1,
+        }}
+      >
+        {isLoading && (
+          <S.LoaderWrapper>
+            <Loader color="primary" />
+          </S.LoaderWrapper>
+        )}
 
-          {!isLoading &&
-            data?.data &&
-            data.data.events.map((event) => (
-              <S.JourneyEventWrapper key={event.created_at}>
-                <S.Timeline>
-                  <S.HistoryLine></S.HistoryLine>
-                  <S.EventDot />
-                </S.Timeline>
-                <S.JourneyEvent>
-                  <Typography.Caption textColor="textLight">
-                    {format(new Date(event.created_at), "dd/MM/yy HH:mm")}
-                  </Typography.Caption>
+        {!isLoading &&
+          data?.data &&
+          data.data.events.map((event) => (
+            <S.JourneyEventWrapper key={event.created_at}>
+              <S.Timeline>
+                <S.HistoryLine></S.HistoryLine>
+                <S.EventDot />
+              </S.Timeline>
+              <S.JourneyEvent>
+                <Typography.Caption textColor="textLight">
+                  {format(new Date(event.created_at), "dd/MM/yy HH:mm")}
+                </Typography.Caption>
 
-                  <JourneyEventInfo event={event} />
-                </S.JourneyEvent>
-              </S.JourneyEventWrapper>
-            ))}
-        </S.ScrollView>
-      </S.Container>
+                <JourneyEventInfo event={event} />
+              </S.JourneyEvent>
+            </S.JourneyEventWrapper>
+          ))}
+      </S.ScrollView>
     </ScreenWrapper>
   );
 };

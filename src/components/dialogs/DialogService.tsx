@@ -6,6 +6,9 @@ import EditCrewSettings from "./EditCrewSettings/EditCrewSettings";
 import ShareWorkout from "./ShareWorkout/ShareWorkout";
 import JoinCrew from "./JoinCrew/JoinCrew";
 import CreateCrew from "./CreateCrew/CreateCrew";
+import CoinSystem from "./CoinSystemInfo/CoinSystemInfo";
+import CrewRulesInfo from "./CrewRulesInfo/CrewRulesInfo";
+import CoinSystemInfo from "./CoinSystemInfo/CoinSystemInfo";
 
 const openAddWorkout = () => {
   store.dispatch(
@@ -80,6 +83,42 @@ const openEditCrewSettings = () => {
   );
 };
 
+const openCoinSystemInfo = () => {
+  store.dispatch(
+    DialogActions.openDialog({
+      content: <CoinSystemInfo />,
+      data: {
+        title: "coinSystem.title",
+        _t: true,
+      },
+    })
+  );
+};
+
+const openStreakSystemInfo = () => {
+  store.dispatch(
+    DialogActions.openDialog({
+      content: <></>,
+      data: {
+        title: "streakSystem.title",
+        _t: true,
+      },
+    })
+  );
+};
+
+const openCrewRulesInfo = () => {
+  store.dispatch(
+    DialogActions.openDialog({
+      content: <CrewRulesInfo/>,
+      data: {
+        title: "crewRules.title",
+        _t: true,
+      },
+    })
+  );
+};
+
 export const Dialogs = {
   openAddWorkout,
   openJoinCrew,
@@ -87,4 +126,7 @@ export const Dialogs = {
   openCreateCrew,
   openEditCrewSettings,
   openShareToCrews,
+  openCoinSystemInfo,
+  openStreakSystemInfo,
+  openCrewRulesInfo,
 };

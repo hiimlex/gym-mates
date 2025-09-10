@@ -1,6 +1,7 @@
 import React from "react";
 import { ViewStyle } from "react-native";
 import S from "./Card.styles";
+import { AnimatedProps, EntryOrExitLayoutType } from "react-native-reanimated";
 
 interface CardProps {
   children?: React.ReactNode;
@@ -12,6 +13,8 @@ interface CardProps {
   touchable?: boolean;
   onPress?: () => void;
   active?: boolean;
+  entering?: EntryOrExitLayoutType;
+  exiting?: EntryOrExitLayoutType;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -24,6 +27,8 @@ const Card: React.FC<CardProps> = ({
   touchable = false,
   onPress = () => {},
   active,
+  entering,
+  exiting
 }) => {
   return (
     <S.Card
@@ -33,6 +38,8 @@ const Card: React.FC<CardProps> = ({
       touchable={touchable}
       style={[{ flexDirection: direction, padding, gap, width }, style]}
       active={active}
+      entering={entering}
+      exiting={exiting}
     >
       {children}
     </S.Card>

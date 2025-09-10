@@ -5,6 +5,7 @@ export * from "./HealthModel";
 export * from "./InventoryModel";
 export * from "./ItemsModel";
 export * from "./JourneyModel";
+export * from "./MissionsModel";
 export * from "./ShopModel";
 export * from "./UsersModel";
 export * from "./WorkoutsModel";

@@ -16,8 +16,8 @@ export interface ItemCardProps {
 
 export const Dot = () => (
   <Circle
-    width={3}
-    height={3}
+    width={5}
+    height={5}
     stroke={Colors.colors.textLight}
     fill={Colors.colors.textLight}
   />
@@ -37,13 +37,6 @@ export function calculateMediaSize(
 
   const gap = (itemsPerRow - 1) * gridGap;
   const padding = itemsPerRow * innerPadding;
-
-  console.log({
-    w: width / itemsPerRow - gap - screenPadding,
-    gap,
-    padding,
-    screenPadding,
-  });
 
   return width / itemsPerRow - gap - padding - screenPadding;
 }

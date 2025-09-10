@@ -78,84 +78,80 @@ const SetupHealth: React.FC<ScreenProps<AppRoutes.SetupHealth>> = ({
 
   return (
     <ScreenWrapper>
-      <S.Container
-        style={{ paddingTop: insets.top + 60, paddingHorizontal: 24, gap: 24 }}
-      >
-        <Row justify="space-between">
-          <View style={{ gap: 12 }}>
-            <Typography.Subtitle _t textColor="textDark">
-              {"setupHealth.title"}
-            </Typography.Subtitle>
-            <Typography.Body _t textColor="text">
-              {"setupHealth.subtitle"}
-            </Typography.Body>
-          </View>
+      <Row justify="space-between">
+        <View style={{ gap: 12 }}>
+          <Typography.Subtitle _t textColor="textDark">
+            {"setupHealth.title"}
+          </Typography.Subtitle>
+          <Typography.Body _t textColor="text">
+            {"setupHealth.subtitle"}
+          </Typography.Body>
+        </View>
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={handleButtonPress}
-            disabled={isPending}
-          >
-            <Typography.Button textColor="primary" _t>
-              {formState.isValid ? "setupAvatar.save" : "setupAvatar.skip"}
-            </Typography.Button>
-          </TouchableOpacity>
-        </Row>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleButtonPress}
+          disabled={isPending}
+        >
+          <Typography.Button textColor="primary" _t>
+            {formState.isValid ? "setupAvatar.save" : "setupAvatar.skip"}
+          </Typography.Button>
+        </TouchableOpacity>
+      </Row>
 
-        <ControlledInput
-          control={control}
-          name="weight"
-          rules={{ required: true }}
-          placeholder="setupHealth.fields.weight"
-          label="setupHealth.fields.weight"
-          inputRef={fieldsRef.weight}
-          keyboardType="number-pad"
-          returnKeyType="next"
-          onSubmitEditing={() => {
-            fieldsRef.height.current?.focus();
-          }}
-          suffix={
-            <Typography.Caption textColor="textLight">kg</Typography.Caption>
-          }
-          maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
-        />
+      <ControlledInput
+        control={control}
+        name="weight"
+        rules={{ required: true }}
+        placeholder="setupHealth.fields.weight"
+        label="setupHealth.fields.weight"
+        inputRef={fieldsRef.weight}
+        keyboardType="number-pad"
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          fieldsRef.height.current?.focus();
+        }}
+        suffix={
+          <Typography.Caption textColor="textLight">kg</Typography.Caption>
+        }
+        maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
+      />
 
-        <ControlledInput
-          control={control}
-          name="height"
-          rules={{ required: true }}
-          placeholder="setupHealth.fields.height"
-          label="setupHealth.fields.height"
-          inputRef={fieldsRef.height}
-          keyboardType="number-pad"
-          returnKeyType="next"
-          onSubmitEditing={() => {
-            fieldsRef.body_fat.current?.focus();
-          }}
-          suffix={
-            <Typography.Caption textColor="textLight">cm</Typography.Caption>
-          }
-          maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
-        />
+      <ControlledInput
+        control={control}
+        name="height"
+        rules={{ required: true }}
+        placeholder="setupHealth.fields.height"
+        label="setupHealth.fields.height"
+        inputRef={fieldsRef.height}
+        keyboardType="number-pad"
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          fieldsRef.body_fat.current?.focus();
+        }}
+        suffix={
+          <Typography.Caption textColor="textLight">cm</Typography.Caption>
+        }
+        maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
+      />
 
-        <ControlledInput
-          control={control}
-          name="body_fat"
-          rules={{ required: true }}
-          placeholder="setupHealth.fields.body_fat"
-          label="setupHealth.fields.body_fat"
-          inputRef={fieldsRef.body_fat}
-          keyboardType="number-pad"
-          returnKeyType="done"
-          onSubmitEditing={() => {
-            fieldsRef.body_fat.current?.blur();
-          }}
-          suffix={
-            <Typography.Caption textColor="textLight">%</Typography.Caption>
-          }
-          maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
-        />
-      </S.Container>
+      <ControlledInput
+        control={control}
+        name="body_fat"
+        rules={{ required: true }}
+        placeholder="setupHealth.fields.body_fat"
+        label="setupHealth.fields.body_fat"
+        inputRef={fieldsRef.body_fat}
+        keyboardType="number-pad"
+        returnKeyType="done"
+        onSubmitEditing={() => {
+          fieldsRef.body_fat.current?.blur();
+        }}
+        suffix={
+          <Typography.Caption textColor="textLight">%</Typography.Caption>
+        }
+        maskFn={(e) => Masks.maxLength(Masks.number(e), 3)}
+      />
     </ScreenWrapper>
   );
 };

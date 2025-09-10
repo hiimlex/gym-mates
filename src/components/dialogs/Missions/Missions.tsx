@@ -1,28 +1,29 @@
+import { MissionsService } from "@api/services";
+import {
+  AchievementIcon,
+  Coin,
+  Loader,
+  Row,
+  Typography,
+} from "@components/atoms";
+import { BlurProps, QueryKeys } from "@models/generic";
+import { OverlayActions } from "@store/slices";
+import { useQuery } from "@tanstack/react-query";
+import { Colors } from "@theme";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  View,
-  ImageBackground,
-  useWindowDimensions,
   Image,
-  TouchableOpacity,
+  ImageBackground,
   ScrollView,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
 } from "react-native";
-import S from "./Missions.styles";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { BlurProps } from "@models/generic";
-import {
-  FadeIn,
-  FadeOut,
-  Easing,
-  FadeInDown,
-  FadeOutDown,
-} from "react-native-reanimated";
-import { AchievementIcon, Coin, Row, Typography } from "@components/atoms";
 import { X } from "react-native-feather";
+import { FadeInDown } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import { OverlayActions } from "@store/slices";
-import { Colors } from "@theme";
-import { Header } from "@components/molecules";
+import S from "./Missions.styles";
 
 const missionBg = require("../../../assets/missions_bg_sm.png");
 const missionBox = require("../../../assets/mission_box.png");
@@ -46,6 +47,22 @@ const Missions: React.FC<MissionsProps> = ({}) => {
     [height, insets]
   );
 
+  const getImageWidthFromAspectRatio = (
+    aspectRatio: number,
+    height: number
+  ) => {
+    return +(aspectRatio * height).toFixed(0);
+  };
+
+  const close = () => {
+    dispatch(OverlayActions.hide());
+  };
+
+  const { data, isLoading } = useQuery({
+    queryFn: MissionsService.list,
+    queryKey: [QueryKeys.Missions.List],
+  });
+
   useEffect(() => {
     const imageSrc = Image.resolveAssetSource(missionBg);
     Image.getSize(imageSrc.uri, (width, height) => {
@@ -58,18 +75,7 @@ const Missions: React.FC<MissionsProps> = ({}) => {
     });
   }, []);
 
-  const getImageWidthFromAspectRatio = (
-    aspectRatio: number,
-    height: number
-  ) => {
-    return +(aspectRatio * height).toFixed(0);
-  };
-
-  const close = () => {
-    dispatch(OverlayActions.hide());
-  };
-
-  if (loading) {
+  if (loading || isLoading) {
     return null;
   }
 
@@ -125,32 +131,43 @@ const Missions: React.FC<MissionsProps> = ({}) => {
               marginTop: 32,
               marginBottom: 12,
             }}
-            contentContainerStyle={{ gap: 24 }}
           >
-            <S.MissionItem>
-              <S.AchievementIconWrapper source={missionBox}>
-                <AchievementIcon rarity="common" size={72} />
-              </S.AchievementIconWrapper>
-              <S.MissionInfo>
-                <Row align="center" justify="space-between">
-                  <Typography.Body textColor="textDark" fontWeight="semibold">
-                    {"First workout"}
-                  </Typography.Body>
-                  <Coin textVariant="body" label="+5" />
-                </Row>
+            {data &&
+              data.data &&
+              data.data.missions.map((mission) => (
+                <S.MissionItem key={mission._id}>
+                  <S.AchievementIconWrapper source={missionBox}>
+                    {mission.achievement.rarity && (
+                      <AchievementIcon
+                        rarity={mission.achievement.rarity}
+                        size={72}
+                      />
+                    )}
+                  </S.AchievementIconWrapper>
+                  <S.MissionInfo>
+                    <Row align="center" justify="space-between">
+                      <Typography.Body
+                        textColor="textDark"
+                        fontWeight="semibold"
+                      >
+                        {mission.name}
+                      </Typography.Body>
+                      <Coin textVariant="body" label={`+${mission.reward}`} />
+                    </Row>
 
-                <Typography.Caption
-                  textColor="text"
-                  style={{
-                    flexShrink: 1,
-                    maxWidth: width * 0.5,
-                    lineHeight: 14,
-                  }}
-                >
-                  {"Complete your first workout."}
-                </Typography.Caption>
-              </S.MissionInfo>
-            </S.MissionItem>
+                    <Typography.Caption
+                      textColor="text"
+                      style={{
+                        flexShrink: 1,
+                        maxWidth: width * 0.5,
+                        lineHeight: 14,
+                      }}
+                    >
+                      {mission.description}
+                    </Typography.Caption>
+                  </S.MissionInfo>
+                </S.MissionItem>
+              ))}
           </ScrollView>
         </View>
       </ImageBackground>

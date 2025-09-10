@@ -21,6 +21,7 @@ export enum AppRoutes {
   UserJourney = "UserJourney",
   UserInventory = "UserInventory",
   UserFollows = "UserFollows",
+  UserCharacter = "Character",
   // Settings
   Help = "Help",
   Settings = "Settings",
@@ -53,6 +54,7 @@ export type TRootStackParamList = {
   };
   [AppRoutes.UserFollows]?: {}
   [AppRoutes.Help]?: {};
+  [AppRoutes.UserCharacter]?: {};
 };
 
 export type ScreenProps<T extends keyof TRootStackParamList> =

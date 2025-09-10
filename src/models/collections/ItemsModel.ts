@@ -39,7 +39,7 @@ export interface IItem {
   _id: string;
   name?: string;
   category: ItemCategory;
-  price?: number;
+  price: number;
   requirements: string[];
   key?: string;
   description?: string;

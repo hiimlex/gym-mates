@@ -1,34 +1,22 @@
 import { CrewsService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Coin, Loader, Row, Typography } from "@components/atoms";
+import { MissionIcon } from "@components/dialogs";
 import { Header, ScreenWrapper } from "@components/molecules";
 import { JoinedCrewsView, NotJoinedCrews } from "@components/organisms";
-import { ICrewRules, ICrewsResponse } from "@models/collections";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
+import { ICrewsResponse } from "@models/collections";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useIsFocused } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import {
-  ConfigActions,
-  CrewsActions,
-  NotifierActions,
-  OverlayActions,
-} from "@store/slices";
+import { ConfigActions, CrewsActions, NotifierActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
+import { getCrewRules } from "@utils/getCrewRules";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Home.styles";
-import { getMessageFromError } from "@utils/handleAxiosError";
-import { Paperclip } from "react-native-feather";
-import { OverlayType } from "@models/generic";
-import { MissionIcon } from "@components/dialogs";
-import { getCrewRules } from "@utils/getCrewRules";
 
 const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
   navigation: { navigate },
@@ -98,9 +86,8 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
     <ScreenWrapper>
       <S.Container
         contentContainerStyle={{
-          padding: 24,
           gap: 24,
-          paddingTop: insets.top + 24,
+          flexGrow: 1,
           paddingBottom: bottomNavHeight + 24,
         }}
         showsVerticalScrollIndicator={false}

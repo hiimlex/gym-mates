@@ -1,3 +1,5 @@
+import { IItem } from "./ItemsModel";
+
 export enum MissionContext {
   Workout = "workout",
   Social = "social",
@@ -7,7 +9,7 @@ export enum MissionContext {
 
 export interface IMission {
   _id: string;
-  achievement: string;
+  achievement: IItem;
   hidden: boolean;
   name: string;
   description: string;
@@ -16,4 +18,8 @@ export interface IMission {
   context: MissionContext;
   created_at: string;
   updated_at: string;
+}
+
+export interface IListMissionsResponse {
+  missions: IMission[];
 }

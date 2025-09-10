@@ -93,7 +93,7 @@ const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
   });
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper useHeaderHeight>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
@@ -103,15 +103,11 @@ const EditProfile: React.FC<ScreenProps<AppRoutes.EditProfile>> = ({
           ref={scrollRef}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
-            padding: 24,
             gap: 24,
             flexGrow: 1,
-            paddingTop: headerHeight + 24,
           }}
         >
           <S.Group>
-            <Typography.Body _t>{"editProfile.account"}</Typography.Body>
-
             <Controller
               control={editControl}
               name="name"

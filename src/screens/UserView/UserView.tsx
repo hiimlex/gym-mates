@@ -103,113 +103,116 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
   }
 
   return (
-    <ScreenWrapper>
-      <S.Container style={{ paddingTop: headerHeight + 24 }}>
-        <Row gap={12} align="center">
-          <Avatar size={80} preview={user.avatar?.url} disabled />
-          <View style={{ gap: 12 }}>
-            <View style={{ gap: 6 }}>
-              <Typography.Heading fontWeight="medium">
-                {user.name}
-              </Typography.Heading>
+    <ScreenWrapper useHeaderHeight>
+      <Row gap={12} align="center">
+        <Avatar size={80} preview={user.avatar?.url} disabled />
+        <View style={{ gap: 12 }}>
+          <View style={{ gap: 6 }}>
+            <Typography.Heading fontWeight="medium">
+              {user.name}
+            </Typography.Heading>
 
-              <Text
-                style={{
-                  fontWeight: "500",
-                  fontStyle: "italic",
-                  color: Colors.colors.primary,
-                }}
-              >
-                {t(
-                  user?.title
-                    ? `items.title.${user?.title?.name}`
-                    : "items.title.noTitle"
-                )}
-              </Text>
-            </View>
-
-            <Row gap={12}>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.followers"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.followers?.length || 0}
-                </Typography.Button>
-              </View>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.following"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.following?.length || 0}
-                </Typography.Button>
-              </View>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.crews"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.crews_count || 0}
-                </Typography.Button>
-              </View>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.streak"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.day_streak} {t("units.days")}
-                </Typography.Button>
-              </View>
-            </Row>
+            <Text
+              style={{
+                fontWeight: "500",
+                fontStyle: "italic",
+                color: Colors.colors.primary,
+              }}
+            >
+              {t(
+                user?.title
+                  ? `items.title.${user?.title?.name}`
+                  : "items.title.noTitle"
+              )}
+            </Text>
           </View>
-        </Row>
 
-        <Tabs.Root pagerRef={pagerRef} initialPage={0} header={tabsHeader}>
-          <Tabs.Item key={0} contentContainerStyle={{ gap: 12 }}>
-            {workoutsData?.workouts.map((workout, index) => (
-              <WorkoutInfo
-                key={workout._id}
-                workout={workout}
-                showCrewName
-                showImageViewerOnPress
-                onImagePress={() => showImageViewerOnPress(index)}
-              ></WorkoutInfo>
-            ))}
-            {loadingUserWorkouts && <Loader color="primary" />}
-            {!loadingUserWorkouts && workoutsData?.workouts.length === 0 && (
-              <Typography.Body textColor="textLight" _t textAlign="center">
-                {"userView.noWorkouts"}
+          <Row gap={12}>
+            <View style={{ gap: 6 }}>
+              <Typography.Tip _t textColor="textLight" fontWeight="medium">
+                {"profile.followers"}
+              </Typography.Tip>
+              <Typography.Button textColor="text" fontWeight="semibold">
+                {user.followers?.length || 0}
+              </Typography.Button>
+            </View>
+            <View style={{ gap: 6 }}>
+              <Typography.Tip _t textColor="textLight" fontWeight="medium">
+                {"profile.following"}
+              </Typography.Tip>
+              <Typography.Button textColor="text" fontWeight="semibold">
+                {user.following?.length || 0}
+              </Typography.Button>
+            </View>
+            <View style={{ gap: 6 }}>
+              <Typography.Tip _t textColor="textLight" fontWeight="medium">
+                {"profile.crews"}
+              </Typography.Tip>
+              <Typography.Button textColor="text" fontWeight="semibold">
+                {user.crews_count || 0}
+              </Typography.Button>
+            </View>
+            <View style={{ gap: 6 }}>
+              <Typography.Tip _t textColor="textLight" fontWeight="medium">
+                {"profile.streak"}
+              </Typography.Tip>
+              <Typography.Button textColor="text" fontWeight="semibold">
+                {user.day_streak} {t("units.days")}
+              </Typography.Button>
+            </View>
+          </Row>
+        </View>
+      </Row>
+
+      <Tabs.Root pagerRef={pagerRef} initialPage={0} header={tabsHeader}>
+        <Tabs.Item key={0} contentContainerStyle={{ gap: 12 }}>
+          {workoutsData?.workouts.map((workout, index) => (
+            <WorkoutInfo
+              key={workout._id}
+              workout={workout}
+              showCrewName
+              showImageViewerOnPress
+              onImagePress={() => showImageViewerOnPress(index)}
+            ></WorkoutInfo>
+          ))}
+          {loadingUserWorkouts && <Loader color="primary" />}
+          {!loadingUserWorkouts && workoutsData?.workouts.length === 0 && (
+            <Typography.Body textColor="textLight" _t textAlign="center">
+              {"userView.noWorkouts"}
+            </Typography.Body>
+          )}
+        </Tabs.Item>
+        <Tabs.Item
+          key={1}
+          contentContainerStyle={{
+            gap: 24,
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
+          {achievementsData?.journeyById.inventory.map((achievement) => (
+            <ItemCard.View
+              item={achievement.item}
+              key={achievement.item._id}
+              itemsPerRow={3}
+              touchableImage
+              onImagePress={() => handleOnItemPress(achievement.item)}
+            />
+          ))}
+          {loadingAchievements && <Loader color="primary" />}
+          {!loadingAchievements &&
+            achievementsData?.journeyById.inventory.length === 0 && (
+              <Typography.Body
+                textColor="textLight"
+                _t
+                textAlign="center"
+                width={"100%"}
+              >
+                {"userView.noAchievements"}
               </Typography.Body>
             )}
-          </Tabs.Item>
-          <Tabs.Item
-            key={1}
-            contentContainerStyle={{
-              gap: 24,
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            {achievementsData?.journeyById.inventory.map((achievement) => (
-              <ItemCard.View
-                item={achievement.item}
-                key={achievement.item._id}
-                itemsPerRow={3}
-                touchableImage
-                onImagePress={() => handleOnItemPress(achievement.item)}
-              />
-            ))}
-            {loadingAchievements && <Loader color="primary" />}
-            {!loadingAchievements &&
-              achievementsData?.journeyById.inventory.length === 0 && (
-                <Typography.Body textColor="textLight" _t textAlign="center" width={"100%"}>
-                  {"userView.noAchievements"}
-                </Typography.Body>
-              )}
-          </Tabs.Item>
-        </Tabs.Root>
-      </S.Container>
+        </Tabs.Item>
+      </Tabs.Root>
     </ScreenWrapper>
   );
 };

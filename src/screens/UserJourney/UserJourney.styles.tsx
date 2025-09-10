@@ -3,7 +3,6 @@ import styled from "@emotion/native";
 const Container = styled.View`
   flex: 1;
   gap: 24px;
-  padding: 24px;
 `;
 
 const Header = styled.View`

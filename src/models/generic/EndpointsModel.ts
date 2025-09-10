@@ -42,4 +42,6 @@ export enum Endpoints {
   // Shop
   ShopBuy = "/shop/buy",
   ShopListItems = "/shop/items",
+  // Missions
+  Missions = "/missions",
 }

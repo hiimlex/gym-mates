@@ -78,72 +78,68 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
 
   return (
     <ScreenWrapper>
-      <S.Container
-        style={{ paddingTop: insets.top + 60, paddingHorizontal: 24, gap: 24 }}
+      <View style={{ gap: 12 }}>
+        <Typography.Subtitle _t textColor="textDark">
+          {"login.title"}
+        </Typography.Subtitle>
+        <Typography.Body _t textColor="text">
+          {"login.subtitle"}
+        </Typography.Body>
+      </View>
+      <ControlledInput
+        control={control}
+        name="email"
+        label="login.email"
+        placeholder="login.email"
+        rules={{ required: true }}
+        textContentType="emailAddress"
+        keyboardType="email-address"
+        returnKeyType="next"
+        inputRef={fieldsRef.email}
+        maskFn={(e) => Masks.email(e)}
+        onSubmitEditing={() => {
+          fieldsRef.password.current?.focus();
+        }}
+      />
+
+      <ControlledInput
+        control={control}
+        name="password"
+        label="login.password"
+        placeholder="login.password"
+        rules={{ required: true }}
+        secureTextEntry
+        textContentType="password"
+        returnKeyType="done"
+        inputRef={fieldsRef.password}
+        onSubmitEditing={handleLoginSubmit}
+      />
+
+      <Button
+        title="login.title"
+        disabled={!formState.isValid}
+        loading={isPending}
+        onPress={handleLoginSubmit}
+      />
+
+      <S.FloatLinkWrapper
+        style={{
+          paddingBottom: insets.bottom + 12,
+          width: width,
+        }}
       >
-        <View style={{ gap: 12 }}>
-          <Typography.Subtitle _t textColor="textDark">
-            {"login.title"}
-          </Typography.Subtitle>
-          <Typography.Body _t textColor="text">
-            {"login.subtitle"}
-          </Typography.Body>
-        </View>
-        <ControlledInput
-          control={control}
-          name="email"
-          label="login.email"
-          placeholder="login.email"
-          rules={{ required: true }}
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          returnKeyType="next"
-          inputRef={fieldsRef.email}
-          maskFn={(e) => Masks.email(e)}
-          onSubmitEditing={() => {
-            fieldsRef.password.current?.focus();
-          }}
-        />
-
-        <ControlledInput
-          control={control}
-          name="password"
-          label="login.password"
-          placeholder="login.password"
-          rules={{ required: true }}
-          secureTextEntry
-          textContentType="password"
-          returnKeyType="done"
-          inputRef={fieldsRef.password}
-          onSubmitEditing={handleLoginSubmit}
-        />
-
-        <Button
-          title="login.title"
-          disabled={!formState.isValid}
-          loading={isPending}
-          onPress={handleLoginSubmit}
-        />
-
-        <S.FloatLinkWrapper
-          style={{
-            paddingBottom: insets.bottom + 12,
-            width: width,
-          }}
+        <Typography.Caption _t textColor="textLight">
+          {"login.link"}
+        </Typography.Caption>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={() => navigate(AppRoutes.SignUp)}
         >
-          <Typography.Caption _t textColor="textLight">
-            {"login.link"}
-          </Typography.Caption>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => navigate(AppRoutes.SignUp)}
-          >
-            <Typography.Button _t textColor="primary">
-              {"login.signUp"}
-            </Typography.Button>
-          </TouchableOpacity>
-        </S.FloatLinkWrapper>
-      </S.Container>
+          <Typography.Button _t textColor="primary">
+            {"login.signUp"}
+          </Typography.Button>
+        </TouchableOpacity>
+      </S.FloatLinkWrapper>
     </ScreenWrapper>
   );
 };

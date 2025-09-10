@@ -233,11 +233,10 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
                 >
                   {"journey.events.completeMission"}
                 </Typography.Body>
-                <Typography.Caption textColor="primary" _t>
-                  {`achievementRarity.${event.data.achievement.rarity}`}
-                </Typography.Caption>
               </S.EventInfo>
             </S.EventWithBanner>
+
+            <Coin label={`+${event.data.mission.reward}`} textVariant="body" />
           </S.EventRow>
         )}
     </S.Container>

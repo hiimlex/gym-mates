@@ -21,7 +21,7 @@ interface CoinProps {
 const coinIcon = require("../../../assets/coin.png");
 
 const Coin: React.FC<CoinProps> = ({
-  label = "0",
+  label,
   textVariant = "button",
   textColor = "text",
   size = 24,

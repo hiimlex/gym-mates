@@ -1,4 +1,9 @@
+import { Missions } from "@components/dialogs";
+
 export const QueryKeys = {
+  Missions: {
+    List: "missions.list",
+  },
   Shop: {
     Items: "shop.items",
   },

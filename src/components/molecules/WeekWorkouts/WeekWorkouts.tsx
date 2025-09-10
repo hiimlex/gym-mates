@@ -80,7 +80,6 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
         const isWeekend = day.getDay() === 0 || day.getDay() === 6;
         const isCurrentDay = day.getDate() === current.getDate();
         const isPast = day < current;
-        const isFuture = day > current;
         const textColor = isCurrentDay ? "primary" : "textLight";
         const opacity = isPast
           ? 1 - (current.getDay() - day.getDay()) * opacityPace
@@ -138,6 +137,23 @@ const WeekWorkouts: React.FC<WeekWorkoutsProps> = ({ children }) => {
               >
                 {day.getDate().toString().padStart(2, "0")}
               </Typography.Body>
+            )}
+
+            {!isPast && workoutsByDay[index] && (
+              <>
+                <CheckCircle
+                  width={20}
+                  height={20}
+                  fill={Colors.colors.primary}
+                  stroke={Colors.colors.primary}
+                  fillOpacity={0.2}
+                />
+                <Typography.Tip
+                  textColor={isCurrentDay ? "primary" : "textDark"}
+                >
+                  {day.getDate().toString().padStart(2, "0")}
+                </Typography.Tip>
+              </>
             )}
           </S.DayItem>
         );

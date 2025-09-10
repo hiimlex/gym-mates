@@ -77,45 +77,36 @@ const SetupAvatar: React.FC<ScreenProps<AppRoutes.SetupAvatar>> = ({
 
   return (
     <ScreenWrapper>
-      <S.Container
+      <Row align="center" justify="space-between">
+        <View style={{ gap: 12 }}>
+          <Typography.Subtitle _t textColor="textDark">
+            {"setupAvatar.title"}
+          </Typography.Subtitle>
+          <Typography.Body _t textColor="text">
+            {"setupAvatar.subtitle"}
+          </Typography.Body>
+        </View>
+
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleButtonPress}
+          disabled={isPending}
+        >
+          <Typography.Button textColor="primary" _t>
+            {!!avatar ? "setupAvatar.save" : "setupAvatar.skip"}
+          </Typography.Button>
+        </TouchableOpacity>
+      </Row>
+
+      <View
         style={{
-          paddingTop: insets.top + 60,
-          paddingHorizontal: 24,
-          gap: 24,
-          flex: 1,
+          flex: 0.2,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Row align="center" justify="space-between">
-          <View style={{ gap: 12 }}>
-            <Typography.Subtitle _t textColor="textDark">
-              {"setupAvatar.title"}
-            </Typography.Subtitle>
-            <Typography.Body _t textColor="text">
-              {"setupAvatar.subtitle"}
-            </Typography.Body>
-          </View>
-
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={handleButtonPress}
-            disabled={isPending}
-          >
-            <Typography.Button textColor="primary" _t>
-              {!!avatar ? "setupAvatar.save" : "setupAvatar.skip"}
-            </Typography.Button>
-          </TouchableOpacity>
-        </Row>
-
-        <View
-          style={{
-            flex: 0.2,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Avatar preview={preview} onAvatarChange={onAvatarChange} />
-        </View>
-      </S.Container>
+        <Avatar preview={preview} onAvatarChange={onAvatarChange} />
+      </View>
     </ScreenWrapper>
   );
 };

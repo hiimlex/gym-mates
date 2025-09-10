@@ -22,6 +22,8 @@ import {
   ShopScreen,
   ShopScreenOptions,
   SignUpScreen,
+  UserCharacterScreen,
+  UserCharacterScreenOptions,
   UserFollowsScreen,
   UserFollowsScreenOptions,
   UserInventoryScreen,
@@ -133,7 +135,12 @@ const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
               component={UserFollowsScreen}
               options={UserFollowsScreenOptions}
             />
-
+            
+            <Stack.Screen
+              name={AppRoutes.UserCharacter}
+              component={UserCharacterScreen}
+              options={UserCharacterScreenOptions}
+            />
             <Stack.Screen
               name={AppRoutes.Help}
               component={HelpScreen}

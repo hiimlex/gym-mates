@@ -77,129 +77,122 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
   };
 
   return (
-    <ScreenWrapper>
-      <S.Container
-        style={{ padding: 24, paddingTop: headerHeight + 24, gap: 24 }}
-      >
-        <View style={{ gap: 12 }}>
-          <Typography.Heading fontWeight="medium" _t>
-            {"crews.title"}
-          </Typography.Heading>
+    <ScreenWrapper useHeaderHeight>
+      <View style={{ gap: 12 }}>
+        <Typography.Heading fontWeight="medium" _t>
+          {"crews.title"}
+        </Typography.Heading>
 
-          <Row gap={12} align="center">
+        <Row gap={12} align="center">
+          <S.FilterBadge
+            label="crews.filters.mine"
+            _t
+            touchable
+            onPress={setMineFilter}
+            active={!!filters.created_by}
+          />
+          {user?.favorites && user?.favorites?.length > 0 && (
             <S.FilterBadge
-              label="crews.filters.mine"
+              label="crews.filters.favorites"
               _t
               touchable
-              onPress={setMineFilter}
-              active={!!filters.created_by}
+              onPress={setFavoritesFilter}
+              active={!!filters.favorites}
             />
-            {user?.favorites && user?.favorites?.length > 0 && (
-              <S.FilterBadge
-                label="crews.filters.favorites"
-                _t
-                touchable
-                onPress={setFavoritesFilter}
-                active={!!filters.favorites}
-              />
-            )}
-          </Row>
-        </View>
+          )}
+        </Row>
+      </View>
 
-        <S.ScrollList
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            gap: 24,
-            paddingBottom: bottomNavHeight + 24,
-          }}
-        >
-          {crewsData?.crews.map((crew, index) => (
-            <S.CrewCard
-              key={index}
-              touchable
-              onPress={() => navigateToCrew(crew)}
-            >
-              <Row justify="space-between" align="center">
-                <Row gap={12} align="center" width="auto">
-                  <BannerPreview
-                    preview={crew.banner?.url}
-                    size={48}
-                  />
+      <S.ScrollList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          gap: 24,
+          paddingBottom: bottomNavHeight + 24,
+        }}
+      >
+        {crewsData?.crews.map((crew, index) => (
+          <S.CrewCard
+            key={index}
+            touchable
+            onPress={() => navigateToCrew(crew)}
+          >
+            <Row justify="space-between" align="center">
+              <Row gap={12} align="center" width="auto">
+                <BannerPreview preview={crew.banner?.url} size={48} />
 
-                  <View style={{ gap: 6 }}>
-                    <Typography.Body textColor="primary" _t>
-                      {crew.name}
-                    </Typography.Body>
+                <View style={{ gap: 6 }}>
+                  <Typography.Body textColor="primary" _t>
+                    {crew.name}
+                  </Typography.Body>
 
-                    <Row gap={12} align="center">
-                      <Row gap={3} align="center" width={"auto"}>
-                        <Code
-                          width={16}
-                          height={16}
-                          stroke={Colors.colors.text}
-                        />
-                        <Typography.Caption textColor="text">
-                          {crew.code}
-                        </Typography.Caption>
-                      </Row>
-                      <Row gap={3} align="center" width={"auto"}>
-                        <User
-                          width={16}
-                          height={16}
-                          stroke={Colors.colors.text}
-                          fill={Colors.colors.text}
-                          fillOpacity={0.2}
-                        />
-                        <Typography.Caption textColor="text">
-                          {crew.members_w_user.length}
-                        </Typography.Caption>
-                      </Row>
-                      {isFavorite(crew._id) && (
-                        <Star
-                          width={16}
-                          height={16}
-                          stroke={Colors.colors.secondary}
-                          fill={Colors.colors.secondary}
-                          fillOpacity={0.2}
-                        />
-                      )}
+                  <Row gap={12} align="center">
+                    <Row gap={3} align="center" width={"auto"}>
+                      <Code
+                        width={16}
+                        height={16}
+                        stroke={Colors.colors.text}
+                      />
+                      <Typography.Caption textColor="text">
+                        {crew.code}
+                      </Typography.Caption>
                     </Row>
-                  </View>
-                </Row>
-                <ArrowRight
-                  width={24}
-                  height={24}
-                  stroke={Colors.colors.primary}
-                />
+                    <Row gap={3} align="center" width={"auto"}>
+                      <User
+                        width={16}
+                        height={16}
+                        stroke={Colors.colors.text}
+                        fill={Colors.colors.text}
+                        fillOpacity={0.2}
+                      />
+                      <Typography.Caption textColor="text">
+                        {crew.members_w_user.length}
+                      </Typography.Caption>
+                    </Row>
+                    {isFavorite(crew._id) && (
+                      <Star
+                        width={16}
+                        height={16}
+                        stroke={Colors.colors.secondary}
+                        fill={Colors.colors.secondary}
+                        fillOpacity={0.2}
+                      />
+                    )}
+                  </Row>
+                </View>
               </Row>
-            </S.CrewCard>
-          ))}
-
-          {crewsData?.crews.length === 0 && (
-            <Card
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              gap={6}
-            >
-              <Frown
+              <ArrowRight
                 width={24}
                 height={24}
-                stroke={Colors.colors.text}
-                fill={Colors.colors.text}
-                fillOpacity={0.2}
+                stroke={Colors.colors.primary}
               />
+            </Row>
+          </S.CrewCard>
+        ))}
 
-              <Typography.Body textColor="text" _t>
-                {"crews.empty"}
-              </Typography.Body>
-            </Card>
-          )}
+        {crewsData?.crews.length === 0 && (
+          <Card
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            gap={6}
+          >
+            <Frown
+              width={24}
+              height={24}
+              stroke={Colors.colors.text}
+              fill={Colors.colors.text}
+              fillOpacity={0.2}
+            />
 
-          {loadingUserCrews && <Loader color="primary" />}
-        </S.ScrollList>
-      </S.Container>
+            <Typography.Body textColor="text" _t>
+              {"crews.empty"}
+            </Typography.Body>
+          </Card>
+        )}
+
+        {loadingUserCrews && <Loader color="primary" />}
+      </S.ScrollList>
     </ScreenWrapper>
   );
 };

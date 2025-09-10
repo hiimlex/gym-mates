@@ -1,3 +1,4 @@
+import { Card } from "@components/atoms";
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
 import { setAlphaToColor } from "@theme";
@@ -32,8 +33,9 @@ const ItemPreviewWrapper = styled(Animated.View)`
 
 const ItemInfo = styled.View`
   gap: 6px;
-  align-items: flex-start;
-  justify-content: flex-start;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
   width: 100%;
 `;
 
@@ -56,11 +58,30 @@ const ExpandedContent = styled.View`
   width: 100%;
 `;
 
+const InfoGroup = styled.View`
+  gap: 12px;
+`;
+
+const LockIconWrapper = styled.TouchableOpacity`
+  padding: 4px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.disabled};
+  border: 1px solid ${({ theme }) => theme.colors.borderDark};
+`;
+
+const RequirementsWrapper = styled(Card)`
+  flex-direction: row;
+  align-items: center;
+`;
+
 export default {
   FloatingBlur,
   ItemPreview,
   ItemPreviewWrapper,
   ItemInfo,
+  InfoGroup,
+  LockIconWrapper,
   MediaWrapper,
-  ExpandedContent
+  ExpandedContent,
+  RequirementsWrapper,
 };

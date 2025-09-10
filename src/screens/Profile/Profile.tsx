@@ -20,6 +20,7 @@ import {
   Map,
   Settings,
   Smile,
+  User,
 } from "react-native-feather";
 import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,10 +81,10 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
     return null;
   }
   return (
-    <ScreenWrapper>
+    <ScreenWrapper useHeaderHeight>
       <S.Container
-        style={{ padding: 24, paddingTop: headerHeight + 24 }}
         contentContainerStyle={{ gap: 24 }}
+        showsVerticalScrollIndicator={false}
       >
         <Row align="flex-start" gap={18}>
           <Avatar
@@ -156,6 +157,20 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
             {"profile.personal.title"}
           </Typography.Body>
           <Menu.Root>
+            <Menu.Item
+              icon={
+                <User
+                  width={20}
+                  height={20}
+                  fill={Colors.colors.text}
+                  stroke={Colors.colors.text}
+                  fillOpacity={0.2}
+                />
+              }
+              onPress={() => navigate(AppRoutes.UserCharacter)}
+              label="profile.personal.character"
+              _t
+            ></Menu.Item>
             <Menu.Item
               icon={
                 <Map

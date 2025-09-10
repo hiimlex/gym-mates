@@ -39,60 +39,58 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
   }
 
   return (
-    <ScreenWrapper>
-      <S.Container style={{ paddingTop: headerHeight + 24 }}>
-        <S.Header>
-          <Typography.Heading _t>{"userFollows.title"}</Typography.Heading>
-        </S.Header>
+    <ScreenWrapper useHeaderHeight>
+      <S.Header>
+        <Typography.Heading _t>{"userFollows.title"}</Typography.Heading>
+      </S.Header>
 
-        <Tabs.Root initialPage={0} header={tabsHeader} pagerRef={pagerRef}>
-          <Tabs.Item
-            key={0}
-            contentContainerStyle={{
-              gap: 12,
-            }}
-          >
-            {data?.data.followers.map((follower) => (
-              <UserInfo
-                user={follower.user}
-                key={follower.user._id}
-                showFollowBack={!follower.is_mutual}
-                inCrews={follower.in_crews?.map((crew) => crew.name)}
-              />
-            ))}
+      <Tabs.Root initialPage={0} header={tabsHeader} pagerRef={pagerRef}>
+        <Tabs.Item
+          key={0}
+          contentContainerStyle={{
+            gap: 12,
+          }}
+        >
+          {data?.data.followers.map((follower) => (
+            <UserInfo
+              user={follower.user}
+              key={follower.user._id}
+              showFollowBack={!follower.is_mutual}
+              inCrews={follower.in_crews?.map((crew) => crew.name)}
+            />
+          ))}
 
-            {data?.data.followers.length === 0 && (
-              <Row justify="center" style={{ paddingTop: 24 }}>
-                <Typography.Body textColor="textLight" _t>
-                  {"userFollows.noFollowers"}
-                </Typography.Body>
-              </Row>
-            )}
+          {data?.data.followers.length === 0 && (
+            <Row justify="center" style={{ paddingTop: 24 }}>
+              <Typography.Body textColor="textLight" _t>
+                {"userFollows.noFollowers"}
+              </Typography.Body>
+            </Row>
+          )}
 
-            {isLoading && <Loader color="primary" />}
-          </Tabs.Item>
-          <Tabs.Item key={1}>
-            {data?.data.following.map((following) => (
-              <UserInfo
-                user={following.user}
-                key={following.user._id}
-                showFollowBack={!following.is_mutual}
-                inCrews={following.in_crews?.map((crew) => crew.name)}
-              />
-            ))}
+          {isLoading && <Loader color="primary" />}
+        </Tabs.Item>
+        <Tabs.Item key={1}>
+          {data?.data.following.map((following) => (
+            <UserInfo
+              user={following.user}
+              key={following.user._id}
+              showFollowBack={!following.is_mutual}
+              inCrews={following.in_crews?.map((crew) => crew.name)}
+            />
+          ))}
 
-            {data?.data.following.length === 0 && (
-              <Row justify="center" style={{ paddingTop: 24 }}>
-                <Typography.Body textColor="textLight" _t>
-                  {"userFollows.noFollowing"}
-                </Typography.Body>
-              </Row>
-            )}
+          {data?.data.following.length === 0 && (
+            <Row justify="center" style={{ paddingTop: 24 }}>
+              <Typography.Body textColor="textLight" _t>
+                {"userFollows.noFollowing"}
+              </Typography.Body>
+            </Row>
+          )}
 
-            {isLoading && <Loader color="primary" />}
-          </Tabs.Item>
-        </Tabs.Root>
-      </S.Container>
+          {isLoading && <Loader color="primary" />}
+        </Tabs.Item>
+      </Tabs.Root>
     </ScreenWrapper>
   );
 };

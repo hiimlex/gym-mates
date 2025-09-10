@@ -22,20 +22,6 @@ const Container = styled.View<{ locked?: boolean; view?: IShopListView }>`
     flex-direction: row;
     gap: 12px;
   `}
-
-  // background: ${({ theme }) => setAlphaToColor(theme.colors.background, 100)};
-  // padding: 12px;
-  // border: 1px solid ${({ theme }) => theme.colors.borderDark};
-  // border-radius: 12px;
-  // border-right-width: 4px;
-  // border-bottom-width: 4px;
-  // border-bottom-color: ${({ theme }) => theme.colors.text};
-  // border-right-color: ${({ theme }) => theme.colors.text};
-  // shadow-color: ${({ theme }) => theme.colors.borderDark};
-  // shadow-offset: 0px 2px;
-  // shadow-opacity: 0.25;
-  // shadow-radius: 3.84px;
-  // elevation: 5;
 `;
 
 const MediaWrapper = styled.View<{ size: number; customBg?: string }>`
@@ -90,6 +76,46 @@ const FloatingAdd = styled(TouchableOpacity)<{
   `}
 `;
 
+const FloatingLocked = styled(TouchableOpacity)<{
+  isOnCart?: boolean;
+  isGridView?: boolean;
+  disabled?: boolean;
+}>`
+  position: absolute;
+  top: 6px;
+  right: 1px;
+  z-index: 1;
+  padding: 3px;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.primary};
+  border: 1px solid ${({ theme }) => theme.colors.borderDark};
+
+  ${({ isOnCart }) =>
+    isOnCart &&
+    `
+    background: red;
+  `}
+
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
+    background: ${theme.colors.disabled} !important;
+  `}
+
+  ${({ isGridView }) =>
+    !isGridView &&
+    `
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 30px;
+  `}
+`;
+
 const FloatingCoin = styled.View`
   position: absolute;
   top: 6px;
@@ -129,4 +155,5 @@ export default {
   Container,
   Info,
   CardButton,
+  FloatingLocked,
 };

@@ -7,19 +7,20 @@ import { useSelector } from "react-redux";
 import { StoreState } from "@store/Store";
 import { useScreenSize } from "@hooks/useScreenSize/useScreenSize";
 import { View } from "react-native";
+import { useDialogService } from "@hooks/useDialogService/useDialogService";
 
 const Help: React.FC<ScreenProps<AppRoutes.Help>> = ({}) => {
   const { user } = useSelector((state: StoreState) => state.user);
   const { insets, headerHeight } = useScreenSize();
+  const { openCoinSystemInfo, openStreakSystemInfo, openCrewRulesInfo } =
+    useDialogService();
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper useHeaderHeight>
       <S.Container
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           gap: 24,
-          padding: 24,
-          paddingTop: 24 + headerHeight,
         }}
       >
         <S.Group>
@@ -53,17 +54,12 @@ const Help: React.FC<ScreenProps<AppRoutes.Help>> = ({}) => {
             <Menu.Item
               _t
               label="help.faqList.rulesSystem"
-              onPress={() => {}}
-            ></Menu.Item>
-            <Menu.Item
-              _t
-              label="help.faqList.streakSystem"
-              onPress={() => {}}
+              onPress={openCrewRulesInfo}
             ></Menu.Item>
             <Menu.Item
               _t
               label="help.faqList.coinSystem"
-              onPress={() => {}}
+              onPress={openCoinSystemInfo}
               isLast
             ></Menu.Item>
           </Menu.Root>

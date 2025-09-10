@@ -110,128 +110,123 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
   };
 
   return (
-    <ScreenWrapper>
-      <S.Container style={{ paddingTop: headerHeight + 24 }}>
-        <S.Header>
-          <Row justify="space-between" align="center">
-            <Typography.Heading fontWeight="medium" _t>
-              {"shop.title"}
-            </Typography.Heading>
+    <ScreenWrapper useHeaderHeight>
+      <S.Header>
+        <Row justify="space-between" align="center">
+          <Typography.Heading fontWeight="medium" _t>
+            {"shop.title"}
+          </Typography.Heading>
 
-            <Coin showUserCoins textVariant="body" />
-          </Row>
+          <Coin showUserCoins textVariant="body" />
+        </Row>
 
-          <S.HorizontalScrollView
-            horizontal
-            contentContainerStyle={{
-              flexDirection: "row",
-              gap: 12,
-              flexGrow: 1,
+        <S.HorizontalScrollView
+          horizontal
+          contentContainerStyle={{
+            flexDirection: "row",
+            gap: 12,
+            flexGrow: 1,
+          }}
+        >
+          <S.FiltersBadge
+            touchable
+            onPress={showLockedItems}
+            active={filters?.locked || false}
+            _t
+            label="shop.filters.all"
+          />
+          <S.FiltersBadge
+            touchable
+            onPress={sortByCost}
+            active={hasPriceFilter}
+          >
+            <Typography.Button textColor={hasPriceFilter ? "white" : "text"} _t>
+              {"shop.filters.cost"}
+            </Typography.Button>
+
+            {filters?.price_sort && filters.price_sort === "PRICE_DESC" && (
+              <ArrowDown
+                width={14}
+                height={14}
+                stroke={
+                  hasPriceFilter ? Colors.colors.white : Colors.colors.text
+                }
+                strokeWidth={2}
+              />
+            )}
+
+            {filters?.price_sort && filters.price_sort === "PRICE_ASC" && (
+              <ArrowUp
+                width={14}
+                height={14}
+                stroke={
+                  hasPriceFilter ? Colors.colors.white : Colors.colors.text
+                }
+                strokeWidth={2}
+              />
+            )}
+          </S.FiltersBadge>
+
+          <S.FiltersBadge touchable onPress={changeCurrentView}>
+            {view === "list" && (
+              <Grid
+                width={14}
+                height={14}
+                stroke={Colors.colors.text}
+                strokeWidth={2}
+                fill={Colors.colors.text}
+                fillOpacity={0.2}
+              />
+            )}
+            {view === "grid" && (
+              <List
+                width={14}
+                height={14}
+                stroke={Colors.colors.text}
+                strokeWidth={2}
+              />
+            )}
+            <Typography.Button textColor="text" _t>
+              {view === "grid" ? "shop.filters.list" : "shop.filters.grid"}
+            </Typography.Button>
+          </S.FiltersBadge>
+        </S.HorizontalScrollView>
+      </S.Header>
+
+      <S.ItemsScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={scrollStyles}
+      >
+        {items?.map((item) => (
+          <ItemCard.Buy
+            item={item}
+            key={item._id}
+            disabled={userCannotAfford(item?.price || 0)}
+            touchableImage
+            mediaSize={calculateMediaSize(width, 2, view, 24, 0, 12)}
+            onImagePress={handleOnItemPress}
+          />
+        ))}
+        {isLoading && (
+          <View
+            style={{
+              flex: 1,
             }}
           >
-            <S.FiltersBadge
-              touchable
-              onPress={showLockedItems}
-              active={filters?.locked || false}
-              _t
-              label="shop.filters.all"
-            />
-            <S.FiltersBadge
-              touchable
-              onPress={sortByCost}
-              active={hasPriceFilter}
-            >
-              <Typography.Button
-                textColor={hasPriceFilter ? "white" : "text"}
-                _t
-              >
-                {"shop.filters.cost"}
-              </Typography.Button>
+            <Loader color="primary" />
+          </View>
+        )}
 
-              {filters?.price_sort && filters.price_sort === "PRICE_DESC" && (
-                <ArrowDown
-                  width={14}
-                  height={14}
-                  stroke={
-                    hasPriceFilter ? Colors.colors.white : Colors.colors.text
-                  }
-                  strokeWidth={2}
-                />
-              )}
+        {items?.length === 0 && !isLoading && (
+          <Row justify="center">
+            <Typography.Body textColor="textLight" _t>
+              {"shop.empty"}
+            </Typography.Body>
+          </Row>
+        )}
+      </S.ItemsScrollView>
 
-              {filters?.price_sort && filters.price_sort === "PRICE_ASC" && (
-                <ArrowUp
-                  width={14}
-                  height={14}
-                  stroke={
-                    hasPriceFilter ? Colors.colors.white : Colors.colors.text
-                  }
-                  strokeWidth={2}
-                />
-              )}
-            </S.FiltersBadge>
-
-            <S.FiltersBadge touchable onPress={changeCurrentView}>
-              {view === "list" && (
-                <Grid
-                  width={14}
-                  height={14}
-                  stroke={Colors.colors.text}
-                  strokeWidth={2}
-                  fill={Colors.colors.text}
-                  fillOpacity={0.2}
-                />
-              )}
-              {view === "grid" && (
-                <List
-                  width={14}
-                  height={14}
-                  stroke={Colors.colors.text}
-                  strokeWidth={2}
-                />
-              )}
-              <Typography.Button textColor="text" _t>
-                {view === "grid" ? "shop.filters.list" : "shop.filters.grid"}
-              </Typography.Button>
-            </S.FiltersBadge>
-          </S.HorizontalScrollView>
-        </S.Header>
-
-        <S.ItemsScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={scrollStyles}
-        >
-          {items?.map((item) => (
-            <ItemCard.Buy
-              item={item}
-              key={item._id}
-              disabled={userCannotAfford(item?.price || 0)}
-              touchableImage
-              mediaSize={calculateMediaSize(width, 2, view, 24, 0, 12)}
-              onImagePress={handleOnItemPress}
-            />
-          ))}
-          {isLoading && (
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
-              <Loader color="primary" />
-            </View>
-          )}
-
-          {items?.length === 0 && !isLoading && (
-            <Row justify="center">
-              <Typography.Body textColor="textLight" _t>
-                {"shop.empty"}
-              </Typography.Body>
-            </Row>
-          )}
-        </S.ItemsScrollView>
-
-        <ShopCheckoutPreview />
-      </S.Container>
+      <ShopCheckoutPreview />
     </ScreenWrapper>
   );
 };

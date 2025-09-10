@@ -1,3 +1,5 @@
+import { User } from "react-native-feather";
+
 export default {
   login: {
     title: "Login",
@@ -77,11 +79,10 @@ export default {
     saving: "Saving...",
     donate: "Feel free to donate",
     personal: {
+      character: "Character",
       title: "Personal",
       journey: "Journey",
       inventory: "Inventory",
-      followers: "Followers",
-      following: "Following",
       mates: "Mates",
     },
     settings: {
@@ -180,8 +181,8 @@ export default {
         healthy: "Added a healthy info.",
       },
       bodyFat: "BF {{bf}}%",
-      join: "Joined {{name}} crew.",
-      follow: "Started following {{name}}.",
+      join: 'Joined "{{name}}" crew.',
+      follow: 'Started following "{{name}}".',
       loseStreak: "Lost the streak of {{days}} day(s).",
       completeMission: 'Completed the mission "{{name}}".',
     },
@@ -225,8 +226,8 @@ export default {
       list: "List view",
       grid: "Grid view",
     },
-    add: "Add",
-    remove: "Remove",
+    add: "Add to bag",
+    remove: "Remove from bag",
     cart: {
       title: "Bag items",
       empty: "Your bag is empty.",
@@ -238,6 +239,7 @@ export default {
       yourCoinsAfterPurchase: "Your coins after purchase",
     },
     empty: "No items found.",
+    hint: "Hint:"
   },
   inventory: {
     title: "Inventory",
@@ -304,7 +306,47 @@ export default {
     },
     devNote: "Dev. Note",
   },
+  coinSystem: {
+    title: "Coin System",
+    about: "Every time the an user do a workout there's a coin for that.",
+    missions:
+      "Missions are tasks or hidden tasks that the user can complete to earn more coins.",
+    earn: "To earn more coins the user will have to reach streaks or complete missions.",
+    streaks:
+      "Streaks are a series of consecutive days with workouts and at the streak point the user will get a bounty of coins.",
+    dailyStreak:
+      "\u2022 For every ten days of daily streak the user will earn +1 extra coins.",
+    weekendStreak:
+      "\u2022 For every weekend day, the user will get a bounty of +1 coins.",
+    weekStreak:
+      "\u2022 For every week(7 days in a row), the user will get a bounty of +2 coins.",
+    monthStreak:
+      "\u2022 For every month(30 days in a row), the user will get a bounty of +10 coins.",
+    bounties:
+      "The bounties are unique, and validated for all crew streaks, the bounty count resets every time the user receive it.",
+    attention:
+      "The user will have a receipt for each earned coin!\nThe user will only get one bounty per day!",
+    haveFun: "Have fun collecting coins and spending them in the shop!",
+  },
+  crewRulesInfo: {
+    about:
+      "The crew rules are a set of guidelines that members must follow when sharing workouts in a crew.",
+    gymFocused:
+      "\u2022 Gym Focused: All workouts shared in the crew must be gym-focused type.",
+    freeWeekends:
+      "\u2022 Free Weekends: On weekends (Saturday and Sunday), members are not required to pay for missed workouts. This allows for flexibility and rest during the weekend.",
 
+    payOnPast:
+      "\u2022 Pay on Past: Members are allowed to pay for workouts that were missed or forgotten in the past. At least 2 days ago.",
+    payWithoutPicture:
+      "\u2022 Pay without Picture: Members must include a picture with their workout submission. But if they forget, they can still submit their workout without a picture.",
+  },
+  streakSystem: {
+    title: "Streak System",
+  },
+  crewRules: {
+    title: "Crew Rules",
+  },
   // Generic
   weekDays: {
     long: {
@@ -362,6 +404,7 @@ export default {
     shopCart: "Bag Items",
     userFollows: "Mates",
     help: "Help & Support",
+    userCharacter: "Character",
   },
   units: {
     days: "days",
@@ -440,9 +483,12 @@ export default {
     WORKOUT_DATE_TOO_OLD: "Workout date is too old.",
     CREW_RULES_VIOLATION: "Workout violates crew rules.",
     WORKOUT_DATE_OLDER_THAN_CREW: "Workout date is older than crew.",
-    GYM_FOCUSED_RULE_VIOLATION: "Crew {{crews}} workouts type must be gym focused.",
-    PAY_ON_PAST_RULE_VIOLATION: "Crew {{crews}} workouts doesn't allow pay on past.",
-    PAID_WITHOUT_PICTURE_RULE_VIOLATION: "Crew {{crews}} workouts must have a picture.",
+    GYM_FOCUSED_RULE_VIOLATION:
+      "Crew {{crews}} workouts type must be gym focused.",
+    PAY_ON_PAST_RULE_VIOLATION:
+      "Crew {{crews}} workouts doesn't allow pay on past.",
+    PAID_WITHOUT_PICTURE_RULE_VIOLATION:
+      "Crew {{crews}} workouts must have a picture.",
     // User
     USER_NOT_FOUND: "User not found.",
     USER_NOT_A_MEMBER: "User is not a member.",

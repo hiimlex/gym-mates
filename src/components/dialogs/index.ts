@@ -1,5 +1,7 @@
 export { default as AddWorkout } from "./AddWorkout/AddWorkout";
+export { default as CoinSystemInfo } from "./CoinSystemInfo/CoinSystemInfo";
 export { default as CrewMembers } from "./CrewMembers/CrewMembers";
+export { default as CrewRulesInfo } from "./CrewRulesInfo/CrewRulesInfo";
 export { default as CrewSettings } from "./CrewSettings/CrewSettings";
 export { default as EditCrewSettings } from "./EditCrewSettings/EditCrewSettings";
 export { default as ItemPreview } from "./ItemPreview/ItemPreview";
