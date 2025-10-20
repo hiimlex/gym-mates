@@ -1,7 +1,7 @@
 import { ICrew } from "./CrewsModel";
 import { IFile } from "./FileModel";
 import { IHealthData } from "./HealthModel";
-import { IItem } from "./ItemsModel";
+import { IItem, SkinPiece, SkinSex } from "./ItemsModel";
 import { IUserJourney } from "./JourneyModel";
 
 export interface IUser {
@@ -65,4 +65,15 @@ export interface IDeviceRegistration {
 export interface IDeviceInfo {
   os: string;
   model: string;
+}
+
+export interface IGetSkinsFilters {
+  itemsPerRow?: number;
+  piece?: SkinPiece;
+  sex?: SkinSex;
+}
+
+export interface IGetSkinsResponse {
+  skins: IItem[];
+  grouped: IItem[][];
 }

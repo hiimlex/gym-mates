@@ -10,10 +10,14 @@ export const QueryKeys = {
   User: {
     Journey: "user.journey",
     FollowersInfo: "user.followersInfo",
+    Skins: "user.skins",
   },
   Crew: {
     GetActivityDays: "crew.getActivityDays",
     GetCrewRank: "crew.getCrewRank",
+  },
+  Config: {
+    GetBaseCharacterAssets: "config.getBaseCharacterAssets",
   }
 };
 

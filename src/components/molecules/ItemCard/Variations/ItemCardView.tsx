@@ -1,17 +1,13 @@
-import { AchievementIcon, Coin, Row, Typography } from "@components/atoms";
+import { AchievementIcon, Row, Typography } from "@components/atoms";
 import { Colors } from "@theme";
-import React, { useMemo } from "react";
-import { TouchableOpacity, useWindowDimensions } from "react-native";
+import React from "react";
+import { TouchableOpacity } from "react-native";
 import { CameraOff } from "react-native-feather";
-import Header from "../../Header/Header";
-import { calculateMediaSize, Dot, ItemCardProps } from "../ItemCard.utils";
+import { Dot, ItemCardProps } from "../ItemCard.utils";
 import S from "./ItemCardVariations.styles";
-import { AchievementRarityColors } from "@models/collections";
 
 const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
   item,
-  itemsPerRow = 2,
-  itemsGap = 12,
   touchableImage = false,
   onImagePress,
   mediaSize = 12,
@@ -60,25 +56,23 @@ const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
       >
         <Row
           align="center"
-          justify={isAchievement ? "center" : "space-between"}
+          justify="center"
           style={{ flexWrap: "wrap", maxWidth: mediaSize }}
         >
-          <Typography.Body textAlign={isAchievement ? "center" : "left"}>
-            {item?.name}
-          </Typography.Body>
+          <Typography.Body textAlign="center">{item?.name}</Typography.Body>
 
-          {!isAchievement && (
+          {/* {!isAchievement && (
             <Coin
               textVariant="button"
               label={item?.price?.toString()}
               textColor="tertiary"
             />
-          )}
+          )} */}
         </Row>
 
         <Row
           gap={3}
-          justify={isAchievement ? "center" : "flex-start"}
+          justify="center"
           align="center"
           style={{ flexWrap: "wrap", maxWidth: mediaSize }}
         >

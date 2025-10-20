@@ -1,4 +1,5 @@
 export { default as AuthService } from "./AuthService";
+export { default as ConfigService } from "./ConfigService";
 export { default as CrewsService } from "./CrewsService";
 export { default as MissionsService } from "./MissionsService";
 export { default as ShopService } from "./ShopService";

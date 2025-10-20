@@ -83,7 +83,7 @@ const FloatingLocked = styled(TouchableOpacity)<{
 }>`
   position: absolute;
   top: 6px;
-  right: 1px;
+  right: 6px;
   z-index: 1;
   padding: 3px;
   align-items: center;

@@ -1,3 +1,4 @@
+import { ItemCardProps } from "@components/molecules";
 import { IItem, IWorkout } from "@models/collections";
 
 export interface IOverlayState {
@@ -6,6 +7,7 @@ export interface IOverlayState {
     workouts?: IWorkout[];
     initialIndex?: number;
     item?: IItem;
+    itemMode?: ItemCardProps['mode'];
   };
 }
 

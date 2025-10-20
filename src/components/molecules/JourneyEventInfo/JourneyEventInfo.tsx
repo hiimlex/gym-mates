@@ -66,12 +66,7 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
       {event.action === JourneyEventAction.BUY && item && (
         <S.EventRow>
           <S.EventWithBanner>
-            <BannerPreview
-              preview={
-                item?.category === ItemCategory.Figure ? item?.preview?.url : ""
-              }
-              size={48}
-            />
+            <BannerPreview preview={item?.preview?.url || ""} size={48} />
             <S.EventInfo>
               <Typography.Body
                 textColor="textDark"

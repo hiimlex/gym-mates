@@ -56,7 +56,7 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
     dispatch(
       OverlayActions.show({
         type: OverlayType.ItemPreview,
-        data: { item },
+        data: { item, itemMode: "view" },
       })
     );
   };
@@ -102,8 +102,6 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
           <ItemCard.View
             key={inventoryItem.item._id}
             item={inventoryItem.item}
-            itemsPerRow={2}
-            itemsGap={12}
             mediaSize={mediaSize}
             touchableImage
             onImagePress={() => handleOnItemPress(inventoryItem.item)}

@@ -1,4 +1,4 @@
-import { TabHeader } from "@models/generic";
+import { ITabHeader } from "@models/generic";
 import React, { useRef, useState } from "react";
 import { ScrollViewProps, ViewProps, ViewStyle } from "react-native";
 import PagerView, { PagerViewProps } from "react-native-pager-view";
@@ -9,7 +9,7 @@ import S from "./Tabs.styles";
 
 interface TabsProps extends PagerViewProps {
   children?: React.ReactNode;
-  header?: TabHeader[];
+  header?: ITabHeader[];
   containerStyle?: ViewStyle;
   pagerRef?: React.RefObject<PagerView | null>;
 }

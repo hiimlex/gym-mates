@@ -86,6 +86,8 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
     }
   }, [showRequirements]);
 
+  const isViewingMode = useMemo(() => data?.itemMode === "view", [data]);
+
   return (
     <S.FloatingBlur
       style={{
@@ -152,7 +154,7 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
           )}
         </S.ItemInfo>
 
-        {!isOnCart && !item?.locked && (
+        {!isOnCart && !item?.locked && !isViewingMode && (
           <Button
             variant="filled"
             colorScheme="primary"
@@ -163,7 +165,7 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
           />
         )}
 
-        {isOnCart && !item?.locked && (
+        {isOnCart && !item?.locked && !isViewingMode && (
           <Button
             variant="filled"
             colorScheme="danger"
@@ -174,7 +176,11 @@ const ItemPreview: React.FC<ItemPreviewProps> = () => {
         )}
 
         {showRequirements && (item?.requirements || []).length > 0 && (
-          <S.RequirementsWrapper width={"100%"} entering={FadeInDown} exiting={FadeOutDown}>
+          <S.RequirementsWrapper
+            width={"100%"}
+            entering={FadeInDown}
+            exiting={FadeOutDown}
+          >
             <Eye
               width={20}
               height={20}

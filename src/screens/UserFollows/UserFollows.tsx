@@ -2,7 +2,7 @@ import { UsersService } from "@api/services";
 import { Loader, Row, Tabs, Typography } from "@components/atoms";
 import { ScreenWrapper, UserInfo } from "@components/molecules";
 import { useScreenSize } from "@hooks/useScreenSize/useScreenSize";
-import { QueryKeys, TabHeader } from "@models/generic";
+import { QueryKeys, ITabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import S from "./UserFollows.styles";
 import PagerView from "react-native-pager-view";
 
-const tabsHeader: TabHeader[] = [
+const tabsHeader: ITabHeader[] = [
   {
     key: 0,
     title: "userFollows.followers",

@@ -5,10 +5,10 @@ import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 export const UserCharacterScreenOptions: NativeStackNavigationOptions = {
   headerShown: true,
   headerTransparent: true,
-  headerLeft: () => <Header.BackLeft />,
+  headerLeft: () => <></>,
   headerTitleAlign: "center",
   headerTitle: () => (
-    <Typography.HeadingSubtitle textColor="text" fontWeight="semibold" _t>
+    <Typography.HeadingSubtitle textColor="white" fontWeight="semibold" _t>
       {"links.userCharacter"}
     </Typography.HeadingSubtitle>
   ),

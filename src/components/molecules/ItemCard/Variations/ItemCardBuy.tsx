@@ -62,7 +62,7 @@ const ItemCardBuy: React.FC<Omit<ItemCardProps, "mode">> = ({
 
       {/* Floating locked */}
       {item.locked && (
-        <S.FloatingLocked disabled isGridView={isGridView} style={{ right: 6}}>
+        <S.FloatingLocked disabled isGridView={isGridView}>
           <Lock width={18} height={18} stroke={Colors.colors.text} />
         </S.FloatingLocked>
       )}

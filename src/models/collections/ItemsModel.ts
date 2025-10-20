@@ -10,11 +10,11 @@ export enum ItemCategory {
 }
 
 export enum SkinPiece {
+  hair = "hair",
   top = "top",
   bottom = "bottom",
   full = "full",
-  boots = "boots",
-  hair = "hair",
+  // boots = "boots",
 }
 
 export enum SkinSex {

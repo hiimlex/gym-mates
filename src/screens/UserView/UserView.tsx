@@ -12,7 +12,7 @@ import {
   IWorkoutsByUser,
   IWorkoutsFilters,
 } from "@models/collections";
-import { OverlayType, TabHeader } from "@models/generic";
+import { OverlayType, ITabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { OverlayActions } from "@store/slices";
@@ -57,7 +57,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
     fetchPolicy: "cache-and-network",
   });
 
-  const tabsHeader: TabHeader[] = [
+  const tabsHeader: ITabHeader[] = [
     {
       title: "userView.tabs.activities",
       key: 0,

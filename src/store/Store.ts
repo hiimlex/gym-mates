@@ -1,14 +1,15 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import AddWorkoutReducer from "./slices/AddWorkoutSlice";
+import CharCreationReducer from "./slices/CharCreationSlice";
 import ConfigReducer from "./slices/ConfigSlice";
 import CreateCrewReducer from "./slices/CreateCrewSlice";
 import CrewsReducer from "./slices/CrewsSlice";
 import DialogReducer from "./slices/DialogSlice";
 import NotifierReducer from "./slices/NotifierSlice";
+import OverlayReducer from "./slices/OverlaySlice";
 import ShopReducer from "./slices/ShopSlice";
 import UserInventoryReducer from "./slices/UserInventorySlice";
 import UserReducer from "./slices/UserSlice";
-import OverlayReduce from "./slices/OverlaySlice";
 
 const rootReducer = combineReducers({
   user: UserReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   userInventory: UserInventoryReducer,
   createCrew: CreateCrewReducer,
   notifier: NotifierReducer,
-  overlay: OverlayReduce,
+  overlay: OverlayReducer,
+  charCreation: CharCreationReducer,
 });
 
 export const store = configureStore({

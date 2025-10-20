@@ -1,5 +1,6 @@
 export * from "./AddWorkoutSlice";
 export * from "./ConfigSlice";
+export * from "./CreateCrewSlice";
 export * from "./CrewsSlice";
 export * from "./DialogSlice";
 export * from "./NotifierSlice";

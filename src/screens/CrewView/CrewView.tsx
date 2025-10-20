@@ -2,7 +2,7 @@ import { Row, Tabs, Typography } from "@components/atoms";
 import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
 import { ScreenWrapper } from "@components/molecules";
 import { CrewCalendarView, CrewRankView } from "@components/organisms";
-import { TabHeader } from "@models/generic";
+import { ITabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { Colors } from "@theme";
@@ -22,7 +22,7 @@ const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
   const pagerRef = useRef<PagerView | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const headerTabs: TabHeader[] = [
+  const headerTabs: ITabHeader[] = [
     {
       title: "crewView.rank",
       key: 0,

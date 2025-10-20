@@ -6,6 +6,8 @@ import {
   IEditProfileForm,
   IGetFollowersInfoResponse,
   IGetJourneyFilters,
+  IGetSkinsFilters,
+  IGetSkinsResponse,
   IUpdateHealthForm,
   IUserJourney,
 } from "@models/collections";
@@ -104,6 +106,9 @@ const GET_INVENTORY = gql`
             requirements
             created_at
             updated_at
+            preview {
+              url
+            }
           }
           ... on Avatar {
             _id
@@ -122,6 +127,9 @@ const GET_INVENTORY = gql`
             requirements
             created_at
             updated_at
+            preview {
+              url
+            }
           }
           ... on Figure {
             _id
@@ -216,7 +224,18 @@ const selectTitle = async (title_id: string) => {
   const response = await api.put(Endpoints.UsersSelectTitle, { title_id });
 
   return response;
-}
+};
+
+const getSkins = async (
+  filters?: IGetSkinsFilters
+): Promise<IGetSkinsResponse> => {
+  const query = queryBuilder(filters);
+  const response = await api.get(
+    `${Endpoints.UsersGetSkins}${query ? `?${query}` : ""}`
+  );
+
+  return response.data;
+};
 
 export default {
   gql: {
@@ -232,5 +251,6 @@ export default {
   updateProfile,
   getFollowersInfo,
   registerDevice,
-  selectTitle
+  selectTitle,
+  getSkins,
 };

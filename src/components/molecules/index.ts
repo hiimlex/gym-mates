@@ -1,4 +1,5 @@
 export { default as BottomNav } from "./BottomNav/BottomNav";
+export { default as CharCreationUi } from "./CharCreationUi/CharCreationUi";
 export { default as CrewInfo } from "./CrewInfo/CrewInfo";
 export { default as CrewLastActivities } from "./CrewLastActivities/CrewLastActivities";
 export { default as CrewMemberInfo } from "./CrewMemberInfo/CrewMemberInfo";
