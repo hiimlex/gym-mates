@@ -1,12 +1,23 @@
-import React, { useEffect, useMemo } from "react";
-import S from "./CharUi.styles";
-import RemoteSkin from "./CharUiRemoteSkin";
-import { useSelector } from "react-redux";
+import { SkinPiece, SkinSex } from "@models/collections";
 import { StoreState } from "@store/Store";
+import React, { useMemo } from "react";
+import { ViewStyle } from "react-native";
+import { useSelector } from "react-redux";
+import S from "./CharUi.styles";
 import { CharCreationZIndex } from "./CharUi.utils";
-import { SkinSex } from "@models/collections";
+import RemoteSkin from "./CharUiRemoteSkin";
 
-const CharUiAvatar: React.FC = () => {
+interface CharUiAvatarProps {
+  replaceUrl?: string;
+  replacePiece?: SkinPiece;
+  replaceStyles?: ViewStyle;
+}
+
+const CharUiAvatar = ({
+  replaceUrl,
+  replacePiece,
+  replaceStyles,
+}: CharUiAvatarProps) => {
   const { pieces, skin, baseAssets } = useSelector(
     (state: StoreState) => state.charCreation
   );
@@ -27,7 +38,7 @@ const CharUiAvatar: React.FC = () => {
     <S.CharBaseView
       width={250}
       height={250}
-      style={{ zIndex: CharCreationZIndex.charBase }}
+      style={{ zIndex: CharCreationZIndex.charBase, ...replaceStyles }}
     >
       {/* Base char */}
       {baseCharUrl && (
@@ -39,28 +50,47 @@ const CharUiAvatar: React.FC = () => {
         />
       )}
       {/* Hair */}
-      {pieces.hair && pieces.hair.item && pieces.hair.item.file?.url && (
-        <RemoteSkin
-          uri={pieces.hair.item.file?.url}
-          width={400}
-          height={400}
-          zIndex={CharCreationZIndex.skin}
-        />
-      )}
+      {pieces.hair &&
+        pieces.hair.item &&
+        pieces.hair.item.file?.url &&
+        replacePiece !== SkinPiece.hair && (
+          <RemoteSkin
+            uri={pieces.hair.item.file?.url}
+            width={400}
+            height={400}
+            zIndex={CharCreationZIndex.skin}
+          />
+        )}
       {/* Top */}
-      {pieces.top && pieces.top.item && pieces.top.item.file?.url && (
-        <RemoteSkin
-          uri={pieces.top.item.file?.url}
-          width={400}
-          height={400}
-          zIndex={CharCreationZIndex.skin}
-        />
-      )}
+      {pieces.top &&
+        pieces.top.item &&
+        pieces.top.item.file?.url &&
+        replacePiece !== SkinPiece.top && (
+          <RemoteSkin
+            uri={pieces.top.item.file?.url}
+            width={400}
+            height={400}
+            zIndex={CharCreationZIndex.skin}
+          />
+        )}
 
       {/* Bottom */}
-      {pieces.bottom && pieces.bottom.item && pieces.bottom.item.file?.url && (
+      {pieces.bottom &&
+        pieces.bottom.item &&
+        pieces.bottom.item.file?.url &&
+        replacePiece !== SkinPiece.bottom && (
+          <RemoteSkin
+            uri={pieces.bottom.item.file?.url}
+            width={400}
+            height={400}
+            zIndex={CharCreationZIndex.skin}
+          />
+        )}
+
+      {/* Replaced piece */}
+      {replaceUrl && (
         <RemoteSkin
-          uri={pieces.bottom.item.file?.url}
+          uri={replaceUrl}
           width={400}
           height={400}
           zIndex={CharCreationZIndex.skin}

@@ -75,10 +75,6 @@ export interface ICharCreationState {
 export interface IBaseCharacterAssets {
   base_male: string;
   base_female: string;
-  male_hair_preview: string;
-  female_hair_preview: string;
-  male_clothes_preview: string;
-  female_clothes_preview: string;
   color_picker: string;
   palette_picker: string;
 }

@@ -9,7 +9,6 @@ const RemoteSkin: React.FC<IRemoteCharPiece> = ({
   width,
   height,
   zIndex = 0,
-  piece,
   uri,
 }) => {
   const { palette } = useSelector((state: StoreState) => state.charCreation);
