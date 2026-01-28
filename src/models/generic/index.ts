@@ -8,3 +8,4 @@ export * from "./NotifierModel";
 export * from "./OverlayModel";
 export * from "./QueryKeysModel";
 export * from "./TabsModel";
+export * from './UserCharacterModel';

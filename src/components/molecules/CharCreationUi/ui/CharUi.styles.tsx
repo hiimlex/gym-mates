@@ -91,7 +91,6 @@ const Mirror = styled.ImageBackground`
   align-items: center;
 `;
 
-
 const Palette = styled.ImageBackground`
   position: absolute;
   bottom: 360px;

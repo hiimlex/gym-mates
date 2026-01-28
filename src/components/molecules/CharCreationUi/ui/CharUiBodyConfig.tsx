@@ -163,12 +163,13 @@ const BodyConfig: React.FC<BodyConfigProps> = () => {
     }
   };
 
-  const setEyeColor = (eyeColor: TEyeColor) => {
-    const color = EyeColors[eyeColor];
+  const setEyeColor = (name: TEyeColor) => {
+    const color = EyeColors[name];
     if (skin) {
       dispatch(
         CharCreationActions.setSkin({
           ...skin,
+          eyeColorName: name,
           eyeColor: color,
         })
       );
@@ -207,10 +208,7 @@ const BodyConfig: React.FC<BodyConfigProps> = () => {
               primary={color.primary}
               secondary={color.secondary}
               key={key}
-              isSelected={
-                skin?.skinColorName === key ||
-                palette.SKIN_PRIMARY_COLOR === color.primary
-              }
+              isSelected={skin?.skinColorName === key}
               onPress={() => setSkinTone(key as TSkinToneColor)}
             />
           );
@@ -218,18 +216,16 @@ const BodyConfig: React.FC<BodyConfigProps> = () => {
       </Row>
       <Row align="center">
         <EyeColorLabel />
-        {Object.keys(EyeColors).map((key: string) => {
-          const color = EyeColors[key as TEyeColor];
+        {Object.keys(EyeColors).map((colorName: string) => {
+          const color = EyeColors[colorName as TEyeColor];
 
           return (
             <ColorSource
               primary={color}
               secondary={color}
-              key={key}
-              isSelected={
-                skin?.eyeColor === color || palette.EYE_COLOR === color
-              }
-              onPress={() => setEyeColor(key as TEyeColor)}
+              key={colorName}
+              isSelected={skin?.eyeColor === color}
+              onPress={() => setEyeColor(colorName as TEyeColor)}
             />
           );
         })}

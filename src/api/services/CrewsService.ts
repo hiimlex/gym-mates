@@ -205,6 +205,11 @@ const create = async (
   return response;
 };
 
+const remove = async (crewId: string) => {
+  const response = await api.delete(Endpoints.CrewsDelete.replace(':id', crewId));
+  return response;
+}
+
 const getActivitiesDays = async (
   payload: IGetActivitiesDaysFilters
 ): Promise<AxiosResponse<IGetActivitiesDaysResponse>> => {
@@ -235,6 +240,7 @@ export default {
   joinCrew,
   leave,
   create,
+  remove,
   getActivitiesDays,
   getCrewRank,
 };

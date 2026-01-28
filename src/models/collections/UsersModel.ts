@@ -1,3 +1,4 @@
+import { IUserCharacter } from "@models/generic";
 import { ICrew } from "./CrewsModel";
 import { IFile } from "./FileModel";
 import { IHealthData } from "./HealthModel";
@@ -20,6 +21,7 @@ export interface IUser {
   following?: IUser[];
   favorites?: string[];
   title?: IItem;
+  character?: IUserCharacter;
 
   crews_count: number;
 }
@@ -29,6 +31,7 @@ export interface IUserState {
   loadingCurrentUser?: boolean;
   isAuthenticated?: boolean;
   errorLoadingCurrentUser?: unknown;
+  profileView?: IUserProfileView;
 }
 
 export interface IUserByIdResponse {
@@ -77,3 +80,7 @@ export interface IGetSkinsResponse {
   skins: IItem[];
   grouped: IItem[][];
 }
+
+export type IUserProfileView = "character" | "avatar";
+
+export const ProfileViewStorageKey = "profileView";

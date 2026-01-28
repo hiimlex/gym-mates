@@ -1,19 +1,23 @@
 import { client } from "@api/apollo";
 import { CrewsService } from "@api/services";
+import { useNotifier } from "@hooks/useNotifier";
 import {
   CrewStreak,
   CrewVisibility,
   ICrewsResponse,
   IEditCrewRulesForm,
 } from "@models/collections";
-import { CrewsActions, DialogActions, NotifierActions } from "@store/slices";
+import { CrewsActions, DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
+import { mountImageURLFromBase64 } from "@utils/file.utils";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import Masks from "@utils/masks.utils";
 import React, { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { ScrollView, TextInput } from "react-native";
+import { TextInput } from "react-native";
 import { Asset } from "react-native-image-picker";
+import Animated, { FadeInRight, SlideOutRight } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,16 +29,6 @@ import {
   Typography,
 } from "../../atoms";
 import S from "./EditCrewSettings.styles";
-import Animated, {
-  FadeIn,
-  FadeInLeft,
-  FadeInRight,
-  SlideInLeft,
-  SlideInRight,
-  SlideOutRight,
-} from "react-native-reanimated";
-import { mountImageURLFromBase64 } from "@utils/file.utils";
-import { getMessageFromError } from "@utils/handleAxiosError";
 
 const EditCrewSettings: React.FC = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
@@ -47,6 +41,7 @@ const EditCrewSettings: React.FC = () => {
   );
   const [streaks, setStreaks] = useState<CrewStreak[]>(crew?.streak || []);
   const dispatch = useDispatch<AppDispatch>();
+  const { notify } = useNotifier();
   const rules = useMemo(() => {
     const { __typename, ...r } = crew?.rules as any;
 
@@ -84,7 +79,7 @@ const EditCrewSettings: React.FC = () => {
 
   const hasChangedVisibility = useMemo(() => {
     return crew?.visibility !== visibility;
-  }, [visibility]);
+  }, [visibility, crew?.visibility]);
 
   const hasChangedRules = useMemo(() => {
     const { lose_streak_in_days, ...rest } = values;
@@ -93,11 +88,11 @@ const EditCrewSettings: React.FC = () => {
     return Object.keys(rest).some((key) => {
       return rest[key as RuleKey] !== rules[key as RuleKey];
     });
-  }, [values]);
+  }, [values, rules]);
 
   const hasChangedLoseStreak = useMemo(() => {
     return crew?.lose_streak_in_days !== +values.lose_streak_in_days;
-  }, [values]);
+  }, [values, crew?.lose_streak_in_days]);
 
   const hasChangedStreaks = useMemo(() => {
     return (
@@ -105,9 +100,9 @@ const EditCrewSettings: React.FC = () => {
       crew?.streak?.some((s) => !streaks.includes(s)) ||
       streaks.some((s) => !crew?.streak?.includes(s))
     );
-  }, [streaks]);
+  }, [streaks, crew?.streak]);
 
-  const { mutate: updateSettings } = useMutation({
+  const { mutate: handleUpdateSettings } = useMutation({
     mutationFn: async () => {
       if (
         hasChangedLoseStreak ||
@@ -138,24 +133,31 @@ const EditCrewSettings: React.FC = () => {
         variables: { _id: crew?._id, limit: 1 },
         fetchPolicy: "network-only",
       });
+
+      console.log(
+        data.crews[0].visibility,
+        "updated crew visibility",
+        crew?.visibility
+      );
       dispatch(CrewsActions.setCrewView(data.crews[0]));
 
       if (dialogData?.onBackPress) {
         dialogData.onBackPress();
       }
+
+      notify({
+        id: "update-crew-settings-success",
+        type: "success",
+        message: "crewSettings.updateSuccess",
+      });
     },
     onError: (error) => {
       const message = getMessageFromError(error);
-
-      if (message) {
-        dispatch(
-          NotifierActions.createNotification({
-            id: "update-crew-settings-error",
-            type: "error",
-            message,
-          })
-        );
-      }
+      notify({
+        id: "update-crew-settings-error",
+        type: "error",
+        message,
+      });
     },
   });
 
@@ -163,7 +165,7 @@ const EditCrewSettings: React.FC = () => {
     dispatch(
       DialogActions.updateData({
         actionLabel: "crewSettings.save",
-        action: updateSettings,
+        action: handleUpdateSettings,
         showAction: () =>
           hasChangedVisibility ||
           hasChangedRules ||

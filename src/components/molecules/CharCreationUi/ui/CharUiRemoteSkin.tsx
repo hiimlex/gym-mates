@@ -10,6 +10,7 @@ const RemoteSkin: React.FC<IRemoteCharPiece> = ({
   height,
   zIndex = 0,
   uri,
+  style,
 }) => {
   const { palette } = useSelector((state: StoreState) => state.charCreation);
   const [svgText, setSvgText] = useState<string | null>(null);
@@ -36,7 +37,7 @@ const RemoteSkin: React.FC<IRemoteCharPiece> = ({
       style={{
         position: "absolute",
         zIndex,
-        margin: "auto",
+        ...style,
       }}
     />
   );

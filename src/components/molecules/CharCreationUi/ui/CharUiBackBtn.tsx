@@ -17,6 +17,7 @@ const BackBtn: React.FC = () => {
 
     if (step === "clothing") {
       dispatch(CharCreationActions.setStep("body"));
+      dispatch(CharCreationActions.setTab("hair"));
     }
   };
 

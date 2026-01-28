@@ -4,21 +4,18 @@ import { ScreenWrapper } from "@components/molecules";
 import { CrewCalendarView, CrewRankView } from "@components/organisms";
 import { ITabHeader } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
-import { useHeaderHeight } from "@react-navigation/elements";
+import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { Code, User } from "react-native-feather";
 import PagerView from "react-native-pager-view";
-import S from "./CrewView.styles";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const CrewView: React.FC<ScreenProps<AppRoutes.CrewView>> = ({
   navigation,
-  route,
 }) => {
-  const crew = route.params?.crew;
-  const headerHeight = useHeaderHeight();
+  const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const pagerRef = useRef<PagerView | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
 

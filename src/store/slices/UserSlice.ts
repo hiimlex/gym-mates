@@ -1,10 +1,10 @@
 import { AuthService } from "@api/services";
-import { IUser, IUserState } from "@models/collections";
+import { IUser, IUserProfileView, IUserState } from "@models/collections";
 import { AccessTokenKey } from "@models/generic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const userState: IUserState = { user: null };
+const userState: IUserState = { user: null, profileView: "avatar" };
 
 const fetchCurrentUser = createAsyncThunk<IUser>(
   "user/fetchCurrentUser",
@@ -47,6 +47,9 @@ const UserSlice = createSlice({
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loadingCurrentUser = action.payload;
+    },
+    setProfileView: (state, action: PayloadAction<IUserProfileView>) => {
+      state.profileView = action.payload;
     },
   },
   extraReducers: (builder) => {

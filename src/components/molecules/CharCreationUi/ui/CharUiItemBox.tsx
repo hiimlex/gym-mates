@@ -1,12 +1,8 @@
-import { IItem, SkinPiece, SkinSex } from "@models/collections";
-import { StoreState } from "@store/Store";
-import React, { useEffect, useState } from "react";
+import { IItem, SkinPiece } from "@models/collections";
+import React from "react";
 import { ViewStyle } from "react-native";
 import { SlideInLeft } from "react-native-reanimated";
-import { SvgXml } from "react-native-svg";
-import { useSelector } from "react-redux";
 import S from "./CharUi.styles";
-import { replaceSvgColors } from "./CharUi.utils";
 import CharUiAvatar from "./CharUiAvatar";
 
 const itemBox = require("../../../../assets/item_bg.png");
@@ -23,12 +19,6 @@ const ItemBox: React.FC<ItemBoxProps> = ({
   isSelected,
   onSelectItem,
 }) => {
-  const { palette, baseAssets } = useSelector(
-    (state: StoreState) => state.charCreation
-  );
-  const [itemSvg, setItemSvg] = useState<string | null>(null);
-  const [previewSvg, setPreviewSvg] = useState<string | null>(null);
-
   const styleByPiece: { [key in SkinPiece]?: ViewStyle } = {
     hair: { top: 28, marginLeft: 5, width: 150, height: 150 },
     top: { top: 0, marginLeft: 5, width: 150, height: 150 },

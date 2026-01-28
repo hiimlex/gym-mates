@@ -1,5 +1,5 @@
 export { default as BottomNav } from "./BottomNav/BottomNav";
-export { default as CharCreationUi } from "./CharCreationUi/CharCreationUi";
+export { default as CharUi } from "./CharCreationUi/CharUi";
 export { default as CrewInfo } from "./CrewInfo/CrewInfo";
 export { default as CrewLastActivities } from "./CrewLastActivities/CrewLastActivities";
 export { default as CrewMemberInfo } from "./CrewMemberInfo/CrewMemberInfo";
@@ -14,6 +14,7 @@ export { default as MyStats } from "./MyStats/MyStats";
 export { default as PersistedData } from "./PersistedData/PersistedData";
 export { default as ScreenWrapper } from "./ScreenWrapper/ScreenWrapper";
 export { default as ShopCheckoutPreview } from "./ShopCheckoutPreview/ShopCheckoutPreview";
+export { default as UserProfileHeader } from "./UserProfileHeader/UserProfileHeader";
 export { default as UserInfo } from "./UserInfo/UserInfo";
 export { default as UserViewActions } from "./UserViewActions/UserViewActions";
 export { default as WeekWorkouts } from "./WeekWorkouts/WeekWorkouts";

@@ -1,4 +1,12 @@
-import { IHairColor, IPaletteColor, ISvgColorVariables } from "@models/generic";
+import {
+  ICreateCharacterPayload,
+  IHairColor,
+  IPaletteColor,
+  ISelectedItem,
+  ISkinConfig,
+  ISvgColorVariables,
+  TMenuTab,
+} from "@models/generic";
 
 export function replaceSvgColors(svg: string, colors: ISvgColorVariables) {
   let modifiedSvg = svg;
@@ -82,7 +90,7 @@ export const HairColors: Record<string, IHairColor> = {
   brown: { primary: "#6f4e37", secondary: "#4b3621", border: "#3b2f2f" },
   brownLight: { primary: "#a67c52", secondary: "#7b5e3c", border: "#5c4033" },
   blonde: { primary: "#f0e2b6", secondary: "#c9b470", border: "#a89c6d" },
-  red: { primary: "#c94c4c", secondary: "#8b2e2e", border: "#6e2c2c" },
+  red: { primary: "#bf4e52", secondary: "#86152f", border: "#580e1f" },
   blue: { primary: "#4a6fa5", secondary: "#2c3e50", border: "#1b2838" },
   pink: { primary: "#e91e63", secondary: "#ad1457", border: "#880e4f" },
   white: { primary: "#e0e0e0", secondary: "#9e9e9e", border: "#757575" },
@@ -105,3 +113,32 @@ export const ClothingColors: Record<string, IPaletteColor> = {
   maroon: { primary: "#800000", secondary: "#4b0000" },
   olive: { primary: "#808000", secondary: "#4b4b00" },
 };
+
+export function buildCharacterPayload(
+  skin: ISkinConfig,
+  pieces?: Record<TMenuTab, ISelectedItem | null>
+): ICreateCharacterPayload | null {
+  if (!skin.eyeColorName || !skin.sex || !skin.skinColorName) {
+    return null;
+  }
+
+  const payload: ICreateCharacterPayload = {
+    eye_color: skin.eyeColorName,
+    sex: skin.sex,
+    skin_color: skin.skinColorName,
+  };
+
+  if (pieces) {
+    Object.keys(pieces).forEach((tab) => {
+      const piece = pieces[tab as TMenuTab];
+      if (piece && piece.item) {
+        payload[tab as TMenuTab] = {
+          item: piece.item._id,
+          colorName: piece.colorName,
+        };
+      }
+    });
+  }
+
+  return payload;
+}

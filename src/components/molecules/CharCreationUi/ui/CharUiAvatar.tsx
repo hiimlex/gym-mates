@@ -2,6 +2,7 @@ import { SkinPiece, SkinSex } from "@models/collections";
 import { StoreState } from "@store/Store";
 import React, { useMemo } from "react";
 import { ViewStyle } from "react-native";
+import ViewShot from "react-native-view-shot";
 import { useSelector } from "react-redux";
 import S from "./CharUi.styles";
 import { CharCreationZIndex } from "./CharUi.utils";
@@ -23,23 +24,18 @@ const CharUiAvatar = ({
   );
 
   // [TODO] - process size base on screen size
-
   const baseCharUrl: undefined | string = useMemo(() => {
-    if (!skin || !baseAssets) {
+    if (!skin || !baseAssets || !skin.sex) {
       return undefined;
     }
 
-    return skin.sex === SkinSex.male
+    return skin?.sex === SkinSex.male
       ? baseAssets?.resources.base_male
       : baseAssets?.resources.base_female;
   }, [skin?.sex, baseAssets]);
 
   return (
-    <S.CharBaseView
-      width={250}
-      height={250}
-      style={{ zIndex: CharCreationZIndex.charBase, ...replaceStyles }}
-    >
+    <S.CharBaseView width={250} height={260} style={{ ...replaceStyles }}>
       {/* Base char */}
       {baseCharUrl && (
         <RemoteSkin

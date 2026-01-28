@@ -1,6 +1,6 @@
 import { UsersService } from "@api/services";
-import { Avatar, DonateCard, Menu, Row, Typography } from "@components/atoms";
-import { ScreenWrapper } from "@components/molecules";
+import { DonateCard, Menu, Typography } from "@components/atoms";
+import { ScreenWrapper, UserProfileHeader } from "@components/molecules";
 import { OverlayType } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
@@ -11,7 +11,7 @@ import { Colors } from "@theme";
 import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import {
   Award,
   Edit,
@@ -31,7 +31,6 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
 }) => {
   const { t } = useTranslation();
   const { user } = useSelector((state: StoreState) => state.user);
-  const headerHeight = useHeaderHeight();
   const { crews } = useSelector((state: StoreState) => state.crews);
   const [preview, setPreview] = useState<string | undefined>(user?.avatar?.url);
 
@@ -86,72 +85,15 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
         contentContainerStyle={{ gap: 24 }}
         showsVerticalScrollIndicator={false}
       >
-        <Row align="flex-start" gap={18}>
-          <Avatar
-            size={80}
-            preview={preview}
-            onAvatarChange={onAvatarChange}
-            loading={isPending}
-            iconSize={40}
-          />
-          <View style={{ gap: 12 }}>
-            <View style={{ gap: 6 }}>
-              <Typography.Heading fontWeight="medium">
-                {user.name}
-              </Typography.Heading>
-
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={showSelectTitleOverlay}
-              >
-                <Text
-                  style={{
-                    fontWeight: "500",
-                    fontStyle: "italic",
-                    color: Colors.colors.primary,
-                  }}
-                >
-                  {user?.title?.title || t("profile.noTitle")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <Row gap={6}>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.followers"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.followers?.length || 0}
-                </Typography.Button>
-              </View>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.following"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.following?.length || 0}
-                </Typography.Button>
-              </View>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.crews"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {crewsCount}
-                </Typography.Button>
-              </View>
-              <View style={{ gap: 6 }}>
-                <Typography.Tip _t textColor="textLight" fontWeight="medium">
-                  {"profile.streak"}
-                </Typography.Tip>
-                <Typography.Button textColor="text" fontWeight="semibold">
-                  {user.day_streak} {t("units.days")}
-                </Typography.Button>
-              </View>
-            </Row>
-          </View>
-        </Row>
+        <UserProfileHeader
+          user={user}
+          isLoading={isPending}
+          onAvatarChange={onAvatarChange}
+          onShowSelectTitlePress={showSelectTitleOverlay}
+          crewsCount={crewsCount}
+          preview={preview}
+        />
+        {/* Profile Menu */}
         <View style={{ gap: 12 }}>
           <Typography.Body textColor="textDark" _t>
             {"profile.personal.title"}

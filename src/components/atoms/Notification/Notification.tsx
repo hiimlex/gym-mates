@@ -1,20 +1,21 @@
+import { ICreateNotification, INotificationType } from "@models/generic";
+import { AppDispatch } from "@store/Store";
+import { NotifierActions } from "@store/slices";
+import { Colors, TColors } from "@theme";
 import React, { useEffect, useMemo } from "react";
 import { useWindowDimensions, View } from "react-native";
-import S from "./Notification.styles";
-import { ICreateNotification, INotificationType } from "@models/generic";
-import Typography from "../Typography/Typography";
 import {
   AlertTriangle,
   CheckCircle,
   Info,
   XCircle,
 } from "react-native-feather";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@store/Store";
-import { NotifierActions } from "@store/slices";
-import { Colors, TColors, TColorsType } from "@theme";
+import { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { SvgProps } from "react-native-svg";
-import { FadeInDown, FadeInUp, FadeOutUp } from "react-native-reanimated";
+import { useDispatch } from "react-redux";
+import Typography from "../Typography/Typography";
+import S from "./Notification.styles";
+import { useNotifier } from "@hooks/useNotifier";
 
 const Notification: React.FC<ICreateNotification> = ({
   id,
@@ -84,12 +85,7 @@ const Notification: React.FC<ICreateNotification> = ({
     >
       {showDefaultIcon && !icon && iconByType[type]}
       {icon && <View>{icon}</View>}
-      <Typography.Button
-        style={{ flex: 1 }}
-        _t={_t}
-        _params={_params}
-        textColor={textColor}
-      >
+      <Typography.Button _t={_t} _params={_params} textColor={textColor}>
         {message}
       </Typography.Button>
     </S.Notification>

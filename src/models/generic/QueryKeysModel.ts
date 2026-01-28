@@ -11,6 +11,7 @@ export const QueryKeys = {
     Journey: "user.journey",
     FollowersInfo: "user.followersInfo",
     Skins: "user.skins",
+    GetCharacter: "user.getCharacter",
   },
   Crew: {
     GetActivityDays: "crew.getActivityDays",
@@ -18,7 +19,7 @@ export const QueryKeys = {
   },
   Config: {
     GetBaseCharacterAssets: "config.getBaseCharacterAssets",
-  }
+  },
 };
 
 export interface IQueryOperators {

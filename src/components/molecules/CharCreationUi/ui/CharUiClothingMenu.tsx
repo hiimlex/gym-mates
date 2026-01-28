@@ -49,7 +49,7 @@ const Menu: React.FC = () => {
     [windowWidth, imgHeight, resizePercent, innerPadding]
   );
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryFn: () => UsersService.getSkins(filters),
     queryKey: [
       QueryKeys.User.Skins,

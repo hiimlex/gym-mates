@@ -149,6 +149,7 @@ export default {
       all: "All Members",
     },
     delete: "Delete Crew",
+    updateSuccess: "Crew updated successfully.",
   },
   addWorkout: {
     fields: {
@@ -239,7 +240,7 @@ export default {
       yourCoinsAfterPurchase: "Your coins after purchase",
     },
     empty: "No items found.",
-    hint: "Hint:"
+    hint: "Hint:",
   },
   inventory: {
     title: "Inventory",
@@ -506,6 +507,7 @@ export default {
       "User does not meet items requirements to buy.",
     USER_DO_NOT_HAVE_ENOUGH_COINS: "User does not have enough coins.",
   },
+
   fieldErrors: {
     required: "Field is required.",
     maxLength: "Field is too long. Max length is {{value}}}.",

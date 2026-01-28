@@ -1,5 +1,7 @@
-import { TSkinToneColor } from "@components/molecules/CharCreationUi/CharUi/CharUi.utils";
+import { TSkinToneColor } from "@components/molecules/CharCreationUi/ui/CharUi.utils";
 import { IItem, SkinPiece, SkinSex } from "../collections";
+import ViewShot from "react-native-view-shot";
+import { ViewStyle } from "react-native";
 
 export type TMenuTab = "top" | "bottom" | "hair";
 
@@ -26,6 +28,7 @@ export interface ICharPiece {
 
 export interface IRemoteCharPiece extends ICharPiece {
   uri: string;
+  style?:ViewStyle;
 }
 
 export interface ISvgColorVariables {
@@ -55,10 +58,11 @@ export const DefaultSvgColorVariables: ISvgColorVariables = {
 };
 
 export interface ISkinConfig {
-  sex: SkinSex;
+  sex?: SkinSex;
   skinColorName?: TSkinToneColor;
   skinColor?: IPaletteColor;
   eyeColor?: string;
+  eyeColorName?: string;
 }
 
 export type TCharCreationStep = "body" | "clothing";
@@ -70,6 +74,7 @@ export interface ICharCreationState {
   pieces: Record<TMenuTab, ISelectedItem | null>;
   palette: ISvgColorVariables;
   baseAssets?: { resources: IBaseCharacterAssets };
+  viewShotRef?: ViewShot;
 }
 
 export interface IBaseCharacterAssets {
@@ -78,3 +83,4 @@ export interface IBaseCharacterAssets {
   color_picker: string;
   palette_picker: string;
 }
+

@@ -2,7 +2,6 @@ import { UsersService, WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Avatar, Loader, Row, Tabs, Typography } from "@components/atoms";
 import { ItemCard, WorkoutInfo } from "@components/molecules";
-import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import {
   IGetInventoryFilters,
   IGetInventoryResponse,
@@ -12,21 +11,18 @@ import {
   IWorkoutsByUser,
   IWorkoutsFilters,
 } from "@models/collections";
-import { OverlayType, ITabHeader } from "@models/generic";
+import { ITabHeader, OverlayType } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
-import { useHeaderHeight } from "@react-navigation/elements";
 import { OverlayActions } from "@store/slices";
 import { Colors } from "@theme";
 import { t } from "i18next";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 import ScreenWrapper from "../../components/molecules/ScreenWrapper/ScreenWrapper";
-import S from "./UserView.styles";
 
 const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
   const userId = route.params.userId;
-  const headerHeight = useHeaderHeight();
   const pagerRef = useRef(null);
 
   const { data: userData } = useQuery<IUserByIdResponse, { _id: string }>(

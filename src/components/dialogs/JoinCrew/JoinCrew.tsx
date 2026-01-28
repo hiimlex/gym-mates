@@ -99,7 +99,7 @@ const JoinCrew: React.FC = () => {
           {"joinCrew.search"}
         </Typography.Body>
         <Input
-          placeholder={"..."}
+          placeholder={"Search..."}
           onChangeText={(value) => setFilters({ search: value })}
           autoComplete="off"
           autoCorrect={false}

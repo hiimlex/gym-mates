@@ -9,6 +9,7 @@ import { useWindowDimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "../../atoms";
 import S from "./PersistedData.styles";
+import { IUserProfileView, ProfileViewStorageKey } from "@models/collections";
 
 const PersistedData: React.FC = () => {
   const { user, loadingCurrentUser, isAuthenticated, errorLoadingCurrentUser } =
@@ -29,11 +30,21 @@ const PersistedData: React.FC = () => {
     await dispatch(UserActions.fetchCurrentUser());
   };
 
+  const handleGetPersistedProfileView = async () => {
+    const profileView = await AsyncStorage.getItem(ProfileViewStorageKey);
+
+    if (profileView) {
+      dispatch(UserActions.setProfileView(profileView as IUserProfileView));
+    }
+  };
+
   useEffect(() => {
     handlePersistedUser();
   }, []);
 
   useEffect(() => {
+    handleGetPersistedProfileView();
+
     if (user && isAuthenticated && firstRender) {
       navigation.navigate(AppRoutes.Home);
       setFirstRender(false);

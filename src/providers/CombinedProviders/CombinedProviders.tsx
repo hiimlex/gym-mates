@@ -15,8 +15,7 @@ import {
   PersistedData,
 } from "@components/molecules";
 import OverlayProvider from "../OverlayProvider/OverlayProvider";
-
-const queryClient = new QueryClient();
+import { queryClient } from "@config/queryClient";
 
 const CombinedProviders: React.FC = () => {
   return (

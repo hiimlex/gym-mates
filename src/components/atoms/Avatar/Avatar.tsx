@@ -18,6 +18,7 @@ interface IAvatarProps {
   loading?: boolean;
   showBorder?: boolean;
   borderColor?: TColors;
+  activeBorderColor?: TColors;
 }
 
 const Avatar: React.FC<IAvatarProps> = ({
@@ -29,7 +30,8 @@ const Avatar: React.FC<IAvatarProps> = ({
   preview,
   loading,
   showBorder = true,
-  borderColor = 'border',
+  borderColor = "border",
+  activeBorderColor = "primary",
 }) => {
   const getFile = async () => {
     const result = await ImagePicker.launchImageLibrary({
@@ -54,6 +56,7 @@ const Avatar: React.FC<IAvatarProps> = ({
       active={!!preview && !disabled}
       size={size + borderOffset}
       borderColor={borderColor}
+      activeBorderColor={activeBorderColor}
     >
       <S.AvatarContent
         size={size}

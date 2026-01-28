@@ -35,6 +35,7 @@ const OffsetContainer = styled.View<{
   size: number;
   showBorder?: boolean;
   borderColor: TColors;
+  activeBorderColor?: TColors;
 }>`
   width: ${({ size }) => size + 'px'};
   height: ${({ size }) => size + 'px'};
@@ -52,10 +53,10 @@ const OffsetContainer = styled.View<{
      border-color: ${theme.colors[borderColor]};
   `}
 
-  ${({ active, theme }) =>
+  ${({ active, theme, activeBorderColor }) =>
     active &&
     `
-    border-color: ${theme.colors.primary};
+    border-color: ${theme.colors[activeBorderColor || 'primary']};
   `}
 `;
 
