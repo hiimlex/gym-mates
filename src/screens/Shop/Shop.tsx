@@ -2,7 +2,6 @@ import { ShopService } from "@api/services";
 import { Coin, Loader, Row, Typography } from "@components/atoms";
 import {
   calculateMediaSize,
-  Header,
   ItemCard,
   ScreenWrapper,
   ShopCheckoutPreview,
@@ -25,7 +24,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
   const { width } = useWindowDimensions();
 
   const { view, filters, cartItemsSum, cart } = useSelector(
-    (state: StoreState) => state.shop
+    (state: StoreState) => state.shop,
   );
   const { user } = useSelector((state: StoreState) => state.user);
   const headerHeight = useHeaderHeight();
@@ -91,7 +90,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
 
   const hasPriceFilter = useMemo(
     () => filters?.price_sort !== undefined,
-    [filters?.price_sort]
+    [filters?.price_sort],
   );
 
   const userCannotAfford = (itemPrice: number) => {
@@ -105,7 +104,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
       OverlayActions.show({
         type: OverlayType.ItemPreview,
         data: { item },
-      })
+      }),
     );
   };
 
@@ -122,6 +121,7 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
 
         <S.HorizontalScrollView
           horizontal
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             flexDirection: "row",
             gap: 12,

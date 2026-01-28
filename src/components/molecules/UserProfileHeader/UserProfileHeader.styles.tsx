@@ -1,11 +1,11 @@
 import styled from "@emotion/native";
-import { setAlphaToColor } from "@theme";
 import { BlurView } from "expo-blur";
 import { Animated } from "react-native";
 
 const AvatarWrapper = styled.View`
   position: relative;
   overflow: visible;
+  width: 90px;
 `;
 
 const ChangeProfileViewButton = styled.TouchableOpacity`

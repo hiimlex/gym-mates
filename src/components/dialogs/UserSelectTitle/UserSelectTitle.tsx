@@ -1,26 +1,25 @@
-import React, { useEffect } from "react";
-import { useWindowDimensions, View } from "react-native";
-import S from "./UserSelectTitle.styles";
-import {
-  FadeIn,
-  FadeOut,
-  SlideInDown,
-  SlideInUp,
-  SlideOutDown,
-} from "react-native-reanimated";
+import { UsersService } from "@api/services";
+import { useQuery } from "@apollo/client";
+import { Loader, Typography } from "@components/atoms";
 import {
   IGetInventoryFilters,
   IGetInventoryResponse,
   ItemCategory,
 } from "@models/collections";
-import { UsersService } from "@api/services";
-import { useQuery } from "@apollo/client";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreState } from "@store/Store";
-import { Loader, Typography } from "@components/atoms";
-import { useMutation } from "@tanstack/react-query";
 import { NotifierActions, OverlayActions, UserActions } from "@store/slices";
+import { AppDispatch, StoreState } from "@store/Store";
+import { useMutation } from "@tanstack/react-query";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import React, { useEffect } from "react";
+import { useWindowDimensions } from "react-native";
+import {
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+  SlideOutDown,
+} from "react-native-reanimated";
+import { useDispatch, useSelector } from "react-redux";
+import S from "./UserSelectTitle.styles";
 
 interface UserSelectTitleProps {}
 
@@ -66,15 +65,17 @@ const UserSelectTitle: React.FC<UserSelectTitleProps> = ({}) => {
             id: "error-selecting-title",
             message,
             type: "error",
-          })
+          }),
         );
       }
     },
   });
 
-  if (!data || data.journeyById.inventory.length === 0) {
-    return <View />;
-  }
+  useEffect(() => {
+    if ((!data && !loading) || data?.journeyById.inventory.length === 0) {
+      close();
+    }
+  }, [data]);
 
   return (
     <S.Float

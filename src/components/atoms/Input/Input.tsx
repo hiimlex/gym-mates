@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TextInput, TextInputProps, TextStyle, ViewStyle } from "react-native";
+import { TextInput, TextInputProps, TextStyle } from "react-native";
 import Typography, { TypographyStyles } from "../Typography/Typography";
 import S from "./Input.styles";
 
@@ -31,7 +31,7 @@ const Input: React.FC<InputProps> = ({
       )}
       <S.Input
         placeholder={placeholder && t(placeholder)}
-        style={[textStyle, { fontSize: 14 }, style]}
+        style={[textStyle, { fontSize: 14, lineHeight: 16 }, style]}
         autoComplete="off"
         autoCorrect={false}
         autoCapitalize="none"

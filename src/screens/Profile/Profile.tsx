@@ -3,7 +3,6 @@ import { DonateCard, Menu, Typography } from "@components/atoms";
 import { ScreenWrapper, UserProfileHeader } from "@components/molecules";
 import { OverlayType } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
-import { useHeaderHeight } from "@react-navigation/elements";
 import { NotifierActions, OverlayActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
@@ -52,7 +51,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
             id: "update-avatar-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },
@@ -201,7 +200,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
                   fillOpacity={0.2}
                 />
               }
-              onPress={() => {}}
+              onPress={() => navigate(AppRoutes.Settings)}
               label="profile.settings.settings"
               _t
             ></Menu.Item>

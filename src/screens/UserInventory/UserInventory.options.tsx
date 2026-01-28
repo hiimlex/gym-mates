@@ -27,7 +27,7 @@ const InventorySearch = () => {
     <S.SearchWrapper>
       <Input
         placeholder="Search"
-        style={{ height: 40 }}
+        style={{ height: 42, fontSize: 14, lineHeight: 16 }}
         onChangeText={onShopSearch}
       />
     </S.SearchWrapper>

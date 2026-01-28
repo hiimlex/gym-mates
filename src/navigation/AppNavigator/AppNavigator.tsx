@@ -1,4 +1,3 @@
-import { CrewViewActions, UserViewActions } from "@components/molecules";
 import { navigationRef } from "@hooks/useNavigationContainer/useNavigationContainer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -15,6 +14,8 @@ import {
   LoginScreen,
   ProfileScreen,
   ProfileScreenOptions,
+  SettingsScreen,
+  SettingsScreenOptions,
   SetupAvatarScreen,
   SetupHealthScreen,
   ShopCartScreen,
@@ -36,15 +37,13 @@ import {
 import { StoreState } from "@store/Store";
 import { PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
-import { Typography } from "../../components/atoms";
-import { Header } from "../../components/molecules";
 import { AppRoutes, TRootStackParamList } from "../appRoutes";
 
 const Stack = createNativeStackNavigator<TRootStackParamList>();
 
 const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
   const { user, isAuthenticated } = useSelector(
-    (state: StoreState) => state.user
+    (state: StoreState) => state.user,
   );
 
   return (
@@ -135,7 +134,7 @@ const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
               component={UserFollowsScreen}
               options={UserFollowsScreenOptions}
             />
-            
+
             <Stack.Screen
               name={AppRoutes.UserCharacter}
               component={UserCharacterScreen}
@@ -145,6 +144,11 @@ const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
               name={AppRoutes.Help}
               component={HelpScreen}
               options={HelpScreenOptions}
+            />
+            <Stack.Screen
+              name={AppRoutes.Settings}
+              component={SettingsScreen}
+              options={SettingsScreenOptions}
             />
           </>
         )}

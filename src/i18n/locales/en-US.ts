@@ -1,5 +1,3 @@
-import { User } from "react-native-feather";
-
 export default {
   login: {
     title: "Login",
@@ -92,6 +90,9 @@ export default {
       logout: "Logout",
       help: "Help & Support",
     },
+  },
+  settings: {
+    selectLanguage: "Select Language",
   },
   crews: {
     title: "Follow your crews activities!",
@@ -348,6 +349,7 @@ export default {
   crewRules: {
     title: "Crew Rules",
   },
+
   // Generic
   weekDays: {
     long: {
@@ -406,6 +408,7 @@ export default {
     userFollows: "Mates",
     help: "Help & Support",
     userCharacter: "Character",
+    settings: "Settings",
   },
   units: {
     days: "days",
@@ -428,6 +431,10 @@ export default {
   crewVisibility: {
     public: "Public",
     private: "Private",
+  },
+  languages: {
+    en: "English",
+    ptBR: "Portuguese (Brazil)",
   },
   items: {
     title: {

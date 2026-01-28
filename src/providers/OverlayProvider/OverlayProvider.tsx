@@ -1,4 +1,9 @@
-import { ItemPreview, Missions, UserSelectTitle, WorkoutImageViewer } from "@components/dialogs";
+import {
+  ItemPreview,
+  Missions,
+  UserSelectTitle,
+  WorkoutImageViewer,
+} from "@components/dialogs";
 import { OverlayType } from "@models/generic";
 import { StoreState } from "@store/Store";
 import { ReactElement } from "react";

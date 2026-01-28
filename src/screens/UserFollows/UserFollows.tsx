@@ -1,15 +1,13 @@
 import { UsersService } from "@api/services";
 import { Loader, Row, Tabs, Typography } from "@components/atoms";
 import { ScreenWrapper, UserInfo } from "@components/molecules";
-import { useScreenSize } from "@hooks/useScreenSize/useScreenSize";
-import { QueryKeys, ITabHeader } from "@models/generic";
+import { ITabHeader, QueryKeys } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
-import S from "./UserFollows.styles";
 import PagerView from "react-native-pager-view";
+import { useSelector } from "react-redux";
 
 const tabsHeader: ITabHeader[] = [
   {
@@ -24,7 +22,6 @@ const tabsHeader: ITabHeader[] = [
 
 const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
   const { user } = useSelector((state: StoreState) => state.user);
-  const { headerHeight } = useScreenSize();
   const pagerRef = useRef<PagerView>(null);
 
   const { data, isLoading } = useQuery({
@@ -40,10 +37,6 @@ const UserFollows: React.FC<ScreenProps<AppRoutes.UserFollows>> = ({}) => {
 
   return (
     <ScreenWrapper useHeaderHeight>
-      <S.Header>
-        <Typography.Heading _t>{"userFollows.title"}</Typography.Heading>
-      </S.Header>
-
       <Tabs.Root initialPage={0} header={tabsHeader} pagerRef={pagerRef}>
         <Tabs.Item
           key={0}

@@ -1,26 +1,16 @@
+import { UsersService } from "@api/services";
 import { Avatar, Row, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
-import { SkipSetupAvatarKey } from "@models/generic";
-import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch } from "@store/Store";
-import { Colors } from "@theme";
+import { useMutation } from "@tanstack/react-query";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { User } from "react-native-feather";
+import { Asset } from "react-native-image-picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import S from "./SetupAvatar.styles";
-import { Asset } from "react-native-image-picker";
-import { UsersService } from "@api/services";
-import { useMutation } from "@tanstack/react-query";
-import { NotifierActions, UserActions } from "@store/slices";
-import { getMessageFromError } from "@utils/handleAxiosError";
 
 const SetupAvatar: React.FC<ScreenProps<AppRoutes.SetupAvatar>> = ({
   navigation: { navigate, goBack },
@@ -55,7 +45,7 @@ const SetupAvatar: React.FC<ScreenProps<AppRoutes.SetupAvatar>> = ({
             id: "setup-avatar-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },
