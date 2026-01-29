@@ -1,8 +1,7 @@
-import React from "react";
-import { LinearGradient } from "expo-linear-gradient";
-import { Colors, setAlphaToColor } from "../../../theme";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useScreenSize } from "@hooks/useScreenSize/useScreenSize";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { Colors, setAlphaToColor } from "../../../theme";
 
 interface ScreenWrapperProps {
   children?: React.ReactNode;

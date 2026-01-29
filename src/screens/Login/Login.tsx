@@ -6,7 +6,14 @@ import { ILoginForm } from "@models/collections";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { TouchableOpacity, useWindowDimensions, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ScreenWrapper } from "@components/molecules";
@@ -14,11 +21,11 @@ import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { AccessTokenKey, InputRefRecorder } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { NotifierActions, UserActions } from "@store/slices";
-import { AppDispatch, StoreState } from "@store/Store";
+import { AppDispatch } from "@store/Store";
 import { getMessageFromError } from "@utils/handleAxiosError";
-import { useDispatch, useSelector } from "react-redux";
-import S from "./Login.styles";
 import Masks from "@utils/masks.utils";
+import { useDispatch } from "react-redux";
+import S from "./Login.styles";
 
 const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
   const { width } = useWindowDimensions();
@@ -27,7 +34,6 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
   const { control, watch, formState, reset } = useForm<ILoginForm>({
     mode: "all",
   });
-  const { user } = useSelector((state: StoreState) => state.user);
   const values = watch();
   const dispatch = useDispatch<AppDispatch>();
   const { navigate } = useAppNavigation();
@@ -64,7 +70,7 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
             id: "login-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },
@@ -78,68 +84,75 @@ const Login: React.FC<ScreenProps<AppRoutes.Login>> = () => {
 
   return (
     <ScreenWrapper>
-      <View style={{ gap: 12 }}>
-        <Typography.Subtitle _t textColor="textDark">
-          {"login.title"}
-        </Typography.Subtitle>
-        <Typography.Body _t textColor="text">
-          {"login.subtitle"}
-        </Typography.Body>
-      </View>
-      <ControlledInput
-        control={control}
-        name="email"
-        label="login.email"
-        placeholder="login.email"
-        rules={{ required: true }}
-        textContentType="emailAddress"
-        keyboardType="email-address"
-        returnKeyType="next"
-        inputRef={fieldsRef.email}
-        maskFn={(e) => Masks.email(e)}
-        onSubmitEditing={() => {
-          fieldsRef.password.current?.focus();
-        }}
-      />
-
-      <ControlledInput
-        control={control}
-        name="password"
-        label="login.password"
-        placeholder="login.password"
-        rules={{ required: true }}
-        secureTextEntry
-        textContentType="password"
-        returnKeyType="done"
-        inputRef={fieldsRef.password}
-        onSubmitEditing={handleLoginSubmit}
-      />
-
-      <Button
-        title="login.title"
-        disabled={!formState.isValid}
-        loading={isPending}
-        onPress={handleLoginSubmit}
-      />
-
-      <S.FloatLinkWrapper
-        style={{
-          paddingBottom: insets.bottom + 12,
-          width: width,
-        }}
+      <TouchableWithoutFeedback
+        style={{ flex: 1 }}
+        onPress={() => Keyboard.dismiss()}
       >
-        <Typography.Caption _t textColor="textLight">
-          {"login.link"}
-        </Typography.Caption>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={() => navigate(AppRoutes.SignUp)}
-        >
-          <Typography.Button _t textColor="primary">
-            {"login.signUp"}
-          </Typography.Button>
-        </TouchableOpacity>
-      </S.FloatLinkWrapper>
+        <KeyboardAvoidingView style={{ flex: 1, gap: 24 }}>
+          <View style={{ gap: 12 }}>
+            <Typography.Subtitle _t textColor="textDark">
+              {"login.title"}
+            </Typography.Subtitle>
+            <Typography.Body _t textColor="text">
+              {"login.subtitle"}
+            </Typography.Body>
+          </View>
+          <ControlledInput
+            control={control}
+            name="email"
+            label="login.email"
+            placeholder="login.email"
+            rules={{ required: true }}
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            returnKeyType="next"
+            inputRef={fieldsRef.email}
+            maskFn={(e) => Masks.email(e)}
+            onSubmitEditing={() => {
+              fieldsRef.password.current?.focus();
+            }}
+          />
+
+          <ControlledInput
+            control={control}
+            name="password"
+            label="login.password"
+            placeholder="login.password"
+            rules={{ required: true }}
+            secureTextEntry
+            textContentType="password"
+            returnKeyType="done"
+            inputRef={fieldsRef.password}
+            onSubmitEditing={handleLoginSubmit}
+          />
+
+          <Button
+            title="login.title"
+            disabled={!formState.isValid}
+            loading={isPending}
+            onPress={handleLoginSubmit}
+          />
+
+          <S.FloatLinkWrapper
+            style={{
+              paddingBottom: insets.bottom + 12,
+              width: width,
+            }}
+          >
+            <Typography.Caption _t textColor="textLight">
+              {"login.link"}
+            </Typography.Caption>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => navigate(AppRoutes.SignUp)}
+            >
+              <Typography.Button _t textColor="primary">
+                {"login.signUp"}
+              </Typography.Button>
+            </TouchableOpacity>
+          </S.FloatLinkWrapper>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </ScreenWrapper>
   );
 };

@@ -15,9 +15,11 @@ import { scrollToFieldRef } from "@utils/scrollToFieldRef";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -94,145 +96,153 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
 
   return (
     <ScreenWrapper>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-        <S.Container
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            gap: 24,
-          }}
-          ref={scrollRef}
-        >
-          <View style={{ gap: 12 }}>
-            <Typography.Subtitle _t textColor="textDark">
-              {"signup.title"}
-            </Typography.Subtitle>
-            <Typography.Body _t textColor="text">
-              {"signup.subtitle"}
-            </Typography.Body>
-          </View>
-
-          {step === "code" && (
-            <>
-              <S.Group>
-                <Typography.Body _t textColor="text">
-                  {"signup.enterCode"}
-                </Typography.Body>
-                <Input
-                  placeholder="signup.enterCodePlaceholder"
-                  onChangeText={(text) => {
-                    const newText = text.toLocaleUpperCase().substring(0, 6);
-                    setCode(newText);
-                  }}
-                  value={code}
-                />
-              </S.Group>
-              <Button
-                title="signup.validate"
-                loading={isValidatingCode}
-                disabled={!code || code.length < 6}
-                onPress={validateCode}
-              />
-            </>
-          )}
-
-          {step === "form" && (
-            <>
-              <ControlledInput
-                control={control}
-                name="name"
-                placeholder="signup.fields.name"
-                label="signup.fields.name"
-                inputRef={fieldsRef.name}
-                onFocus={() => scrollToFieldRef(fieldsRef.name, scrollRef)}
-                rules={{ required: true }}
-                keyboardType="default"
-                textContentType="name"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  fieldsRef.email.current?.focus();
-                }}
-                showErrorMessage
-                onChangeText={(text) => {}}
-              />
-
-              <ControlledInput
-                control={control}
-                name="email"
-                placeholder="signup.fields.email"
-                label="signup.fields.email"
-                inputRef={fieldsRef.email}
-                onFocus={() => scrollToFieldRef(fieldsRef.email, scrollRef)}
-                rules={{ required: true }}
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  fieldsRef.password.current?.focus();
-                }}
-                maskFn={Masks.email}
-                showErrorMessage
-              />
-
-              <ControlledInput
-                control={control}
-                name="password"
-                placeholder="signup.fields.password"
-                label="signup.fields.password"
-                inputRef={fieldsRef.password}
-                onFocus={() => scrollToFieldRef(fieldsRef.password, scrollRef)}
-                rules={{ required: true }}
-                secureTextEntry
-                textContentType="newPassword"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  fieldsRef.confirmPassword.current?.focus();
-                }}
-                showErrorMessage
-              />
-
-              <ControlledInput
-                control={control}
-                name="confirmPassword"
-                placeholder="signup.fields.confirmPassword"
-                label="signup.fields.confirmPassword"
-                inputRef={fieldsRef.confirmPassword}
-                onFocus={() =>
-                  scrollToFieldRef(fieldsRef.confirmPassword, scrollRef)
-                }
-                rules={{
-                  required: true,
-                  validate: (value, formValues) =>
-                    value === formValues.password ||
-                    "fieldErrors.passwordMatch",
-                }}
-              />
-
-              <Button
-                title="signup.sign"
-                loading={isPending}
-                onPress={handleSignSubmit}
-                disabled={!formState.isValid}
-              />
-            </>
-          )}
-        </S.Container>
-      </KeyboardAvoidingView>
-
-      <S.FloatLinkWrapper
-        style={{
-          paddingBottom: insets.bottom + 12,
-          width: width,
-        }}
+      <TouchableWithoutFeedback
+        style={{ flex: 1 }}
+        onPress={() => Keyboard.dismiss()}
       >
-        <Typography.Caption _t textColor="textLight">
-          {"signup.link"}
-        </Typography.Caption>
-        <TouchableOpacity activeOpacity={0.6} onPress={goBack}>
-          <Typography.Button _t textColor="primary">
-            {"signup.login"}
-          </Typography.Button>
-        </TouchableOpacity>
-      </S.FloatLinkWrapper>
+        <KeyboardAvoidingView style={{ flex: 1, gap: 24 }}>
+          <S.Container
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              gap: 24,
+            }}
+            ref={scrollRef}
+          >
+            <View style={{ gap: 12 }}>
+              <Typography.Subtitle _t textColor="textDark">
+                {"signup.title"}
+              </Typography.Subtitle>
+              <Typography.Body _t textColor="text">
+                {"signup.subtitle"}
+              </Typography.Body>
+            </View>
+
+            {step === "code" && (
+              <>
+                <S.Group>
+                  <Typography.Body _t textColor="text">
+                    {"signup.enterCode"}
+                  </Typography.Body>
+                  <Input
+                    placeholder="signup.enterCodePlaceholder"
+                    onChange={({ nativeEvent }) => {
+                      const text = nativeEvent.text || "";
+                      const newText = text.toLocaleUpperCase().substring(0, 6);
+                      setCode(newText);
+                    }}
+                    value={code}
+                  />
+                </S.Group>
+                <Button
+                  title="signup.validate"
+                  loading={isValidatingCode}
+                  disabled={!code || code.length < 6}
+                  onPress={validateCode}
+                />
+              </>
+            )}
+
+            {step === "form" && (
+              <>
+                <ControlledInput
+                  control={control}
+                  name="name"
+                  placeholder="signup.fields.name"
+                  label="signup.fields.name"
+                  inputRef={fieldsRef.name}
+                  onFocus={() => scrollToFieldRef(fieldsRef.name, scrollRef)}
+                  rules={{ required: true }}
+                  keyboardType="default"
+                  textContentType="name"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    fieldsRef.email.current?.focus();
+                  }}
+                  showErrorMessage
+                  onChangeText={(text) => {}}
+                />
+
+                <ControlledInput
+                  control={control}
+                  name="email"
+                  placeholder="signup.fields.email"
+                  label="signup.fields.email"
+                  inputRef={fieldsRef.email}
+                  onFocus={() => scrollToFieldRef(fieldsRef.email, scrollRef)}
+                  rules={{ required: true }}
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    fieldsRef.password.current?.focus();
+                  }}
+                  maskFn={Masks.email}
+                  showErrorMessage
+                />
+
+                <ControlledInput
+                  control={control}
+                  name="password"
+                  placeholder="signup.fields.password"
+                  label="signup.fields.password"
+                  inputRef={fieldsRef.password}
+                  onFocus={() =>
+                    scrollToFieldRef(fieldsRef.password, scrollRef)
+                  }
+                  rules={{ required: true }}
+                  secureTextEntry
+                  textContentType="newPassword"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    fieldsRef.confirmPassword.current?.focus();
+                  }}
+                  showErrorMessage
+                />
+
+                <ControlledInput
+                  control={control}
+                  name="confirmPassword"
+                  placeholder="signup.fields.confirmPassword"
+                  label="signup.fields.confirmPassword"
+                  inputRef={fieldsRef.confirmPassword}
+                  onFocus={() =>
+                    scrollToFieldRef(fieldsRef.confirmPassword, scrollRef)
+                  }
+                  rules={{
+                    required: true,
+                    validate: (value, formValues) =>
+                      value === formValues.password ||
+                      "fieldErrors.passwordMatch",
+                  }}
+                />
+
+                <Button
+                  title="signup.sign"
+                  loading={isPending}
+                  onPress={handleSignSubmit}
+                  disabled={!formState.isValid}
+                />
+              </>
+            )}
+          </S.Container>
+
+          <S.FloatLinkWrapper
+            style={{
+              paddingBottom: insets.bottom + 12,
+              width: width,
+            }}
+          >
+            <Typography.Caption _t textColor="textLight">
+              {"signup.link"}
+            </Typography.Caption>
+            <TouchableOpacity activeOpacity={0.6} onPress={goBack}>
+              <Typography.Button _t textColor="primary">
+                {"signup.login"}
+              </Typography.Button>
+            </TouchableOpacity>
+          </S.FloatLinkWrapper>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </ScreenWrapper>
   );
 };
