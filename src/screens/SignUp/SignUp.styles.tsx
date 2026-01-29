@@ -13,4 +13,9 @@ const FloatLinkWrapper = styled.View`
   justify-content: center;
 `;
 
-export default { Container, FloatLinkWrapper };
+const Group = styled.View`
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export default { Container, FloatLinkWrapper, Group };

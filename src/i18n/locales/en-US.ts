@@ -18,8 +18,11 @@ export default {
       confirmPassword: "Confirm Password",
     },
     sign: "Join Now",
+    validate: "Validate",
     link: "Already have an account?",
     login: "Login",
+    enterCode: "For now to join our beta you will need an invite code.",
+    enterCodePlaceholder: "INVITE",
   },
   setupHealth: {
     title: "Extra",
@@ -478,6 +481,7 @@ export default {
     FORBIDDEN: "You don't have permission for it.",
     // Auth
     INVALID_CREDENTIALS: "Invalid credentials.",
+    INVITE_CODE_NOT_FOUND: "Invite code not found.",
     // Crew
     CREW_NOT_FOUND: "Crew not found.",
     ALREADY_MEMBER: "Already a member of this crew.",

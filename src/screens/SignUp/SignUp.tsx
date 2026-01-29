@@ -1,17 +1,19 @@
 import { AuthService } from "@api/services";
 import { Button, ControlledInput, Input, Typography } from "@components/atoms";
 import { ScreenWrapper } from "@components/molecules";
+import { useNotifier } from "@hooks/useNotifier";
 import { ISignUpForm } from "@models/collections";
 import { AccessTokenKey, InputRefRecorder } from "@models/generic";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppDispatch } from "@store/Store";
-import { NotifierActions, UserActions } from "@store/slices";
+import { UserActions } from "@store/slices";
 import { useMutation } from "@tanstack/react-query";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import Masks from "@utils/masks.utils";
 import { scrollToFieldRef } from "@utils/scrollToFieldRef";
-import React, { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React, { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -22,7 +24,6 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import S from "./SignUp.styles";
-import Masks from "@utils/masks.utils";
 
 const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
   navigation: { navigate, goBack },
@@ -31,6 +32,8 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
   const { width } = useWindowDimensions();
 
   const scrollRef = useRef<ScrollView>(null);
+  const [code, setCode] = useState<string>("");
+  const [step, setStep] = useState<"code" | "form">("code");
   const { control, formState, getValues, reset } = useForm<ISignUpForm>({
     mode: "all",
   });
@@ -42,9 +45,10 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
   };
 
   const dispatch = useDispatch<AppDispatch>();
+  const { notify } = useNotifier();
 
   const { mutate: signUpUser, isPending } = useMutation({
-    mutationFn: AuthService.signUp,
+    mutationFn: async () => await AuthService.signUp(getValues(), code),
     onSuccess: async (data) => {
       reset();
       await AsyncStorage.setItem(AccessTokenKey, data.data.access_token);
@@ -55,21 +59,36 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
       const message = getMessageFromError(error);
 
       if (message) {
-        dispatch(
-          NotifierActions.createNotification({
-            id: "sign-up-error",
-            type: "error",
-            message,
-          })
-        );
+        notify({
+          id: "sign-up-error",
+          type: "error",
+          message,
+        });
+      }
+    },
+  });
+
+  const { mutate: validateCode, isPending: isValidatingCode } = useMutation({
+    mutationFn: async () => await AuthService.validateInviteCode(code),
+    onSuccess: async (data) => {
+      setStep("form");
+    },
+    onError: (error) => {
+      const message = getMessageFromError(error);
+
+      if (message) {
+        notify({
+          id: "validate-code-error",
+          type: "error",
+          message,
+        });
       }
     },
   });
 
   const handleSignSubmit = () => {
     if (formState.isValid) {
-      const values = getValues();
-      signUpUser(values);
+      signUpUser();
     }
   };
 
@@ -77,6 +96,7 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
     <ScreenWrapper>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <S.Container
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             gap: 24,
           }}
@@ -91,81 +111,110 @@ const SignUp: React.FC<ScreenProps<AppRoutes.SignUp>> = ({
             </Typography.Body>
           </View>
 
-          <ControlledInput
-            control={control}
-            name="name"
-            placeholder="signup.fields.name"
-            label="signup.fields.name"
-            inputRef={fieldsRef.name}
-            onFocus={() => scrollToFieldRef(fieldsRef.name, scrollRef)}
-            rules={{ required: true }}
-            keyboardType="default"
-            textContentType="name"
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              fieldsRef.email.current?.focus();
-            }}
-            showErrorMessage
-            onChangeText={(text) => {}}
-          />
+          {step === "code" && (
+            <>
+              <S.Group>
+                <Typography.Body _t textColor="text">
+                  {"signup.enterCode"}
+                </Typography.Body>
+                <Input
+                  placeholder="signup.enterCodePlaceholder"
+                  onChangeText={(text) => {
+                    const newText = text.toLocaleUpperCase().substring(0, 6);
+                    setCode(newText);
+                  }}
+                  value={code}
+                />
+              </S.Group>
+              <Button
+                title="signup.validate"
+                loading={isValidatingCode}
+                disabled={!code || code.length < 6}
+                onPress={validateCode}
+              />
+            </>
+          )}
 
-          <ControlledInput
-            control={control}
-            name="email"
-            placeholder="signup.fields.email"
-            label="signup.fields.email"
-            inputRef={fieldsRef.email}
-            onFocus={() => scrollToFieldRef(fieldsRef.email, scrollRef)}
-            rules={{ required: true }}
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              fieldsRef.password.current?.focus();
-            }}
-            maskFn={Masks.email}
-            showErrorMessage
-          />
+          {step === "form" && (
+            <>
+              <ControlledInput
+                control={control}
+                name="name"
+                placeholder="signup.fields.name"
+                label="signup.fields.name"
+                inputRef={fieldsRef.name}
+                onFocus={() => scrollToFieldRef(fieldsRef.name, scrollRef)}
+                rules={{ required: true }}
+                keyboardType="default"
+                textContentType="name"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  fieldsRef.email.current?.focus();
+                }}
+                showErrorMessage
+                onChangeText={(text) => {}}
+              />
 
-          <ControlledInput
-            control={control}
-            name="password"
-            placeholder="signup.fields.password"
-            label="signup.fields.password"
-            inputRef={fieldsRef.password}
-            onFocus={() => scrollToFieldRef(fieldsRef.password, scrollRef)}
-            rules={{ required: true }}
-            secureTextEntry
-            textContentType="newPassword"
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              fieldsRef.confirmPassword.current?.focus();
-            }}
-            showErrorMessage
-          />
+              <ControlledInput
+                control={control}
+                name="email"
+                placeholder="signup.fields.email"
+                label="signup.fields.email"
+                inputRef={fieldsRef.email}
+                onFocus={() => scrollToFieldRef(fieldsRef.email, scrollRef)}
+                rules={{ required: true }}
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  fieldsRef.password.current?.focus();
+                }}
+                maskFn={Masks.email}
+                showErrorMessage
+              />
 
-          <ControlledInput
-            control={control}
-            name="confirmPassword"
-            placeholder="signup.fields.confirmPassword"
-            label="signup.fields.confirmPassword"
-            inputRef={fieldsRef.confirmPassword}
-            onFocus={() =>
-              scrollToFieldRef(fieldsRef.confirmPassword, scrollRef)
-            }
-            rules={{
-              required: true,
-              validate: (value, formValues) =>
-                value === formValues.password || "fieldErrors.passwordMatch",
-            }}
-          />
+              <ControlledInput
+                control={control}
+                name="password"
+                placeholder="signup.fields.password"
+                label="signup.fields.password"
+                inputRef={fieldsRef.password}
+                onFocus={() => scrollToFieldRef(fieldsRef.password, scrollRef)}
+                rules={{ required: true }}
+                secureTextEntry
+                textContentType="newPassword"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  fieldsRef.confirmPassword.current?.focus();
+                }}
+                showErrorMessage
+              />
 
-          <Button
-            title="signup.sign"
-            loading={isPending}
-            onPress={handleSignSubmit}
-            disabled={!formState.isValid}
-          />
+              <ControlledInput
+                control={control}
+                name="confirmPassword"
+                placeholder="signup.fields.confirmPassword"
+                label="signup.fields.confirmPassword"
+                inputRef={fieldsRef.confirmPassword}
+                onFocus={() =>
+                  scrollToFieldRef(fieldsRef.confirmPassword, scrollRef)
+                }
+                rules={{
+                  required: true,
+                  validate: (value, formValues) =>
+                    value === formValues.password ||
+                    "fieldErrors.passwordMatch",
+                }}
+              />
+
+              <Button
+                title="signup.sign"
+                loading={isPending}
+                onPress={handleSignSubmit}
+                disabled={!formState.isValid}
+              />
+            </>
+          )}
         </S.Container>
       </KeyboardAvoidingView>
 

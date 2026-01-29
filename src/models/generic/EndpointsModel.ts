@@ -1,10 +1,9 @@
-import { Users } from "react-native-feather";
-
 export enum Endpoints {
   // Auth
   AuthLogin = "/auth/login",
   AuthSignUp = "/auth/sign-up",
   AuthMe = "/auth/me",
+  AuthValidateInviteCode = "/auth/validate-invite-code",
   // Crews
   CrewsCreate = "/crews",
   CrewsList = "/crews",

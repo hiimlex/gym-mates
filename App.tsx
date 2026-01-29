@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { Dirs } from "react-native-file-access";
 import { enableScreens } from "react-native-screens";
 
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 
 if (__DEV__) {
   // Adds messages only in a dev environment

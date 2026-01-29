@@ -15,7 +15,6 @@ import { SvgProps } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import Typography from "../Typography/Typography";
 import S from "./Notification.styles";
-import { useNotifier } from "@hooks/useNotifier";
 
 const Notification: React.FC<ICreateNotification> = ({
   id,
