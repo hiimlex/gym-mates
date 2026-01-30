@@ -1,4 +1,4 @@
-import { Asset } from "react-native-image-picker";
+import { ImagePickerAsset } from "expo-image-picker";
 import { IFile } from "./FileModel";
 import { IUser } from "./UsersModel";
 
@@ -79,7 +79,7 @@ export interface IUpdateCrewPayload {
 }
 
 export interface IUpdateCrewBannerPayload {
-  file: Asset;
+  file: ImagePickerAsset;
   crew_id: string;
 }
 
@@ -92,7 +92,7 @@ export type ICreateCrewSteps = "info" | "settings";
 export interface ICreateCrewInfoForm {
   name: string;
   code: string;
-  media: Asset;
+  media: ImagePickerAsset;
   mediaPreview: string;
 }
 
@@ -105,7 +105,7 @@ export interface ICreateCrewSettingsForm {
 export interface ICreateCrewPayload {
   name: string;
   code: string;
-  banner?: Asset;
+  banner?: ImagePickerAsset;
   visibility: CrewVisibility;
   rules: IEditCrewRulesForm;
   streak: CrewStreak[];
@@ -113,7 +113,7 @@ export interface ICreateCrewPayload {
 
 export interface ICreateCrewState {
   step: ICreateCrewSteps;
-  banner?: Asset;
+  banner?: ImagePickerAsset;
   infoForm?: ICreateCrewInfoForm;
   settingsForm?: ICreateCrewSettingsForm;
   error?: string;

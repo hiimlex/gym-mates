@@ -1,20 +1,41 @@
 import { ScreenWrapper } from "@components/molecules";
 import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Typography } from "@components/atoms";
+import { Menu, Typography } from "@components/atoms";
 import { Languages, PersistedLanguageKey } from "@models/generic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCameraPermissions } from "expo-camera";
+import { useMediaLibraryPermissions } from "expo-image-picker";
 import { useTranslation } from "react-i18next";
 import S from "./Settings.styles";
 
+import { Linking, Platform } from "react-native";
+
 const Settings: React.FC<ScreenProps<AppRoutes.Settings>> = ({}) => {
-  const insets = useSafeAreaInsets();
   const { i18n } = useTranslation();
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
+  const [mediaLibraryPermission, requestMediaLibraryPermission] =
+    useMediaLibraryPermissions();
 
   const handleChangeLanguage = async (language: string) => {
     await AsyncStorage.setItem(PersistedLanguageKey, language);
     i18n.changeLanguage(language);
+  };
+
+  const handleOpenAppSettings = () => {
+    if (Platform.OS === "android") {
+      Linking.openSettings().catch((err) => {
+        console.error("An error occurred", err);
+      });
+      return;
+    }
+
+    if (Platform.OS === "ios") {
+      Linking.openURL("app-settings:").catch((err) => {
+        console.error("An error occurred", err);
+      });
+      return;
+    }
   };
 
   return (
@@ -22,7 +43,7 @@ const Settings: React.FC<ScreenProps<AppRoutes.Settings>> = ({}) => {
       <S.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          gap: 0,
+          gap: 24,
           flexGrow: 1,
         }}
       >
@@ -61,7 +82,65 @@ const Settings: React.FC<ScreenProps<AppRoutes.Settings>> = ({}) => {
             </S.ButtonSwitchItem>
           </S.ButtonSwitchContainer>
         </S.Group>
-        <S.Group></S.Group>
+        <S.Group>
+          <Typography.Body _t>{"settings.permissions"}</Typography.Body>
+          <Menu.Root>
+            <Menu.Item
+              label="settings.openAppSettings"
+              onPress={handleOpenAppSettings}
+              _t
+            ></Menu.Item>
+            <Menu.Item
+              label="settings.cameraPermission"
+              onPress={() => {
+                if (!cameraPermission?.granted) {
+                  requestCameraPermission();
+                }
+              }}
+              _t
+              rightIcon={
+                <>
+                  <Typography.Typography
+                    variant={cameraPermission?.granted ? "caption" : "button"}
+                    _t
+                    textColor={cameraPermission?.granted ? "success" : "danger"}
+                  >
+                    {cameraPermission?.granted
+                      ? "settings.granted"
+                      : "settings.request"}
+                  </Typography.Typography>
+                </>
+              }
+            ></Menu.Item>
+            <Menu.Item
+              label="settings.mediaLibraryPermission"
+              onPress={() => {
+                if (!mediaLibraryPermission?.granted) {
+                  requestMediaLibraryPermission();
+                }
+              }}
+              _t
+              isLast
+              rightIcon={
+                <>
+                  <Typography.Typography
+                    variant={
+                      mediaLibraryPermission?.granted ? "caption" : "button"
+                    }
+                    _t
+                    textColor={
+                      mediaLibraryPermission?.granted ? "success" : "danger"
+                    }
+                  >
+                    {mediaLibraryPermission?.granted
+                      ? "settings.granted"
+                      : "settings.request"}
+                  </Typography.Typography>
+                </>
+              }
+            ></Menu.Item>
+          </Menu.Root>
+        </S.Group>
       </S.ScrollView>
     </ScreenWrapper>
   );

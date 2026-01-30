@@ -1,11 +1,10 @@
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import Typography from "../Typography/Typography";
-import { useTranslation } from "react-i18next";
-import S from "./Menu.styles";
-import Row from "../Row/Row";
 import Feather from "@react-native-vector-icons/feather";
 import { Colors, setAlphaToColor } from "@theme";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import Row from "../Row/Row";
+import Typography from "../Typography/Typography";
+import S from "./Menu.styles";
 
 interface MenuProps {
   children: React.ReactNode;
@@ -13,15 +12,12 @@ interface MenuProps {
 
 const Root: React.FC<MenuProps> = ({ children }) => {
   return (
-    <S.Menu
-      colors={[
-        setAlphaToColor("#ffffff", 40),
-        setAlphaToColor("#EBF2FF", 40),
-      ]}
+    <S.GradientMenu
+      colors={[setAlphaToColor("#ffffff", 40), setAlphaToColor("#EBF2FF", 40)]}
       start={{ x: 0.1, y: 0.7 }}
     >
       {children}
-    </S.Menu>
+    </S.GradientMenu>
   );
 };
 
@@ -31,9 +27,17 @@ interface ItemProps {
   _t?: boolean;
   icon?: React.ReactNode;
   isLast?: boolean;
+  rightIcon?: React.ReactNode;
 }
 
-const Item: React.FC<ItemProps> = ({ label, onPress, _t, icon, isLast }) => {
+const Item: React.FC<ItemProps> = ({
+  label,
+  onPress,
+  _t,
+  icon,
+  isLast,
+  rightIcon,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -44,11 +48,13 @@ const Item: React.FC<ItemProps> = ({ label, onPress, _t, icon, isLast }) => {
           {_t ? t(label) : label}
         </Typography.Button>
       </Row>
-      <Feather
-        name="chevron-right"
-        size={20}
-        color={Colors.colors.borderDark}
-      />
+      {rightIcon || (
+        <Feather
+          name="chevron-right"
+          size={20}
+          color={Colors.colors.borderDark}
+        />
+      )}
     </S.Item>
   );
 };

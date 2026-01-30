@@ -5,18 +5,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
+import { ImagePickerAsset } from "expo-image-picker";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Smile } from "react-native-feather";
-import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Row, Typography } from "../../atoms";
 import S from "./UserProfileHeader.styles";
 
 interface UserAvatarViewProps {
   user: IUser;
-  onAvatarChange?: (file: Asset) => void;
+  onAvatarChange?: (file: ImagePickerAsset) => void;
   isLoading?: boolean;
   onShowSelectTitlePress: () => void;
   crewsCount?: number;

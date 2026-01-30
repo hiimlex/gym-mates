@@ -1,22 +1,22 @@
 import { CameraActions } from "@store/slices";
 import { AppDispatch } from "@store/Store";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import { ImagePickerAsset } from "expo-image-picker";
 import React, { useRef, useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Image, Repeat, X } from "react-native-feather";
-import { Asset } from "react-native-image-picker";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import Button from "../Button/Button";
 import S from "./Camera.styles";
 
-const ImagePicker = require("react-native-image-picker");
+import * as ImagePicker from "expo-image-picker";
 
 const CameraFullscreen = () => {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch<AppDispatch>();
   const ref = useRef<CameraView>(null);
-  const [preview, setPreview] = useState<string | null>(null);
   const [facing, setFacing] = useState<CameraType>("front");
   const [permission, requestPermission] = useCameraPermissions();
 
@@ -40,13 +40,14 @@ const CameraFullscreen = () => {
     });
 
     if (photo?.base64) {
-      const asset: Asset = {
+      const asset: ImagePickerAsset = {
         fileName: `photo_${Date.now()}.jpg`,
         base64: photo.base64,
         uri: photo.uri,
         width: photo.width,
         height: photo.height,
-        type: "image/jpg",
+        type: "image",
+        mimeType: photo.format,
       };
 
       dispatch(CameraActions.setAsset(asset));
@@ -56,16 +57,34 @@ const CameraFullscreen = () => {
   };
 
   const handleMediaLibraryFile = async () => {
-    const result = await ImagePicker.launchImageLibrary({
-      mediaType: "photo",
-      includeBase64: true,
-      selectionLimit: 1,
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permissionResult.granted) {
+      Alert.alert(
+        "Permission required",
+        "Permission to access the media library is required.",
+      );
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
       quality: 0.8,
+      base64: true,
     });
-
     if (result && result.assets && result.assets[0]) {
-      const newAvatar: Asset = result.assets[0];
-
+      const asset = result.assets[0];
+      const newAvatar: ImagePickerAsset = {
+        fileName: asset.fileName || `photo_${Date.now()}.jpg`,
+        base64: asset.base64 || "",
+        uri: asset.uri,
+        width: asset.width,
+        height: asset.height,
+        type: "image",
+        mimeType: "image/jpg",
+      };
       dispatch(CameraActions.setAsset(newAvatar));
       handleShowPreview();
     }

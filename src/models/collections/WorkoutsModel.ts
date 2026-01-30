@@ -1,14 +1,14 @@
-import { Asset } from "react-native-image-picker";
+import { IQueryOperators } from "@models/generic";
+import { ImagePickerAsset } from "expo-image-picker";
+import { ICrew } from "./CrewsModel";
 import { IFile } from "./FileModel";
 import { IUser } from "./UsersModel";
-import { ICrew } from "./CrewsModel";
-import { IQueryOperators } from "@models/generic";
 
 export interface IWorkoutsByUser {
   workouts: IWorkout[];
 }
 
-export interface IWorkoutsByCrew {  
+export interface IWorkoutsByCrew {
   workouts: IWorkout[];
 }
 
@@ -16,7 +16,7 @@ export interface IWorkoutsFilters {
   userId?: string; // User ID to filter workouts by a specific user
   range?: [string, string]; // Date range in MM-dd-yy format
   from?: string[]; // Array of crew IDs to filter workouts shared with specific crews
-  sort?: '_ID_ASC' | '_ID_DESC' | 'DATE_ASC' | 'DATE_DESC'; // Sorting options
+  sort?: "_ID_ASC" | "_ID_DESC" | "DATE_ASC" | "DATE_DESC"; // Sorting options
   limit?: number;
   crewId?: string; // Crew ID to filter workouts by a specific crew
   earned_op?: IQueryOperators;
@@ -49,7 +49,7 @@ export interface ICreateWorkoutPayload {
   date: string;
   type: string;
   duration: number;
-  picture?: Asset;
+  picture?: ImagePickerAsset;
   shared_to: string[]; // Array of crew IDs to share
 }
 
@@ -68,7 +68,7 @@ export enum WorkoutType {
 export interface IAddWorkoutState {
   step?: "info" | "sharing";
   formData?: ICreateWorkoutForm;
-  picture?: Asset;
+  picture?: ImagePickerAsset;
   shared_to?: string[];
   createdWorkout?: IWorkout;
 }

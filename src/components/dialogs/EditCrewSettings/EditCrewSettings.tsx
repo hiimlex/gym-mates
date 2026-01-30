@@ -13,10 +13,10 @@ import { useMutation } from "@tanstack/react-query";
 import { mountImageURLFromBase64 } from "@utils/file.utils";
 import { getMessageFromError } from "@utils/handleAxiosError";
 import Masks from "@utils/masks.utils";
+import { ImagePickerAsset } from "expo-image-picker";
 import React, { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "react-native";
-import { Asset } from "react-native-image-picker";
 import Animated, { FadeInRight, SlideOutRight } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,9 +35,11 @@ const EditCrewSettings: React.FC = () => {
   const { data: dialogData } = useSelector((state: StoreState) => state.dialog);
   const insets = useSafeAreaInsets();
   const [preview, setPreview] = useState<string | undefined>(crew?.banner?.url);
-  const [newBanner, setNewBanner] = useState<Asset | undefined>(undefined);
+  const [newBanner, setNewBanner] = useState<ImagePickerAsset | undefined>(
+    undefined,
+  );
   const [visibility, setVisibility] = useState<CrewVisibility>(
-    crew?.visibility || CrewVisibility.Public
+    crew?.visibility || CrewVisibility.Public,
   );
   const [streaks, setStreaks] = useState<CrewStreak[]>(crew?.streak || []);
   const dispatch = useDispatch<AppDispatch>();
@@ -59,7 +61,7 @@ const EditCrewSettings: React.FC = () => {
   const loseStreakRef = useRef<TextInput | null>(null);
   const scrollRef = useRef<Animated.ScrollView>(null);
 
-  const onBannerChange = (file: Asset) => {
+  const onBannerChange = (file: ImagePickerAsset) => {
     if (file.base64) {
       setPreview(mountImageURLFromBase64(file.base64));
     }
@@ -134,11 +136,6 @@ const EditCrewSettings: React.FC = () => {
         fetchPolicy: "network-only",
       });
 
-      console.log(
-        data.crews[0].visibility,
-        "updated crew visibility",
-        crew?.visibility
-      );
       dispatch(CrewsActions.setCrewView(data.crews[0]));
 
       if (dialogData?.onBackPress) {
@@ -172,7 +169,7 @@ const EditCrewSettings: React.FC = () => {
           !!newBanner ||
           hasChangedStreaks ||
           hasChangedLoseStreak,
-      })
+      }),
     );
   }, [
     hasChangedVisibility,

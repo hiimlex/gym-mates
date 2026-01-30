@@ -7,34 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0923EBAE49624CD4B9488731 /* SF-Pro-Rounded-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3FE87664D584578A382FABC /* SF-Pro-Rounded-Semibold.ttf */; };
-		099CF7C568C3B7A209F58C6B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E49A6233AC42FF60D43C4EFC /* PrivacyInfo.xcprivacy */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		24688604CEAC454B950ADDBE /* SF-Pro-Rounded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8777A064E4D47C8A81A30B1 /* SF-Pro-Rounded-Bold.ttf */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		673608CB019547028E89BA15 /* SF-Pro-Rounded-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82F6B17A86F344BF8BE4695E /* SF-Pro-Rounded-Regular.ttf */; };
-		8E01263319794224862FC433 /* SF-Pro-Rounded-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46F0423D08A345469880BC66 /* SF-Pro-Rounded-Medium.ttf */; };
+		559F8539D8024AD9785E95AB /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C510BDF9B8C7199F55B484F /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		CF7CF9E363DBF760B5FC31DB /* libPods-gymmates.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47449723F4947D56A181B594 /* libPods-gymmates.a */; };
-		DAD94A044D013EDED3AED0CF /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2AB15EC156BFE4D6501344 /* ExpoModulesProvider.swift */; };
+		E165D8190726F59F33FD2467 /* libPods-gymmates.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 094D32A1A5B247B72E51DC94 /* libPods-gymmates.a */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		FB56F7505C85DB56EBAA03E9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 930ADE897B42BD50610D7BAF /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		094D32A1A5B247B72E51DC94 /* libPods-gymmates.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-gymmates.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* gymmates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gymmates.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = gymmates/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = gymmates/Info.plist; sourceTree = "<group>"; };
-		46F0423D08A345469880BC66 /* SF-Pro-Rounded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Rounded-Medium.ttf"; path = "../assets/fonts/SF-Pro-Rounded-Medium.ttf"; sourceTree = "<group>"; };
-		47449723F4947D56A181B594 /* libPods-gymmates.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-gymmates.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D2AB15EC156BFE4D6501344 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-gymmates/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		82F6B17A86F344BF8BE4695E /* SF-Pro-Rounded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Rounded-Regular.ttf"; path = "../assets/fonts/SF-Pro-Rounded-Regular.ttf"; sourceTree = "<group>"; };
-		8CD7D7D2404A23F5279979A5 /* Pods-gymmates.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gymmates.debug.xcconfig"; path = "Target Support Files/Pods-gymmates/Pods-gymmates.debug.xcconfig"; sourceTree = "<group>"; };
-		91C78A1F74FB44F14DF030BF /* Pods-gymmates.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gymmates.release.xcconfig"; path = "Target Support Files/Pods-gymmates/Pods-gymmates.release.xcconfig"; sourceTree = "<group>"; };
-		A8777A064E4D47C8A81A30B1 /* SF-Pro-Rounded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Rounded-Bold.ttf"; path = "../assets/fonts/SF-Pro-Rounded-Bold.ttf"; sourceTree = "<group>"; };
+		3C510BDF9B8C7199F55B484F /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-gymmates/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		930ADE897B42BD50610D7BAF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = gymmates/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A8FC150AA78680949ACC84D2 /* Pods-gymmates.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gymmates.debug.xcconfig"; path = "Target Support Files/Pods-gymmates/Pods-gymmates.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = gymmates/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		E3FE87664D584578A382FABC /* SF-Pro-Rounded-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Rounded-Semibold.ttf"; path = "../assets/fonts/SF-Pro-Rounded-Semibold.ttf"; sourceTree = "<group>"; };
-		E49A6233AC42FF60D43C4EFC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = gymmates/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		EBAF9DC7670F2D1B97E67392 /* Pods-gymmates.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gymmates.release.xcconfig"; path = "Target Support Files/Pods-gymmates/Pods-gymmates.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = gymmates/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* gymmates-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "gymmates-Bridging-Header.h"; path = "gymmates/gymmates-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -45,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF7CF9E363DBF760B5FC31DB /* libPods-gymmates.a in Frameworks */,
+				E165D8190726F59F33FD2467 /* libPods-gymmates.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,7 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				E49A6233AC42FF60D43C4EFC /* PrivacyInfo.xcprivacy */,
+				930ADE897B42BD50610D7BAF /* PrivacyInfo.xcprivacy */,
 			);
 			name = gymmates;
 			sourceTree = "<group>";
@@ -70,37 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				47449723F4947D56A181B594 /* libPods-gymmates.a */,
+				094D32A1A5B247B72E51DC94 /* libPods-gymmates.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5CD6FF9FADC2E455A078BA05 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				8CD7D7D2404A23F5279979A5 /* Pods-gymmates.debug.xcconfig */,
-				91C78A1F74FB44F14DF030BF /* Pods-gymmates.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		7F676D1C0EE103FB213C1CDA /* gymmates */ = {
-			isa = PBXGroup;
-			children = (
-				7D2AB15EC156BFE4D6501344 /* ExpoModulesProvider.swift */,
-			);
-			name = gymmates;
-			sourceTree = "<group>";
-		};
-		8311FBA3D7E84927BCA1D85A /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A8777A064E4D47C8A81A30B1 /* SF-Pro-Rounded-Bold.ttf */,
-				46F0423D08A345469880BC66 /* SF-Pro-Rounded-Medium.ttf */,
-				82F6B17A86F344BF8BE4695E /* SF-Pro-Rounded-Regular.ttf */,
-				E3FE87664D584578A382FABC /* SF-Pro-Rounded-Semibold.ttf */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -117,9 +81,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				5CD6FF9FADC2E455A078BA05 /* Pods */,
-				EBA0CE8CFBE0A0516D4CDA43 /* ExpoModulesProviders */,
-				8311FBA3D7E84927BCA1D85A /* Resources */,
+				F22B34BA6AD36D6B1894E4D6 /* Pods */,
+				96EF6A47D864E3120B9EB67A /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -134,6 +97,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		96EF6A47D864E3120B9EB67A /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				B45CD81D1198CE6750DB86BC /* gymmates */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		B45CD81D1198CE6750DB86BC /* gymmates */ = {
+			isa = PBXGroup;
+			children = (
+				3C510BDF9B8C7199F55B484F /* ExpoModulesProvider.swift */,
+			);
+			name = gymmates;
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,12 +122,14 @@
 			path = gymmates/Supporting;
 			sourceTree = "<group>";
 		};
-		EBA0CE8CFBE0A0516D4CDA43 /* ExpoModulesProviders */ = {
+		F22B34BA6AD36D6B1894E4D6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7F676D1C0EE103FB213C1CDA /* gymmates */,
+				A8FC150AA78680949ACC84D2 /* Pods-gymmates.debug.xcconfig */,
+				EBAF9DC7670F2D1B97E67392 /* Pods-gymmates.release.xcconfig */,
 			);
-			name = ExpoModulesProviders;
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "gymmates" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				D6EB111029465097B093FADA /* [Expo] Configure project */,
+				EAE8A30F7AD02585B5F08FDA /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				A79CD611123E83437B11C5CB /* [CP] Embed Pods Frameworks */,
+				B3175EB7CA188714B2C8FF34 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -185,7 +166,9 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 9V447TB96R;
 						LastSwiftMigration = 1250;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -215,11 +198,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				099CF7C568C3B7A209F58C6B /* PrivacyInfo.xcprivacy in Resources */,
-				24688604CEAC454B950ADDBE /* SF-Pro-Rounded-Bold.ttf in Resources */,
-				8E01263319794224862FC433 /* SF-Pro-Rounded-Medium.ttf in Resources */,
-				673608CB019547028E89BA15 /* SF-Pro-Rounded-Regular.ttf in Resources */,
-				0923EBAE49624CD4B9488731 /* SF-Pro-Rounded-Semibold.ttf in Resources */,
+				FB56F7505C85DB56EBAA03E9 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +261,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/react-native-image-picker/RNImagePickerPrivacyInfo.bundle",
 				"${PODS_ROOT}/../../node_modules/@react-native-vector-icons/feather/fonts/Feather.ttf",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -299,7 +277,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZIPFoundation_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNImagePickerPrivacyInfo.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,7 +284,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gymmates/Pods-gymmates-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A79CD611123E83437B11C5CB /* [CP] Embed Pods Frameworks */ = {
+		B3175EB7CA188714B2C8FF34 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,7 +302,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gymmates/Pods-gymmates-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D6EB111029465097B093FADA /* [Expo] Configure project */ = {
+		EAE8A30F7AD02585B5F08FDA /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -352,7 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				DAD94A044D013EDED3AED0CF /* ExpoModulesProvider.swift in Sources */,
+				559F8539D8024AD9785E95AB /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +338,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8CD7D7D2404A23F5279979A5 /* Pods-gymmates.debug.xcconfig */;
+			baseConfigurationReference = A8FC150AA78680949ACC84D2 /* Pods-gymmates.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -390,18 +367,17 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.anonymous.gymmates;
 				PRODUCT_NAME = gymmates;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "gymmates/gymmates-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91C78A1F74FB44F14DF030BF /* Pods-gymmates.release.xcconfig */;
+			baseConfigurationReference = EBAF9DC7670F2D1B97E67392 /* Pods-gymmates.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -425,10 +401,9 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.anonymous.gymmates;
 				PRODUCT_NAME = gymmates;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "gymmates/gymmates-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

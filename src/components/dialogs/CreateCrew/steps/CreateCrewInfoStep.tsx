@@ -2,16 +2,16 @@ import { Button, Input, MediaSelect, Typography } from "@components/atoms";
 import { CreateCrewSteps, ICreateCrewInfoForm } from "@models/collections";
 import { InputRefRecorder } from "@models/generic";
 import { AppDispatch, StoreState } from "@store/Store";
+import { DialogActions } from "@store/slices";
 import { CreateCrewActions } from "@store/slices/CreateCrewSlice";
 import { mountImageURLFromBase64 } from "@utils/file.utils";
+import Masks from "@utils/masks.utils";
+import { ImagePickerAsset } from "expo-image-picker";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Asset } from "react-native-image-picker";
+import { FadeOut } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./CreateCrewSteps.styles";
-import { FadeOut, SlideInLeft, SlideInRight } from "react-native-reanimated";
-import Masks from "@utils/masks.utils";
-import { DialogActions } from "@store/slices";
 
 interface CreateCrewInfoStepProps {}
 
@@ -26,9 +26,9 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
   });
   const values = watch();
   const [mediaPreview, setMediaPreview] = useState<string | undefined>(
-    infoForm?.mediaPreview
+    infoForm?.mediaPreview,
   );
-  const [media, setMedia] = useState<Asset | undefined>(undefined);
+  const [media, setMedia] = useState<ImagePickerAsset | undefined>(undefined);
   const fieldsRef: InputRefRecorder<
     Omit<ICreateCrewInfoForm, "media" | "mediaPreview">
   > = {
@@ -37,7 +37,7 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
   };
   const dispatch = useDispatch<AppDispatch>();
 
-  const onMediaChange = (media: Asset) => {
+  const onMediaChange = (media: ImagePickerAsset) => {
     if (media.base64) {
       setMediaPreview(mountImageURLFromBase64(media.base64));
     }
@@ -49,7 +49,7 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
     const infoValues = values;
     if (media && mediaPreview) {
       dispatch(
-        CreateCrewActions.setInfoForm({ ...infoValues, media, mediaPreview })
+        CreateCrewActions.setInfoForm({ ...infoValues, media, mediaPreview }),
       );
       dispatch(CreateCrewActions.setStep(CreateCrewSteps.Settings));
     }
@@ -57,14 +57,14 @@ const CreateCrewInfoStep: React.FC<CreateCrewInfoStepProps> = () => {
 
   const canGoNext = useMemo(
     () => !!media && mediaPreview && formState.isValid,
-    [media, formState, values, mediaPreview]
+    [media, formState, values, mediaPreview],
   );
 
   useEffect(() => {
     dispatch(
       DialogActions.updateData({
         onBackPress: undefined,
-      })
+      }),
     );
   }, []);
 

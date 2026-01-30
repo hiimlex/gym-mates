@@ -2,10 +2,11 @@ import styled from "@emotion/native";
 import { setAlphaToColor } from "@theme";
 import { LinearGradient } from "expo-linear-gradient";
 
-const Menu = styled(LinearGradient)`
+const GradientMenu = styled(LinearGradient)`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 12px;
-  background-color: ${({ theme }) => setAlphaToColor(theme.colors.background, 40)};
+  background-color: ${({ theme }) =>
+    setAlphaToColor(theme.colors.background, 40)};
 `;
 
 const Item = styled.TouchableOpacity<{ isLast?: boolean }>`
@@ -23,6 +24,6 @@ const Item = styled.TouchableOpacity<{ isLast?: boolean }>`
 `;
 
 export default {
-  Menu,
+  GradientMenu,
   Item,
 };

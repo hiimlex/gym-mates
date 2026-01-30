@@ -1,17 +1,17 @@
 import React from "react";
 
 import { Colors, TColors } from "@theme";
-import { Asset } from "react-native-image-picker";
+import { User } from "react-native-feather";
 import Loader from "../Loader/Loader";
 import S from "./Avatar.styles";
-import { User } from "react-native-feather";
 
-const ImagePicker = require("react-native-image-picker");
+import * as ImagePicker from "expo-image-picker";
+import { Alert } from "react-native";
 
 interface IAvatarProps {
   size?: number;
   iconSize?: number;
-  onAvatarChange?: (file: Asset) => void;
+  onAvatarChange?: (file: ImagePicker.ImagePickerAsset) => void;
   borderOffset?: number;
   disabled?: boolean;
   preview?: string;
@@ -34,15 +34,34 @@ const Avatar: React.FC<IAvatarProps> = ({
   activeBorderColor = "primary",
 }) => {
   const getFile = async () => {
-    const result = await ImagePicker.launchImageLibrary({
-      mediaType: "photo",
-      includeBase64: true,
-      selectionLimit: 1,
-      quality: 0.8,
-    });
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
+    if (!permissionResult.granted) {
+      Alert.alert(
+        "Permission required",
+        "Permission to access the media library is required.",
+      );
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.8,
+      base64: true,
+    });
     if (result && result.assets && result.assets[0]) {
-      const newAvatar: Asset = result.assets[0];
+      const asset = result.assets[0];
+      const newAvatar: ImagePicker.ImagePickerAsset = {
+        fileName: asset.fileName || `photo_${Date.now()}.jpg`,
+        base64: asset.base64 || "",
+        uri: asset.uri,
+        width: asset.width,
+        height: asset.height,
+        type: "image",
+        mimeType: "image/jpg",
+      };
 
       if (onAvatarChange) {
         onAvatarChange(newAvatar);

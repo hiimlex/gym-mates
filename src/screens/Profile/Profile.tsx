@@ -8,6 +8,7 @@ import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import { ImagePickerAsset } from "expo-image-picker";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -21,7 +22,6 @@ import {
   Smile,
   User,
 } from "react-native-feather";
-import { Asset } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Profile.styles";
 
@@ -57,7 +57,7 @@ const Profile: React.FC<ScreenProps<AppRoutes.Profile>> = ({
     },
   });
 
-  const onAvatarChange = (file: Asset) => {
+  const onAvatarChange = (file: ImagePickerAsset) => {
     if (file.base64) {
       setPreview(`data:image/jpeg;base64,${file.base64}`);
     }

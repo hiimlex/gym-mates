@@ -96,6 +96,12 @@ export default {
   },
   settings: {
     selectLanguage: "Select Language",
+    permissions: "Permissions",
+    cameraPermission: "Camera Permission",
+    mediaLibraryPermission: "Media Library Permission",
+    granted: "Granted",
+    request: "Request",
+    openAppSettings: "Open App Settings",
   },
   crews: {
     title: "Follow your crews activities!",

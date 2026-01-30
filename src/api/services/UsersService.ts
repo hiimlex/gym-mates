@@ -1,7 +1,6 @@
 import api from "@api/api";
 import { gql } from "@apollo/client";
 import {
-  IDeviceInfo,
   IDeviceRegistration,
   IEditProfileForm,
   IGetFollowersInfoResponse,
@@ -15,7 +14,7 @@ import { BackendImageMulterKey, Endpoints } from "@models/generic";
 import { assetToBuffer } from "@utils/file.utils";
 import { queryBuilder } from "@utils/queryBuilder";
 import { AxiosResponse } from "axios";
-import { Asset } from "react-native-image-picker";
+import { ImagePickerAsset } from "expo-image-picker";
 
 const USER_BY_ID = gql`
   query UserById($_id: MongoID!) {
@@ -158,7 +157,7 @@ const createHealthy = async (body: IUpdateHealthForm) => {
   return response;
 };
 
-const updateAvatar = async (file: Asset) => {
+const updateAvatar = async (file: ImagePickerAsset) => {
   const formData = new FormData();
   formData.append(BackendImageMulterKey, assetToBuffer([file])[0] as any);
 
@@ -172,12 +171,12 @@ const updateAvatar = async (file: Asset) => {
 };
 
 const getJourney = async (
-  filters?: IGetJourneyFilters
+  filters?: IGetJourneyFilters,
 ): Promise<AxiosResponse<IUserJourney>> => {
   const queryString = queryBuilder(filters);
 
   const response = await api.get(
-    `${Endpoints.UsersGetJourney}${queryString ? `?${queryString}` : ""}`
+    `${Endpoints.UsersGetJourney}${queryString ? `?${queryString}` : ""}`,
   );
   return response;
 };
@@ -200,7 +199,7 @@ const unfollow = async (userId: string) => {
 
 const updateProfile = async (
   userId: string,
-  data: Partial<IEditProfileForm>
+  data: Partial<IEditProfileForm>,
 ): Promise<AxiosResponse<null>> => {
   const response = await api.put(Endpoints.UsersUpdateProfile, data);
 
@@ -227,11 +226,11 @@ const selectTitle = async (title_id: string) => {
 };
 
 const getSkins = async (
-  filters?: IGetSkinsFilters
+  filters?: IGetSkinsFilters,
 ): Promise<IGetSkinsResponse> => {
   const query = queryBuilder(filters);
   const response = await api.get(
-    `${Endpoints.UsersGetSkins}${query ? `?${query}` : ""}`
+    `${Endpoints.UsersGetSkins}${query ? `?${query}` : ""}`,
   );
 
   return response.data;

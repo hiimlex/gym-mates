@@ -6,9 +6,9 @@ import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import { ImagePickerAsset } from "expo-image-picker";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Asset } from "react-native-image-picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 
@@ -20,9 +20,9 @@ const SetupAvatar: React.FC<ScreenProps<AppRoutes.SetupAvatar>> = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const [preview, setPreview] = useState<string | undefined>(undefined);
-  const [avatar, setAvatar] = useState<Asset | null>(null);
+  const [avatar, setAvatar] = useState<ImagePickerAsset | null>(null);
 
-  const onAvatarChange = (file: Asset) => {
+  const onAvatarChange = (file: ImagePickerAsset) => {
     if (file.base64) {
       setPreview(`data:image/jpeg;base64,${file.base64}`);
     }

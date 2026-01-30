@@ -1,23 +1,29 @@
 import { IAddWorkoutState, ICreateWorkoutForm } from "@models/collections";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Asset } from "react-native-image-picker";
+import { ImagePickerAsset } from "expo-image-picker";
 
 const initialState: IAddWorkoutState = {};
 
 const AddWorkoutSlice = createSlice({
-  name: 'addWorkout',
+  name: "addWorkout",
   initialState,
   reducers: {
     setFormData: (state, action: PayloadAction<ICreateWorkoutForm>) => {
       state.formData = action.payload;
     },
-    setPicture: (state, action: PayloadAction<Asset | undefined>) => {
+    setPicture: (
+      state,
+      action: PayloadAction<ImagePickerAsset | undefined>,
+    ) => {
       state.picture = action.payload;
     },
     setSharedTo: (state, action: PayloadAction<string[]>) => {
       state.shared_to = action.payload;
     },
-    setCreatedWorkout: (state, action: PayloadAction<IAddWorkoutState['createdWorkout']>) => {
+    setCreatedWorkout: (
+      state,
+      action: PayloadAction<IAddWorkoutState["createdWorkout"]>,
+    ) => {
       state.createdWorkout = action.payload;
     },
     reset: (state) => {
@@ -26,8 +32,8 @@ const AddWorkoutSlice = createSlice({
       state.picture = undefined;
       state.shared_to = [];
       state.createdWorkout = undefined;
-    }
-  }
+    },
+  },
 });
 
 export const AddWorkoutActions = { ...AddWorkoutSlice.actions };

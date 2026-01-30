@@ -81,8 +81,6 @@ const createWorkout = async (
     formData.append(BackendImageMulterKey, assetToBuffer([picture])[0] as any);
   }
 
-  console.log(formData.getAll(BackendImageMulterKey));
-
   if (workoutData) {
     type WorkoutDataKeys = keyof typeof workoutData;
     Object.keys(workoutData).forEach((key) => {

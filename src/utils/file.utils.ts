@@ -1,8 +1,8 @@
 import { IBuffer } from "@models/collections";
+import { ImagePickerAsset } from "expo-image-picker";
 import { Platform } from "react-native";
-import { Asset } from "react-native-image-picker";
 
-export function assetToBuffer(assets: Asset[]): IBuffer[] {
+export function assetToBuffer(assets: ImagePickerAsset[]): IBuffer[] {
   const buffers: IBuffer[] = [];
 
   assets.forEach((asset) => {
@@ -19,8 +19,6 @@ export function assetToBuffer(assets: Asset[]): IBuffer[] {
   return buffers;
 }
 
-export function mountImageURLFromBase64(
-  base64: string
-) {
-  return `data:image/jpeg;base64,${base64}`
+export function mountImageURLFromBase64(base64: string) {
+  return `data:image/jpeg;base64,${base64}`;
 }

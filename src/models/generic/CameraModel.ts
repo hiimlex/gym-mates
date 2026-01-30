@@ -1,8 +1,8 @@
-import { Asset } from "react-native-image-picker";
+import { ImagePickerAsset } from "expo-image-picker";
 
 export interface CameraState {
   showFullscreen: boolean;
   showPreview: boolean;
   preview?: string;
-  asset?: Asset;
+  asset?: ImagePickerAsset;
 }

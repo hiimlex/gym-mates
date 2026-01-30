@@ -1,15 +1,14 @@
 import {
-  ICreateCrewSettingsForm,
   ICreateCrewInfoForm,
+  ICreateCrewSettingsForm,
   ICreateCrewState,
   ICreateCrewSteps,
 } from "@models/collections";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Asset } from "react-native-image-picker";
+import { ImagePickerAsset } from "expo-image-picker";
 
 const initialState: ICreateCrewState = {
   step: "info",
-  
 };
 
 const CreateCrewSlice = createSlice({
@@ -19,12 +18,18 @@ const CreateCrewSlice = createSlice({
     setInfoForm: (
       state,
       action: PayloadAction<
-        ICreateCrewInfoForm & { media?: Asset; mediaPreview?: string }
-      >
+        ICreateCrewInfoForm & {
+          media?: ImagePickerAsset;
+          mediaPreview?: string;
+        }
+      >,
     ) => {
       state.infoForm = action.payload;
     },
-    setSettingsForm: (state, action: PayloadAction<ICreateCrewSettingsForm>) => {
+    setSettingsForm: (
+      state,
+      action: PayloadAction<ICreateCrewSettingsForm>,
+    ) => {
       state.settingsForm = action.payload;
     },
     setStep: (state, action: PayloadAction<ICreateCrewSteps>) => {
