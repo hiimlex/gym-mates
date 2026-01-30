@@ -1,4 +1,5 @@
 export * from "./AddWorkoutSlice";
+export * from "./CameraSlice";
 export * from "./ConfigSlice";
 export * from "./CreateCrewSlice";
 export * from "./CrewsSlice";

@@ -1,3 +1,4 @@
+import { BlurProps } from "@models/generic";
 import { Colors } from "@theme";
 import React from "react";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
@@ -11,7 +12,6 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Typography from "../Typography/Typography";
 import S from "./Dialog.styles";
-import { BlurProps } from "@models/generic";
 
 export interface DialogProps {
   children?: React.ReactNode;

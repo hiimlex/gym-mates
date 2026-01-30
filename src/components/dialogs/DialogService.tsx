@@ -1,14 +1,13 @@
-import { DialogActions } from "@store/slices";
+import { AddWorkoutActions, CameraActions, DialogActions } from "@store/slices";
 import { store } from "@store/Store";
 import AddWorkout from "./AddWorkout/AddWorkout";
+import CoinSystemInfo from "./CoinSystemInfo/CoinSystemInfo";
+import CreateCrew from "./CreateCrew/CreateCrew";
+import CrewRulesInfo from "./CrewRulesInfo/CrewRulesInfo";
 import CrewSettings from "./CrewSettings/CrewSettings";
 import EditCrewSettings from "./EditCrewSettings/EditCrewSettings";
-import ShareWorkout from "./ShareWorkout/ShareWorkout";
 import JoinCrew from "./JoinCrew/JoinCrew";
-import CreateCrew from "./CreateCrew/CreateCrew";
-import CoinSystem from "./CoinSystemInfo/CoinSystemInfo";
-import CrewRulesInfo from "./CrewRulesInfo/CrewRulesInfo";
-import CoinSystemInfo from "./CoinSystemInfo/CoinSystemInfo";
+import ShareWorkout from "./ShareWorkout/ShareWorkout";
 
 const openAddWorkout = () => {
   store.dispatch(
@@ -17,8 +16,13 @@ const openAddWorkout = () => {
       data: {
         title: "links.addWorkout",
         _t: true,
+        onBackPress: () => {
+          store.dispatch(AddWorkoutActions.reset());
+          store.dispatch(CameraActions.clear());
+          store.dispatch(DialogActions.closeDialog());
+        },
       },
-    })
+    }),
   );
 };
 
@@ -30,7 +34,7 @@ const openShareToCrews = () => {
         title: "links.shareInCrew",
         _t: true,
       },
-    })
+    }),
   );
 };
 
@@ -42,7 +46,7 @@ const openJoinCrew = () => {
         title: "links.joinCrew",
         _t: true,
       },
-    })
+    }),
   );
 };
 
@@ -54,7 +58,7 @@ const openCreateCrew = () => {
         title: "links.createCrew",
         _t: true,
       },
-    })
+    }),
   );
 };
 
@@ -66,7 +70,7 @@ const openCrewSettings = () => {
         title: "links.crewSettings",
         _t: true,
       },
-    })
+    }),
   );
 };
 
@@ -79,7 +83,7 @@ const openEditCrewSettings = () => {
         _t: true,
         onBackPress: openCrewSettings,
       },
-    })
+    }),
   );
 };
 
@@ -91,7 +95,7 @@ const openCoinSystemInfo = () => {
         title: "coinSystem.title",
         _t: true,
       },
-    })
+    }),
   );
 };
 
@@ -103,19 +107,19 @@ const openStreakSystemInfo = () => {
         title: "streakSystem.title",
         _t: true,
       },
-    })
+    }),
   );
 };
 
 const openCrewRulesInfo = () => {
   store.dispatch(
     DialogActions.openDialog({
-      content: <CrewRulesInfo/>,
+      content: <CrewRulesInfo />,
       data: {
         title: "crewRules.title",
         _t: true,
       },
-    })
+    }),
   );
 };
 

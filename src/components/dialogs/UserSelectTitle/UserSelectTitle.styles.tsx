@@ -4,7 +4,7 @@ import Animated from "react-native-reanimated";
 
 const Float = styled(Animated.createAnimatedComponent(TouchableOpacity))`
   position: absolute;
-  z-index: 999;
+  z-index: 1000;
   bottom: 0;
   left: 0;
   flex: 1;
@@ -21,7 +21,7 @@ const BottomSheet = styled(Animated.createAnimatedComponent(TouchableOpacity))`
   border-top-right-radius: 24px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   padding: 12px;
-  z-index: 1000;
+  z-index: 1001;
   position: absolute;
   bottom: 0;
 `;

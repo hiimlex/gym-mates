@@ -4,8 +4,10 @@ export { default as Badge } from "./Badge/Badge";
 export { default as BannerPreview } from "./BannerPreview/BannerPreview";
 export { default as Button } from "./Button/Button";
 export { default as Calendar } from "./Calendar";
+export { default as Camera } from "./Camera/Camera";
 export { default as Card } from "./Card/Card";
 export { default as Checkbox } from "./Checkbox/Checkbox";
+export { default as Coin } from "./Coin/Coin";
 export { default as ControlledInput } from "./ControlledInput/ControlledInput";
 export { default as Dialog } from "./Dialog/Dialog";
 export { default as DonateCard } from "./DonateCard/DonateCard";
@@ -18,7 +20,6 @@ export { default as Notification } from "./Notification/Notification";
 export { default as Row } from "./Row/Row";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Typography } from "./Typography/Typography";
-export { default as Coin } from "./Coin/Coin";
 
 export * from "./Calendar";
 export * from "./Dialog/Dialog";

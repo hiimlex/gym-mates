@@ -12,6 +12,7 @@ const Float = styled(Animated.createAnimatedComponent(BlurView))`
   justify-content: space-between;
   border-top-width: 1px;
   border-color: ${({ theme }) => theme.colors.border};
+  z-index: 1;
 `;
 
 const Item = styled.TouchableOpacity<{ isActive?: boolean }>`

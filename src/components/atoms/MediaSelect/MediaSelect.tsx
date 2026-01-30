@@ -1,10 +1,11 @@
+import { Colors } from "@theme";
 import React from "react";
-import { User } from "react-native-feather";
+import { ViewStyle } from "react-native";
+import { Image } from "react-native-feather";
 import { Asset } from "react-native-image-picker";
+import BannerPreview from "../BannerPreview/BannerPreview";
 import Typography from "../Typography/Typography";
 import S from "./MediaSelect.styles";
-import { Colors } from "@theme";
-import BannerPreview from "../BannerPreview/BannerPreview";
 
 const ImagePicker = require("react-native-image-picker");
 
@@ -13,6 +14,8 @@ interface MediaSelectProps {
   label?: string;
   _t?: boolean;
   onMediaChange?: (media: Asset) => void;
+  minified?: boolean;
+  style?: ViewStyle;
 }
 
 const MediaSelect: React.FC<MediaSelectProps> = ({
@@ -20,6 +23,8 @@ const MediaSelect: React.FC<MediaSelectProps> = ({
   label,
   _t,
   onMediaChange,
+  minified = false,
+  style,
 }) => {
   const getFile = async () => {
     const result = await ImagePicker.launchImageLibrary({
@@ -39,19 +44,38 @@ const MediaSelect: React.FC<MediaSelectProps> = ({
   };
 
   return (
-    <S.Container activeOpacity={0.6} onPress={getFile}>
-      <BannerPreview size={60} preview={preview} iconSize={24} />
+    <>
+      {minified && (
+        <S.Container
+          activeOpacity={0.6}
+          onPress={getFile}
+          style={{ ...style, justifyContent: "center" }}
+        >
+          <Image
+            color={Colors.colors.primary}
+            fill={Colors.colors.primary}
+            fillOpacity={0.1}
+          />
+        </S.Container>
+      )}
+      {!minified && (
+        <S.Container activeOpacity={0.6} onPress={getFile} style={style}>
+          <>
+            <BannerPreview size={60} preview={preview} iconSize={24} />
 
-      <S.MediaInfo>
-        <Typography.Body _t textColor="text">
-          {label || "mediaSelect.mediaPreview"}
-        </Typography.Body>
+            <S.MediaInfo>
+              <Typography.Body _t textColor="text">
+                {label || "mediaSelect.mediaPreview"}
+              </Typography.Body>
 
-        <Typography.Caption _t textColor="primary">
-          {preview ? "mediaSelect.hasPreview" : "mediaSelect.text"}
-        </Typography.Caption>
-      </S.MediaInfo>
-    </S.Container>
+              <Typography.Caption _t textColor="primary">
+                {preview ? "mediaSelect.hasPreview" : "mediaSelect.text"}
+              </Typography.Caption>
+            </S.MediaInfo>
+          </>
+        </S.Container>
+      )}
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import AddWorkoutReducer from "./slices/AddWorkoutSlice";
+import CameraReducer from "./slices/CameraSlice";
 import CharCreationReducer from "./slices/CharCreationSlice";
 import ConfigReducer from "./slices/ConfigSlice";
 import CreateCrewReducer from "./slices/CreateCrewSlice";
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   notifier: NotifierReducer,
   overlay: OverlayReducer,
   charCreation: CharCreationReducer,
+  camera: CameraReducer,
 });
 
 export const store = configureStore({

@@ -7,18 +7,18 @@ export interface IOverlayState {
     workouts?: IWorkout[];
     initialIndex?: number;
     item?: IItem;
-    itemMode?: ItemCardProps['mode'];
+    itemMode?: ItemCardProps["mode"];
   };
 }
 
 export enum OverlayType {
-  WorkoutImageViewer = 'WorkoutImageViewer',
-  UserSelectTitle = 'UserSelectTitle',
-  ItemPreview = 'ItemPreview',
-  Missions = 'Missions',
+  WorkoutImageViewer = "WorkoutImageViewer",
+  UserSelectTitle = "UserSelectTitle",
+  ItemPreview = "ItemPreview",
+  Missions = "Missions",
 }
 
 export interface IShowOverlayPayload {
   type: OverlayType;
-  data?: IOverlayState['data'];
+  data?: IOverlayState["data"];
 }

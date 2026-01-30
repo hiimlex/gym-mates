@@ -7,6 +7,7 @@ const Wrapper = styled(Animated.View)`
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1000;
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
@@ -20,7 +21,8 @@ const Container = styled(Animated.View)`
 const Blur = styled(BlurView)`
   flex: 1;
   gap: 24px;
-  background-color: ${({ theme }) => setAlphaToColor(theme.colors.background, 80)};
+  background-color: ${({ theme }) =>
+    setAlphaToColor(theme.colors.background, 80)};
   padding: 24px;
 `;
 

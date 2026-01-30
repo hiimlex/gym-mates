@@ -1,13 +1,14 @@
 import { Card } from "@components/atoms";
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
+import { ZIndex } from "@models/generic";
 import { setAlphaToColor } from "@theme";
 import { BlurView } from "expo-blur";
 import Animated from "react-native-reanimated";
 
 const FloatingBlur = styled(Animated.createAnimatedComponent(BlurView))`
   position: absolute;
-  z-index: 999;
+  z-index: ${ZIndex.ItemPreview};
   bottom: 0;
   left: 0;
   flex: 1;

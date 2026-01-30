@@ -1,21 +1,22 @@
 import { ThemeProvider } from "@emotion/react";
-import { store, StoreState } from "@store/Store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { store } from "@store/Store";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Provider as StoreProvider, useSelector } from "react-redux";
+import { Provider as StoreProvider } from "react-redux";
 import AppNavigator from "../../navigation";
 import { Colors } from "../../theme";
 import NotifierProvider from "../NotifierProvider/NotifierProvider";
 
 import { client } from "@api/apollo";
 import { ApolloProvider } from "@apollo/client";
+import { Camera } from "@components/atoms";
 import {
   BottomNav,
   DialogProvider,
   PersistedData,
 } from "@components/molecules";
-import OverlayProvider from "../OverlayProvider/OverlayProvider";
 import { queryClient } from "@config/queryClient";
+import OverlayProvider from "../OverlayProvider/OverlayProvider";
 
 const CombinedProviders: React.FC = () => {
   return (
@@ -29,11 +30,12 @@ const CombinedProviders: React.FC = () => {
               }}
             >
               <AppNavigator>
-                <OverlayProvider />
-                <BottomNav />
                 <PersistedData />
+                <OverlayProvider />
                 <DialogProvider />
                 <NotifierProvider />
+                <Camera.Provider />
+                <BottomNav />
               </AppNavigator>
             </ThemeProvider>
           </ApolloProvider>

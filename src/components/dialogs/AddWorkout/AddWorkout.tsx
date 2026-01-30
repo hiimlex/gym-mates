@@ -1,25 +1,20 @@
-import {
-  Button,
-  ControlledInput,
-  Icons,
-  Input,
-  MediaSelect,
-  Typography,
-} from "@components/atoms";
+import { Button, Icons, Input, Typography } from "@components/atoms";
+import { CachedImage } from "@georstat/react-native-image-cache";
 import { ICreateWorkoutForm, WorkoutType } from "@models/collections";
 import { InputRefRecorder } from "@models/generic";
-import { AddWorkoutActions, DialogActions } from "@store/slices";
+import { AddWorkoutActions, CameraActions, DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
+import { mountImageURLFromBase64 } from "@utils/file.utils";
 import Masks from "@utils/masks.utils";
 import { subDays } from "date-fns";
 import React, {
   cloneElement,
   ReactElement,
   RefObject,
+  useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -30,7 +25,7 @@ import {
   View,
 } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { Asset } from "react-native-image-picker";
+import { Camera } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { IIConProps } from "../../atoms/Icons/Icons";
@@ -40,22 +35,15 @@ import S from "./AddWorkout.styles";
 const AddWorkout: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { picture, formData } = useSelector(
-    (state: StoreState) => state.addWorkout
+    (state: StoreState) => state.addWorkout,
   );
+  const { asset } = useSelector((state: StoreState) => state.camera);
 
   const { control, formState, getValues } = useForm<ICreateWorkoutForm>({
     mode: "all",
     defaultValues: formData,
   });
 
-  const picturePreview = useMemo(() => {
-    if (picture) {
-      return `data:${picture.type};base64,${picture.base64}`;
-    }
-    return undefined;
-  }, [picture]);
-
-  const [date, setDate] = useState<Date>(new Date());
   const dispatch = useDispatch<AppDispatch>();
   const scrollRef = useRef<ScrollView>(null);
 
@@ -66,9 +54,9 @@ const AddWorkout: React.FC = () => {
     type: useRef(null),
   };
 
-  const onPictureChange = (newAsset: Asset) => {
-    dispatch(AddWorkoutActions.setPicture(newAsset));
-  };
+  useEffect(() => {
+    dispatch(AddWorkoutActions.setPicture(asset));
+  }, [asset]);
 
   const iconByWorkoutType: Record<
     WorkoutType,
@@ -101,17 +89,23 @@ const AddWorkout: React.FC = () => {
     };
   }, []);
 
+  const openCamera = () => {
+    dispatch(AddWorkoutActions.setFormData(getValues()));
+
+    dispatch(CameraActions.setShowFullscreen(true));
+  };
+
   const nextStep = () => {
     dispatch(AddWorkoutActions.setFormData(getValues()));
 
     dispatch(
-      DialogActions.openDialog({
+      DialogActions.moveToNextDialog({
         content: <ShareWorkout />,
         data: {
           title: "links.shareInCrew",
           _t: true,
         },
-      })
+      }),
     );
   };
 
@@ -129,7 +123,11 @@ const AddWorkout: React.FC = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={12}
+    >
       <S.Container
         ref={scrollRef}
         contentContainerStyle={{
@@ -158,10 +156,31 @@ const AddWorkout: React.FC = () => {
 
         <View style={{ gap: 6 }}>
           <Typography.Body _t>{"addWorkout.fields.picture"}</Typography.Body>
-          <MediaSelect
-            preview={picturePreview}
-            onMediaChange={onPictureChange}
-          />
+
+          <S.TakePictureButton activeOpacity={0.6} onPress={openCamera}>
+            {picture && picture.base64 && (
+              <CachedImage
+                source={mountImageURLFromBase64(picture.base64)}
+                onError={() => {}}
+                style={{
+                  width: 160,
+                  height: 200,
+                  borderRadius: 12,
+                }}
+                resizeMode="cover"
+                imageStyle={{ borderRadius: 12 }}
+              ></CachedImage>
+            )}
+            {!picture && (
+              <Camera
+                color={Colors.colors.primary}
+                fill={Colors.colors.primary}
+                fillOpacity={0.1}
+                width={32}
+                height={32}
+              />
+            )}
+          </S.TakePictureButton>
         </View>
 
         <View style={{ gap: 6 }}>
@@ -217,7 +236,7 @@ const AddWorkout: React.FC = () => {
                           value === type
                             ? Colors.colors.primary
                             : Colors.colors.textLight,
-                      })
+                      }),
                     )}
                     <Typography.Body
                       _t

@@ -6,7 +6,7 @@ import Animated from "react-native-reanimated";
 
 const FloatingBlur = styled(Animated.createAnimatedComponent(BlurView))`
   position: absolute;
-  z-index: 999;
+  z-index: 1000;
   bottom: 0;
   left: 0;
   flex: 1;

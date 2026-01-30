@@ -7,8 +7,17 @@ import { AxiosResponse } from "axios";
 
 const WORKOUTS_BY_USER = gql`
   query WorkoutsByUser(
-    $userId: MongoID, $range: [Date], $from: [MongoID], $sort: SortFindManyWorkoutsInput, $limit: Int) {
-    workouts(filter: { user: $userId, range: $range, from: $from }, sort: $sort, limit: $limit) {
+    $userId: MongoID
+    $range: [Date]
+    $from: [MongoID]
+    $sort: SortFindManyWorkoutsInput
+    $limit: Int
+  ) {
+    workouts(
+      filter: { user: $userId, range: $range, from: $from }
+      sort: $sort
+      limit: $limit
+    ) {
       picture {
         url
       }
@@ -63,7 +72,7 @@ const WORKOUTS_BY_CREW = gql`
 `;
 
 const createWorkout = async (
-  payload: ICreateWorkoutPayload
+  payload: ICreateWorkoutPayload,
 ): Promise<AxiosResponse<IWorkout>> => {
   const formData = new FormData();
 
@@ -71,6 +80,8 @@ const createWorkout = async (
   if (picture) {
     formData.append(BackendImageMulterKey, assetToBuffer([picture])[0] as any);
   }
+
+  console.log(formData.getAll(BackendImageMulterKey));
 
   if (workoutData) {
     type WorkoutDataKeys = keyof typeof workoutData;

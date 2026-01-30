@@ -1,5 +1,5 @@
-import { Badge } from "../../atoms";
 import styled from "@emotion/native";
+import { Badge } from "../../atoms";
 
 const Container = styled.ScrollView`
   flex-grow: 1;
@@ -11,13 +11,19 @@ const CustomBadge = styled(Badge)`
   border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const FloatButton = styled.View`
-  position: absolute;
-  bottom: -36px;
-  padding: 24px;
-  padding-top: 12px;
-  z-index: 1;
-  left: -24px;
+const TakePictureButton = styled.TouchableOpacity`
+  flex-direction: row;
+  padding: 6px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  gap: 12px;
+  width: 160px;
+  height: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-export default { Container, CustomBadge, FloatButton };
+export default { Container, CustomBadge, TakePictureButton };

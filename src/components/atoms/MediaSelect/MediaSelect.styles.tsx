@@ -32,6 +32,7 @@ const Preview = styled(CachedImage)`
 
 const MediaInfo = styled.View`
   gap: 6px;
+  width: 100%;
 `;
 
 export default { Container, MediaInfo, EmptyPreview, Preview };

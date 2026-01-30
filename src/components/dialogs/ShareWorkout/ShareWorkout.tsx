@@ -1,47 +1,46 @@
-import React, { useEffect } from "react";
-import S from "./ShareWorkout.styles";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useWindowDimensions } from "react-native";
+import { client } from "@api/apollo";
+import { CrewsService, WorkoutService } from "@api/services";
+import { useQuery } from "@apollo/client";
 import {
   BannerPreview,
   Button,
-  Card,
   Checkbox,
   Row,
   Typography,
 } from "@components/atoms";
-import { useQuery } from "@apollo/client";
-import { CrewsService, WorkoutService } from "@api/services";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, StoreState } from "@store/Store";
 import { ICrew, ICrewsResponse } from "@models/collections";
+import { DateTimeFormat } from "@models/generic";
 import {
   AddWorkoutActions,
   DialogActions,
   NotifierActions,
   UserActions,
 } from "@store/slices";
+import { AppDispatch, StoreState } from "@store/Store";
 import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { DateTimeFormat } from "@models/generic";
-import { client } from "@api/apollo";
-import WorkoutEarns from "../WorkoutEarns/WorkoutEarns";
 import { getMessageFromError } from "@utils/handleAxiosError";
-import { Axios, AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { format } from "date-fns";
+import React from "react";
+import { useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import WorkoutEarns from "../WorkoutEarns/WorkoutEarns";
+import S from "./ShareWorkout.styles";
 
 const ShareWorkout: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const { user } = useSelector((state: StoreState) => state.user);
   const { shared_to, picture, formData } = useSelector(
-    (state: StoreState) => state.addWorkout
+    (state: StoreState) => state.addWorkout,
   );
 
   const { data: crewsData } = useQuery<ICrewsResponse>(
     CrewsService.gql.CREWS_BY_MEMBER,
     {
       variables: { userId: user?._id },
-    }
+    },
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -76,7 +75,7 @@ const ShareWorkout: React.FC = () => {
       dispatch(
         DialogActions.openDialog({
           content: <WorkoutEarns />,
-        })
+        }),
       );
     },
     onError: (error) => {
@@ -87,7 +86,9 @@ const ShareWorkout: React.FC = () => {
         if (error instanceof AxiosError) {
           const axiosError = error as AxiosError;
           const responseData = axiosError.response?.data as any;
-          crewNames = responseData.content.crews.map((crew: ICrew) => crew.name);
+          crewNames = responseData.content.crews.map(
+            (crew: ICrew) => crew.name,
+          );
         }
 
         dispatch(
@@ -98,7 +99,7 @@ const ShareWorkout: React.FC = () => {
             _params: {
               crews: crewNames.join(", "),
             },
-          })
+          }),
         );
       }
     },

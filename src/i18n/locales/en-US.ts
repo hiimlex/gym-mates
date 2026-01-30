@@ -168,6 +168,7 @@ export default {
       next: "Next",
       paid: "Paid",
       close: "Close",
+      takePicture: "Take a Picture to share with your mates.",
     },
   },
   joinCrew: {

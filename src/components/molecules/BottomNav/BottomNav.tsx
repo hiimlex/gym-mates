@@ -1,5 +1,6 @@
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { useNavigationContainerRef } from "@hooks/useNavigationContainer/useNavigationContainer";
+import { BlurProps } from "@models/generic";
 import { AppRoutes } from "@navigation/appRoutes";
 import { ConfigActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
@@ -14,7 +15,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "../../atoms";
 import S from "./BottomNav.styles";
-import { BlurProps } from "@models/generic";
 
 const BottomNav: React.FC = () => {
   const { t } = useTranslation();
@@ -30,12 +30,12 @@ const BottomNav: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { hideBottomNav: configHide } = useSelector(
-    (state: StoreState) => state.config
+    (state: StoreState) => state.config,
   );
 
   const hideBottomNav = useMemo(
     () => configHide || !(currentRoute?.params as any)?.showBottomNav,
-    [currentRoute, configHide]
+    [currentRoute, configHide],
   );
 
   const isActive = (checkRoute: string) => {
@@ -68,7 +68,12 @@ const BottomNav: React.FC = () => {
       entering={SlideInDown}
       onLayout={onBottomNavLayoutChange}
       {...BlurProps}
-      style={{ width, bottom: 0, padding: 12, paddingBottom: insets.bottom }}
+      style={{
+        width,
+        bottom: 0,
+        padding: 12,
+        paddingBottom: insets.bottom,
+      }}
     >
       <S.Item
         activeOpacity={0.6}
