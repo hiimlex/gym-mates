@@ -16,6 +16,16 @@ const FloatingBlur = styled(Animated.createAnimatedComponent(BlurView))`
   gap: 24px;
 `;
 
+const ModalContent = styled(Animated.View)`
+  flex: 1;
+  margin: 0 24px;
+  margin-bottom: 36px;
+  padding: 18px;
+  border-radius: 24px;
+  background-color: ${({ theme }) =>
+    setAlphaToColor(theme.colors.background, 40)};
+`;
+
 const MissionButton = styled.TouchableOpacity`
   shadow-color: ${({ theme }) => theme.colors.borderDark};
   shadow-offset: 0px 2px;
@@ -57,5 +67,6 @@ export default {
   AchievementIconWrapper,
   MissionInfo,
   CoinWrapper,
+  ModalContent,
   MissionButton,
 };

@@ -1,7 +1,6 @@
 import React from "react";
-import { View } from "react-native";
-import { IIConProps } from "../Icons";
 import Svg, { Path } from "react-native-svg";
+import type { IIConProps } from "../Icons.types";
 
 const Swimming: React.FC<IIConProps> = ({
   size = 24,
@@ -22,7 +21,5 @@ const Swimming: React.FC<IIConProps> = ({
     </Svg>
   );
 };
-
-
 
 export default Swimming;

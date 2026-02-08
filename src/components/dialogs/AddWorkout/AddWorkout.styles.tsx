@@ -19,11 +19,13 @@ const TakePictureButton = styled.TouchableOpacity`
   background: ${({ theme }) => theme.colors.background};
   border: 1px solid ${({ theme }) => theme.colors.border};
   gap: 12px;
+  align-self: center;
   width: 160px;
-  height: 200px;
+  height: 160px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: 100px;
 `;
 
 export default { Container, CustomBadge, TakePictureButton };

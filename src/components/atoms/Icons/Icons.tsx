@@ -1,19 +1,14 @@
-import NoCrewSplash from "./NoCrewSplash/NoCrewSplash";
-import Gym from "./Gym/Gym";
-import Running from "./Running/Running";
-import Free from "./Free/Free";
 import Aerobic from "./Aerobic/Aerobic";
 import Bike from "./Bike/Bike";
+import Free from "./Free/Free";
+import Gym from "./Gym/Gym";
+import type { IIConProps } from "./Icons.types";
+import NoCrewSplash from "./NoCrewSplash/NoCrewSplash";
+import Running from "./Running/Running";
 import Swimming from "./Swimming/Swimming";
 import Yoga from "./Yoga/Yoga";
 
-export interface IIConProps {
-  size?: number;
-  fill?: string;
-  stroke?: string;
-  fillOpacity?: number;
-  strokeWidth?: number;
-}
+export type { IIConProps };
 
 export default {
   NoCrewSplash,

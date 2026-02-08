@@ -69,7 +69,7 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
             id: "home-fetch-crews-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
       dispatch(ConfigActions.setHideBottomNav(true));

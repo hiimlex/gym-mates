@@ -7,5 +7,6 @@ export * from "./ItemsModel";
 export * from "./JourneyModel";
 export * from "./MissionsModel";
 export * from "./ShopModel";
+export * from "./UserRefModel";
 export * from "./UsersModel";
 export * from "./WorkoutsModel";

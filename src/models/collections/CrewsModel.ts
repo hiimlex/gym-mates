@@ -1,6 +1,6 @@
 import { ImagePickerAsset } from "expo-image-picker";
 import { IFile } from "./FileModel";
-import { IUser } from "./UsersModel";
+import { IUserRef } from "./UserRefModel";
 
 export enum CrewVisibility {
   Public = "public",
@@ -24,7 +24,7 @@ export interface ICrew {
   code: string;
   created_by: string;
   members_w_user: ICrewMember[];
-  white_list: IUser[];
+  white_list: IUserRef[];
   created_at: string;
   updated_at: string;
   visibility: CrewVisibility;
@@ -34,7 +34,7 @@ export interface ICrew {
 }
 
 export interface ICrewMember {
-  user: IUser;
+  user: IUserRef;
   _id: string;
   joined_at: string;
   is_admin: boolean;

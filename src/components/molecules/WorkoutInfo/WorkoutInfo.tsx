@@ -4,11 +4,10 @@ import { Colors, TColors } from "@theme";
 import { format } from "date-fns";
 import React, { useMemo } from "react";
 import { TouchableOpacity } from "react-native";
-import { Circle, DollarSign } from "react-native-feather";
+import { Circle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import { BannerPreview, Coin, Row, Typography } from "../../atoms";
 import S from "./WorkoutInfo.styles";
-import Header from "../Header/Header";
 
 interface WorkoutInfoProps {
   workout: IWorkout;
@@ -102,10 +101,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
               onPress={onImagePress}
               activeOpacity={0.6}
             >
-              <BannerPreview
-                preview={workout.picture?.url}
-                size={48}
-              />
+              <BannerPreview preview={workout.picture?.url} size={48} />
             </TouchableOpacity>
           )}
 

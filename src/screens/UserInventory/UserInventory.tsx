@@ -17,7 +17,7 @@ import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { OverlayActions, UserInventoryActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useWindowDimensions, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./UserInventory.styles";
@@ -39,7 +39,7 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
 
   const isEmpty = useMemo(
     () => data?.journeyById.inventory.length === 0,
-    [data]
+    [data],
   );
 
   const inventory = useMemo(() => data?.journeyById.inventory || [], [data]);
@@ -48,7 +48,7 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
     dispatch(
       UserInventoryActions.setFilters({
         category: filters?.category !== category ? category : undefined,
-      })
+      }),
     );
   };
 
@@ -57,13 +57,19 @@ const UserInventory: React.FC<ScreenProps<AppRoutes.UserInventory>> = () => {
       OverlayActions.show({
         type: OverlayType.ItemPreview,
         data: { item, itemMode: "view" },
-      })
+      }),
     );
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(UserInventoryActions.setFilters({ search: "" }));
+    };
+  }, []);
+
   const mediaSize = useMemo(
     () => calculateMediaSize(width, 3, "grid", 6, 0, 24),
-    [width]
+    [width],
   );
 
   return (

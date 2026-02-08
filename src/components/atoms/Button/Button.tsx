@@ -1,22 +1,10 @@
+import { TColors } from "@theme";
 import React, { useMemo } from "react";
-import S from "./Button.styles";
 import { useTranslation } from "react-i18next";
-import Typography, { TTypographyVariants } from "../Typography/Typography";
-import { ViewStyle } from "react-native";
 import Loader from "../Loader/Loader";
-import { Colors, TColors } from "@theme";
-
-export interface ButtonProps {
-  title: string;
-  colorScheme?: "primary" | "secondary" | "tertiary" | "danger";
-  variant?: "filled" | "outlined" | "text";
-  styles?: ViewStyle;
-  disabled?: boolean;
-  onPress?: () => void;
-  loading?: boolean;
-  textVariant?: TTypographyVariants;
-  fillWidth?: boolean;
-}
+import Typography from "../Typography/Typography";
+import S from "./Button.styles";
+import type { ButtonProps } from "./Button.types";
 
 const Button: React.FC<ButtonProps> = ({
   title,

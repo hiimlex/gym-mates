@@ -6,9 +6,9 @@ import { AppRoutes } from "@navigation/appRoutes";
 import Feather from "@react-native-vector-icons/feather";
 import { StoreState } from "@store/Store";
 import { Colors, TColors } from "@theme";
+import { ArrowLeft } from "react-native-feather";
 import { useSelector } from "react-redux";
 import S from "./Header.styles";
-import { ArrowLeft } from "react-native-feather";
 
 const User = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -78,6 +78,7 @@ const BackLeft = ({ backTo }: BackLeftProps) => {
   return (
     <TouchableOpacity
       activeOpacity={0.6}
+      style={{ zIndex: 99999 }}
       onPress={() => {
         if (backTo) {
           navigate(backTo as any);

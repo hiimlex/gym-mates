@@ -1,7 +1,6 @@
 import React from "react";
-import { View } from "react-native";
-import { IIConProps } from "../Icons";
 import Svg, { Path } from "react-native-svg";
+import type { IIConProps } from "../Icons.types";
 
 const Gym: React.FC<IIConProps> = ({
   size = 24,

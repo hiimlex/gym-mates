@@ -1,22 +1,16 @@
 import React from "react";
-import { View } from "react-native";
-import { IIConProps } from "../Icons";
 import Svg, { Path } from "react-native-svg";
+import type { IIConProps } from "../Icons.types";
 
 const Gym: React.FC<IIConProps> = ({
-  size = 24, 
-  fill = '#000000',
-  stroke = '#000000',
+  size = 24,
+  fill = "#000000",
+  stroke = "#000000",
   fillOpacity = 0.2,
   strokeWidth = 2,
 }) => {
   return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-    >
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
         d="M4.85714 16H2V9H4.85714V7H7.71429V11.5H16.2857V7H19.1429V9H22V16H19.1429V18H16.2857V13.5H7.71429V18H4.85714V16Z"
         fill={fill}

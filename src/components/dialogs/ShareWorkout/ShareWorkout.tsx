@@ -75,6 +75,12 @@ const ShareWorkout: React.FC = () => {
       dispatch(
         DialogActions.openDialog({
           content: <WorkoutEarns />,
+          data: {
+            onBackPress() {
+              dispatch(DialogActions.closeDialog());
+              dispatch(AddWorkoutActions.reset());
+            },
+          },
         }),
       );
     },
@@ -109,7 +115,6 @@ const ShareWorkout: React.FC = () => {
     if (shared_to && shared_to.length > 0 && formData) {
       createWorkout({
         picture,
-        title: formData.title,
         date: format(new Date(formData.date), DateTimeFormat),
         type: formData.type,
         duration: formData.duration,

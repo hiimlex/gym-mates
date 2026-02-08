@@ -28,7 +28,7 @@ import DatePicker from "react-native-date-picker";
 import { Camera } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { IIConProps } from "../../atoms/Icons/Icons";
+import type { IIConProps } from "../../atoms/Icons/Icons.types";
 import ShareWorkout from "../ShareWorkout/ShareWorkout";
 import S from "./AddWorkout.styles";
 
@@ -48,7 +48,6 @@ const AddWorkout: React.FC = () => {
   const scrollRef = useRef<ScrollView>(null);
 
   const fieldsRef: InputRefRecorder<ICreateWorkoutForm> = {
-    title: useRef(null),
     date: useRef(null),
     duration: useRef(null),
     type: useRef(null),
@@ -137,26 +136,7 @@ const AddWorkout: React.FC = () => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Controller
-          control={control}
-          name="title"
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <View style={{ gap: 6 }}>
-              <Typography.Body _t>{"addWorkout.fields.title"}</Typography.Body>
-              <Input
-                placeholder="addWorkout.fields.title"
-                onChangeText={onChange}
-                inputRef={fieldsRef.title}
-                value={value}
-              />
-            </View>
-          )}
-        />
-
         <View style={{ gap: 6 }}>
-          <Typography.Body _t>{"addWorkout.fields.picture"}</Typography.Body>
-
           <S.TakePictureButton activeOpacity={0.6} onPress={openCamera}>
             {picture && picture.base64 && (
               <CachedImage
@@ -176,11 +156,15 @@ const AddWorkout: React.FC = () => {
                 color={Colors.colors.primary}
                 fill={Colors.colors.primary}
                 fillOpacity={0.1}
-                width={32}
-                height={32}
+                width={48}
+                height={48}
+                strokeWidth={1}
               />
             )}
           </S.TakePictureButton>
+          <Typography.Body textColor="text" _t textAlign="center">
+            {"addWorkout.takeAPicture"}
+          </Typography.Body>
         </View>
 
         <View style={{ gap: 6 }}>
@@ -255,7 +239,6 @@ const AddWorkout: React.FC = () => {
           control={control}
           name="duration"
           rules={{ required: true }}
-          defaultValue={0}
           render={({ field: { onChange, value } }) => (
             <View style={{ gap: 6 }}>
               <Typography.Body _t>
@@ -268,7 +251,7 @@ const AddWorkout: React.FC = () => {
                   onChange(masked);
                 }}
                 inputRef={fieldsRef.duration}
-                value={value.toString()}
+                value={value ? value.toString() : undefined}
                 keyboardType="numeric"
                 onFocus={() => scrollToFieldRef(fieldsRef.duration)}
                 suffix={

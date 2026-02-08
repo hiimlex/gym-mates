@@ -48,7 +48,9 @@ const BottomNav: React.FC = () => {
 
   const onBottomNavLayoutChange = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
-    dispatch(ConfigActions.setBottomNavHeight(height));
+    if (height) {
+      dispatch(ConfigActions.setBottomNavHeight(height));
+    }
   };
 
   useEffect(() => {

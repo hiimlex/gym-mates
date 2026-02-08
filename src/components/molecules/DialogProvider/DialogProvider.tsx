@@ -1,14 +1,14 @@
+import { DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
+import React, { cloneElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog } from "../../atoms/";
-import { DialogActions } from "@store/slices";
-import React, { cloneElement } from "react";
 
 const DialogProvider: React.FC = () => {
   const { content, isOpen, data, canGoBack } = useSelector(
-    (state: StoreState) => state.dialog
+    (state: StoreState) => state.dialog,
   );
-  const {isAuthenticated} = useSelector((state: StoreState) => state.user);
+  const { isAuthenticated } = useSelector((state: StoreState) => state.user);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -31,7 +31,7 @@ const DialogProvider: React.FC = () => {
     dispatch(DialogActions.closeDialog());
   };
 
-  if(!isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 

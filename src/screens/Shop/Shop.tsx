@@ -14,7 +14,7 @@ import { OverlayActions, ShopActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
 import { Colors } from "@theme";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useWindowDimensions, View, ViewStyle } from "react-native";
 import { ArrowDown, ArrowUp, Grid, List } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,6 +107,12 @@ const Shop: React.FC<ScreenProps<AppRoutes.Shop>> = ({ navigation }) => {
       }),
     );
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(ShopActions.setFilters({ search: "" }));
+    };
+  }, []);
 
   return (
     <ScreenWrapper useHeaderHeight>

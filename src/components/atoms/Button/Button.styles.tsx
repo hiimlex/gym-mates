@@ -1,13 +1,13 @@
 import styled from "@emotion/native";
-import { ButtonProps } from "./Button";
 import { setAlphaToColor } from "@theme";
+import type { ButtonProps } from "./Button.types";
 
 const Button = styled.TouchableOpacity<{
   colorScheme?: ButtonProps["colorScheme"];
   buttonVariant?: ButtonProps["variant"];
   fillWidth?: boolean;
 }>`
-  padding: 12px;
+  padding: 12px 14px;
   border-radius: 5px;
   align-items: center;
   background-color: ${({ colorScheme, theme }) =>
@@ -18,7 +18,7 @@ const Button = styled.TouchableOpacity<{
     `
       background-color: ${setAlphaToColor(
         colorScheme ? theme.colors[colorScheme] : theme.colors.primary,
-        10
+        10,
       )};
       border-width: 1px;
       border-color: ${colorScheme ? theme.colors[colorScheme] : theme.colors.primary};

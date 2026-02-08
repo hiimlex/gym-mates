@@ -1,10 +1,9 @@
+import { StoreState } from "@store/Store";
 import { TColors } from "@theme";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
-import Typography from "../Typography/Typography";
-import Row from "../Row/Row";
+import { Image, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
-import { StoreState } from "@store/Store";
+import Typography from "../Typography/Typography";
 
 interface CoinProps {
   label?: string;

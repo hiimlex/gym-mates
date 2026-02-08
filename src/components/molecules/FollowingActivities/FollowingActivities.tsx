@@ -2,21 +2,21 @@ import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Loader, Typography } from "@components/atoms";
 import { IWorkoutsByUser, IWorkoutsFilters } from "@models/collections";
-import { StoreState } from "@store/Store";
-import React, { useEffect, useMemo } from "react";
-import { View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import S from "./FollowingActivities.styles";
-import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
-import { OverlayActions } from "@store/slices";
 import { OverlayType } from "@models/generic";
+import { OverlayActions } from "@store/slices";
+import { StoreState } from "@store/Store";
+import React, { useMemo } from "react";
+import { ScrollView } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
+import S from "./FollowingActivities.styles";
 
 const FollowingActivities: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
 
   const followingIds: string[] = useMemo(
     () => user?.following?.map((f) => f._id) || [],
-    [user]
+    [user],
   );
 
   const { data, loading } = useQuery<IWorkoutsByUser, IWorkoutsFilters>(
@@ -27,7 +27,7 @@ const FollowingActivities: React.FC = () => {
         sort: "DATE_DESC",
         limit: 10,
       },
-    }
+    },
   );
 
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const FollowingActivities: React.FC = () => {
           initialIndex: index,
           workouts: data?.workouts || [],
         },
-      })
+      }),
     );
   };
 
@@ -56,22 +56,28 @@ const FollowingActivities: React.FC = () => {
 
       {loading && <Loader color="primary" />}
 
-      {data?.workouts.map((workout, index) => (
-        <WorkoutInfo
-          workout={workout}
-          key={workout._id}
-          showCrewName
-          showImageViewerOnPress
-          loggedUserWorkout={workout.user._id === user._id}
-          onImagePress={() => showImageViewerOverlay(index)}
-        />
-      ))}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 18 }}
+        style={{ height: 400 }}
+      >
+        {data?.workouts.map((workout, index) => (
+          <WorkoutInfo
+            workout={workout}
+            key={workout._id}
+            showCrewName
+            showImageViewerOnPress
+            loggedUserWorkout={workout.user._id === user._id}
+            onImagePress={() => showImageViewerOverlay(index)}
+          />
+        ))}
 
-      {data?.workouts.length === 0 && !loading && (
-        <Typography.Caption _t>
-          {"home.noFollowingActivities"}
-        </Typography.Caption>
-      )}
+        {data?.workouts.length === 0 && !loading && (
+          <Typography.Caption _t>
+            {"home.noFollowingActivities"}
+          </Typography.Caption>
+        )}
+      </ScrollView>
     </S.Container>
   );
 };

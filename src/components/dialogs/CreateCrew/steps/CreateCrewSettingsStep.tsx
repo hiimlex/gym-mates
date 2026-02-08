@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import S from "./CreateCrewSteps.styles";
-import { FadeOut } from "react-native-reanimated";
+import { client } from "@api/apollo";
+import { CrewsService } from "@api/services";
 import {
   Badge,
   Button,
@@ -17,26 +16,27 @@ import {
   ICrewRules,
   IEditCrewRulesForm,
 } from "@models/collections";
-import { Controller, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreState } from "@store/Store";
 import { DialogActions, NotifierActions } from "@store/slices";
 import { CreateCrewActions } from "@store/slices/CreateCrewSlice";
-import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
-import Masks from "@utils/masks.utils";
-import { KeyboardAvoidingView, TextInput } from "react-native";
-import { scrollToFieldRef } from "@utils/scrollToFieldRef";
 import { useMutation } from "@tanstack/react-query";
-import { CrewsService } from "@api/services";
-import { client } from "@api/apollo";
 import { getMessageFromError } from "@utils/handleAxiosError";
+import Masks from "@utils/masks.utils";
+import { scrollToFieldRef } from "@utils/scrollToFieldRef";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { KeyboardAvoidingView, TextInput } from "react-native";
+import { FadeOut } from "react-native-reanimated";
+import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
+import { useDispatch, useSelector } from "react-redux";
+import S from "./CreateCrewSteps.styles";
 
 interface CreateCrewSettingsStepProps {}
 
 const CreateCrewSettingsStep: React.FC<CreateCrewSettingsStepProps> = () => {
   const { infoForm } = useSelector((state: StoreState) => state.createCrew);
   const [visibility, setVisibility] = useState<CrewVisibility>(
-    CrewVisibility.Public
+    CrewVisibility.Public,
   );
   const [streaks, setStreaks] = useState<CrewStreak[]>([
     CrewStreak.Weekly,
@@ -51,7 +51,7 @@ const CreateCrewSettingsStep: React.FC<CreateCrewSettingsStepProps> = () => {
     pay_on_past: true,
     pay_without_picture: true,
     show_members_rank: true,
-    free_weekends: false,
+    free_weekends: true,
   };
 
   const {
@@ -79,13 +79,13 @@ const CreateCrewSettingsStep: React.FC<CreateCrewSettingsStepProps> = () => {
       DialogActions.updateData({
         onBackPress: () =>
           dispatch(CreateCrewActions.setStep(CreateCrewSteps.Info)),
-      })
+      }),
     );
   }, []);
 
   const canFinish = useMemo(
     () => !!visibility && streaks.length > 0 && formState.isValid,
-    [visibility, streaks, formState.isValid]
+    [visibility, streaks, formState.isValid],
   );
 
   const { mutate, data, isPending } = useMutation({
@@ -116,7 +116,7 @@ const CreateCrewSettingsStep: React.FC<CreateCrewSettingsStepProps> = () => {
             id: "create-crew-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },

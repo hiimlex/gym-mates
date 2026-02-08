@@ -32,6 +32,7 @@ export enum Endpoints {
   UsersFollow = "/users/follow",
   UsersUnfollow = "/users/unfollow",
   UsersCreateHealthy = "/users/healthy",
+  UsersUpdateHealthy = "/users/healthy/update",
   UsersSelectTitle = "/users/select-title",
   UsersUpdateAvatar = "/users/update-avatar",
   UsersGetJourney = "/users/journey",

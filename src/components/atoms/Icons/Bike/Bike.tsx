@@ -1,7 +1,6 @@
 import React from "react";
-import { View } from "react-native";
-import { IIConProps } from "../Icons";
 import Svg, { Path } from "react-native-svg";
+import type { IIConProps } from "../Icons.types";
 
 const Bike: React.FC<IIConProps> = ({
   size = 24,
@@ -11,12 +10,7 @@ const Bike: React.FC<IIConProps> = ({
   strokeWidth = 2,
 }) => {
   return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-    >
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
         d="M16 9.22831H9.36152C8.44378 9.22831 7.64382 9.8529 7.42123 10.7432L7.04997 12.2283C8.29997 12.6283 10.8 14.0283 9.59997 17.6283C8.21864 21.7722 1.19997 20.6283 1.79997 15.8283C2.27997 11.9883 5.64996 11.8283 7.04997 12.2283L7.42123 10.7432C7.64382 9.8529 8.44378 9.22831 9.36152 9.22831H16C17.1045 9.22831 18 10.1237 18 11.2283V12.2283C19.4 12.2283 22.2 13.0683 22.2 16.4283C22.2 19.7883 19.4 20.6283 18 20.6283C16.6 20.6283 13.8 19.7883 13.8 16.4283C13.8 13.0683 16.6 12.2283 18 12.2283V11.2283C18 10.1237 17.1045 9.22831 16 9.22831Z"
         fill={fill}

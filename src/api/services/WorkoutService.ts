@@ -28,7 +28,6 @@ const WORKOUTS_BY_USER = gql`
           url
         }
       }
-      title
       date
       duration
       type
@@ -61,7 +60,6 @@ const WORKOUTS_BY_CREW = gql`
           url
         }
       }
-      title
       date
       duration
       type

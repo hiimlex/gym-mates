@@ -35,6 +35,11 @@ const CreateCrewSlice = createSlice({
     setStep: (state, action: PayloadAction<ICreateCrewSteps>) => {
       state.step = action.payload;
     },
+    clear: (state) => {
+      state.step = initialState.step;
+      delete state.infoForm;
+      delete state.settingsForm;
+    },
   },
 });
 

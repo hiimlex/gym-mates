@@ -1,7 +1,7 @@
-import { IUser } from "./UsersModel";
+import { IUserRef } from "./UserRefModel";
 
 export interface IHealthData {
-  user: IUser;
+  user: IUserRef;
   weight: number;
   height: number;
   body_fat: number;

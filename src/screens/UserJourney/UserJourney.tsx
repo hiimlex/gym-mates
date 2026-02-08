@@ -1,5 +1,5 @@
 import { UsersService } from "@api/services";
-import { Badge, Coin, Loader, Row, Typography } from "@components/atoms";
+import { Badge, Loader, Row, Typography } from "@components/atoms";
 import { JourneyEventInfo, ScreenWrapper } from "@components/molecules";
 import { IGetJourneyFilters, JourneyEventAction } from "@models/collections";
 import { QueryKeys } from "@models/generic";

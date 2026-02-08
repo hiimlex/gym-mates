@@ -2,11 +2,11 @@ import { ICrew } from "./CrewsModel";
 import { IHealthData } from "./HealthModel";
 import { IItem } from "./ItemsModel";
 import { IMission } from "./MissionsModel";
-import { IUser } from "./UsersModel";
+import { IUserRef } from "./UserRefModel";
 import { IWorkout } from "./WorkoutsModel";
 
 export interface IUserJourney {
-  user: IUser;
+  user: IUserRef;
   _id: string;
   events: IUserJourneyEvent[];
   workouts: IWorkout[];
@@ -18,7 +18,7 @@ export interface IUserJourneyEvent {
   schema: JourneyEventSchemaType;
   data: {
     workout?: IWorkout;
-    user?: IUser;
+    user?: IUserRef;
     healthy_info?: IHealthData;
     item?: IItem;
     crew?: ICrew;

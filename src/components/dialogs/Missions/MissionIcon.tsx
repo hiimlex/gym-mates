@@ -1,8 +1,7 @@
-import { CachedImage } from "@georstat/react-native-image-cache";
 import { OverlayType } from "@models/generic";
 import { OverlayActions } from "@store/slices";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image } from "react-native";
 import { useDispatch } from "react-redux";
 // import Mission from "../../../assets/mission_icon.svg";
 import S from "./Missions.styles";
@@ -18,7 +17,7 @@ const MissionIcon: React.FC<MissionsIconProps> = ({ children }) => {
     dispatch(
       OverlayActions.show({
         type: OverlayType.Missions,
-      })
+      }),
     );
   };
 

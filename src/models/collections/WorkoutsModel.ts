@@ -2,7 +2,7 @@ import { IQueryOperators } from "@models/generic";
 import { ImagePickerAsset } from "expo-image-picker";
 import { ICrew } from "./CrewsModel";
 import { IFile } from "./FileModel";
-import { IUser } from "./UsersModel";
+import { IUserRef } from "./UserRefModel";
 
 export interface IWorkoutsByUser {
   workouts: IWorkout[];
@@ -25,7 +25,6 @@ export interface IWorkoutsFilters {
 export interface IWorkout {
   _id: string;
   picture?: IFile;
-  title: string;
   date: string;
   type: string;
   created_at: string;
@@ -33,19 +32,17 @@ export interface IWorkout {
   shared_to: ICrew[]; // Array of user IDs
   earned: number; // Amount earned for the workout
   receipt: Record<string, number>; // Receipt details
-  user: IUser;
+  user: IUserRef;
   duration: number;
 }
 
 export interface ICreateWorkoutForm {
-  title: string;
   date: Date;
   type: string;
   duration: number;
 }
 
 export interface ICreateWorkoutPayload {
-  title: string;
   date: string;
   type: string;
   duration: number;

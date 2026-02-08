@@ -84,7 +84,14 @@ const Notification: React.FC<ICreateNotification> = ({
     >
       {showDefaultIcon && !icon && iconByType[type]}
       {icon && <View>{icon}</View>}
-      <Typography.Button _t={_t} _params={_params} textColor={textColor}>
+      <Typography.Button
+        _t={_t}
+        _params={_params}
+        textColor={textColor}
+        style={{
+          flexShrink: 1,
+        }}
+      >
         {message}
       </Typography.Button>
     </S.Notification>

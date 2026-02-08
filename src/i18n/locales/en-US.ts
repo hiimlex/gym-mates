@@ -103,6 +103,9 @@ export default {
     request: "Request",
     openAppSettings: "Open App Settings",
   },
+  missions: {
+    title: "Missions",
+  },
   crews: {
     title: "Follow your crews activities!",
     filters: {
@@ -169,12 +172,13 @@ export default {
       duration: "Duration",
       type: "Workout type",
     },
+    earnedNothingText: "This time you're not gonna be paid but keep it up! ",
+    takeAPicture: "Take a Picture or select from gallery",
     paidText: "Ow! Good job you earned \n +{{coins}} coin{{plural}}",
     buttons: {
       next: "Next",
       paid: "Paid",
       close: "Close",
-      takePicture: "Take a Picture to share with your mates.",
     },
   },
   joinCrew: {
@@ -496,6 +500,7 @@ export default {
     INVALID_DATE: "Invalid date.",
     FILE_NOT_PROVIDED: "File not provided.",
     CANNOT_LEAVE_CREW_OWNER: "Owner cannot leave crew .",
+    USER_CAN_CREATE_ONLY_ONE_CREW: "User can create only one crew.",
     // Workout
     INVALID_WORKOUT_DATE: "Invalid workout date.",
     WORKOUT_DATE_IN_FUTURE: "Workout date cannot be in future.",
@@ -515,7 +520,7 @@ export default {
     ALREADY_FOLLOWING: "Already following this user.",
     TITLE_NOT_FOUND: "Title not found.",
     USER_DOES_NOT_OWN_ITEM: "User does not own this item.",
-
+    HEALTHY_INFO_NOT_FOUND: "Healthy info not found.",
     // Journey
     JOURNEY_NOT_FOUND: "Journey not found.",
     // Shop
