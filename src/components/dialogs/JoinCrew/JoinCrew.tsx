@@ -28,7 +28,7 @@ const JoinCrew: React.FC = () => {
     refetch,
   } = useQuery<ICrewsResponse>(CrewsService.gql.SEARCH_CREWS, {
     variables: { ...filters },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "network-only",
   });
   const dispatch = useDispatch<AppDispatch>();
 
@@ -52,12 +52,12 @@ const JoinCrew: React.FC = () => {
 
   const getActiveRules = (crew: ICrew) =>
     Object.keys(crew?.rules || {}).filter(
-      (ruleKey) => (crew?.rules as any)[ruleKey] === true
+      (ruleKey) => (crew?.rules as any)[ruleKey] === true,
     );
 
   const crew: ICrew | undefined = useMemo(
     () => (!!filters.search && data?.crews[0]) || undefined,
-    [data]
+    [data],
   );
 
   const { mutate: joinCrew, isPending: isJoining } = useMutation({
@@ -76,7 +76,7 @@ const JoinCrew: React.FC = () => {
             id: "join-crew-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },

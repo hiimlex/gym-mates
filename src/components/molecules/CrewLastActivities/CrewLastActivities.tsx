@@ -5,7 +5,8 @@ import { OverlayType } from "@models/generic";
 import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
-import React, { useEffect } from "react";
+import React from "react";
+import { ScrollView } from "react-native";
 import { Frown } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader, Row, Typography } from "../../atoms";
@@ -42,7 +43,7 @@ const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({
           initialIndex: index,
           workouts: data?.workouts || [],
         },
-      })
+      }),
     );
   };
 
@@ -52,18 +53,23 @@ const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({
 
       {loading && <Loader color="primary" />}
 
-      {!loading &&
-        data &&
-        data.workouts &&
-        data.workouts.map((workout, index) => (
-          <WorkoutInfo
-            showImageViewerOnPress
-            loggedUserWorkout={workout.user._id === currentUser?._id}
-            workout={workout}
-            key={workout._id}
-            onImagePress={() => showImageViewerOverlay(index)}
-          />
-        ))}
+      {!loading && data && data.workouts && (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ gap: 12 }}
+          style={{ height: 500 }}
+        >
+          {data.workouts.map((workout, index) => (
+            <WorkoutInfo
+              showImageViewerOnPress
+              loggedUserWorkout={workout.user._id === currentUser?._id}
+              workout={workout}
+              key={workout._id}
+              onImagePress={() => showImageViewerOverlay(index)}
+            />
+          ))}
+        </ScrollView>
+      )}
 
       {!loading && (!data || (data.workouts && data.workouts.length === 0)) && (
         <Row gap={6} align="center" width={"auto"}>

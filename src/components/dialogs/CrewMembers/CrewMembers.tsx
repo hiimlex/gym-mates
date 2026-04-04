@@ -3,15 +3,14 @@ import { useQuery } from "@apollo/client";
 import { Avatar, Typography } from "@components/atoms";
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { ICrew } from "@models/collections";
+import { AppRoutes } from "@navigation/appRoutes";
+import { DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
-import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import CrewMemberInfo from "../../molecules/CrewMemberInfo/CrewMemberInfo";
 import S from "./CrewMembers.styles";
-import { DialogActions } from "@store/slices";
-import { AppRoutes } from "@navigation/appRoutes";
 
 const CrewMembers: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
@@ -23,7 +22,7 @@ const CrewMembers: React.FC = () => {
   const isAdmin = useMemo(
     () =>
       crew?.members_w_user.some((m) => m.user._id === user?._id && m.is_admin),
-    [crew, user]
+    [crew, user],
   );
   const isOwner = useMemo(() => crew?.created_by === user?._id, [crew, user]);
 
@@ -40,13 +39,6 @@ const CrewMembers: React.FC = () => {
     dispatch(DialogActions.closeDialog());
     navigate(AppRoutes.UserView, { userId });
   };
-
-  const { mutate } = useMutation({
-    mutationFn: async () => {},
-    onSuccess: async () => {
-      await refetch();
-    },
-  });
 
   return (
     <S.Container contentContainerStyle={{ gap: 12 }}>

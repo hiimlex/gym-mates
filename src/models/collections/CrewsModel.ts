@@ -83,6 +83,17 @@ export interface IUpdateCrewBannerPayload {
   crew_id: string;
 }
 
+export interface IUpdateCrewAdminsPayload {
+  crew_id: string;
+  user_id: string;
+  set_admin: boolean;
+}
+
+export interface IKickCrewMemberPayload {
+  crew_id: string;
+  user_id: string;
+}
+
 export enum CreateCrewSteps {
   Info = "info",
   Settings = "settings",

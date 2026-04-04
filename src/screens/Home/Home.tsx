@@ -94,7 +94,6 @@ const Home: React.FC<ScreenProps<AppRoutes.Home>> = ({
       >
         <Header.Root justifyContent="space-between">
           <Header.User />
-
           <Row gap={24} align="center" width={"auto"}>
             <MissionIcon />
 

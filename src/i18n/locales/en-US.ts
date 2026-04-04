@@ -160,6 +160,12 @@ export default {
       joined_at: "Joined at {{-date}}",
       you: "You",
       all: "All Members",
+      actions: {
+        makeAdmin: "Make admin",
+        kick: "Kick from crew",
+        makeAdminSuccess: "Member is now admin.",
+        kickSuccess: "Member removed from crew.",
+      },
     },
     delete: "Delete Crew",
     updateSuccess: "Crew updated successfully.",

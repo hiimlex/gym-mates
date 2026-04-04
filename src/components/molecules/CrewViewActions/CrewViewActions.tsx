@@ -1,22 +1,19 @@
+import { CrewsService } from "@api/services";
+import { useDialogService } from "@hooks/useDialogService/useDialogService";
+import { NotifierActions, UserActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
+import { useMutation } from "@tanstack/react-query";
 import { Colors } from "@theme";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useMemo } from "react";
-import { TouchableOpacity, ViewStyle } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Settings, Star } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./CrewView.styles";
-import { useDialogService } from "@hooks/useDialogService/useDialogService";
-import { useMutation } from "@tanstack/react-query";
-import { CrewsService } from "@api/services";
-import { NotifierActions, UserActions } from "@store/slices";
-import { AxiosError } from "axios";
-import { getMessageFromError } from "@utils/handleAxiosError";
 
-interface CrewViewActionsProps {
-  style?: ViewStyle;
-}
+interface CrewViewActionsProps {}
 
-const CrewViewActions: React.FC<CrewViewActionsProps> = ({ style }) => {
+const CrewViewActions: React.FC<CrewViewActionsProps> = () => {
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const { user } = useSelector((state: StoreState) => state.user);
   const { openCrewSettings } = useDialogService();
@@ -24,7 +21,7 @@ const CrewViewActions: React.FC<CrewViewActionsProps> = ({ style }) => {
   const isFavorite = useMemo(
     () =>
       user?.favorites?.some((fav) => fav.toString() === crew?._id.toString()),
-    [user?.favorites]
+    [user?.favorites],
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -43,7 +40,7 @@ const CrewViewActions: React.FC<CrewViewActionsProps> = ({ style }) => {
             id: "favorite-crew-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },
@@ -60,7 +57,7 @@ const CrewViewActions: React.FC<CrewViewActionsProps> = ({ style }) => {
   }
 
   return (
-    <S.Container style={[style]}>
+    <S.Container>
       <TouchableOpacity activeOpacity={0.6} onPress={handleFavoriteCrew}>
         <Star
           width={24}
@@ -69,7 +66,6 @@ const CrewViewActions: React.FC<CrewViewActionsProps> = ({ style }) => {
             isFavorite ? Colors.colors.secondary : Colors.colors.textLight
           }
           fill={isFavorite ? Colors.colors.secondary : "transparent"}
-          fillOpacity={0.2}
         />
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.6} onPress={openCrewSettings}>

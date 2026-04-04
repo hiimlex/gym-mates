@@ -17,6 +17,7 @@ const MemberAvatar = styled(CachedImage)`
 `;
 
 const Content = styled.View`
+  flex: 1;
   flex-direction: row;
   gap: 12px;
   align-items: center;
@@ -24,6 +25,7 @@ const Content = styled.View`
 
 const Info = styled.View`
   gap: 6px;
+  flex: 1;
 `;
 
 const CoinWrapper = styled.View`
@@ -33,7 +35,8 @@ const CoinWrapper = styled.View`
   padding: 4px;
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => setAlphaToColor(theme.colors.secondary, 20)};
+  background-color: ${({ theme }) =>
+    setAlphaToColor(theme.colors.secondary, 20)};
 `;
 
 export default { Container, MemberAvatar, Content, Info, CoinWrapper };

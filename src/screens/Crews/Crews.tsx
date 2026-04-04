@@ -1,35 +1,23 @@
-import { Badge, Card, Loader, Row, Typography } from "@components/atoms";
+import { CrewsService } from "@api/services";
+import { useQuery } from "@apollo/client";
+import { Card, Loader, Row, Typography } from "@components/atoms";
+import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
 import { ScreenWrapper } from "@components/molecules";
 import {
-  AppRoutes,
-  ScreenProps,
-  TRootStackParamList,
-} from "@navigation/appRoutes";
+  ICrew,
+  ICrewsByMemberFilters,
+  ICrewsResponse,
+} from "@models/collections";
+import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CrewsActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React, { useState } from "react";
 import { View } from "react-native";
-import {
-  ArrowDown,
-  ArrowRight,
-  Code,
-  Frown,
-  Star,
-  User,
-} from "react-native-feather";
+import { ArrowRight, Code, Frown, Star, User } from "react-native-feather";
 import { useDispatch, useSelector } from "react-redux";
 import S from "./Crews.styles";
-import {
-  ICrew,
-  ICrewsResponse,
-  ICrewsByMemberFilters,
-} from "@models/collections";
-import BannerPreview from "@components/atoms/BannerPreview/BannerPreview";
-import { useQuery } from "@apollo/client";
-import { CrewsService } from "@api/services";
-import { CrewsActions } from "@store/slices";
 
 const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
   navigation: { navigate },
@@ -154,7 +142,6 @@ const Crews: React.FC<ScreenProps<AppRoutes.Crews>> = ({
                         height={16}
                         stroke={Colors.colors.secondary}
                         fill={Colors.colors.secondary}
-                        fillOpacity={0.2}
                       />
                     )}
                   </Row>

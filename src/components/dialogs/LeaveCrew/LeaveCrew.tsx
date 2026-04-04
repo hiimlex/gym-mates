@@ -1,15 +1,15 @@
-import React from "react";
-import S from "./LeaveCrew.styles";
-import { useMutation } from "@tanstack/react-query";
-import { CrewsService } from "@api/services";
 import { client } from "@api/apollo";
-import { useDispatch, useSelector } from "react-redux";
-import { DialogActions, NotifierActions } from "@store/slices";
-import { AppRoutes } from "@navigation/appRoutes";
-import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
-import { getMessageFromError } from "@utils/handleAxiosError";
+import { CrewsService } from "@api/services";
 import { Button, Row, Typography } from "@components/atoms";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
+import { AppRoutes } from "@navigation/appRoutes";
+import { DialogActions, NotifierActions } from "@store/slices";
 import { StoreState } from "@store/Store";
+import { useMutation } from "@tanstack/react-query";
+import { getMessageFromError } from "@utils/handleAxiosError";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import S from "./LeaveCrew.styles";
 
 interface LeaveCrewProps {
   crewCode: string;
@@ -27,7 +27,7 @@ const LeaveCrew: React.FC<LeaveCrewProps> = ({ crewCode }) => {
         include: ["CrewsByMember"],
       });
       dispatch(DialogActions.closeDialog());
-      navigate(AppRoutes.Home);
+      navigate(AppRoutes.Crews);
     },
     onError: (error) => {
       const message = getMessageFromError(error);
@@ -38,7 +38,7 @@ const LeaveCrew: React.FC<LeaveCrewProps> = ({ crewCode }) => {
             id: "leave-crew-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },

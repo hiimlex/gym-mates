@@ -105,7 +105,7 @@ const Missions: React.FC<MissionsProps> = ({}) => {
             style={{ padding: 3 }}
             onPress={close}
           >
-            <X width={28} height={28} stroke={Colors.colors.textDark} />
+            <X width={28} height={28} stroke={Colors.colors.text} />
           </TouchableOpacity>
         </Row>
         {/* Mission list */}

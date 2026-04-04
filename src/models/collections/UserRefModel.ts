@@ -5,4 +5,5 @@ export interface IUserRef {
   name: string;
   email?: string;
   avatar?: IFile;
+  coins: number;
 }

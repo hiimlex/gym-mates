@@ -5,8 +5,8 @@ export const AccessTokenKey = "access_token";
 export const SkipSetupHealthKey = "skip_setup_health";
 export const SkipSetupAvatarKey = "skip_setup_avatar";
 
-// export const BackendIp = "http://localhost:8383";
-export const BackendIp = "http://192.168.0.120:8383";
+export const BackendIp = "http://localhost:8383";
+// export const BackendIp = "http://192.168.0.7:8383";
 export const PersistedStateKey = "persisted_state";
 export const PersistedLanguageKey = "persisted_language";
 export const BackendImageMulterKey = "image";
@@ -19,7 +19,7 @@ export const ZIndex = {
   Camera: 1001,
 };
 
-export const BlurIntensity = Platform.OS === "ios" ? 15 : 8;
+export const BlurIntensity = Platform.OS === "ios" ? 10 : 8;
 
 export const BlurProps: BlurViewProps = {
   intensity: BlurIntensity,

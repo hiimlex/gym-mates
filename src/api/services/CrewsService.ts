@@ -5,8 +5,10 @@ import {
   ICreateCrewSettingsForm,
   IGetActivitiesDaysFilters,
   IGetActivitiesDaysResponse,
+  IKickCrewMemberPayload,
   IGetCrewRankParams,
   IGetCrewRankResponse,
+  IUpdateCrewAdminsPayload,
   IUpdateCrewBannerPayload,
   IUpdateCrewPayload,
 } from "@models/collections";
@@ -171,6 +173,16 @@ const updateBanner = async (payload: IUpdateCrewBannerPayload) => {
   return response;
 };
 
+const updateAdmins = async (payload: IUpdateCrewAdminsPayload) => {
+  const response = await api.put(Endpoints.CrewsUpdateAdmins, payload);
+  return response;
+};
+
+const kickMember = async (payload: IKickCrewMemberPayload) => {
+  const response = await api.post(Endpoints.CrewsKickMember, payload);
+  return response;
+};
+
 const joinCrew = async (code: string) => {
   const response = await api.post(Endpoints.CrewsJoin, {
     code,
@@ -237,6 +249,8 @@ export default {
   favorite,
   updateSettings,
   updateBanner,
+  updateAdmins,
+  kickMember,
   joinCrew,
   leave,
   create,

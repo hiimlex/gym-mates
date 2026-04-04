@@ -148,6 +148,12 @@ export default {
       joined_at: "Entrou em {{-date}}",
       you: "Você",
       all: "Todos os Membros",
+      actions: {
+        makeAdmin: "Tornar administrador",
+        kick: "Remover da crew",
+        makeAdminSuccess: "Membro promovido a administrador.",
+        kickSuccess: "Membro removido da crew.",
+      },
     },
     delete: "Excluir Crew",
     updateSuccess: "Crew atualizada com sucesso.",

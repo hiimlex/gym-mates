@@ -1,13 +1,13 @@
-import { Avatar, Row, Typography } from "../../atoms";
 import { ICrewMember } from "@models/collections";
-import { Colors, setAlphaToColor } from "@theme";
+import { StoreState } from "@store/Store";
+import { Colors } from "@theme";
 import { format } from "date-fns";
 import React from "react";
-import { Circle, DollarSign } from "react-native-feather";
-import S from "./CrewMemberInfo.styles";
+import { TouchableOpacity } from "react-native";
+import { Circle } from "react-native-feather";
 import { useSelector } from "react-redux";
-import { StoreState } from "@store/Store";
-import { TouchableHighlight, TouchableOpacity } from "react-native";
+import { Avatar, Coin, Row, Typography } from "../../atoms";
+import S from "./CrewMemberInfo.styles";
 
 interface CrewMemberInfoProps {
   member: ICrewMember;
@@ -15,6 +15,7 @@ interface CrewMemberInfoProps {
   onPress?: () => void;
   onLongPress?: () => void;
   isOwner?: boolean;
+  isAdmin?: boolean;
 }
 
 const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
@@ -23,6 +24,7 @@ const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
   onPress,
   onLongPress,
   isOwner,
+  isAdmin,
 }) => {
   const { user } = useSelector((state: StoreState) => state.user);
 
@@ -58,8 +60,8 @@ const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
             <Typography.Body _t>
               {itSelf ? "crewSettings.member.you" : member.user.name}
             </Typography.Body>
-            <Row gap={6} align="center" width={"auto"}>
-              {member.is_admin && !isOwner && (
+            <Row gap={6} align="center" wrap="wrap">
+              {isAdmin && (
                 <>
                   <Typography.Caption _t textColor="textLight">
                     {"crewSettings.admin"}
@@ -88,21 +90,11 @@ const CrewMemberInfo: React.FC<CrewMemberInfoProps> = ({
           </S.Info>
         </S.Content>
 
-        <Row gap={6} align="center" width={"auto"}>
-          <Typography.Button textColor="textLight">
-            {member.user.coins}
-          </Typography.Button>
-          <S.CoinWrapper>
-            <DollarSign
-              width={10}
-              height={10}
-              strokeWidth={2}
-              stroke={Colors.colors.secondary}
-              fill={Colors.colors.secondary}
-              fillOpacity={0.2}
-            />
-          </S.CoinWrapper>
-        </Row>
+        <Coin
+          label={"+" + member.user.coins.toString()}
+          textColor="textLight"
+          textVariant="body"
+        />
       </S.Container>
     </TouchableOpacity>
   );

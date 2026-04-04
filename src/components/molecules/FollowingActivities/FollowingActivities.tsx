@@ -59,7 +59,7 @@ const FollowingActivities: React.FC = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ gap: 18 }}
-        style={{ height: 400 }}
+        style={{ height: 500 }}
       >
         {data?.workouts.map((workout, index) => (
           <WorkoutInfo

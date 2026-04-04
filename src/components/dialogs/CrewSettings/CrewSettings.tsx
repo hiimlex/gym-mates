@@ -1,8 +1,18 @@
+import { CrewsService } from "@api/services";
+import { useQuery } from "@apollo/client";
+import {
+  Dropdown,
+  DropdownAnchor,
+  DropdownItem,
+} from "@components/atoms/Dropdown/Dropdown";
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
+import { useNotifier } from "@hooks/useNotifier";
+import { ICrewMember, ICrewsResponse } from "@models/collections";
 import { AppRoutes } from "@navigation/appRoutes";
-import { DialogActions } from "@store/slices";
+import { CrewsActions, DialogActions } from "@store/slices";
 import { AppDispatch, StoreState } from "@store/Store";
 import { Colors } from "@theme";
+import { getMessageFromError } from "@utils/handleAxiosError";
 import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 import {
@@ -26,12 +36,22 @@ const CrewSettings: React.FC = () => {
   const { user } = useSelector((state: StoreState) => state.user);
   const { crewView: crew } = useSelector((state: StoreState) => state.crews);
   const dispatch = useDispatch<AppDispatch>();
+  const { notify } = useNotifier();
   const { navigate } = useAppNavigation();
+
+  const { refetch: refetchCrew } = useQuery<ICrewsResponse>(
+    CrewsService.gql.GET_CREW_BY_ID,
+    {
+      variables: { _id: crew?._id },
+      skip: !crew?._id,
+      fetchPolicy: "network-only",
+    },
+  );
 
   const isAdmin = useMemo(
     () =>
       crew?.members_w_user.some((m) => m.user._id === user?._id && m.is_admin),
-    [crew, user]
+    [crew, user],
   );
 
   const isOwner = useMemo(() => crew?.created_by === user?._id, [crew, user]);
@@ -41,7 +61,7 @@ const CrewSettings: React.FC = () => {
       Object.entries(crew?.rules || {})
         .map((entry) => entry)
         .filter(([key]) => key !== "__typename" && key !== "show_members_rank"),
-    [crew?.rules]
+    [crew?.rules],
   );
 
   const navigateToUserView = (userId: string) => {
@@ -57,7 +77,7 @@ const CrewSettings: React.FC = () => {
           title: "crewSettings.editCrew.title",
           _t: true,
         },
-      })
+      }),
     );
   };
 
@@ -69,7 +89,7 @@ const CrewSettings: React.FC = () => {
           title: "crewMembers.title",
           _t: true,
         },
-      })
+      }),
     );
   };
 
@@ -81,8 +101,89 @@ const CrewSettings: React.FC = () => {
           title: "leaveCrew.title",
           _t: true,
         },
-      })
+      }),
     );
+  };
+
+  const canManageMember = (member: ICrewMember) => {
+    if (!crew || !user) {
+      return false;
+    }
+
+    const isCurrentUser = member.user._id === user._id;
+    const isCrewOwner = member.user._id === crew.created_by;
+
+    return (isOwner || isAdmin) && !isCurrentUser && !isCrewOwner;
+  };
+
+  const refreshCrewView = async () => {
+    const result = await refetchCrew();
+    const nextCrew = result.data?.crews?.[0];
+
+    if (nextCrew) {
+      dispatch(CrewsActions.setCrewView(nextCrew));
+    }
+  };
+
+  const handleMakeAdmin = async (member: ICrewMember) => {
+    if (!crew?._id) {
+      return;
+    }
+
+    try {
+      await CrewsService.updateAdmins({
+        crew_id: crew._id,
+        user_id: member.user._id,
+        set_admin: true,
+      });
+
+      await refreshCrewView();
+
+      notify({
+        id: `crew-settings-make-admin-${member._id}-${Date.now()}`,
+        message: "crewSettings.member.actions.makeAdminSuccess",
+        type: "success",
+      });
+    } catch (error) {
+      const message = getMessageFromError(error);
+
+      notify({
+        id: `crew-settings-make-admin-error-${member._id}-${Date.now()}`,
+        message,
+        type: "error",
+        _t: message.startsWith("errors."),
+      });
+    }
+  };
+
+  const handleKickMember = async (member: ICrewMember) => {
+    if (!crew?._id) {
+      return;
+    }
+
+    try {
+      await CrewsService.kickMember({
+        crew_id: crew._id,
+        user_id: member.user._id,
+      });
+
+      await refreshCrewView();
+
+      notify({
+        id: `crew-settings-kick-member-${member._id}-${Date.now()}`,
+        message: "crewSettings.member.actions.kickSuccess",
+        type: "success",
+      });
+    } catch (error) {
+      const message = getMessageFromError(error);
+
+      notify({
+        id: `crew-settings-kick-member-error-${member._id}-${Date.now()}`,
+        message,
+        type: "error",
+        _t: message.startsWith("errors."),
+      });
+    }
   };
 
   if (!crew) {
@@ -122,15 +223,39 @@ const CrewSettings: React.FC = () => {
         </Row>
 
         {crew?.members_w_user.map((member) => (
-          <CrewMemberInfo
-            touchable
-            onPress={() => {
-              navigateToUserView(member.user._id);
-            }}
-            member={member}
-            key={member._id}
-            isOwner={isOwner}
-          />
+          <Dropdown key={member._id}>
+            <DropdownAnchor>
+              {({ open }) => (
+                <CrewMemberInfo
+                  touchable
+                  onPress={() => {
+                    navigateToUserView(member.user._id);
+                  }}
+                  onLongPress={canManageMember(member) ? open : undefined}
+                  member={member}
+                  isAdmin={member.is_admin}
+                  isOwner={member.user._id === crew.created_by}
+                />
+              )}
+            </DropdownAnchor>
+
+            {canManageMember(member) && isOwner && !member.is_admin && (
+              <DropdownItem
+                _t
+                label="crewSettings.member.actions.makeAdmin"
+                onPress={() => handleMakeAdmin(member)}
+              />
+            )}
+
+            {canManageMember(member) && (
+              <DropdownItem
+                _t
+                danger
+                label="crewSettings.member.actions.kick"
+                onPress={() => handleKickMember(member)}
+              />
+            )}
+          </Dropdown>
         ))}
       </S.Group>
 
