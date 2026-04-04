@@ -7,8 +7,10 @@ import { AppRoutes, ScreenProps } from "@navigation/appRoutes";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { StoreState } from "@store/Store";
 import { useQuery } from "@tanstack/react-query";
+import { Colors } from "@theme";
 import { format } from "date-fns";
 import React, { useState } from "react";
+import { ArrowDown, ArrowUp } from "react-native-feather";
 import { useSelector } from "react-redux";
 import S from "./UserJourney.styles";
 
@@ -52,12 +54,42 @@ const UserJourney: React.FC<ScreenProps<AppRoutes.UserJourney>> = () => {
 
         <Row gap={12} align="center" width={"auto"}>
           <Badge
-            label={"journey.filters.recent"}
             _t
             touchable
             active={filters.sort === "recent"}
             onPress={setRecentFilter}
-          />
+          >
+            <Row gap={3} align="center" width={"auto"}>
+              {filters.sort === "recent" && (
+                <ArrowUp
+                  color={
+                    filters.sort === "recent"
+                      ? "white"
+                      : Colors.colors.textLight
+                  }
+                  width={20}
+                />
+              )}
+              {!filters.sort && (
+                <ArrowDown
+                  color={
+                    filters.sort === "recent"
+                      ? "white"
+                      : Colors.colors.textLight
+                  }
+                  width={20}
+                />
+              )}
+              <Typography.Body
+                textColor={filters.sort === "recent" ? "white" : "textLight"}
+                _t
+              >
+                {filters.sort === "recent"
+                  ? "journey.filters.recent"
+                  : "journey.filters.oldest"}
+              </Typography.Body>
+            </Row>
+          </Badge>
 
           <Badge
             label={"journey.events.paid"}

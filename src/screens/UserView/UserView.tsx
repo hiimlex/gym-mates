@@ -30,7 +30,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
     {
       variables: { _id: userId },
       fetchPolicy: "cache-and-network",
-    }
+    },
   );
   const user = useMemo(() => userData?.userById, [userData]);
 
@@ -73,7 +73,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
           workouts: workoutsData?.workouts || [],
           initialIndex,
         },
-      })
+      }),
     );
   };
 
@@ -82,7 +82,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
       OverlayActions.show({
         type: OverlayType.ItemPreview,
         data: { item },
-      })
+      }),
     );
   };
 
@@ -118,7 +118,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
               {t(
                 user?.title
                   ? `items.title.${user?.title?.name}`
-                  : "items.title.noTitle"
+                  : "items.title.noTitle",
               )}
             </Text>
           </View>
@@ -184,6 +184,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
             gap: 24,
             flexDirection: "row",
             flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
           {achievementsData?.journeyById.inventory.map((achievement) => (
@@ -191,19 +192,14 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
               item={achievement.item}
               key={achievement.item._id}
               itemsPerRow={3}
-              touchableImage
+              mediaSize={92}
               onImagePress={() => handleOnItemPress(achievement.item)}
             />
           ))}
           {loadingAchievements && <Loader color="primary" />}
           {!loadingAchievements &&
             achievementsData?.journeyById.inventory.length === 0 && (
-              <Typography.Body
-                textColor="textLight"
-                _t
-                textAlign="center"
-                width={"100%"}
-              >
+              <Typography.Body textColor="textLight" _t textAlign="center">
                 {"userView.noAchievements"}
               </Typography.Body>
             )}

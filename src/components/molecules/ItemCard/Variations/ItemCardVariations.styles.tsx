@@ -1,7 +1,7 @@
 import styled from "@emotion/native";
 import { CachedImage } from "@georstat/react-native-image-cache";
 import { IShopListView } from "@models/collections";
-import { setAlphaToColor, TColors } from "@theme";
+import { TColors } from "@theme";
 import { TouchableOpacity } from "react-native";
 
 const Container = styled.View<{ locked?: boolean; view?: IShopListView }>`

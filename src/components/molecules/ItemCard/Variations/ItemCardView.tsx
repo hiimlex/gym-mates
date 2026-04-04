@@ -11,8 +11,9 @@ const ItemCardView: React.FC<Omit<ItemCardProps, "mode">> = ({
   touchableImage = false,
   onImagePress,
   mediaSize = 12,
+  forcedView = "grid",
 }) => {
-  const view = "grid";
+  const view = forcedView;
 
   const isAchievement = item.category === "achievement";
 

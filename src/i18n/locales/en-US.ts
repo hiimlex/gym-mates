@@ -207,10 +207,11 @@ export default {
       follow: 'Started following "{{name}}".',
       loseStreak: "Lost the streak of {{days}} day(s).",
       completeMission: 'Completed the mission "{{name}}".',
+      leave: 'Left "{{name}}" crew.',
     },
     filters: {
       recent: "Recent",
-      old: "Old",
+      oldest: "Oldest",
     },
   },
   userView: {
@@ -247,6 +248,7 @@ export default {
       locked: "Locked",
       list: "List view",
       grid: "Grid view",
+      sex: "Item Sex",
     },
     add: "Add to bag",
     remove: "Remove from bag",

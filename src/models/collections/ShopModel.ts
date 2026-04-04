@@ -1,9 +1,10 @@
-import { IItem } from "./ItemsModel";
+import { IItem, SkinSex } from "./ItemsModel";
 
 export interface IShopFilters {
   locked?: boolean;
   price_sort?: "PRICE_ASC" | "PRICE_DESC";
   search?: string;
+  sex?: SkinSex;
 }
 
 export interface IShopState {

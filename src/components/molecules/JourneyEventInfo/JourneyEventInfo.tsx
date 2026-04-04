@@ -3,23 +3,20 @@ import {
   Avatar,
   BannerPreview,
   Coin,
-  Icons,
   Row,
   Typography,
 } from "@components/atoms";
 import {
-  ItemCategory,
   IUserJourneyEvent,
   JourneyEventAction,
   JourneyEventSchemaType,
 } from "@models/collections";
 import { Colors } from "@theme";
-import React, { useEffect, useMemo } from "react";
-import { DollarSign, Frown, Heart, Star } from "react-native-feather";
-import S from "./JourneyEvent.styles";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Frown, Heart, Star } from "react-native-feather";
 import WorkoutInfo from "../WorkoutInfo/WorkoutInfo";
-import { View } from "react-native";
+import S from "./JourneyEvent.styles";
 
 interface JourneyEventInfoProps {
   event: IUserJourneyEvent;
@@ -183,7 +180,27 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
         </S.EventRow>
       )}
       {/* [TODO] */}
-      {event.action === JourneyEventAction.LEAVE && <></>}
+      {event.action === JourneyEventAction.LEAVE && event.data.crew && (
+        <S.EventRow>
+          <S.EventWithBanner>
+            <BannerPreview
+              size={48}
+              preview={event.data.crew?.banner?.url}
+            ></BannerPreview>
+            <S.EventInfo>
+              <Typography.Body
+                textColor="textDark"
+                _t
+                _params={{
+                  name: event.data.crew?.name,
+                }}
+              >
+                {"journey.events.leave"}
+              </Typography.Body>
+            </S.EventInfo>
+          </S.EventWithBanner>
+        </S.EventRow>
+      )}
 
       {event.action === JourneyEventAction.LOSE_STREAK && (
         <S.EventCard>
