@@ -168,7 +168,7 @@ const UserView: React.FC<ScreenProps<AppRoutes.UserView>> = ({ route }) => {
               workout={workout}
               showCrewName
               showImageViewerOnPress
-              onImagePress={() => showImageViewerOnPress(index)}
+              openPostOnPress
             ></WorkoutInfo>
           ))}
           {loadingUserWorkouts && <Loader color="primary" />}

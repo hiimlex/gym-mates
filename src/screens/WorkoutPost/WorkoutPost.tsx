@@ -84,17 +84,17 @@ export default function WorkoutPost({
               iconByWorkoutType[data.workoutPostOne.workout_id.type]({
                 size: 16,
                 strokeWidth: 2,
-                fill: Colors.colors.tertiary,
-                stroke: Colors.colors.tertiary,
+                fill: Colors.colors.primary,
+                stroke: Colors.colors.primary,
               }),
             )}
-            <Typography.Caption textColor="tertiary" _t>
+            <Typography.Caption textColor="primary" _t>
               {"workoutTypes." + data.workoutPostOne.workout_id.type}
             </Typography.Caption>
           </Row>
           <Row gap={6} align="center" width={"auto"}>
-            <Clock width={16} color={Colors.colors.tertiary} />
-            <Typography.Caption textColor="tertiary">
+            <Clock width={16} color={Colors.colors.primary} />
+            <Typography.Caption textColor="primary">
               {data.workoutPostOne.workout_id.duration}m
             </Typography.Caption>
           </Row>

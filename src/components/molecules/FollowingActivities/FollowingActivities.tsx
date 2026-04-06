@@ -4,7 +4,6 @@ import { Loader, Typography } from "@components/atoms";
 import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { IWorkoutsByUser, IWorkoutsFilters } from "@models/collections";
 import { OverlayType } from "@models/generic";
-import { AppRoutes } from "@navigation/appRoutes";
 import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import React, { useMemo } from "react";
@@ -71,11 +70,7 @@ const FollowingActivities: React.FC = () => {
             showCrewName
             showImageViewerOnPress
             loggedUserWorkout={workout.user._id === user._id}
-            onPress={() =>
-              navigate(AppRoutes.WorkoutPost, {
-                workoutId: workout._id,
-              })
-            }
+            openPostOnPress
           />
         ))}
 

@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import { KeyboardAvoidingView, Platform, TouchableOpacity } from "react-native";
 import { Send } from "react-native-feather";
+import Animated, { FadeInRight } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import S from "./AddWorkoutPostComment.styles";
@@ -25,6 +26,9 @@ export interface AddWorkoutPostCommentRef {
   open: () => void;
   close: () => void;
 }
+
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 const AddWorkoutPostComment = forwardRef<
   AddWorkoutPostCommentRef,
@@ -97,14 +101,17 @@ const AddWorkoutPostComment = forwardRef<
                 onChange={({ nativeEvent }) => setContent(nativeEvent.text)}
               />
 
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => {
-                  handleComment();
-                }}
-              >
-                <Send color={Colors.colors.text} />
-              </TouchableOpacity>
+              {content.trim() !== "" && (
+                <AnimatedTouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    handleComment();
+                  }}
+                  entering={FadeInRight}
+                >
+                  <Send color={Colors.colors.text} />
+                </AnimatedTouchableOpacity>
+              )}
             </Row>
           </S.Container>
         </S.KeyboardContainer>

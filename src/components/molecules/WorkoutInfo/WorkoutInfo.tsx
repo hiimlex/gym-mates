@@ -1,9 +1,10 @@
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { IWorkout } from "@models/collections";
+import { AppRoutes } from "@navigation/appRoutes";
 import { StoreState } from "@store/Store";
 import { Colors, TColors } from "@theme";
 import { format } from "date-fns";
 import React, { useMemo } from "react";
-import { TouchableOpacity } from "react-native";
 import { Circle } from "react-native-feather";
 import { useSelector } from "react-redux";
 import { BannerPreview, Coin, Row, Typography } from "../../atoms";
@@ -16,11 +17,10 @@ interface WorkoutInfoProps {
   showDateTime?: boolean;
   showCrewName?: boolean;
   showImageViewerOnPress?: boolean;
-  onImagePress?: () => void;
-  onPress?: () => void;
   showImage?: boolean;
   textColor?: TColors;
   textAlt?: TColors;
+  openPostOnPress?: boolean;
 }
 
 const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
@@ -30,11 +30,10 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
   showDateTime = true,
   showCrewName = false,
   showImageViewerOnPress = false,
-  onImagePress,
-  onPress,
   showImage = true,
   textColor = "textDark",
   textAlt = "textLight",
+  openPostOnPress = false,
 }) => {
   const { user } = useSelector((state: StoreState) => state.user);
 
@@ -70,8 +69,20 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
     return labels;
   }, [workout]);
 
+  const { navigate } = useAppNavigation();
+
+  const onPress = () => {
+    if (openPostOnPress) {
+      navigate(AppRoutes.WorkoutPost, { workoutId: workout._id });
+    }
+  };
+
   return (
-    <S.WorkoutGroup onPress={onPress} disabled={!onPress} activeOpacity={0.6}>
+    <S.WorkoutGroup
+      onPress={onPress}
+      disabled={!openPostOnPress}
+      activeOpacity={0.6}
+    >
       <S.WorkoutRow>
         {isToday && showDateTime && (
           <Typography.Caption
@@ -98,13 +109,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
       <S.WorkoutRow>
         <Row gap={12} align="center" width={"auto"}>
           {showImage && (
-            <TouchableOpacity
-              disabled={!showImageViewerOnPress || !workout.picture?.url}
-              onPress={onImagePress}
-              activeOpacity={0.6}
-            >
-              <BannerPreview preview={workout.picture?.url} size={48} />
-            </TouchableOpacity>
+            <BannerPreview preview={workout.picture?.url} size={48} />
           )}
 
           <S.WorkoutInfo>

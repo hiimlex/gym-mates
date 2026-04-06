@@ -1,8 +1,7 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { IWorkoutsByCrew, IWorkoutsFilters } from "@models/collections";
-import { OverlayType } from "@models/generic";
-import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import { Colors } from "@theme";
 import React from "react";
@@ -35,17 +34,7 @@ const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({
 
   const dispatch = useDispatch();
 
-  const showImageViewerOverlay = (index: number) => {
-    dispatch(
-      OverlayActions.show({
-        type: OverlayType.WorkoutImageViewer,
-        data: {
-          initialIndex: index,
-          workouts: data?.workouts || [],
-        },
-      }),
-    );
-  };
+  const { navigate } = useAppNavigation();
 
   return (
     <S.Container>
@@ -57,7 +46,7 @@ const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ gap: 12 }}
-          style={{ height: 500 }}
+          style={{ maxHeight: 500 }}
         >
           {data.workouts.map((workout, index) => (
             <WorkoutInfo
@@ -65,7 +54,7 @@ const CrewLastActivities: React.FC<CrewLastActivitiesProps> = ({
               loggedUserWorkout={workout.user._id === currentUser?._id}
               workout={workout}
               key={workout._id}
-              onImagePress={() => showImageViewerOverlay(index)}
+              openPostOnPress
             />
           ))}
         </ScrollView>

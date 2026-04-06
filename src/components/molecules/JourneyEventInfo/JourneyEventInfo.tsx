@@ -57,6 +57,7 @@ const JourneyEventInfo: React.FC<JourneyEventInfoProps> = ({ event }) => {
           workout={event.data.workout}
           loggedUserWorkout
           showDateTime={false}
+          openPostOnPress
         />
       )}
 
