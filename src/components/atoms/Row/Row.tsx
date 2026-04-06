@@ -1,5 +1,5 @@
 import React from "react";
-import { ViewStyle, View, Animated } from "react-native";
+import { Animated, ViewStyle } from "react-native";
 
 interface RowProps {
   children?: React.ReactNode;
@@ -17,7 +17,7 @@ const Row: React.FC<RowProps> = ({
   justify,
   align,
   gap,
-  width = "100%",
+  width,
   wrap,
 }) => {
   return (

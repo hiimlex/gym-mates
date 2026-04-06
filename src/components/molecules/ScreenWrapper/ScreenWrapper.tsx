@@ -6,11 +6,15 @@ import { Colors, setAlphaToColor } from "../../../theme";
 interface ScreenWrapperProps {
   children?: React.ReactNode;
   useHeaderHeight?: boolean;
+  padding?: number;
+  gap?: number;
 }
 
 const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   children,
   useHeaderHeight,
+  padding = 24,
+  gap = 24,
 }) => {
   const { insets, headerHeight } = useScreenSize();
 
@@ -25,8 +29,8 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
       style={{
         flex: 1,
         backgroundColor: Colors.colors.background,
-        padding: 24,
-        gap: 24,
+        padding,
+        gap,
         paddingTop: useHeaderHeight ? headerHeight + 24 : insets.top + 24,
       }}
     >

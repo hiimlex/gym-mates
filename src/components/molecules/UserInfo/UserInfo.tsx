@@ -1,16 +1,15 @@
-import { Avatar, Coin, Row, Typography } from "@components/atoms";
-import { IUser } from "@models/collections";
-import React from "react";
-import Header from "../Header/Header";
-import S from "./UserInfo.styles";
-import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
-import { AppRoutes } from "@navigation/appRoutes";
-import { TouchableOpacity } from "react-native";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UsersService } from "@api/services";
+import { Avatar, Coin, Row, Typography } from "@components/atoms";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
+import { IUser } from "@models/collections";
 import { QueryKeys } from "@models/generic";
-import { getMessageFromError } from "@utils/handleAxiosError";
+import { AppRoutes } from "@navigation/appRoutes";
 import { NotifierActions } from "@store/slices";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getMessageFromError } from "@utils/handleAxiosError";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import S from "./UserInfo.styles";
 
 interface UserInfoProps {
   user: IUser;
@@ -46,7 +45,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
             id: "follow-error",
             type: "error",
             message,
-          })
+          }),
         );
       }
     },
@@ -103,4 +102,3 @@ export default UserInfo;
 function dispatch(arg0: any) {
   throw new Error("Function not implemented.");
 }
-

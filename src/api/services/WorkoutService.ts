@@ -69,6 +69,81 @@ const WORKOUTS_BY_CREW = gql`
   }
 `;
 
+const WORKOUT_POST_BY_WORKOUT_ID = gql`
+  query WorkoutPostOne($workoutId: MongoID!) {
+    workoutPostOne(filter: { workout_id: $workoutId }) {
+      workout_id {
+        picture {
+          url
+        }
+        date
+        type
+        duration
+        earned
+        _id
+        created_at
+        updated_at
+      }
+      author_id {
+        name
+        avatar {
+          url
+        }
+        email
+        coins
+      }
+      content
+      _id
+      created_at
+      updated_at
+      liked_by
+      comments {
+        post_id
+        content
+        liked_by
+        _id
+        created_at
+        updated_at
+        likes_count
+        author_id {
+          name
+          avatar {
+            url
+          }
+        }
+      }
+      comments_count
+      likes_count
+    }
+  }
+`;
+
+const TOGGLE_LIKE_WORKOUT_POST = gql`
+  mutation ToggleLikeWorkoutPost($post_id: MongoID!) {
+    toggleWorkoutPostLike(post_id: $post_id) {
+      likes_count
+      comments_count
+    }
+  }
+`;
+
+const TOGGLE_COMMENT_LIKE_WORKOUT_POST = gql`
+  mutation ToggleLikeWorkoutPostComment($comment_id: MongoID!) {
+    toggleWorkoutPostCommentLike(comment_id: $comment_id) {
+      likes_count
+    }
+  }
+`;
+
+const CREATE_WORKOUT_POST_COMMENT = gql`
+  mutation CreateWorkoutPostComment($post_id: MongoID!, $content: String!) {
+    createWorkoutPostComment(post_id: $post_id, content: $content) {
+      content
+      post_id
+    }
+  }
+`;
+
 const createWorkout = async (
   payload: ICreateWorkoutPayload,
 ): Promise<AxiosResponse<IWorkout>> => {
@@ -101,6 +176,10 @@ export default {
   gql: {
     WORKOUTS_BY_USER,
     WORKOUTS_BY_CREW,
+    WORKOUT_POST_BY_WORKOUT_ID,
+    CREATE_WORKOUT_POST_COMMENT,
+    TOGGLE_LIKE_WORKOUT_POST,
+    TOGGLE_COMMENT_LIKE_WORKOUT_POST,
   },
   createWorkout,
 };

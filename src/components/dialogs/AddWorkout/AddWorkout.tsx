@@ -1,4 +1,5 @@
-import { Button, Icons, Input, Typography } from "@components/atoms";
+import { Button, Input, Typography } from "@components/atoms";
+import { iconByWorkoutType } from "@components/atoms/Icons/Icons";
 import { CachedImage } from "@georstat/react-native-image-cache";
 import { ICreateWorkoutForm, WorkoutType } from "@models/collections";
 import { InputRefRecorder } from "@models/generic";
@@ -10,7 +11,6 @@ import Masks from "@utils/masks.utils";
 import { subDays } from "date-fns";
 import React, {
   cloneElement,
-  ReactElement,
   RefObject,
   useEffect,
   useMemo,
@@ -28,7 +28,6 @@ import DatePicker from "react-native-date-picker";
 import { Camera } from "react-native-feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import type { IIConProps } from "../../atoms/Icons/Icons.types";
 import ShareWorkout from "../ShareWorkout/ShareWorkout";
 import S from "./AddWorkout.styles";
 
@@ -56,21 +55,6 @@ const AddWorkout: React.FC = () => {
   useEffect(() => {
     dispatch(AddWorkoutActions.setPicture(asset));
   }, [asset]);
-
-  const iconByWorkoutType: Record<
-    WorkoutType,
-    (props?: IIConProps) => ReactElement
-  > = {
-    gym: (props) => <Icons.Gym {...props} />,
-    aerobics: (props) => <Icons.Aerobic {...props} />,
-    running: (props) => <Icons.Running {...props} />,
-    cycling: (props) => <Icons.Bike {...props} />,
-    cross_fit: (props) => <Icons.Free {...props} />,
-    cardio: (props) => <Icons.Running {...props} />,
-    yoga: (props) => <Icons.Yoga {...props} />,
-    swimming: (props) => <Icons.Swimming {...props} />,
-    other: (props) => <Icons.Free {...props} />,
-  };
 
   const minimumDate = subDays(new Date(), 2);
   const maximumDate = new Date();
@@ -156,8 +140,8 @@ const AddWorkout: React.FC = () => {
                 color={Colors.colors.primary}
                 fill={Colors.colors.primary}
                 fillOpacity={0.1}
-                width={48}
-                height={48}
+                width={32}
+                height={32}
                 strokeWidth={1}
               />
             )}

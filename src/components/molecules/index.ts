@@ -1,3 +1,4 @@
+export { default as AddWorkoutPostComment } from "./AddWorkoutPostComment/AddWorkoutPostComment";
 export { default as BottomNav } from "./BottomNav/BottomNav";
 export { default as CharUi } from "./CharCreationUi/CharUi";
 export { default as CrewInfo } from "./CrewInfo/CrewInfo";

@@ -14,6 +14,8 @@ export enum AppRoutes {
   CrewView = "CrewView",
   Shop = "Shop",
   ShopCart = "ShopCart",
+  // Workouts
+  WorkoutPost = "WorkoutPost",
   // User
   Profile = "Profile",
   EditProfile = "EditProfile",
@@ -52,9 +54,12 @@ export type TRootStackParamList = {
   [AppRoutes.UserView]: {
     userId: string;
   };
-  [AppRoutes.UserFollows]?: {}
+  [AppRoutes.UserFollows]?: {};
   [AppRoutes.Help]?: {};
   [AppRoutes.UserCharacter]?: {};
+  [AppRoutes.WorkoutPost]: {
+    workoutId: string;
+  };
 };
 
 export type ScreenProps<T extends keyof TRootStackParamList> =

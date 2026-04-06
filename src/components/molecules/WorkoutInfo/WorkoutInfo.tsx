@@ -17,6 +17,7 @@ interface WorkoutInfoProps {
   showCrewName?: boolean;
   showImageViewerOnPress?: boolean;
   onImagePress?: () => void;
+  onPress?: () => void;
   showImage?: boolean;
   textColor?: TColors;
   textAlt?: TColors;
@@ -30,6 +31,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
   showCrewName = false,
   showImageViewerOnPress = false,
   onImagePress,
+  onPress,
   showImage = true,
   textColor = "textDark",
   textAlt = "textLight",
@@ -69,7 +71,7 @@ const WorkoutInfo: React.FC<WorkoutInfoProps> = ({
   }, [workout]);
 
   return (
-    <S.WorkoutGroup>
+    <S.WorkoutGroup onPress={onPress} disabled={!onPress} activeOpacity={0.6}>
       <S.WorkoutRow>
         {isToday && showDateTime && (
           <Typography.Caption

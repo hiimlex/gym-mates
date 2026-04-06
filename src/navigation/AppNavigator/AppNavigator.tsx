@@ -37,6 +37,8 @@ import {
 import { StoreState } from "@store/Store";
 import { PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
+import WorkoutPost from "src/screens/WorkoutPost/WorkoutPost";
+import { WorkoutPostScreenOptions } from "src/screens/WorkoutPost/WorkoutPost.options";
 import { AppRoutes, TRootStackParamList } from "../appRoutes";
 
 const Stack = createNativeStackNavigator<TRootStackParamList>();
@@ -149,6 +151,12 @@ const AppNavigator: React.FC<PropsWithChildren> = ({ children }) => {
               name={AppRoutes.Settings}
               component={SettingsScreen}
               options={SettingsScreenOptions}
+            />
+
+            <Stack.Screen
+              name={AppRoutes.WorkoutPost}
+              component={WorkoutPost}
+              options={WorkoutPostScreenOptions}
             />
           </>
         )}

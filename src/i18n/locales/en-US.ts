@@ -371,6 +371,10 @@ export default {
   crewRules: {
     title: "Crew Rules",
   },
+  workoutPost: {
+    noContent: "No content provided.",
+    addCommentPlaceholder: "Add a comment...",
+  },
 
   // Generic
   weekDays: {
@@ -431,6 +435,7 @@ export default {
     help: "Help & Support",
     userCharacter: "Character",
     settings: "Settings",
+    post: "Workout Post",
   },
   units: {
     days: "days",

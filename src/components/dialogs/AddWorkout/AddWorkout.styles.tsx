@@ -20,8 +20,8 @@ const TakePictureButton = styled.TouchableOpacity`
   border: 1px solid ${({ theme }) => theme.colors.border};
   gap: 12px;
   align-self: center;
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   flex-direction: column;
   align-items: center;
   justify-content: center;

@@ -1,8 +1,10 @@
 import { WorkoutService } from "@api/services";
 import { useQuery } from "@apollo/client";
 import { Loader, Typography } from "@components/atoms";
+import { useAppNavigation } from "@hooks/useAppNavigation/useAppNavigation";
 import { IWorkoutsByUser, IWorkoutsFilters } from "@models/collections";
 import { OverlayType } from "@models/generic";
+import { AppRoutes } from "@navigation/appRoutes";
 import { OverlayActions } from "@store/slices";
 import { StoreState } from "@store/Store";
 import React, { useMemo } from "react";
@@ -30,6 +32,7 @@ const FollowingActivities: React.FC = () => {
     },
   );
 
+  const { navigate } = useAppNavigation();
   const dispatch = useDispatch();
 
   const showImageViewerOverlay = (index: number) => {
@@ -59,7 +62,7 @@ const FollowingActivities: React.FC = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ gap: 18 }}
-        style={{ height: 500 }}
+        style={{ maxHeight: 500 }}
       >
         {data?.workouts.map((workout, index) => (
           <WorkoutInfo
@@ -68,7 +71,11 @@ const FollowingActivities: React.FC = () => {
             showCrewName
             showImageViewerOnPress
             loggedUserWorkout={workout.user._id === user._id}
-            onImagePress={() => showImageViewerOverlay(index)}
+            onPress={() =>
+              navigate(AppRoutes.WorkoutPost, {
+                workoutId: workout._id,
+              })
+            }
           />
         ))}
 

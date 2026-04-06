@@ -3,6 +3,7 @@ import { ImagePickerAsset } from "expo-image-picker";
 import { ICrew } from "./CrewsModel";
 import { IFile } from "./FileModel";
 import { IUserRef } from "./UserRefModel";
+import { IUser } from "./UsersModel";
 
 export interface IWorkoutsByUser {
   workouts: IWorkout[];
@@ -26,7 +27,7 @@ export interface IWorkout {
   _id: string;
   picture?: IFile;
   date: string;
-  type: string;
+  type: WorkoutType;
   created_at: string;
   updated_at: string;
   shared_to: ICrew[]; // Array of user IDs
@@ -68,4 +69,28 @@ export interface IAddWorkoutState {
   picture?: ImagePickerAsset;
   shared_to?: string[];
   createdWorkout?: IWorkout;
+}
+
+export interface IWorkoutGetPost {
+  _id: string;
+  workout_id: IWorkout;
+  author_id: IUser;
+  liked_by: string[];
+  content: string;
+  likes_count: number;
+  comments_count: number;
+  comments: IWorkoutPostComment[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IWorkoutPostComment {
+  _id: string;
+  workout_id: string;
+  author_id: IUser;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  liked_by: string[];
+  likes_count: number;
 }
